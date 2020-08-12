@@ -6,9 +6,9 @@
  */
 // PULLED FROM THIS BLOG: https://medium.com/@huntie/a-concise-guide-to-configuring-react-native-with-yarn-workspaces-d7efa71b6906
 
-const blacklist = require("metro-config/src/defaults/blacklist");
-const getWorkspaces = require("get-yarn-workspaces");
-const path = require("path");
+const blacklist = require('metro-config/src/defaults/blacklist');
+const getWorkspaces = require('get-yarn-workspaces');
+const path = require('path');
 
 function getConfig(appDir, options = {}) {
   const workspaces = getWorkspaces(appDir);
@@ -16,11 +16,10 @@ function getConfig(appDir, options = {}) {
   // Add additional Yarn workspace package roots to the module map
   // https://bit.ly/2LHHTP0
   const watchFolders = [
-    path.resolve(appDir, "../..", "node_modules"),
+    path.resolve(appDir, '../..', 'node_modules'),
     ...workspaces.filter((workspaceDir) => !(workspaceDir === appDir)),
   ];
 
-  console.log("APPPPPP DIRRRRRR", appDir);
   return {
     watchFolders,
     resolver: {
@@ -36,17 +35,17 @@ function getConfig(appDir, options = {}) {
       ]),
       extraNodeModules: {
         // Resolve all react-native module imports to the locally-installed version
-        "react-native": path.resolve(appDir, "node_modules", "react-native"),
+        'react-native': path.resolve(appDir, 'node_modules', 'react-native'),
 
         // Resolve additional nohoist modules depended on by other packages
-        "react-native-svg": path.resolve(
+        'react-native-svg': path.resolve(
           appDir,
-          "node_modules",
-          "react-native-svg"
+          'node_modules',
+          'react-native-svg',
         ),
 
         // Resolve core-js imports to the locally installed version
-        "core-js": path.resolve(appDir, "node_modules", "core-js"),
+        'core-js': path.resolve(appDir, 'node_modules', 'core-js'),
       },
     },
   };
