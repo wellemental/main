@@ -1,0 +1,6 @@
+module Pods_wellemental_wellementalTests {
+  umbrella header "Pods-wellemental-wellementalTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

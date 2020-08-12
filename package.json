@@ -1,0 +1,21 @@
+{
+  "name": "wellemental",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/react-native",
+      "**/react-native/**",
+      "**/react-native*/**",
+      "**/react-native**",
+      "**/react-native-gesture-handler/**",
+      "**/react-native-screens/**",
+      "**/@react-navigation/**",
+      "**/react-native-reanimated/**",
+      "**/react-native-safe-area-context/**",
+      "**/@react-native-community/masked-view"
+    ]
+  }
+}

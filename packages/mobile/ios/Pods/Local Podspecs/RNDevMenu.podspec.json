@@ -1,0 +1,29 @@
+{
+  "name": "RNDevMenu",
+  "dependencies": {
+    "React-Core": [
+
+    ],
+    "React-Core/DevSupport": [
+
+    ],
+    "React-RCTNetwork": [
+
+    ]
+  },
+  "version": "4.0.2",
+  "license": "MIT",
+  "summary": "Add custom items to the React Native dev menu",
+  "authors": "Mathieu Acthernoene <zoontek@gmail.com>",
+  "homepage": "https://github.com/zoontek/react-native-dev-menu#readme",
+  "platforms": {
+    "ios": "9.0",
+    "tvos": "11.0"
+  },
+  "requires_arc": true,
+  "source": {
+    "git": "https://github.com/zoontek/react-native-dev-menu.git",
+    "tag": "4.0.2"
+  },
+  "source_files": "ios/*.{h,m}"
+}
