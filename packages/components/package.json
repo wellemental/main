@@ -2,14 +2,22 @@
   "name": "components",
   "version": "0.0.1",
   "private": true,
+  "main": "src/index.ts",
   "dependencies": {
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "native-base": "^2.13.13",
+    "prettier": "^2.0.5",
     "react": "16.13.1",
     "react-native": "0.63.2",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "types": "0.0.1"
   },
   "devDependencies": {
     "@types/react": "^16.9.46",
-    "@types/react-native": "^0.63.7"
+    "@types/react-native": "^0.63.7",
+    "@typescript-eslint/eslint-plugin": "^3.9.1",
+    "eslint": "^7.7.0",
+    "typescript": "^3.9.7"
   }
 }

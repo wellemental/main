@@ -1,11 +1,14 @@
-export const seed = [
+import { Content, Teachers, Categories, Languages } from 'types';
+
+export const seed: Content[] = [
   {
     category: 'Movement',
-    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A'
+    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A',
     title: 'Movement Video 1',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Nicole Cardoza',
+    teacher: Teachers.Nicole,
+    language: Languages.En,
   },
   {
     category: 'Movement',
@@ -13,7 +16,8 @@ export const seed = [
     title: 'Movement Video 2',
     video: 'https://www.youtube.com/watch?v=M7rlUFTwr-c',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Mike Doe',
+    teacher: Teachers.Mike,
+    language: Languages.En,
   },
   {
     category: 'Movement',
@@ -21,7 +25,8 @@ export const seed = [
     title: 'Movement Video 3',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Nicole Cardoza',
+    teacher: Teachers.Nicole,
+    language: Languages.Es,
   },
   {
     category: 'Movement',
@@ -29,7 +34,8 @@ export const seed = [
     title: 'Movement Video 4',
     video: 'https://www.youtube.com/watch?v=M7rlUFTwr-c',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Mike Doe',
+    teacher: Teachers.Mike,
+    language: Languages.En,
   },
   {
     category: 'Movement',
@@ -37,7 +43,8 @@ export const seed = [
     title: 'Movement Video 5',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Nicole Cardoza',
+    teacher: Teachers.Nicole,
+    language: Languages.Es,
   },
   {
     category: 'Meditation',
@@ -45,15 +52,17 @@ export const seed = [
     title: 'Meditation Video 1',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Stephanie Rae',
+    teacher: Teachers.Steph,
+    language: Languages.En,
   },
   {
     category: 'Meditation',
-    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A'
+    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A',
     title: 'Meditation Video 2',
     video: 'https://www.youtube.com/watch?v=M7rlUFTwr-c',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Mike Doe',
+    teacher: Teachers.Mike,
+    language: Languages.Es,
   },
   {
     category: 'Meditation',
@@ -61,21 +70,24 @@ export const seed = [
     title: 'Meditation Video 3',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Stephanie Rae',
+    teacher: Teachers.Steph,
+    language: Languages.En,
   },
   {
     category: 'Meditation',
     title: 'Meditation Video 4',
     video: 'https://www.youtube.com/watch?v=M7rlUFTwr-c',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Mike Doe',
+    teacher: Teachers.Mike,
+    language: Languages.En,
   },
   {
     category: 'Meditation',
-    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A'
+    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A',
     title: 'Meditation Video 5',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
-    teacher: 'Stephanie Rae',
+    teacher: Teachers.Steph,
+    language: Languages.En,
   },
 ];
