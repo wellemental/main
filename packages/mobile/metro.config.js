@@ -37,7 +37,6 @@ function getConfig(appDir, options = {}) {
         /components[\/\\]node_modules[/\\]react-native-reanimated[/\\].*/,
         /components[\/\\]node_modules[/\\]react-native-safe-area-context[/\\].*/,
         /components[\/\\]node_modules[/\\]react-native-screens[/\\].*/,
-        /components[\/\\]node_modules[/\\]@react-navigation[/\\].*/,
         /components[\/\\]node_modules[/\\]react-native-vector-icons[/\\].*/,
       ]),
       extraNodeModules: {
@@ -76,16 +75,6 @@ function getConfig(appDir, options = {}) {
           appDir,
           'node_modules',
           'react-native-screens',
-        ),
-        '@react-navigation/native': path.resolve(
-          appDir,
-          'node_modules',
-          '@react-navigation/native',
-        ),
-        '@react-navigation/bottom-tabs': path.resolve(
-          appDir,
-          'node_modules',
-          '@react-navigation/bottom-tabs',
         ),
         'react-native-vector-icons': path.resolve(
           appDir,

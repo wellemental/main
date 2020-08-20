@@ -13,15 +13,17 @@ import {
 } from 'native-base';
 import { Image } from 'react-native';
 import { Content } from 'types';
+import { useNavigation } from '@react-navigation/native';
 
 interface Props {
   content: Content;
 }
 
-const Card: React.FC = ({ content }) => {
+const Card: React.FC<Props> = ({ content }) => {
+  const navigation = useNavigation();
   return (
     <NBCard>
-      <CardItem cardBody>
+      <CardItem cardBody button onPress={() => navigation.navigate('Content')}>
         <Image
           source={{
             uri: content.thumbnail,

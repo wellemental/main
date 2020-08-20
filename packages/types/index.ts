@@ -25,3 +25,13 @@ export interface Content {
   teacher: Teachers;
   language: Languages;
 }
+
+export type StackParamList = {
+  Home: undefined;
+  Content: { contentId: string };
+};
+
+export type TabParamList = {
+  Library: undefined;
+  Settings: undefined;
+};

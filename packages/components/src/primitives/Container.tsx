@@ -3,13 +3,13 @@ import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import variables from '../assets/native-base-theme/variables/platform';
 
-type ContentProps = {
+type ContainerProps = {
   noPadding?: 'vertical' | 'horizontal' | 'none';
   color?: string;
   center?: boolean;
 };
 
-const Content: React.FC<ContentProps & NativeBase.Content> = ({
+const Container: React.FC<ContentProps & NativeBase.Content> = ({
   style,
   scrollEnabled = true,
   children,
@@ -56,4 +56,4 @@ const Content: React.FC<ContentProps & NativeBase.Content> = ({
   );
 };
 
-export default Content;
+export default Container;

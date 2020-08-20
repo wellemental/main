@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Segment } from 'native-base';
-import { Button, SearchBar, Content, Card } from '../primitives';
+import { Button, SearchBar, Container, Card } from '../primitives';
 import { seed } from './seed';
 import { Content as ContentType, Categories } from 'types';
 
@@ -29,7 +29,7 @@ const LibraryScreen: React.FC = () => {
   }
 
   return (
-    <Content>
+    <Container>
       <SearchBar value={searchTerm} setState={setSearchTerm} />
 
       <Segment>
@@ -47,7 +47,7 @@ const LibraryScreen: React.FC = () => {
       {filteredData.map((content) => (
         <Card content={content} />
       ))}
-    </Content>
+    </Container>
   );
 };
 

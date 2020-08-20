@@ -2,12 +2,12 @@
   "include": ["packages/*/src"],
   "compilerOptions": {
     "declaration": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
+    "jsx": "react",
     "declarationMap": true,
     "baseUrl": ".",
-    "paths": "packages/*/src"
-    // "paths": {
-    //   "@stereobooster/*": ["packages/*/src"]
-    // }
+    "paths": {
+      "*": ["packages/*/src"]
+    }
   }
 }

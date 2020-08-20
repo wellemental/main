@@ -1,19 +1,24 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-// import { Button } from 'native-base';
-import { Button } from '../primitives';
-// import getTheme from '../assets/native-base-theme/components';
-// import material from '../assets/native-base-theme/variables/material';
-// import { Button } from 'react-native-elements';
+import { LibraryScreen, SettingsScreen } from './';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { StackParamList, TabParamList } from 'types';
+
+type ProfileScreenNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<TabParamList, 'Library'>,
+  StackNavigationProp<StackParamList>
+>;
+
+const Tab = createBottomTabNavigator<TabParamList>();
+
 const HomeScreen: React.FC = () => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home Monorepo!</Text>
-      <Button text="Solid Button" />
-      {/* <Button>
-        <Text>Testing Native B</Text>
-      </Button> */}
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name="Library" component={LibraryScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+    </Tab.Navigator>
   );
 };
 
