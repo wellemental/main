@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StyleProp, TextStyle, Text } from 'react-native';
 import { Button as NBButton, Icon, Spinner, NativeBase } from 'native-base';
-import Text from './Text';
+// import Text from './Text';
 import styled from 'styled-components';
 import variables from '../assets/native-base-theme/variables/platform';
 
@@ -11,7 +11,7 @@ interface Props {
   iconName?: string;
   iconType?: string;
   padder?: 'top' | 'bottom' | 'vertical';
-  textStyle?: any; //StyleProp<Text>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 const ButtonText = styled(Text)`
@@ -28,7 +28,6 @@ const Button: React.FC<Props & NativeBase.Button> = ({
   iconName,
   iconType,
   padder,
-  rounded,
   ...props
 }) => {
   const { style } = props;

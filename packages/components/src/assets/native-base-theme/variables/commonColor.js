@@ -1,6 +1,6 @@
 // @flow
 
-import color from 'native-base-theme/variables/node_modules/color';
+import color from 'color';
 import { Platform, Dimensions, PixelRatio } from 'react-native';
 
 export const PLATFORM = {

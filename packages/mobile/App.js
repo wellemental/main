@@ -7,14 +7,11 @@
  */
 
 import React from 'react';
-import { View, Text, StatusBar } from 'react-native';
-
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import SettingsScreen from 'components/src/screens/SettingsScreen';
-import HomeScreen from 'components/src/screens/HomeScreen';
+import { HomeScreen, SettingsScreen } from 'components';
 
 const Tab = createBottomTabNavigator();
 

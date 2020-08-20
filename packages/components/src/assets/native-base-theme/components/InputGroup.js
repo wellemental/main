@@ -1,6 +1,6 @@
 // @flow
 
-import variable from 'native-base-theme/variables/platform';
+import variable from '../variables/platform';
 
 export default (variables /* : * */ = variable) => {
   const inputGroupTheme = {

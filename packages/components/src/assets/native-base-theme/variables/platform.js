@@ -1,9 +1,9 @@
 // @flow
 
-import color from 'native-base-theme/variables/node_modules/color';
+import color from 'color';
 import { Platform, Dimensions, PixelRatio } from 'react-native';
 
-import { PLATFORM } from 'native-base-theme/variables/commonColor';
+import { PLATFORM } from './commonColor';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;

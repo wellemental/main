@@ -2,8 +2,8 @@ import { Content, Teachers, Categories, Languages } from 'types';
 
 export const seed: Content[] = [
   {
-    category: 'Movement',
-    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A',
+    category: Categories.Movement,
+    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg',
     title: 'Movement Video 1',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -11,8 +11,8 @@ export const seed: Content[] = [
     language: Languages.En,
   },
   {
-    category: 'Movement',
-    thumbnail: 'https://i.ytimg.com/vi/M7rlUFTwr-c/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLA2KdjQGl6QswuY_m9kybhgABWM2g',
+    category: Categories.Movement,
+    thumbnail: 'https://i.ytimg.com/vi/M7rlUFTwr-c/hqdefault.jpg',
     title: 'Movement Video 2',
     video: 'https://www.youtube.com/watch?v=M7rlUFTwr-c',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -20,8 +20,8 @@ export const seed: Content[] = [
     language: Languages.En,
   },
   {
-    category: 'Movement',
-    thumbnail: 'https://i.ytimg.com/vi/wlS8efuOpZg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBjrLfVEgWo3HDojPPrJIPg4hSMEQ',
+    category: Categories.Movement,
+    thumbnail: 'https://i.ytimg.com/vi/wlS8efuOpZg/hqdefault.jpg',
     title: 'Movement Video 3',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -29,8 +29,8 @@ export const seed: Content[] = [
     language: Languages.Es,
   },
   {
-    category: 'Movement',
-    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A'
+    category: Categories.Movement,
+    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg',
     title: 'Movement Video 4',
     video: 'https://www.youtube.com/watch?v=M7rlUFTwr-c',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -38,8 +38,8 @@ export const seed: Content[] = [
     language: Languages.En,
   },
   {
-    category: 'Movement',
-    thumbnail: 'https://i.ytimg.com/vi/M7rlUFTwr-c/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLA2KdjQGl6QswuY_m9kybhgABWM2g',
+    category: Categories.Movement,
+    thumbnail: 'https://i.ytimg.com/vi/M7rlUFTwr-c/hqdefault.jpg',
     title: 'Movement Video 5',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -47,8 +47,8 @@ export const seed: Content[] = [
     language: Languages.Es,
   },
   {
-    category: 'Meditation',
-    thumbnail: 'https://i.ytimg.com/vi/wlS8efuOpZg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBjrLfVEgWo3HDojPPrJIPg4hSMEQ',
+    category: Categories.Meditation,
+    thumbnail: 'https://i.ytimg.com/vi/wlS8efuOpZg/hqdefault.jpg',
     title: 'Meditation Video 1',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -56,8 +56,8 @@ export const seed: Content[] = [
     language: Languages.En,
   },
   {
-    category: 'Meditation',
-    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A',
+    category: Categories.Meditation,
+    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg',
     title: 'Meditation Video 2',
     video: 'https://www.youtube.com/watch?v=M7rlUFTwr-c',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -65,8 +65,8 @@ export const seed: Content[] = [
     language: Languages.Es,
   },
   {
-    category: 'Meditation',
-    thumbnail: 'https://i.ytimg.com/vi/M7rlUFTwr-c/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLA2KdjQGl6QswuY_m9kybhgABWM2g',
+    category: Categories.Meditation,
+    thumbnail: 'https://i.ytimg.com/vi/M7rlUFTwr-c/hqdefault.jpg',
     title: 'Meditation Video 3',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -74,7 +74,8 @@ export const seed: Content[] = [
     language: Languages.En,
   },
   {
-    category: 'Meditation',
+    category: Categories.Meditation,
+    thumbnail: 'https://i.ytimg.com/vi/M7rlUFTwr-c/hqdefault.jpg',
     title: 'Meditation Video 4',
     video: 'https://www.youtube.com/watch?v=M7rlUFTwr-c',
     description: 'Lorem ipsum this is for kids ages 8-10.',
@@ -82,8 +83,8 @@ export const seed: Content[] = [
     language: Languages.En,
   },
   {
-    category: 'Meditation',
-    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCo0bPMhTsEvsVqPx5x3je3z3tT-A',
+    category: Categories.Meditation,
+    thumbnail: 'https://i.ytimg.com/vi/eT6eW4wWXeI/hqdefault.jpg',
     title: 'Meditation Video 5',
     video: 'https://www.youtube.com/watch?v=eT6eW4wWXeI',
     description: 'Lorem ipsum this is for kids ages 8-10.',

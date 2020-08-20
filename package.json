@@ -8,14 +8,21 @@
     "nohoist": [
       "**/react-native",
       "**/react-native/**",
-      "**/react-native*/**",
       "**/react-native**",
       "**/react-native-gesture-handler/**",
       "**/react-native-screens/**",
       "**/@react-navigation/**",
       "**/react-native-reanimated/**",
       "**/react-native-safe-area-context/**",
-      "**/@react-native-community/masked-view"
+      "**/@react-native-community/masked-view",
+      "**/react-native-vector-icons"
     ]
+  },
+  "scripts": {
+    "android": "yarn workspace mobile android",
+    "compile": "tsc -b --incremental",
+    "ios": "yarn workspace mobile  ios",
+    "studio": "yarn workspace mobile studio",
+    "xcode": "yarn workspace mobile xcode"
   }
 }
