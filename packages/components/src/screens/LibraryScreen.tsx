@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
-import { Text } from 'react-native';
 import { Segment } from 'native-base';
 import { Button, SearchBar, Content, Card } from '../primitives';
 import { seed } from './seed';
+import { Content as ContentType, Categories } from 'types';
 
 const LibraryScreen: React.FC = () => {
-  const [filter, setFilter] = useState<'All' | 'New' | 'Lapsed'>('All');
+  const [filter, setFilter] = useState<'All' | Categories>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  // let filteredData: TeamPlayer[] | null = null;
+  // const filterOptions = ['Teachers', 'Age', 'Type', 'Length'];
+  const filterOptions = ['All', 'Meditation', 'Movement'];
 
-  const filterOptions = ['Teachers', 'Age', 'Type', 'Length'];
+  // Filter data for Player Type and SearchTerm
+  const data: ContentType[] = seed;
+  let filteredData: ContentType[] | null = null;
+  if (data) {
+    filteredData = data
+      .filter((item) =>
+        filter === 'All'
+          ? item
+          : filter === Categories.Meditation
+          ? item.category === Categories.Meditation
+          : item.category === Categories.Movement,
+      )
+      .filter((item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+  }
 
   return (
     <Content>
@@ -28,7 +44,7 @@ const LibraryScreen: React.FC = () => {
         ))}
       </Segment>
 
-      {seed.map((content) => (
+      {filteredData.map((content) => (
         <Card content={content} />
       ))}
     </Content>
