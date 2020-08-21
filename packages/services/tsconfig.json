@@ -8,13 +8,5 @@
     "outDir": "dist",
     "rootDir": "src",
     "typeRoots": ["@types", "../../node_modules/@types"]
-  },
-  "references": [
-    {
-      "path": "../types"
-    },
-    {
-      "path": "../services"
-    }
-  ]
+  }
 }

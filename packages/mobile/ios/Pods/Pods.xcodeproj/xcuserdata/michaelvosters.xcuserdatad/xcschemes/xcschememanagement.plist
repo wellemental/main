@@ -139,11 +139,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>RNVectorIcons.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>React-Core-AccessibilityResources.xcscheme</key>
 		<dict>
 			<key>isShown</key>

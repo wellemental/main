@@ -36,6 +36,7 @@ const LibraryScreen: React.FC = () => {
         {filterOptions.map((option, idx) => (
           <Button
             text={option}
+            key={idx}
             first={idx === 0}
             last={idx + 1 === filterOptions.length}
             onPress={(): void => setFilter(option)}
@@ -44,8 +45,8 @@ const LibraryScreen: React.FC = () => {
         ))}
       </Segment>
 
-      {filteredData.map((content) => (
-        <Card content={content} />
+      {filteredData.map((content, idx) => (
+        <Card key={idx} content={content} />
       ))}
     </Container>
   );

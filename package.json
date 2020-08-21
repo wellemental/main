@@ -8,6 +8,10 @@
     "nohoist": [
       "**/react-native",
       "**/react-native/**",
+      "**/firebase",
+      "**/firebase/**",
+      "**/react-native-firebase",
+      "**/react-native-firebase/**",
       "**/react-native**",
       "**/react-native-gesture-handler/**",
       "**/react-native-screens/**",

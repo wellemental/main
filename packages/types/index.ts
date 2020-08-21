@@ -31,7 +31,14 @@ export type StackParamList = {
   Content: { contentId: string };
 };
 
+export interface Teacher {
+  id: string;
+  name: string; //Teachers;
+  bio: string;
+}
+
 export type TabParamList = {
   Library: undefined;
   Settings: undefined;
+  Login: undefined;
 };

@@ -1,0 +1,14 @@
+{
+  "name": "firestore",
+  "version": "0.0.1",
+  "scripts": {
+    "deploy:staging": "yarn run firebase deploy --only firestore:rules -P staging",
+    "deploy:production": "yarn run firebase deploy --only firestore:rules -P production",
+    "lint": "true",
+    "test": "echo \"warning: firestore tests need to be implemented\" && true"
+  },
+  "devDependencies": {
+    "firebase-tools": "^7.3.1"
+  },
+  "private": true
+}

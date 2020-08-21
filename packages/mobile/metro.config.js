@@ -38,6 +38,7 @@ function getConfig(appDir, options = {}) {
         /components[\/\\]node_modules[/\\]react-native-safe-area-context[/\\].*/,
         /components[\/\\]node_modules[/\\]react-native-screens[/\\].*/,
         /components[\/\\]node_modules[/\\]react-native-vector-icons[/\\].*/,
+        /services[\/\\]node_modules[/\\]react-native-vector-icons[/\\].*/,
       ]),
       extraNodeModules: {
         // Resolve all react-native module imports to the locally-installed version
@@ -50,6 +51,8 @@ function getConfig(appDir, options = {}) {
           'node_modules',
           'react-native-svg',
         ),
+
+        firebase: path.resolve(appDir, 'node_modules', 'firebase'),
 
         'react-native-gesture-handler': path.resolve(
           appDir,
