@@ -10,6 +10,8 @@
       "**/react-native/**",
       "**/firebase",
       "**/firebase/**",
+      "**/@react-native-firebase",
+      "**/@react-native-firebase/**",
       "**/react-native-firebase",
       "**/react-native-firebase/**",
       "**/react-native**",

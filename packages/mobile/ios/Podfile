@@ -8,6 +8,9 @@ target 'wellemental' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  # Manually add additional Pods
+  ## None so far
+
   target 'wellementalTests' do
     inherit! :complete
     # Pods for testing
@@ -20,14 +23,5 @@ target 'wellemental' do
   use_flipper!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
-
-target 'wellemental-tvOS' do
-  # Pods for wellemental-tvOS
-
-  target 'wellemental-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end

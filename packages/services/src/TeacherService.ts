@@ -1,7 +1,8 @@
-import app from './base';
+// import app from './base';
+import firestore from '@react-native-firebase/firestore';
 
 const COLLECTION = 'teachers';
-const teachersCollection = app.firestore().collection(COLLECTION);
+const teachersCollection = firestore().collection(COLLECTION);
 
 class TeacherService {
   public findTeacher = async (): Promise<any> => {

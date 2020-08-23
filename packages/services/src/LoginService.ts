@@ -1,11 +1,11 @@
 import React from 'react';
-import firebase from './base';
+// import firebase from './base';
+import auth from '@react-native-firebase/auth';
 
 class LoginService {
   public async login(email: string, password: string): Promise<void> {
     try {
-      await firebase
-        .auth()
+      await auth()
         .signInWithEmailAndPassword(email, password)
         .then((currentUser) => {
           try {

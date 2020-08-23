@@ -10,7 +10,8 @@ const blacklist = require('metro-config/src/defaults/blacklist'); // eslint-disa
 const getWorkspaces = require('get-yarn-workspaces'); // eslint-disable-line @typescript-eslint/no-var-requires
 const path = require('path'); // eslint-disable-line @typescript-eslint/no-var-requires
 
-function getConfig(appDir, options = {}) {
+function getConfig(appDir) {
+  // , options = {} (This was the 2nd param after appDir)
   const workspaces = getWorkspaces(appDir);
 
   // Add additional Yarn workspace package roots to the module map
@@ -38,7 +39,8 @@ function getConfig(appDir, options = {}) {
         /components[\/\\]node_modules[/\\]react-native-safe-area-context[/\\].*/,
         /components[\/\\]node_modules[/\\]react-native-screens[/\\].*/,
         /components[\/\\]node_modules[/\\]react-native-vector-icons[/\\].*/,
-        /services[\/\\]node_modules[/\\]react-native-vector-icons[/\\].*/,
+        // /services[\/\\]node_modules[/\\]firebase[/\\].*/,
+        // /services[\/\\]node_modules[/\\]@react-native-firebase[/\\].*/,
       ]),
       extraNodeModules: {
         // Resolve all react-native module imports to the locally-installed version
@@ -52,7 +54,13 @@ function getConfig(appDir, options = {}) {
           'react-native-svg',
         ),
 
-        firebase: path.resolve(appDir, 'node_modules', 'firebase'),
+        '@react-native-firebase': path.resolve(
+          appDir,
+          'node_modules',
+          '@react-native-firebase',
+        ),
+
+        // firebase: path.resolve(appDir, 'node_modules', 'firebase'),
 
         'react-native-gesture-handler': path.resolve(
           appDir,

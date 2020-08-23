@@ -1,20 +1,12 @@
 import React from 'react';
-import {
-  Container,
-  Header,
-  Item,
-  Input,
-  Icon,
-  Button,
-  Text,
-} from 'native-base';
+import { Header, Item, Input, Icon, Button, Text } from 'native-base';
 
 type Props = {
   value: string;
-  setState: () => void;
+  setState: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const SearchBar: React.FC = ({ value, setState }) => {
+const SearchBar: React.FC<Props> = ({ value, setState }) => {
   return (
     <Header searchBar rounded>
       <Item>

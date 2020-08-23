@@ -2,9 +2,9 @@ import * as firebasePkg from 'firebase/app';
 import { config } from '../config';
 import 'firebase/auth';
 import 'firebase/firestore';
-import 'firebase/analytics';
-import 'firebase/functions';
-import 'firebase/remote-config';
+// import 'firebase/analytics';
+// import 'firebase/functions';
+// import 'firebase/remote-config';
 
 const firebase = firebasePkg.initializeApp({
   apiKey: config.REACT_APP_FIREBASE_KEY,
