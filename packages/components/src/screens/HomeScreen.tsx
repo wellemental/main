@@ -1,5 +1,5 @@
 import React from 'react';
-import { LibraryScreen, SettingsScreen, LoginScreen } from './';
+import { LibraryScreen, SettingsScreen, AuthScreen } from './';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -16,8 +16,8 @@ const Tab = createBottomTabNavigator<TabParamList>();
 const HomeScreen: React.FC = () => {
   return (
     <Tab.Navigator>
+      <Tab.Screen name="Login" component={AuthScreen} />
       <Tab.Screen name="Library" component={LibraryScreen} />
-      <Tab.Screen name="Login" component={LoginScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );

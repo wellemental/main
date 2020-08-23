@@ -1,4 +1,5 @@
 // import * as moment from 'moment';
+import React, { Dispatch } from 'react';
 
 export enum Teachers {
   Mike = 'Mike Doe',

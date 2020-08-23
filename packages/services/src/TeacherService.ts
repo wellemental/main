@@ -1,5 +1,5 @@
-// import app from './base';
-import firestore from '@react-native-firebase/firestore';
+import { firestore } from './base';
+// import firestore from '@react-native-firebase/firestore';
 
 const COLLECTION = 'teachers';
 const teachersCollection = firestore().collection(COLLECTION);

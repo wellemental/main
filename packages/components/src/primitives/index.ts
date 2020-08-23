@@ -1,5 +1,9 @@
 export { default as Button } from './Button';
-export { default as Text } from './Text';
+export { default as Paragraph } from './Paragraph';
 export { default as Container } from './Container';
 export { default as SearchBar } from './SearchBar';
 export { default as Card } from './Card';
+export { default as Input } from './Input';
+export { default as Error } from './Error';
+export { default as DatePicker } from './DatePicker';
+export { default as Spinner } from './Spinner';
