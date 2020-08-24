@@ -17,6 +17,11 @@ export enum Categories {
   Movement = 'Movement',
 }
 
+export enum ContentStatus {
+  Published = 'published',
+  Draft = 'draft',
+}
+
 export interface Content {
   category: Categories;
   thumbnail: string;
@@ -25,6 +30,8 @@ export interface Content {
   description: string;
   teacher: Teachers;
   language: Languages;
+  length: number;
+  status: ContentStatus;
 }
 
 export type StackParamList = {
@@ -36,6 +43,7 @@ export interface Teacher {
   id: string;
   name: string; //Teachers;
   bio: string;
+  photo: string;
 }
 
 export type TabParamList = {

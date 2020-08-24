@@ -1,34 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Segment } from 'native-base';
-import { Button, SearchBar, Container, Card } from '../primitives';
-import { seed } from './seed';
-import { Content as ContentType, Categories } from 'types';
+import {
+  Button,
+  SearchBar,
+  Container,
+  Card,
+  Spinner,
+  Paragraph,
+} from '../primitives';
+import {
+  Content as ContentType,
+  Categories,
+  ContentService,
+  TeacherService,
+  Teacher,
+} from 'services';
+import { useQuery } from '../hooks';
 
 const LibraryScreen: React.FC = () => {
   const [filter, setFilter] = useState<'All' | Categories>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  // const filterOptions = ['Teachers', 'Age', 'Type', 'Length'];
-  const filterOptions = ['All', 'Meditation', 'Movement'];
+  const filterOptions = ['All'].concat(Object.values(Categories));
+  const service = new ContentService(); //container.getInstance<SurveysService>('surveysService',);
+  const query = useRef(service.getAllContent); // useRef(() => surveysService.getAnswersForSurvey(user.id));
+  const { loading, data } = useQuery(query.current);
 
-  // Filter data for Player Type and SearchTerm
-  const data: ContentType[] = seed;
+  const service2 = new TeacherService();
+  const query2 = useRef(service2.getAllTeachers);
+  const { loading: teacherLoading, data: teachers } = useQuery(query2.current);
+
   let filteredData: ContentType[] | null = null;
+
   if (data) {
     filteredData = data
-      .filter((item) =>
-        filter === 'All'
-          ? item
-          : filter === Categories.Meditation
-          ? item.category === Categories.Meditation
-          : item.category === Categories.Movement,
-      )
+      .filter((item) => (filter === 'All' ? item : item.type === filter))
       .filter((item) =>
         item.title.toLowerCase().includes(searchTerm.toLowerCase()),
       );
   }
 
-  return (
+  return loading || teacherLoading ? (
+    <Spinner />
+  ) : (
     <Container>
       <SearchBar value={searchTerm} setState={setSearchTerm} />
 
@@ -45,9 +59,17 @@ const LibraryScreen: React.FC = () => {
         ))}
       </Segment>
 
-      {filteredData.map((content, idx) => (
-        <Card key={idx} content={content} />
-      ))}
+      {filteredData ? (
+        filteredData.map((content, idx) => (
+          <Card
+            key={idx}
+            content={content}
+            teacher={teachers[content.teacher]}
+          />
+        ))
+      ) : (
+        <Paragraph>Nothin</Paragraph>
+      )}
     </Container>
   );
 };

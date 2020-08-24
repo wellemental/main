@@ -1,7 +1,7 @@
 import React from 'react';
-import { auth } from './base';
-import { ApplicationError, AuthenticationError } from './Errors';
-// import auth from '@react-native-firebase/auth';
+// import { auth } from '../base';
+import { ApplicationError, AuthenticationError } from '../models/Errors';
+import auth from '@react-native-firebase/auth';
 
 class AuthService {
   public async checkExistingLogins(email: string): Promise<string[]> {

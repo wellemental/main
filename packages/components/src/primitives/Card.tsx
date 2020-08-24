@@ -12,18 +12,33 @@ import {
   Right,
 } from 'native-base';
 import { Image } from 'react-native';
-import { Content } from 'types';
+import { Content } from 'services';
 import { useNavigation } from '@react-navigation/native';
+import { Teacher } from 'services';
+import { useCurrentUser } from '../hooks';
 
 interface Props {
   content: Content;
+  teacher: Teacher;
 }
 
-const Card: React.FC<Props> = ({ content }) => {
+const Card: React.FC<Props> = ({ content, teacher }) => {
   const navigation = useNavigation();
+  const { user } = useCurrentUser();
+
+  console.log('USERSSSS', user);
+
   return (
     <NBCard>
-      <CardItem cardBody button onPress={() => navigation.navigate('Content')}>
+      <CardItem
+        cardBody
+        button
+        onPress={() =>
+          navigation.navigate('Content', {
+            content,
+            teacher,
+          })
+        }>
         <Image
           source={{
             uri: content.thumbnail,
@@ -39,7 +54,7 @@ const Card: React.FC<Props> = ({ content }) => {
             backgroundColor: 'white',
             padding: 5,
           }}>
-          5:34
+          {content.length}
         </Text>
       </CardItem>
       <CardItem>
@@ -50,10 +65,9 @@ const Card: React.FC<Props> = ({ content }) => {
       <CardItem>
         <Left>
           <Thumbnail
-            style={{ width: 40, height: 40 }}
+            small
             source={{
-              uri:
-                'https://www.wyzowl.com/wp-content/uploads/2019/09/YouTube-thumbnail-size-guide-best-practices-top-examples.png',
+              uri: teacher.photo,
             }}
           />
           <Body>
@@ -61,7 +75,12 @@ const Card: React.FC<Props> = ({ content }) => {
           </Body>
           <Right>
             <Button rounded transparent>
-              <Icon name="heart" />
+              <Icon
+                // name={
+                //   user.actions[content.id].favorited ? 'heart' : 'heart-outline'
+                // }
+                name="heart"
+              />
             </Button>
           </Right>
         </Left>
