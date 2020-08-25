@@ -2,7 +2,14 @@ import { StyleSheet } from 'react-native';
 
 import variables from '../native-base-theme/variables/platform';
 
-const Text = StyleSheet.create({
+export const Text = StyleSheet.create({
+  gt: {
+    marginTop: 15,
+  },
+  gb: {
+    marginTop: 15,
+  },
+  gv: { marginVertical: 15 },
   p: {
     marginTop: 10,
     marginBottom: 10,

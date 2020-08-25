@@ -10,20 +10,29 @@ import {
 
 interface Props {
   style?: RecursiveArray<false | TextStyle | RegisteredStyle<TextStyle>>;
+  gb?: boolean;
+  gt?: boolean;
+  gv?: boolean;
 }
 
 const Paragraph: React.FC<Props & NativeBase.Text> = ({
   style,
   children,
-  ...props
+  gt,
+  gb,
+  gv,
 }) => {
-  const styles = StyleSheet.flatten([{ fontSize: 16 }, style]);
+  const styles2 = StyleSheet.flatten([
+    {
+      fontSize: 16,
+      lineHeight: 22,
+      marginTop: gt || gv ? 15 : 0,
+      marginBottom: gb || gv ? 15 : 0,
+    },
+    style,
+  ]);
 
-  return (
-    <Text {...props} style={styles}>
-      {children}
-    </Text>
-  );
+  return <Text style={styles2}>{children}</Text>;
 };
 
 export default Paragraph;

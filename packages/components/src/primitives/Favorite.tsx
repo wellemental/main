@@ -3,15 +3,14 @@ import { Button, Icon } from 'native-base';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { UpdateUserService } from 'services';
 import { useMutation } from '../hooks/useMutation';
-import Spinner from './Spinner';
-import Error from './Error';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 interface Props {
   contentId: string;
+  onProfile?: boolean;
 }
 
-const Favorite: React.FC<Props> = ({ contentId }) => {
+const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
   const { user } = useCurrentUser();
   const [isFav, toggleFav] = useState(
     user &&
@@ -36,21 +35,28 @@ const Favorite: React.FC<Props> = ({ contentId }) => {
   };
 
   return (
-    <Button iconRight disabled={loading} transparent onPress={handleFavorite}>
+    <Button
+      iconRight
+      disabled={loading}
+      style={{
+        paddingRight: 0,
+        paddingBottom: 0,
+        marginTop: onProfile ? -14 : 0,
+      }}
+      transparent
+      onPress={handleFavorite}>
       <Icon
         style={{
-          marginHorizontal: 0,
-          paddingHorizontal: 10,
+          marginTop: 0,
+          paddingTop: 0,
           color: variables.brandLight,
-          fontSize: 30,
-          position: 'absolute',
-          right: 0,
+          marginRight: 0,
+          fontSize: onProfile ? 36 : 30,
+          lineHeight: 40,
         }}
         name={isFav ? 'heart' : 'heart-outline'}
       />
     </Button>
-
-    //   {/* <Error error={error} /> */}
   );
 };
 

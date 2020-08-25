@@ -222,9 +222,9 @@ export default {
 
   // Line Height
   buttonLineHeight: 19,
-  lineHeightH1: 34,
+  lineHeightH1: 38,
   lineHeightH2: 37,
-  lineHeightH3: 36,
+  lineHeightH3: 28,
   lineHeight: 24,
 
   // List

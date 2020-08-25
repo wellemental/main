@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  Card as NBCard,
-  CardItem,
-  Thumbnail,
-  Left,
-  Body,
-  H3,
-} from 'native-base';
+import { Card, CardItem, Thumbnail, Left, Body, H3 } from 'native-base';
 import { View, Image } from 'react-native';
 import { Content } from 'services';
 import Favorite from './Favorite';
+import AvyName from './AvyName';
 import { useNavigation } from '@react-navigation/native';
 import { Teacher } from 'services';
-import { useCurrentUser } from '../hooks/useCurrentUser';
 import Paragraph from './Paragraph';
 
 interface Props {
@@ -22,14 +15,13 @@ interface Props {
 
 const ContentCard: React.FC<Props> = ({ content, teacher }) => {
   const navigation = useNavigation();
-  const { user } = useCurrentUser();
 
   return (
-    <NBCard>
+    <Card>
       <CardItem
         cardBody
         button
-        style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}
+        // style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}
         onPress={() =>
           navigation.navigate('Content', {
             content,
@@ -55,29 +47,14 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
             <Paragraph>{content.length}</Paragraph>
             <H3>{content.title}</H3>
           </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View
-              style={{
-                flex: 5,
-                flexDirection: 'row',
-                alignContent: 'space-between',
-              }}>
-              <Thumbnail
-                small
-                source={{
-                  uri: teacher.photo,
-                }}
-              />
-              <Paragraph style={{ lineHeight: 42, marginLeft: 10 }}>
-                {content.teacher}
-              </Paragraph>
-            </View>
-
-            <Favorite contentId={content.id} />
-          </View>
+          <AvyName
+            source={teacher.photo}
+            name={content.teacher}
+            favoriteId={content.id}
+          />
         </Body>
       </CardItem>
-    </NBCard>
+    </Card>
   );
 };
 

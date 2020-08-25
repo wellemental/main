@@ -28,18 +28,23 @@ class ContentService implements ContentServiceType {
       description: data.description,
       teacher: data.teacher,
       type: data.type,
-      tags: Object.values(data.tags),
+      tags: !data.tags
+        ? undefined
+        : typeof data.tags === 'string'
+        ? data.tags.split(', ')
+        : Object.values(data.tags),
       seconds: data.length,
       length: moment().startOf('day').seconds(data.length).format('m:ss'),
       language: data.language,
       status: data.status,
-      updatedAt: moment(data.updatedAt),
+      updated_at: moment(data.updated_at),
+      created_at: moment(data.created_at),
     };
   };
 
   public getContent = async (): Promise<Content[]> => {
     // With no tags passed, get all Content
-    let query: FirebaseFirestoreTypes.CollectionReference = collection;
+    const query: FirebaseFirestoreTypes.CollectionReference = collection;
 
     // if (tag) {
     //   query = collection.where('tags', 'array-contains', tag);

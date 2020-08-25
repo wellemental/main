@@ -17,6 +17,8 @@ interface Props {
 const ButtonText = styled(Text)`
   text-align: center;
   font-weight: 500;
+  color: white;
+  font-size: 18px;
 `;
 
 const Button: React.FC<Props & NativeBase.Button> = ({

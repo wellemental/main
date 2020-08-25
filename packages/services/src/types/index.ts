@@ -1,4 +1,3 @@
-import * as moment from 'moment';
 import React from 'react';
 
 enum SubStatus {
@@ -63,6 +62,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  birthday: string;
   subStatus: SubStatus;
   actions: { [key: string]: Action };
 }
@@ -75,14 +75,15 @@ export interface Content {
   video: string;
   thumbnail: string;
   description: string;
-  teacher: Teachers;
+  teacher: Teachers | string;
   type: Categories;
-  tags: Tags[];
+  tags: Tags[] | string[];
   seconds: number;
   length: string;
   language: Languages;
   status: ContentStatus;
-  updatedAt: moment.Moment;
+  updated_at: Date;
+  created_at: Date;
 }
 
 export interface Teacher {
@@ -94,4 +95,18 @@ export interface Teacher {
 
 export interface AllTeachers {
   [key: Teachers]: Teacher;
+}
+
+export interface UserProfile {
+  name?: string;
+  birthday?: string;
+}
+
+export interface PlayerService {
+  perform(id: string, fields: UserProfile): Promise<void>;
+  updateCurrentPlayer(fields: UserProfile): Promise<void>;
+}
+
+export interface ProfileService {
+  perform(profile: UserProfile): Promise<void>;
 }

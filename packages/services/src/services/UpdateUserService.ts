@@ -1,5 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
 import { ApplicationError } from '../models/Errors';
+import { UserProfile } from '../types';
+
+const COLLECTION = 'users';
+const collection = firestore().collection(COLLECTION);
 
 class UpdateUserService {
   public async favorite(
@@ -7,7 +11,7 @@ class UpdateUserService {
     contentId: string,
     isFav: boolean,
   ): Promise<void> {
-    const doc = firestore().collection('users').doc(id);
+    const doc = collection.doc(id);
 
     const favUpdate = {};
     favUpdate[`actions.${contentId}.favorited`] = isFav;
@@ -20,6 +24,20 @@ class UpdateUserService {
     } catch (error) {
       //   logger.error(`Failed to update player '${id}': ${error}`);
       throw new ApplicationError('Unable to fav content');
+    }
+  }
+
+  public async updateProfile(id: string, fields: UserProfile): Promise<void> {
+    const doc = collection.doc(id);
+
+    try {
+      await doc.update({
+        ...fields,
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (error) {
+      // logger.error(`Failed to update player '${id}': ${error}`);
+      throw new ApplicationError('Unable to update');
     }
   }
 }

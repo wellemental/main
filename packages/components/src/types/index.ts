@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { Content } from 'services';
+import { Content, Teacher } from 'services';
 import { ReactElement } from 'react';
 
 export type TabParamList = {
@@ -17,7 +17,8 @@ export type Unsubscriber = () => void;
 
 export type RootStackParamList = {
   TabNav: undefined;
-  Content: { content: Content };
+  Content: { content: Content; teacher: Teacher };
+  Teacher: { teacher: Teacher };
   Auth: undefined;
 };
 
@@ -32,6 +33,7 @@ export type ContentScreenNavigationProp = StackNavigationProp<
 >;
 
 export type ContentScreenRouteProp = RouteProp<RootStackParamList, 'Content'>;
+export type TeacherScreenRouteProp = RouteProp<RootStackParamList, 'Teacher'>;
 
 export type TabsType = {
   [key: string]: ReactElement;

@@ -1,8 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Image } from 'react-native';
-import { Avatar, Thumbnail } from 'native-base';
-import { Container, Button, Paragraph, Spinner } from '../primitives';
-import { ContentScreenNavigationProp, ContentScreenRouteProp } from './types';
+import { StyleSheet, View, Image } from 'react-native';
+import { H1 } from 'native-base';
+import {
+  Container,
+  Button,
+  Paragraph,
+  AvyName,
+  Favorite,
+  Box,
+} from '../primitives';
+import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 
 type Props = {
@@ -23,8 +30,6 @@ const styles = StyleSheet.create({
 const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const { content, teacher } = route.params;
 
-  const player = useRef();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -32,14 +37,8 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     setLoading(true);
   };
 
-  console.log('TEACH', content.teacher, teacher.photo);
   return (
     <Container>
-      <Paragraph>{content.title}</Paragraph>
-      <Image
-        source={{ uri: content.thumbnail }}
-        style={{ height: 200, width: null, flex: 1 }}
-      />
       {/* {loading || !content.video ? (
         <Spinner />
       ) : (
@@ -55,18 +54,37 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           style={styles.backgroundVideo}
         />
       )} */}
-      <Paragraph>{content.description}</Paragraph>
-      <Paragraph>{content.type}</Paragraph>
-      <Paragraph>{content.length}</Paragraph>
-      <Paragraph>{content.teacher}</Paragraph>
-      <Thumbnail
-        small
-        source={{
-          uri: teacher.photo,
-        }}
+      <Image
+        source={{ uri: content.thumbnail }}
+        style={{ height: 200, width: null, flex: 1 }}
       />
+      <Box row justifyContent="space-between" gt={2} gb={1}>
+        {/* <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 15,
+        }}> */}
+        <H1>{content.title}</H1>
+        <Favorite onProfile contentId={content.id} />
+        {/* </View> */}
+      </Box>
 
-      <Button text="Go Home" onPress={() => navigation.navigate('Home')} />
+      <Paragraph gb>
+        {content.type.toUpperCase()} | {content.length}
+      </Paragraph>
+
+      <Paragraph gb>{content.description}</Paragraph>
+
+      <Button
+        transparent
+        onPress={() =>
+          navigation.navigate('Teacher', {
+            teacher,
+          })
+        }>
+        <AvyName source={teacher.photo} name={content.teacher} onProfile />
+      </Button>
     </Container>
   );
 };

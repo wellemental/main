@@ -1,5 +1,11 @@
 import React from 'react';
-import { Tabs, Container, ContentLoop, PageHeading } from '../primitives';
+import {
+  Tabs,
+  Container,
+  ContentLoop,
+  PageHeading,
+  TeacherLoop,
+} from '../primitives';
 import { Tags } from 'services';
 
 const LibraryScreen: React.FC = () => {
@@ -9,6 +15,7 @@ const LibraryScreen: React.FC = () => {
     Meditate: <ContentLoop filter={Tags.Meditate} />,
     Learn: <ContentLoop filter={Tags.Learn} />,
     Sleep: <ContentLoop filter={Tags.Sleep} />,
+    Teachers: <TeacherLoop />,
   };
 
   return (

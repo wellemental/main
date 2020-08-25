@@ -1,6 +1,5 @@
 import React from 'react';
-import { H1 } from 'native-base';
-import { PageHeading, Container, Paragraph, ContentLoop } from '../primitives';
+import { PageHeading, Container, ContentLoop } from '../primitives';
 import moment from 'moment';
 import { Tags } from 'services';
 import { TimeOfDay } from 'services';
@@ -16,8 +15,10 @@ const HomeScreen: React.FC = () => {
     today.isBefore(moment().hour(4), 'hour')
   ) {
     timeOfDay = TimeOfDay.Evening;
+    tagline = 'Take some time for yourself this afternoon';
   } else if (today.isAfter(moment().hour(12), 'hour')) {
     timeOfDay = TimeOfDay.Afternoon;
+    tagline = 'Wind down from a long day';
   }
 
   return (
