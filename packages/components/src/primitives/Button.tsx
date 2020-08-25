@@ -3,7 +3,7 @@ import { StyleSheet, StyleProp, TextStyle, Text } from 'react-native';
 import { Button as NBButton, Icon, Spinner, NativeBase } from 'native-base';
 // import Text from './Text';
 import styled from 'styled-components';
-import variables from '../assets/native-base-theme/variables/platform';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 interface Props {
   loading?: boolean;

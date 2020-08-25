@@ -25,6 +25,31 @@ export enum Categories {
   Learn = 'Learn',
 }
 
+export enum TimeOfDay {
+  Morning = 'Morning',
+  Afternoon = 'Afternoon',
+  Evening = 'Evening',
+}
+
+export enum Tags {
+  Morning = 'Morning',
+  Afternoon = 'Afternoon',
+  Night = 'Night',
+  Calm = 'Calm',
+  Breathing = 'Breathing',
+  Visualization = 'Visualization',
+  Meditation = 'Meditation',
+  Grateful = 'Grateful',
+  Bedtime = 'Bedtime',
+  Insomnia = 'Insomnia',
+  OuterSpace = 'Outer Space',
+  Meditate = 'Meditate',
+  Move = 'Move',
+  Sleep = 'Sleep',
+  Learn = 'Learn',
+  Featured = 'Featured',
+}
+
 export enum ContentStatus {
   Published = 'published',
   Draft = 'draft',
@@ -42,6 +67,8 @@ export interface User {
   actions: { [key: string]: Action };
 }
 
+export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
+
 export interface Content {
   id: string;
   title: string;
@@ -50,6 +77,7 @@ export interface Content {
   description: string;
   teacher: Teachers;
   type: Categories;
+  tags: Tags[];
   seconds: number;
   length: string;
   language: Languages;
@@ -62,4 +90,8 @@ export interface Teacher {
   name: string; //Teachers;
   bio: string;
   photo: string;
+}
+
+export interface AllTeachers {
+  [key: Teachers]: Teacher;
 }

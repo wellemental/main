@@ -43,7 +43,7 @@ export default (variables /* : * */ = variable) => {
       },
       'NativeBase.Text': {
         color: variables.segmentTextColor,
-        fontSize: 14,
+        fontSize: 20,
       },
       'NativeBase.Icon': {
         fontSize: 22,

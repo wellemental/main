@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
 import { AuthService } from 'services';
-import { Error, Button } from '../primitives';
+import { Error, Button, PageHeading, Container } from '../primitives';
 
 const SettingsScreen: React.FC = () => {
   const [error, setError] = useState();
@@ -16,11 +15,11 @@ const SettingsScreen: React.FC = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings</Text>
+    <Container>
+      <PageHeading title="Account" />
       <Button text="Logout" onPress={handleLogout} />
       <Error error={error} />
-    </View>
+    </Container>
   );
 };
 

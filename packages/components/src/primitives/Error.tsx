@@ -1,7 +1,7 @@
 import React from 'react';
 import Paragraph from './Paragraph';
 import { ApplicationError, ModelError } from 'services';
-import variables from '../assets/native-base-theme/variables/platform';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 interface Props {
   error?: Error | string;

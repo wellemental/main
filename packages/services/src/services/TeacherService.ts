@@ -2,7 +2,7 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Teacher, Teachers } from '../types';
+import { Teacher, AllTeachers } from '../types';
 import { ApplicationError } from '../models/Errors';
 
 const COLLECTION = 'teachers';
@@ -11,7 +11,7 @@ const teachersCollection = firestore().collection(COLLECTION);
 export interface TeacherServiceType {
   buildTeacher(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Teacher;
   findTeacherByName(name: string): Teacher;
-  getAllTeachers(): Promise<Teacher[]>;
+  getAllTeachers(): Promise<AllTeachers>;
 }
 
 class TeacherService implements TeacherServiceType {
@@ -46,7 +46,7 @@ class TeacherService implements TeacherServiceType {
     }
   };
 
-  public getAllTeachers = async (): Promise<{ [key: string]: Teacher }> => {
+  public getAllTeachers = async (): Promise<AllTeachers> => {
     const query = teachersCollection;
     const teachers = {};
 

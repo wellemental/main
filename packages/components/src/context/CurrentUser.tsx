@@ -1,24 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react';
 // import { auth, firestore } from 'services';
-import { Spinner } from '../primitives';
-import { User as FBUser } from 'firebase/app';
+import Spinner from '../primitives/Spinner';
 import { User } from 'services';
 import { Unsubscriber } from '../types';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 export const CurrentUser = React.createContext<any>({ currentUser: null });
 
 export const CurrentUserProvider = ({ children }: any) => {
-  const [currentAuth, setCurrentAuth] = useState<FBUser | null>(
+  const [currentAuth, setCurrentAuth] = useState<FirebaseAuthTypes.User | null>(
     auth().currentUser,
   );
-  const [currentUser, setCurrentUser] = useState<User | null>();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  let userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
+  const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
     null,
   );
 
@@ -33,7 +32,7 @@ export const CurrentUserProvider = ({ children }: any) => {
       }
 
       // If user logged in, subscribe to their player document
-      if (auth) {
+      if (user) {
         subscribeToUserDoc(user);
       } else {
         setCurrentUser(null);
@@ -51,11 +50,11 @@ export const CurrentUserProvider = ({ children }: any) => {
     };
   }, []);
 
-  const subscribeToUserDoc = async (user: User) => {
-    console.log('SUBSCRIBING');
+  const subscribeToUserDoc = async (user: FirebaseAuthTypes.User) => {
     userDocUnsubscriber.current = firestore()
       .collection('users')
-      .onSnapshot(async (snapshot: firestore.DocumentSnapshot) => {
+      .doc(user.uid)
+      .onSnapshot(async (snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
         const userData = snapshot.data();
 
         if (!user.email) {
@@ -65,25 +64,23 @@ export const CurrentUserProvider = ({ children }: any) => {
         }
 
         const userDoc: User = {
-          id: userData.id,
+          id: user.uid,
           email: userData.email,
           name: userData.name,
           subStatus: userData.subStatus,
           actions: userData.actions,
         };
+
         setCurrentUser(userDoc);
       });
   };
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <CurrentUser.Provider
       value={{
         currentAuth,
         currentUser,
+        loading,
       }}>
       {children}
     </CurrentUser.Provider>

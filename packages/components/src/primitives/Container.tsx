@@ -1,7 +1,7 @@
 import { NativeBase } from 'native-base';
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import variables from '../assets/native-base-theme/variables/platform';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 type ContainerProps = {
   noPadding?: 'vertical' | 'horizontal' | 'none';
@@ -48,7 +48,7 @@ const Container: React.FC<ContentProps & NativeBase.Content> = ({
   return (
     <SafeAreaView
       style={{
-        backgroundColor: color ? color : variables.containerBgColor,
+        backgroundColor: color ? color : variables.white,
         flex: 1,
       }}>
       {container}

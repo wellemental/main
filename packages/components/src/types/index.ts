@@ -2,17 +2,21 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { Content, Teacher } from 'services';
+import { Content } from 'services';
+import { ReactElement } from 'react';
 
 export type TabParamList = {
   Library: undefined;
+  Home: undefined;
+  Favorites: undefined;
+  Search: undefined;
   Settings: undefined;
 };
 
 export type Unsubscriber = () => void;
 
 export type RootStackParamList = {
-  Home: undefined;
+  TabNav: undefined;
   Content: { content: Content };
   Auth: undefined;
 };
@@ -28,3 +32,7 @@ export type ContentScreenNavigationProp = StackNavigationProp<
 >;
 
 export type ContentScreenRouteProp = RouteProp<RootStackParamList, 'Content'>;
+
+export type TabsType = {
+  [key: string]: ReactElement;
+};

@@ -55,6 +55,8 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Inter.ttf</string>
+		<string>RecoletaAlt-Medium.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>

@@ -1,5 +1,8 @@
 import React from 'react';
-import { Header, Item, Input, Icon, Button, Text } from 'native-base';
+import { View, Text } from 'react-native';
+import { Item, Icon, Input } from 'native-base';
+// import Input from './Input';
+import Button from './Button';
 
 type Props = {
   value: string;
@@ -8,20 +11,25 @@ type Props = {
 
 const SearchBar: React.FC<Props> = ({ value, setState }) => {
   return (
-    <Header searchBar rounded>
-      <Item>
+    <>
+      <Item
+        style={{
+          flexDirection: 'row',
+          marginBottom: 15,
+        }}>
         <Icon name="ios-search" />
-        <Input
-          placeholder="Search"
-          value={value}
-          onChangeText={(e): void => setState(e)}
-        />
-        <Icon name="ios-people" />
+        <Input autoFocus value={value} onChangeText={setState} />
+        {!!value && (
+          <Button
+            transparent
+            iconRight
+            iconName="close"
+            iconType="Ionicons"
+            onPress={() => setState('')}
+          />
+        )}
       </Item>
-      <Button transparent>
-        <Text>Search</Text>
-      </Button>
-    </Header>
+    </>
   );
 };
 

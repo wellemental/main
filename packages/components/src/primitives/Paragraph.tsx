@@ -12,8 +12,18 @@ interface Props {
   style?: RecursiveArray<false | TextStyle | RegisteredStyle<TextStyle>>;
 }
 
-const Paragraph: React.FC<Props & NativeBase.Text> = ({ style, ...props }) => (
-  <Text {...props} style={StyleSheet.flatten([style])} />
-);
+const Paragraph: React.FC<Props & NativeBase.Text> = ({
+  style,
+  children,
+  ...props
+}) => {
+  const styles = StyleSheet.flatten([{ fontSize: 16 }, style]);
+
+  return (
+    <Text {...props} style={styles}>
+      {children}
+    </Text>
+  );
+};
 
 export default Paragraph;

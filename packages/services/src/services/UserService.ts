@@ -1,9 +1,10 @@
 // import { firestore } from '../base';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { User as FBUser } from 'firebase/app';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Teacher, Teachers } from '../types';
+import { Teacher, Teachers, User } from '../types';
 import { ApplicationError } from '../models/Errors';
 
 const COLLECTION = 'users';
@@ -15,6 +16,35 @@ export interface UserServiceType {
 }
 
 class UserService implements UserServiceType {
+  private auth: FirebaseAuthTypes.User | null = null;
+  private user?: User;
+  private authUnsubscriber?: () => void;
+  private userDocUnsubscriber?: () => void;
+  private setAuth: React.Dispatch<FBUser | null>;
+  private setUser: React.Dispatch<React.SetStateAction<User | null>>;
+
+  constructor(setAuth: React.SetStateAction<FBUser | null>, setUser: React.Dispatch<React.SetStateAction<User | null>>) {
+    this.setAuth = setAuth;
+    this.setUser = setUser;
+  }
+  public subscribeToAuth = auth().onAuthStateChanged((authChange) => {
+    this.setAuth(authChange);
+
+    // Unsubscribe from previous userDoc listener if exists
+    if (this.userDocUnsubscriber.current) {
+      this.userDocUnsubscriber.current();
+    }
+
+    // If user logged in, subscribe to their player document
+    if (this.auth) {
+      subscribeToUserDoc(user);
+    } else {
+      setUser(null);
+    }
+  })
+
+
+
   public subscribeToUserDoc = async (user: User) {
     userDocUnsubscriber.current = firestore()
       .collection('users')
@@ -34,7 +64,7 @@ class UserService implements UserServiceType {
           subStatus: userData.subStatus,
           actions: userData.actions,
         };
-        setCurrentUser(userDoc);
+        user = userDoc;
       });
   };
   

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { HomeScreen, ContentScreen, AuthScreen } from './screens';
+import { TabNav, ContentScreen, AuthScreen } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from './types';
 import { useCurrentUser } from './hooks';
@@ -12,10 +12,10 @@ const Navigator: React.FC = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator headerMode="none">
         {auth ? (
           <>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="TabNav" component={TabNav} />
             <Stack.Screen name="Content" component={ContentScreen} />
           </>
         ) : (
