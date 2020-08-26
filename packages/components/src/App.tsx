@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { Spinner } from './primitives';
-import { StyleProvider } from 'native-base';
+import { StyleProvider, Root } from 'native-base';
 import getTheme from './assets/native-base-theme/components';
 import wellemental from './assets/native-base-theme/variables/wellemental';
 import { CurrentUserProvider, ContentProvider } from './context';
@@ -45,8 +45,10 @@ const App: React.FC = () => {
               translation:
                 user && user.language === 'Español' ? Español : English,
             }}> */}
-          <StatusBar barStyle="dark-content" />
-          <Navigator />
+          <Root>
+            <StatusBar barStyle="dark-content" />
+            <Navigator />
+          </Root>
           {/* </CurrentUser2.Provider> */}
         </ContentProvider>
       </StyleProvider>

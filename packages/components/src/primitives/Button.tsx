@@ -81,8 +81,6 @@ const Button: React.FC<Props & NativeBase.Button> = ({
     }
   }
   return (
-    // <GradientButton
-    //   colors={[variables.brandPrimary, variables.brandPrimaryDark]}>
     <NBButton
       block={full ? false : true}
       disabled={loading || disabled}
@@ -91,7 +89,6 @@ const Button: React.FC<Props & NativeBase.Button> = ({
       {...props}>
       {loading ? <Spinner size={14} color={spinnerColor} /> : renderChildren()}
     </NBButton>
-    // </GradientButton>
   );
 };
 

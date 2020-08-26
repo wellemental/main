@@ -5,7 +5,6 @@ import {
   Toast,
   DatePicker,
   Text,
-  Spinner,
   Button as NBButton,
   Segment,
 } from 'native-base';
@@ -99,12 +98,12 @@ const EditProfileScreen: React.FC = () => {
             mutate(
               () =>
                 Toast.show({
-                  text: translation['Changes Saved'],
+                  text: 'Changes saved', //translation['Changes saved'],
                   style: { marginBottom: 20 },
                 }),
               () =>
                 Toast.show({
-                  text: translation['Something went wrong'],
+                  text: 'Something went wrong', //translation['Something went wrong'],
                   style: { marginBottom: 20 },
                 }),
             );

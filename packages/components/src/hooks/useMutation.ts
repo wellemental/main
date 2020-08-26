@@ -23,9 +23,12 @@ export const useMutation = (query: Query): Result => {
       query(...args)
         .then((result) => {
           setData(result);
-          if (typeof onSuccess === 'function') onSuccess();
+          if (typeof onSuccess === 'function') {
+            onSuccess();
+          }
         })
         .catch((err) => {
+          console.log('ERROR', err);
           setError(err);
           if (typeof onError === 'function') onError(err);
         })

@@ -33,9 +33,10 @@ class UpdateUserService implements UpdateUserServiceType {
     try {
       await doc.update({
         ...fields,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
+        updated_at: firestore.FieldValue.serverTimestamp(),
       });
     } catch (error) {
+      console.log('ERRORRRRRR', error);
       // logger.error(`Failed to update player '${id}': ${error}`);
       throw new ApplicationError('Unable to update');
     }

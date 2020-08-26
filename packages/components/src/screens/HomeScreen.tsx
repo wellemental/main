@@ -17,10 +17,10 @@ const HomeScreen: React.FC = () => {
     today.isBefore(moment().hour(4), 'hour')
   ) {
     timeOfDay = TimeOfDay.Evening;
-    tagline = 'Take some time for yourself this afternoon';
+    tagline = 'Wind down from a long day';
   } else if (today.isAfter(moment().hour(12), 'hour')) {
     timeOfDay = TimeOfDay.Afternoon;
-    tagline = 'Wind down from a long day';
+    tagline = 'Take some time for yourself this afternoon';
   }
 
   return (
