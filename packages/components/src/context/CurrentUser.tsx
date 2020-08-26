@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 // import { auth, firestore } from 'services';
-import Spinner from '../primitives/Spinner';
 import { User } from 'services';
 import { Unsubscriber } from '../types';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { English } from '../translations/en.js';
+import { Español } from '../translations/es.js';
 
 export const CurrentUser = React.createContext<any>({ currentUser: null });
 
@@ -67,6 +68,8 @@ export const CurrentUserProvider = ({ children }: any) => {
           id: user.uid,
           email: userData.email,
           name: userData.name,
+          language: userData.language,
+          birthday: userData.birthday,
           subStatus: userData.subStatus,
           actions: userData.actions,
         };
@@ -81,6 +84,8 @@ export const CurrentUserProvider = ({ children }: any) => {
         currentAuth,
         currentUser,
         loading,
+        translation:
+          currentUser && currentUser.language === 'Español' ? Español : English,
       }}>
       {children}
     </CurrentUser.Provider>

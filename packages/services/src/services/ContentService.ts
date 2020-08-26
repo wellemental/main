@@ -2,17 +2,12 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Content, Tags } from '../types';
+import { Content, ContentServiceType } from '../types';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
 
 const COLLECTION = 'content';
 const collection = firestore().collection(COLLECTION);
-
-export interface ContentServiceType {
-  buildContent(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Content;
-  getContent(): Promise<Content[]>;
-}
 
 class ContentService implements ContentServiceType {
   public buildContent = (
@@ -24,6 +19,7 @@ class ContentService implements ContentServiceType {
       id: doc.id,
       title: data.title,
       video: data.video,
+      video_orientation: data.video_orientation,
       thumbnail: data.thumbnail,
       description: data.description,
       teacher: data.teacher,
@@ -37,8 +33,8 @@ class ContentService implements ContentServiceType {
       length: moment().startOf('day').seconds(data.length).format('m:ss'),
       language: data.language,
       status: data.status,
-      updated_at: moment(data.updated_at),
-      created_at: moment(data.created_at),
+      updated_at: data.updated_at,
+      created_at: data.updated_at,
     };
   };
 

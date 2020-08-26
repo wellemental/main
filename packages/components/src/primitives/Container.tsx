@@ -31,6 +31,8 @@ const Container: React.FC<ContentProps & NativeBase.Content> = ({
           : variables.mainContentPaddingVertical,
       justifyContent: center ? 'center' : undefined,
       alignItems: center ? 'center' : undefined,
+      flex: 1,
+      alignContent: 'center',
     },
     style,
   ]);

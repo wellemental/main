@@ -15,6 +15,8 @@ export interface UserServiceType {
   observeUserDoc: () => void;
 }
 
+// NOT CURRENTLY USING, KEPT IT ALL IN CURRENT USER CONTEXT
+
 class UserService implements UserServiceType {
   private auth: FirebaseAuthTypes.User | null = null;
   private user?: User;

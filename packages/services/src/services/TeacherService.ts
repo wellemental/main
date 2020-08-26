@@ -2,17 +2,11 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Teacher, AllTeachers } from '../types';
+import { Teacher, AllTeachers, TeacherServiceType } from '../types';
 import { ApplicationError } from '../models/Errors';
 
 const COLLECTION = 'teachers';
 const teachersCollection = firestore().collection(COLLECTION);
-
-export interface TeacherServiceType {
-  buildTeacher(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Teacher;
-  findTeacherByName(name: string): Teacher;
-  getAllTeachers(): Promise<AllTeachers>;
-}
 
 class TeacherService implements TeacherServiceType {
   public buildTeacher = (

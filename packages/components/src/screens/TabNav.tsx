@@ -8,10 +8,13 @@ import SearchScreen from './SearchScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '../types';
 import variables from '../assets/native-base-theme/variables/wellemental';
+import { useCurrentUser } from '../hooks';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabNav: React.FC = () => {
+  const { translation } = useCurrentUser();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -41,11 +44,31 @@ const TabNav: React.FC = () => {
           paddingTop: 10,
         },
       }}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Library" component={LibraryScreen} />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
-      <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ title: translation.Home }}
+      />
+      <Tab.Screen
+        name="Library"
+        component={LibraryScreen}
+        options={{ title: translation.Library }}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={FavoritesScreen}
+        options={{ title: translation.Favorites }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ title: translation.Search }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ title: translation.Settings }}
+      />
     </Tab.Navigator>
   );
 };

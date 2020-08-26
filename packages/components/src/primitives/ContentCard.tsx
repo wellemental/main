@@ -23,10 +23,13 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
         button
         // style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}
         onPress={() =>
-          navigation.navigate('Content', {
-            content,
-            teacher,
-          })
+          navigation.navigate(
+            content.video_orientation === 'portrait' ? 'Video' : 'Content',
+            {
+              content,
+              teacher,
+            },
+          )
         }>
         <Left>
           <Image
@@ -45,7 +48,7 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
           }}>
           <View style={{ flex: 1 }}>
             <Paragraph>{content.length}</Paragraph>
-            <H3>{content.title}</H3>
+            <H3 numberOfLines={1}>{content.title}</H3>
           </View>
           <AvyName
             source={teacher.photo}

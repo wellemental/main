@@ -5,7 +5,7 @@ import { useCurrentUser } from '../hooks';
 import { TabsType } from '../types';
 
 const FavoritesScreen: React.FC = () => {
-  const { user } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const favorites =
     user &&
     user.actions &&
@@ -14,16 +14,24 @@ const FavoritesScreen: React.FC = () => {
     );
 
   const tabs: TabsType = {
-    All: <ContentLoop favorites={favorites} />,
-    Move: <ContentLoop favorites={favorites} filter={Tags.Move} />,
-    Meditate: <ContentLoop favorites={favorites} filter={Tags.Meditate} />,
-    Learn: <ContentLoop favorites={favorites} filter={Tags.Learn} />,
-    Sleep: <ContentLoop favorites={favorites} filter={Tags.Sleep} />,
+    [translation.All]: <ContentLoop favorites={favorites} />,
+    [translation.Move]: (
+      <ContentLoop favorites={favorites} filter={Tags.Move} />
+    ),
+    [translation.Meditate]: (
+      <ContentLoop favorites={favorites} filter={Tags.Meditate} />
+    ),
+    [translation.Learn]: (
+      <ContentLoop favorites={favorites} filter={Tags.Learn} />
+    ),
+    [translation.Sleep]: (
+      <ContentLoop favorites={favorites} filter={Tags.Sleep} />
+    ),
   };
 
   return (
     <Container>
-      <PageHeading title="Your Favorites" tabs={tabs} />
+      <PageHeading title={translation['Your Favorites']} tabs={tabs} />
       <Tabs filters={tabs} />
     </Container>
   );

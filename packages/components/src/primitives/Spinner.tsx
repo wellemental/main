@@ -9,9 +9,14 @@ type Props = {
 
 const Spinner: React.FC<Props> = ({ text }) => {
   return (
-    <Container center>
+    <Container
+      center
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
       {text && <Paragraph>{text}</Paragraph>}
-      <NBSpinner />
+      <NBSpinner color="#A3CEC9" />
     </Container>
   );
 };

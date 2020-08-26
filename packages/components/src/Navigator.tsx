@@ -2,9 +2,10 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   TabNav,
-  ContentScreen,
+  VideoScreen,
   AuthScreen,
   TeacherScreen,
+  ContentScreen,
   EditProfileScreen,
 } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -29,6 +30,7 @@ const Navigator: React.FC = () => {
               }}
             />
             <Stack.Screen name="Content" component={ContentScreen} />
+            <Stack.Screen name="Video" component={VideoScreen} />
             <Stack.Screen name="Teacher" component={TeacherScreen} />
             <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
           </>

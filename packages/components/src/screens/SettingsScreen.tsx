@@ -13,6 +13,7 @@ import {
 } from 'native-base';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useCurrentUser } from '../hooks';
 
 type SettingsLink = {
   label: string;
@@ -21,6 +22,7 @@ type SettingsLink = {
 };
 
 const SettingsScreen: React.FC = () => {
+  const { translation } = useCurrentUser();
   const [error, setError] = useState();
   const navigation = useNavigation();
   const service = new AuthService();
@@ -40,21 +42,21 @@ const SettingsScreen: React.FC = () => {
   const confirmLogout = (): void => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
       {
-        text: 'Yes, Logout',
+        text: translation['Yes, Logout'],
         style: 'destructive',
         onPress: handleLogout,
       },
-      { text: 'Cancel', style: 'cancel' },
+      { text: translation['Cancel'], style: 'cancel' },
     ]);
   };
 
   const list: SettingsLink[] = [
     {
-      label: 'Edit Profile',
+      label: translation['Edit Profile'],
       onPress: () => handleNavigate('Edit Profile'),
       iconName: 'ios-person',
     },
-    { label: 'Logout', onPress: confirmLogout, iconName: 'md-exit' },
+    { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
   ];
 
   return (

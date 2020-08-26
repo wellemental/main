@@ -7,21 +7,23 @@ import {
   TeacherLoop,
 } from '../primitives';
 import { Tags } from 'services';
+import { useCurrentUser } from '../hooks';
 
 const LibraryScreen: React.FC = () => {
+  const { translation } = useCurrentUser();
+
   const tabs = {
-    All: <ContentLoop />,
-    Move: <ContentLoop filter={Tags.Move} />,
-    Meditate: <ContentLoop filter={Tags.Meditate} />,
-    Learn: <ContentLoop filter={Tags.Learn} />,
-    Sleep: <ContentLoop filter={Tags.Sleep} />,
-    Teachers: <TeacherLoop />,
+    [translation.All]: <ContentLoop />,
+    [translation.Move]: <ContentLoop filter={Tags.Move} />,
+    [translation.Meditate]: <ContentLoop filter={Tags.Meditate} />,
+    [translation.Learn]: <ContentLoop filter={Tags.Learn} />,
+    [translation.Sleep]: <ContentLoop filter={Tags.Sleep} />,
+    [translation.Teachers]: <TeacherLoop />,
   };
 
   return (
     <Container>
-      {/* <SearchBar value={searchTerm} setState={setSearchTerm} /> */}
-      <PageHeading title="Let's Practice." />
+      <PageHeading title={translation["Let's Practice."]} />
       <Tabs filters={tabs} />
     </Container>
   );

@@ -1,4 +1,7 @@
 import React from 'react';
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -63,6 +66,7 @@ export interface User {
   name: string;
   email: string;
   birthday: string;
+  language: Languages;
   subStatus: SubStatus;
   actions: { [key: string]: Action };
 }
@@ -73,6 +77,7 @@ export interface Content {
   id: string;
   title: string;
   video: string;
+  video_orientation: 'landscape' | 'portrait';
   thumbnail: string;
   description: string;
   teacher: Teachers | string;
@@ -82,8 +87,8 @@ export interface Content {
   length: string;
   language: Languages;
   status: ContentStatus;
-  updated_at: Date;
-  created_at: Date;
+  updated_at: typeof firestore.Timestamp;
+  created_at: typeof firestore.Timestamp;
 }
 
 export interface Teacher {
@@ -100,13 +105,21 @@ export interface AllTeachers {
 export interface UserProfile {
   name?: string;
   birthday?: string;
+  language?: Languages;
 }
 
-export interface PlayerService {
-  perform(id: string, fields: UserProfile): Promise<void>;
-  updateCurrentPlayer(fields: UserProfile): Promise<void>;
+export interface ContentServiceType {
+  buildContent(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Content;
+  getContent(): Promise<Content[]>;
 }
 
-export interface ProfileService {
-  perform(profile: UserProfile): Promise<void>;
+export interface UpdateUserServiceType {
+  favorite(id: string, contentId: string, isFav: boolean): Promise<void>;
+  updateProfile(id: string, fields: UserProfile): Promise<void>;
+}
+
+export interface TeacherServiceType {
+  buildTeacher(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Teacher;
+  findTeacherByName(name: string): Teacher;
+  getAllTeachers(): Promise<AllTeachers>;
 }

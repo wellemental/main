@@ -1,13 +1,28 @@
-import { Form, Item, Label, Toast, DatePicker } from 'native-base';
+import {
+  Form,
+  Item,
+  Label,
+  Toast,
+  DatePicker,
+  Text,
+  Spinner,
+  Button as NBButton,
+  Segment,
+} from 'native-base';
 import React, { useState } from 'react';
-import { Button, Container, Error, Input, PageHeading } from '../primitives';
+import { Container, Error, Input, PageHeading, Button } from '../primitives';
 import { useCurrentUser, useMutation } from '../hooks';
-import { UserProfile, UpdateUserService } from 'services';
+import { UserProfile, UpdateUserService, Languages } from 'services';
 import moment from 'moment';
+import { Dimensions } from 'react-native';
+import variables from '../assets/native-base-theme/variables/wellemental';
+
+const deviceWidth = Dimensions.get('window').width - 30;
 
 const EditProfileScreen: React.FC = () => {
-  const { user } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const [name, setName] = useState(user.name);
+  const [language, setLanguage] = useState(user.language);
   const [birthday, setBirthday] = useState(user.birthday);
 
   // Only submit what's changed upon saving
@@ -17,7 +32,11 @@ const EditProfileScreen: React.FC = () => {
   }
 
   if (birthday !== user.birthday) {
-    newProfile.birthday = birthday;
+    newProfile.birthday = moment(birthday).format('YYYY-MM-DD');
+  }
+
+  if (language !== user.language) {
+    newProfile.language = language;
   }
 
   const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
@@ -28,31 +47,50 @@ const EditProfileScreen: React.FC = () => {
 
   return (
     <Container>
-      <PageHeading title="Edit Profile" />
+      <PageHeading title={translation['Edit Profile']} />
       <Form style={{ marginTop: 4 }}>
         <Input
-          label="Username"
+          label={translation.Username}
           value={name}
           onChangeText={setName}
           disabled={loading}
         />
 
-        <Label>Birthday</Label>
+        <Label>{translation.Birthday}</Label>
         <DatePicker
-          defaultDate={birthday}
+          defaultDate={moment(birthday).toDate()}
           maximumDate={moment().toDate()}
-          locale={'es'}
+          locale={'en'}
           timeZoneOffsetInMinutes={undefined}
           modalTransparent={false}
           animationType={'fade'}
           androidMode={'default'}
-          placeHolderText="Select birthday"
+          placeHolderText={birthday ? birthday : translation['Select birthday']}
           textStyle={{ fontSize: 18, marginLeft: 0, paddingLeft: 0 }}
-          placeHolderTextStyle={{ color: '#999', paddingLeft: 0 }}
+          placeHolderTextStyle={{ color: variables.textColor, paddingLeft: 0 }}
           onDateChange={setBirthday}
           disabled={false}
         />
-        <Item style={{ marginLeft: 0 }}></Item>
+        <Item style={{ marginLeft: 0, marginBottom: 25 }} />
+
+        <Label>{translation.Language}</Label>
+        <Segment style={{ marginTop: 15 }}>
+          <NBButton
+            first
+            style={{ width: deviceWidth / 2, justifyContent: 'center' }}
+            active={language === Languages.En}
+            onPress={() => setLanguage(Languages.En)}>
+            <Text>English</Text>
+          </NBButton>
+
+          <NBButton
+            last
+            style={{ width: deviceWidth / 2, justifyContent: 'center' }}
+            active={language === Languages.Es}
+            onPress={() => setLanguage(Languages.Es)}>
+            <Text>Español</Text>
+          </NBButton>
+        </Segment>
 
         <Button
           padder="top"
@@ -61,19 +99,19 @@ const EditProfileScreen: React.FC = () => {
             mutate(
               () =>
                 Toast.show({
-                  text: 'Changes saved',
+                  text: translation['Changes Saved'],
                   style: { marginBottom: 20 },
                 }),
               () =>
                 Toast.show({
-                  text: 'Something went wrong',
+                  text: translation['Something went wrong'],
                   style: { marginBottom: 20 },
                 }),
             );
           }}
           loading={loading}
           danger
-          text="Save Changes"
+          text={translation['Save Changes']}
         />
         <Error error={error} />
       </Form>

@@ -3,9 +3,11 @@ import { PageHeading, Container, ContentLoop } from '../primitives';
 import moment from 'moment';
 import { Tags } from 'services';
 import { TimeOfDay } from 'services';
+import { useCurrentUser } from '../hooks';
 
 const HomeScreen: React.FC = () => {
   const today = moment();
+  const { translation } = useCurrentUser();
 
   // Determine Time of Day
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
@@ -24,11 +26,11 @@ const HomeScreen: React.FC = () => {
   return (
     <Container scrollEnabled>
       <PageHeading
-        title={`Good ${timeOfDay.toLowerCase()}`}
+        title={translation[`Good ${timeOfDay.toLowerCase()}`]}
         subtitle={tagline}
       />
       <ContentLoop filter={timeOfDay} />
-      <PageHeading title="Featured" />
+      <PageHeading title={translation.Featured} />
       <ContentLoop filter={Tags.Featured} />
     </Container>
   );

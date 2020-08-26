@@ -1,4 +1,4 @@
-import React, { useRef, ReactChildren } from 'react';
+import React, { useRef } from 'react';
 import { Spinner } from '../primitives';
 import {
   TeacherService,
@@ -9,13 +9,23 @@ import {
 // import { Unsubscriber } from '../types';
 import { useQuery } from '../hooks';
 
-export const Content = React.createContext<any>({ content: null });
+interface ContentContext {
+  content: Content[];
+  teachers: AllTeachers;
+  contentError: Error;
+  teachersError: Error;
+  loading: boolean;
+}
 
-export const ContentProvider = ({
-  children,
-}: {
-  children: ReactChildren;
-}): JSX.Element => {
+export const Content = React.createContext<ContentContext>({
+  content: null,
+  teachers: null,
+  contentError: null,
+  teachersError: null,
+  loading: true,
+});
+
+export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const service = new TeacherService();
   const query = useRef(service.getAllTeachers);
   const {
@@ -33,7 +43,7 @@ export const ContentProvider = ({
   } = useQuery<ContentType[]>(query2.current);
 
   if (contentLoading || teacherLoading) {
-    return <Spinner />;
+    return <Spinner text="Loading Content..." />;
   }
 
   return (

@@ -18,7 +18,9 @@ export type Unsubscriber = () => void;
 export type RootStackParamList = {
   TabNav: undefined;
   Content: { content: Content; teacher: Teacher };
+  Video: { content: Content; teacher: Teacher };
   Teacher: { teacher: Teacher };
+  'Edit Profile': undefined;
   Auth: undefined;
 };
 
@@ -32,7 +34,13 @@ export type ContentScreenNavigationProp = StackNavigationProp<
   'Content'
 >;
 
+export type VideoScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Video'
+>;
+
 export type ContentScreenRouteProp = RouteProp<RootStackParamList, 'Content'>;
+export type VideoScreenRouteProp = RouteProp<RootStackParamList, 'Video'>;
 export type TeacherScreenRouteProp = RouteProp<RootStackParamList, 'Teacher'>;
 
 export type TabsType = {

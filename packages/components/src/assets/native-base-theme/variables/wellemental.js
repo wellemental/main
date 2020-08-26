@@ -151,7 +151,7 @@ export default {
   inverseContainerBgColor: brandColors.brandPrimary,
 
   // Date Picker
-  datePickerTextColor: '#000',
+  datePickerTextColor: brandColors.textColor,
   datePickerBg: 'transparent',
 
   // FAB
@@ -187,7 +187,7 @@ export default {
 
   // Header
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: brandColors.offWhite,
+  toolbarDefaultBg: brandColors.brandPrimary,
   toolbarHeight: platform === PLATFORM.IOS ? 64 : 56,
   headerHeight: platform === PLATFORM.IOS ? 64 : 56,
   toolbarSearchIconSize: 23,
@@ -254,7 +254,7 @@ export default {
   segmentActiveBackgroundColor: brandColors.brandPrimary,
   segmentTextColor: brandColors.brandPrimary,
   segmentActiveTextColor: brandColors.white,
-  segmentBorderColor: 'rgba(0,0,0,0)',
+  segmentBorderColor: brandColors.brandPrimary,
   segmentBorderColorMain: 'rgba(0,0,0,0)',
 
   // Spinner

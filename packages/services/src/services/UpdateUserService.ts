@@ -1,11 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
 import { ApplicationError } from '../models/Errors';
-import { UserProfile } from '../types';
+import { UserProfile, UpdateUserServiceType } from '../types';
 
 const COLLECTION = 'users';
 const collection = firestore().collection(COLLECTION);
 
-class UpdateUserService {
+class UpdateUserService implements UpdateUserServiceType {
   public async favorite(
     id: string,
     contentId: string,

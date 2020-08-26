@@ -8,5 +8,6 @@ export const useCurrentUser = () => {
     auth: userContext.currentAuth,
     user: userContext.currentUser,
     loading: userContext.loading,
+    translation: userContext.translation,
   };
 };

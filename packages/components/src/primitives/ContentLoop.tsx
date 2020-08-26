@@ -20,13 +20,7 @@ const ContentLoop: React.FC<Props> = ({
   search,
   teacher,
 }) => {
-  const {
-    content,
-    teachers,
-    contentError,
-    teachersError,
-    loading,
-  } = useContent();
+  const { content, teachers, contentError, teachersError } = useContent();
 
   let filteredContent: Content[] = content;
 
