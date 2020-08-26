@@ -1,17 +1,19 @@
 import React, { ReactElement } from 'react';
-import { Tabs as NBTabs, Tab, ScrollableTab } from 'native-base';
+import { Tabs as NBTabs, Tab, ScrollableTab, NativeBase } from 'native-base';
 import { Tags } from 'services';
 
 type Props = {
   filters: { [key: string]: ReactElement };
+  // filters: string[];
 };
 
-const Tabs: React.FC<Props> = ({ filters }) => {
+const Tabs: React.FC<Props & NativeBase.Tabs> = ({ filters, ...props }) => {
   const tabTitles = Object.keys(filters);
   const tabContent = Object.values(filters);
 
   return (
     <NBTabs
+      {...props}
       renderTabBar={() => (
         <ScrollableTab
           style={{

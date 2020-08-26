@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dimensions } from 'react-native';
 import Paragraph from './Paragraph';
 import { Card, CardItem, Thumbnail } from 'native-base';
 import { Teacher } from 'services';
@@ -8,10 +9,13 @@ interface Props {
   teacher: Teacher;
 }
 
+const deviceWidth = Dimensions.get('window').width * 0.45;
+// const deviceHeight = deviceWidth * 0.56;
+
 const TeacherCard: React.FC<Props> = ({ teacher }) => {
   const navigation = useNavigation();
   return (
-    <Card transparent style={{ width: '40%' }}>
+    <Card transparent>
       <CardItem
         cardBody
         button
@@ -23,10 +27,11 @@ const TeacherCard: React.FC<Props> = ({ teacher }) => {
         style={{
           alignContent: 'center',
           alignItems: 'center',
+          justifyContent: 'center',
           flexDirection: 'column',
         }}>
         <Thumbnail
-          style={{ height: 200, width: 200, borderRadius: 100 }}
+          style={{ height: deviceWidth, width: deviceWidth, borderRadius: 100 }}
           source={{ uri: teacher.photo }}
         />
         <Paragraph style={{ marginTop: 20, fontSize: 18 }}>

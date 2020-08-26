@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import React, { ReactElement } from 'react';
+import { ScrollView, FlatList } from 'react-native';
 import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
 import { Content, Tags } from 'services';
@@ -13,6 +13,8 @@ interface Props {
   favorites?: string[];
   search?: string;
   teacher?: Teachers;
+  header?: ReactElement;
+  scrollEnabled?: boolean;
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -20,60 +22,66 @@ const ContentLoop: React.FC<Props> = ({
   favorites,
   search,
   teacher,
+  header,
+  scrollEnabled,
 }) => {
   const { content, teachers, contentError, teachersError } = useContent();
 
   let filteredContent: Content[] = content;
 
-  useEffect(() => {
-    console.log('CONTENT', content, 'FILTERRRR', filter, teacher, favorites);
+  if (filter && content) {
+    filteredContent = filteredContent.filter((item: Content) =>
+      item.tags.includes(filter),
+    );
+  }
 
-    if (filter && content) {
-      filteredContent = filteredContent.filter((item: Content) =>
-        item.tags.includes(filter),
-      );
-    }
+  if (favorites && content) {
+    filteredContent = filteredContent.filter((item: Content) =>
+      favorites.includes(item.id),
+    );
+  }
 
-    if (favorites && content) {
-      filteredContent = filteredContent.filter((item: Content) =>
-        favorites.includes(item.id),
-      );
-    }
+  if (teacher && content) {
+    filteredContent = filteredContent.filter(
+      (item: Content) => item.teacher === teacher,
+    );
+  }
 
-    if (teacher && content) {
-      filteredContent = filteredContent.filter(
-        (item: Content) => item.teacher === teacher,
-      );
-    }
+  if (search && content) {
+    filteredContent = filteredContent.filter((item: Content) =>
+      item.title.includes(search),
+    );
+  }
+  // useEffect(() => {}, [filter, teacher, favorites, search]);
 
-    if (search && content) {
-      filteredContent = filteredContent.filter((item: Content) =>
-        item.title.includes(search),
-      );
-    }
-  }, [filter, teacher, favorites, search]);
-
-  return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {contentError || teachersError ? (
-        <>
-          <Paragraph>Content Error</Paragraph>
-          <Error error={contentError} />
-          <Paragraph>Teacher Error</Paragraph>
-          <Error error={teachersError} />
-        </>
-      ) : content && teachers ? (
-        filteredContent.map((item, idx) => (
-          <ContentCard
-            key={idx}
-            content={item}
-            teacher={teachers[item.teacher]}
-          />
-        ))
-      ) : (
-        <ListEmpty />
+  return contentError || teachersError ? (
+    <>
+      <Paragraph>Content Error</Paragraph>
+      <Error error={contentError} />
+      <Paragraph>Teacher Error</Paragraph>
+      <Error error={teachersError} />
+    </>
+  ) : content && teachers && scrollEnabled ? (
+    // If tabs and header need to be able to scroll up with the list
+    <FlatList
+      ListHeaderComponent={header}
+      data={filteredContent}
+      renderItem={({ item }) => (
+        <ContentCard content={item} teacher={teachers[item.teacher]} />
       )}
+    />
+  ) : content && teachers ? (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {filteredContent.map((item, idx) => (
+        <ContentCard
+          key={idx}
+          content={item}
+          teacher={teachers[item.teacher]}
+        />
+      ))}
     </ScrollView>
+  ) : (
+    <ListEmpty />
   );
 };
 
