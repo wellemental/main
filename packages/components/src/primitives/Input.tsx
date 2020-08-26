@@ -22,7 +22,7 @@ const Input: React.FC<Props & NativeBase.Input> = ({
   ...props
 }) => {
   return (
-    <InputItem stackedLabel>
+    <InputItem stackedLabel style={{ alignSelf: 'stretch' }}>
       {label && <Label>{label}</Label>}
       <NBInput
         value={value}

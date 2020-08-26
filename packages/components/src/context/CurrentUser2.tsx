@@ -1,7 +1,6 @@
 import React from 'react';
 import { User } from 'services';
-
-type Translations = { [key: string]: string };
+import { Translations } from '../types';
 
 export interface CurrentUserState {
   user: User;

@@ -3,6 +3,8 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 
+export type Translations = { [key: string]: string };
+
 enum SubStatus {
   Canceled = 'canceled',
   Active = 'active',
@@ -106,6 +108,15 @@ export interface UserProfile {
   name?: string;
   birthday?: string;
   language?: Languages;
+}
+
+export interface NewAccount {
+  email: string;
+  password: string;
+  name?: string;
+  birthday: string;
+  language: Languages;
+  // translation: Translations;
 }
 
 export interface ContentServiceType {

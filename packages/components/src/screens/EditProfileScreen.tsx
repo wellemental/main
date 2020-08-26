@@ -1,20 +1,24 @@
 import {
   Form,
-  Item,
   Label,
   Toast,
-  DatePicker,
   Text,
   Button as NBButton,
   Segment,
 } from 'native-base';
 import React, { useState } from 'react';
-import { Container, Error, Input, PageHeading, Button } from '../primitives';
+import {
+  Container,
+  Error,
+  Input,
+  PageHeading,
+  Button,
+  DatePicker,
+} from '../primitives';
 import { useCurrentUser, useMutation } from '../hooks';
 import { UserProfile, UpdateUserService, Languages } from 'services';
 import moment from 'moment';
 import { Dimensions } from 'react-native';
-import variables from '../assets/native-base-theme/variables/wellemental';
 
 const deviceWidth = Dimensions.get('window').width - 30;
 
@@ -55,22 +59,12 @@ const EditProfileScreen: React.FC = () => {
           disabled={loading}
         />
 
-        <Label>{translation.Birthday}</Label>
         <DatePicker
-          defaultDate={moment(birthday).toDate()}
-          maximumDate={moment().toDate()}
-          locale={'en'}
-          timeZoneOffsetInMinutes={undefined}
-          modalTransparent={false}
-          animationType={'fade'}
-          androidMode={'default'}
-          placeHolderText={birthday ? birthday : translation['Select birthday']}
-          textStyle={{ fontSize: 18, marginLeft: 0, paddingLeft: 0 }}
-          placeHolderTextStyle={{ color: variables.textColor, paddingLeft: 0 }}
+          date={moment(birthday).toDate()}
+          translation={translation}
           onDateChange={setBirthday}
-          disabled={false}
+          locale={user.language === Languages.Es ? 'es' : 'en'}
         />
-        <Item style={{ marginLeft: 0, marginBottom: 25 }} />
 
         <Label>{translation.Language}</Label>
         <Segment style={{ marginTop: 15 }}>

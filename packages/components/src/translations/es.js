@@ -38,6 +38,16 @@ export const Español = {
   Learn: 'Learn',
   Sleep: 'Sleep',
   Teachers: 'Instructores',
+  Email: 'Correo electrónico',
+  Password: 'Contraseña',
   "Let's Practice.": "Let's Practice.",
   'Your Favorites': 'Tus Favoritas',
+  Signup: 'Signup',
+  Login: 'Login',
+  'Error. Please try again.': 'Error. Please try again.',
+  'Password must be at least 7 characters long.':
+    'Password must be at least 7 characters long.',
+
+  'You are not old enough to join Wellemental.':
+    'You are not old enough to join Wellemental.',
 };

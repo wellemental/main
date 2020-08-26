@@ -1,13 +1,11 @@
 import React from 'react';
-import { Card, CardItem, Thumbnail, Left, Body, H3 } from 'native-base';
+import { Card, CardItem, Left, Body, H3 } from 'native-base';
 import { View, Image } from 'react-native';
 import { Content } from 'services';
-import Favorite from './Favorite';
 import AvyName from './AvyName';
 import { useNavigation } from '@react-navigation/native';
 import { Teacher } from 'services';
 import Paragraph from './Paragraph';
-import moment from 'moment';
 
 interface Props {
   content: Content;

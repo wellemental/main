@@ -2,6 +2,8 @@ import React from 'react';
 // import { auth } from '../base';
 import { ApplicationError, AuthenticationError } from '../models/Errors';
 import auth from '@react-native-firebase/auth';
+import { NewAccount } from '../types';
+import LocalStateService from './LocalStateService';
 
 class AuthService {
   public async checkExistingLogins(email: string): Promise<string[]> {
@@ -22,7 +24,6 @@ class AuthService {
             // Need to fire signup event for GA
             // tracker.track(EventName.SignUp);
             currentUser.user.getIdTokenResult().then((idTokenResult) => {
-              console.log('SUCCESS', idTokenResult);
               return Promise.resolve();
             });
           } catch (err) {
@@ -49,13 +50,35 @@ class AuthService {
           }
         });
     } catch (err) {
-      console.log('ERROR', err);
+      return Promise.reject(new AuthenticationError(err));
     }
   }
 
-  public async signup(email: string, password: string): Promise<void> {
+  public async signup(account: NewAccount): Promise<void> {
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
+      // Reset local state before creating the user to avoid race conditions with listeners
+      const localStateService = new LocalStateService();
+      try {
+        localStateService.resetStorage();
+      } catch (err) {
+        return Promise.reject(err);
+      }
+
+      // Save extra login info to LocalStorage so we can save to database on redirect
+      try {
+        await localStateService.setStorage('wmBirthday', account.birthday);
+        await localStateService.setStorage('wmLanguage', account.language);
+        await localStateService.setStorage('wmName', account.language);
+      } catch (err) {
+        this.logger.error(
+          `Failed to set async storage for new account: ${err}`,
+        );
+      }
+
+      await auth().createUserWithEmailAndPassword(
+        account.email,
+        account.password,
+      );
     } catch (err) {
       switch (err.code) {
         case 'auth/email-already-in-use': {

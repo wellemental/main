@@ -23,9 +23,8 @@ const Box: React.FC<Props> = ({
 
   const styles = StyleSheet.create({
     view: {
-      marginTop: gt ? spacing * gt : 0,
-      marginBottom: gb ? spacing * gb : 0,
-      marginVertical: gv ? spacing * gv : 0,
+      paddingTop: gv ? spacing * gv : gt ? spacing * gt : 0,
+      paddingBottom: gv ? spacing * gv : gb ? spacing * gb : 0,
       alignItems: center ? 'center' : 'flex-start',
       flexDirection: row ? 'row' : 'column',
       justifyContent: center

@@ -15,8 +15,6 @@ class ContentService implements ContentServiceType {
   ): Content => {
     const data = doc.data();
 
-    console.log('UPDATED AT****', data.updated_at);
-
     return {
       id: doc.id,
       title: data.title,

@@ -6,11 +6,13 @@ import {
   AuthScreen,
   TeacherScreen,
   ContentScreen,
+  LandingScreen,
   EditProfileScreen,
 } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from './types';
 import { useCurrentUser } from './hooks';
+import variables from './assets/native-base-theme/variables/wellemental';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -19,7 +21,15 @@ const Navigator: React.FC = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerBackTitleVisible: false,
+          // cardShadowEnabled: false,
+          headerStyle: { shadowOpacity: 0 },
+          headerTitle: '',
+          headerTintColor: variables.brandPrimary,
+          headerLeftContainerStyle: { paddingLeft: 10, paddingTop: 10 },
+        }}>
         {auth ? (
           <>
             <Stack.Screen
@@ -35,7 +45,20 @@ const Navigator: React.FC = () => {
             <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
           </>
         ) : (
-          <Stack.Screen name="Auth" component={AuthScreen} />
+          <>
+            <Stack.Screen
+              name="Landing"
+              component={LandingScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Auth"
+              component={AuthScreen}
+              options={{ mode: 'modal' }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

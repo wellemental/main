@@ -9,3 +9,4 @@ export { default as FavoritesScreen } from './FavoritesScreen';
 export { default as TeacherScreen } from './TeacherScreen';
 export { default as EditProfileScreen } from './EditProfileScreen';
 export { default as VideoScreen } from './VideoScreen';
+export { default as LandingScreen } from './LandingScreen';

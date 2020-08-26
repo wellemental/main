@@ -10,6 +10,7 @@ export { default as Favorite } from './Favorite';
 export { default as Error } from './Error';
 export { default as Spinner } from './Spinner';
 export { default as Tabs } from './Tabs';
+export { default as DatePicker } from './DatePicker';
 export { default as Box } from './Box';
 export { default as TeacherCard } from './TeacherCard';
 export { default as TeacherLoop } from './TeacherLoop';

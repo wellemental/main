@@ -1,10 +1,29 @@
 import React, { useState } from 'react';
-import { AuthService } from 'services';
-import { DatePicker } from 'native-base';
-import { Container, Paragraph, Button, Input, Error } from '../primitives';
+import { AuthService, Languages } from 'services';
+import {
+  Container,
+  PageHeading,
+  Button,
+  Input,
+  Error,
+  DatePicker,
+} from '../primitives';
 import moment from 'moment';
+import { AuthScreenRouteProp, Translations } from '../types';
+import { English } from '../translations/en.js';
+import { Español } from '../translations/es.js';
 
-const LoginScreen: React.FC = () => {
+type Props = {
+  route: AuthScreenRouteProp;
+};
+
+const LoginScreen: React.FC<Props> = ({ route }) => {
+  // Import and save language selection to AsyncStorage
+  const { language } = route.params;
+  const translation: Translations =
+    language === Languages.Es ? Español : English;
+
+  // Manage State
   const [auths, setAuths] = useState<null | string[]>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -21,7 +40,7 @@ const LoginScreen: React.FC = () => {
       const existingLogins = await service.checkExistingLogins(email);
       setAuths(existingLogins);
     } catch (err) {
-      setError('Error. Please try again.');
+      setError(translation['Error. Please try again.']);
     }
     setLoading(false);
   };
@@ -39,14 +58,21 @@ const LoginScreen: React.FC = () => {
   const handleSignup = async () => {
     setLoading(true);
 
+    const newAccount = {
+      email,
+      password,
+      birthday: moment(birthday).format('YYYY-MM-DD'),
+      language,
+    };
+
     if (password.length < 7) {
-      setError('Password must be at least 7 characters long.');
+      setError(translation['Password must be at least 7 characters long.']);
       setLoading(false);
       return;
     }
 
     if (birthday > minBirthday) {
-      setError('You are not old enough to join Wellemental.');
+      setError(translation['You are not old enough to join Wellemental.']);
       setEmail('');
       setPassword('');
       setAuths(null);
@@ -55,7 +81,7 @@ const LoginScreen: React.FC = () => {
     }
 
     try {
-      await service.signup(email, password);
+      await service.signup(newAccount);
       setError('Success');
     } catch (err) {
       setError(err);
@@ -63,43 +89,51 @@ const LoginScreen: React.FC = () => {
     setLoading(false);
   };
 
-  let handleStep: any = handleCheckEmail;
+  let handleStep: () => void = handleCheckEmail;
 
   if (auths && auths.length === 0) {
-    // step = 'signup';
     handleStep = handleSignup;
   } else if (auths && auths.length > 0 && password) {
-    // step = 'login';
     handleStep = handleLogin;
   }
 
   return (
     <Container>
-      <Paragraph>User: {auths ? auths : ''}</Paragraph>
-      <Input label="Email" value={email} autoFocus onChangeText={setEmail} />
+      <PageHeading title={translation.Login} />
+
+      <Input
+        label={translation.Email}
+        value={email}
+        autoFocus
+        onChangeText={setEmail}
+      />
+
       {auths && (
         <>
-          <Input label="Password" value={password} onChangeText={setPassword} />
+          <Input
+            autoFocus
+            secureTextEntry={true}
+            label={translation.Password}
+            value={password}
+            onChangeText={setPassword}
+          />
 
           {auths && auths.length === 0 && (
             <DatePicker
-              defaultDate={birthday}
-              maximumDate={moment().toDate()}
-              locale={'en'}
-              timeZoneOffsetInMinutes={undefined}
-              modalTransparent={false}
-              animationType={'fade'}
-              androidMode={'default'}
-              placeHolderText="Select birthday"
-              textStyle={{ fontSize: 18 }}
-              placeHolderTextStyle={{ color: '#d3d3d3' }}
               onDateChange={setBirthday}
-              disabled={false}
+              translation={translation}
+              locale={language === Languages.Es ? 'es' : 'en'}
             />
           )}
         </>
       )}
-      <Button text="Submit" loading={loading} onPress={handleStep} />
+      <Button
+        large
+        warning={language === Languages.Es}
+        text="Submit"
+        loading={loading}
+        onPress={handleStep}
+      />
       <Error error={error} />
     </Container>
   );

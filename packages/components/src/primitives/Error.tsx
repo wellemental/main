@@ -22,7 +22,9 @@ const ErrorComponent: React.FC<Props> = ({ error }) => {
       : 'An unknown error occurred';
 
   return error ? (
-    <Paragraph style={{ color: variables.brandDanger }}>{text}</Paragraph>
+    <Paragraph gt={2} style={{ color: variables.brandDanger }}>
+      {text}
+    </Paragraph>
   ) : null;
 };
 
