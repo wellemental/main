@@ -7,6 +7,7 @@ import AvyName from './AvyName';
 import { useNavigation } from '@react-navigation/native';
 import { Teacher } from 'services';
 import Paragraph from './Paragraph';
+import moment from 'moment';
 
 interface Props {
   content: Content;

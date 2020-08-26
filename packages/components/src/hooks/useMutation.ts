@@ -28,7 +28,6 @@ export const useMutation = (query: Query): Result => {
           }
         })
         .catch((err) => {
-          console.log('ERROR', err);
           setError(err);
           if (typeof onError === 'function') onError(err);
         })

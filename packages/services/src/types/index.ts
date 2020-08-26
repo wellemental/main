@@ -88,7 +88,7 @@ export interface Content {
   language: Languages;
   status: ContentStatus;
   updated_at: typeof firestore.Timestamp;
-  created_at: typeof firestore.Timestamp;
+  created_at: Date; //typeof firestore.Timestamp;
 }
 
 export interface Teacher {

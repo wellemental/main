@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { ScrollView } from 'react-native';
 import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
 import { Content, Tags } from 'services';
@@ -24,32 +25,36 @@ const ContentLoop: React.FC<Props> = ({
 
   let filteredContent: Content[] = content;
 
-  if (filter && content) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      item.tags.includes(filter),
-    );
-  }
+  useEffect(() => {
+    console.log('CONTENT', content, 'FILTERRRR', filter, teacher, favorites);
 
-  if (favorites && content) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      favorites.includes(item.id),
-    );
-  }
+    if (filter && content) {
+      filteredContent = filteredContent.filter((item: Content) =>
+        item.tags.includes(filter),
+      );
+    }
 
-  if (teacher && content) {
-    filteredContent = filteredContent.filter(
-      (item: Content) => item.teacher === teacher,
-    );
-  }
+    if (favorites && content) {
+      filteredContent = filteredContent.filter((item: Content) =>
+        favorites.includes(item.id),
+      );
+    }
 
-  if (search && content) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      item.title.includes(search),
-    );
-  }
+    if (teacher && content) {
+      filteredContent = filteredContent.filter(
+        (item: Content) => item.teacher === teacher,
+      );
+    }
+
+    if (search && content) {
+      filteredContent = filteredContent.filter((item: Content) =>
+        item.title.includes(search),
+      );
+    }
+  }, [filter, teacher, favorites, search]);
 
   return (
-    <>
+    <ScrollView showsVerticalScrollIndicator={false}>
       {contentError || teachersError ? (
         <>
           <Paragraph>Content Error</Paragraph>
@@ -68,7 +73,7 @@ const ContentLoop: React.FC<Props> = ({
       ) : (
         <ListEmpty />
       )}
-    </>
+    </ScrollView>
   );
 };
 

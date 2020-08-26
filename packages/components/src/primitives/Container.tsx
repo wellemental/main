@@ -7,9 +7,10 @@ type ContainerProps = {
   noPadding?: 'vertical' | 'horizontal' | 'none';
   color?: string;
   center?: boolean;
+  scrollEnabled?: boolean;
 };
 
-const Container: React.FC<ContentProps & NativeBase.Content> = ({
+const Container: React.FC<ContainerProps & NativeBase.Content> = ({
   style,
   scrollEnabled = true,
   children,

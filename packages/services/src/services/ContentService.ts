@@ -15,6 +15,8 @@ class ContentService implements ContentServiceType {
   ): Content => {
     const data = doc.data();
 
+    console.log('UPDATED AT****', data.updated_at);
+
     return {
       id: doc.id,
       title: data.title,
@@ -40,7 +42,10 @@ class ContentService implements ContentServiceType {
 
   public getContent = async (): Promise<Content[]> => {
     // With no tags passed, get all Content
-    const query: FirebaseFirestoreTypes.CollectionReference = collection;
+    const query: FirebaseFirestoreTypes.CollectionReference = collection.orderBy(
+      'updated_at',
+      'desc',
+    );
 
     // if (tag) {
     //   query = collection.where('tags', 'array-contains', tag);
