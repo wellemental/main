@@ -4,6 +4,7 @@ import { ApplicationError, AuthenticationError } from '../models/Errors';
 import auth from '@react-native-firebase/auth';
 import { NewAccount } from '../types';
 import LocalStateService from './LocalStateService';
+import Logger from './LoggerService';
 
 class AuthService {
   public async checkExistingLogins(email: string): Promise<string[]> {
@@ -27,8 +28,7 @@ class AuthService {
               return Promise.resolve();
             });
           } catch (err) {
-            //   logger.error(`TOKEN ERR - ${err}`)
-            console.log('ERROR', err);
+            Logger.error(`TOKEN ERR - ${err}`);
             switch (err.code) {
               case 'auth/invalid-email':
                 return Promise.reject(
@@ -68,11 +68,9 @@ class AuthService {
       try {
         await localStateService.setStorage('wmBirthday', account.birthday);
         await localStateService.setStorage('wmLanguage', account.language);
-        await localStateService.setStorage('wmName', account.language);
+        await localStateService.setStorage('wmName', account.name);
       } catch (err) {
-        this.logger.error(
-          `Failed to set async storage for new account: ${err}`,
-        );
+        Logger.error(`Failed to set async storage for new account: ${err}`);
       }
 
       await auth().createUserWithEmailAndPassword(
@@ -97,7 +95,7 @@ class AuthService {
           );
         }
         default: {
-          // this.logger.error(`Failed to sign up user: ${err}`);
+          Logger.error(`Failed to sign up user: ${err}`);
           return Promise.reject(
             new AuthenticationError('An unknown sign up error occurred.'),
           );

@@ -1,14 +1,9 @@
-import { English } from '../translations/en.js';
-import { Español } from '../translations/es.js';
+import { English as ogEnglish } from '../translations/en.js';
+import { Español as ogEspañol } from '../translations/es.js';
 import { Languages } from '../types';
 
-// class LanguageService {
-//     constructor(
-//         language: React.Dispatch<(prevState: undefined) => undefined>,
-//       ) {
-//         this.userChanged = userChanged;
-//       }
-// }
+export const English = ogEnglish;
+export const Español = ogEspañol;
 
 export const getTranslation = (language: Languages): void => {
   return language === Languages.Es ? Español : English;

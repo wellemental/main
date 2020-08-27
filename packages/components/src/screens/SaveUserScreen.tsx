@@ -1,37 +1,73 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Spinner from '../primitives/Spinner';
-import { LocalStateService } from 'services';
-import { useCurrentUser } from '../hooks';
-import { Languages } from 'services';
+import {
+  LocalStateService,
+  ApplicationError,
+  UpdateUserService,
+  Logger,
+  InitialUserDoc,
+} from 'services';
+import EditProfileScreen from './EditProfileScreen';
+import { Container, Error } from '../primitives';
+import { useCurrentUser, useMutation } from '../hooks';
+import { English, getTranslation } from 'services';
 
 const SaveUserScreen: React.FC = () => {
-  const service = LocalStateService();
   const { auth } = useCurrentUser();
+  let translation = English;
 
-  const [birthday, setBirthday] = useState<string>();
-  const [name, setName] = useState<string>();
-  const [language, setLanguage] = useState<Languages>();
+  const [gettingStorage, setIsGetting] = useState(true);
+  const [asyncError, setAsyncError] = useState<ApplicationError>();
 
-  // Hack to save birthday from Signup into database
-  let savedData: string | null;
+  const savedData: InitialUserDoc = {
+    id: auth.uid,
+    email: auth.email,
+    name: '',
+    birthday: '',
+    language: '',
+  };
 
+  const service = new LocalStateService();
+  const service2 = new UpdateUserService();
+  const { mutate, error, loading } = useMutation(() =>
+    service2.createProfile(savedData),
+  );
   const getData = async (): Promise<void> => {
     try {
-    const birthday = await service.getStorage('wmBirthday'));
-      
-      if (birthday !== null) {
-        savedData.birthday = birthday;
-        service.removeStorage('wmBirthday');
-      }
+      // Pull extra signup data from Async storage
+      savedData.language = await service.getStorage('wmLanguage');
+      translation = getTranslation(savedData.language);
+      savedData.birthday = await service.getStorage('wmBirthday');
+      savedData.name = await service.getStorage('wmName');
+
+      // Delete the data from storage, keep language for quick app loading
+      service.removeStorage('wmBirthday');
+      service.removeStorage('wmName');
+
+      // Save info to database
+      mutate();
     } catch (err) {
-      logger.error(`Failed to get birthday from async storage: ${err}`);
+      setIsGetting(false);
+      setAsyncError(
+        new ApplicationError(translation['Error creating profile. Try again.']),
+      );
+      Logger.error(`Failed to get data from async storage: ${err}`);
     }
   };
-  setName(await service.getStorage('wmName'));
-  const language = await service.getStorage('wmLanguage');
 
-  getBirthday();
-  return <Spinner text="Creating profile..." />;
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return gettingStorage || loading ? (
+    <Spinner text={translation['Creating account...']} />
+  ) : (
+    <Container center>
+      <EditProfileScreen requiredPrompt />
+      {error && <Error error={error} />}
+      {asyncError && <Error error={asyncError} />}
+    </Container>
+  );
 };
 
 export default SaveUserScreen;

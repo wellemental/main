@@ -44,10 +44,13 @@ export const English = {
   'Your Favorites': 'Your Favorites',
   Signup: 'Signup',
   Login: 'Login',
+  'Creating account...': 'Creating account...',
   'Error. Please try again.': 'Error. Please try again.',
   'Password must be at least 7 characters long.':
     'Password must be at least 7 characters long.',
-
+  'Error creating profile. Try again.': 'Error creating profile. Try again.',
   'You are not old enough to join Wellemental.':
     'You are not old enough to join Wellemental.',
+  'Your profile is missing required information. Please update it below.':
+    'Your profile is missing required information. Please update it below.',
 };

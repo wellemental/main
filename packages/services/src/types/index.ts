@@ -113,10 +113,17 @@ export interface UserProfile {
 export interface NewAccount {
   email: string;
   password: string;
-  name?: string;
+  name: string;
   birthday: string;
   language: Languages;
-  // translation: Translations;
+}
+
+export interface InitialUserDoc {
+  id: string;
+  email: string;
+  name: string;
+  birthday: string;
+  language: Languages | string;
 }
 
 export interface ContentServiceType {
@@ -127,6 +134,7 @@ export interface ContentServiceType {
 export interface UpdateUserServiceType {
   favorite(id: string, contentId: string, isFav: boolean): Promise<void>;
   updateProfile(id: string, fields: UserProfile): Promise<void>;
+  createProfile(account: InitialUserDoc): Promise<void>;
 }
 
 export interface TeacherServiceType {

@@ -8,6 +8,7 @@ import {
   ContentScreen,
   LandingScreen,
   EditProfileScreen,
+  SaveUserScreen,
 } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from './types';
@@ -17,7 +18,9 @@ import variables from './assets/native-base-theme/variables/wellemental';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const Navigator: React.FC = () => {
-  const { auth } = useCurrentUser();
+  const { auth, user } = useCurrentUser();
+  const userDocCreated =
+    user && user.email && user.birthday && user.name && user.language;
 
   return (
     <NavigationContainer>
@@ -32,17 +35,26 @@ const Navigator: React.FC = () => {
         }}>
         {auth ? (
           <>
-            <Stack.Screen
-              name="TabNav"
-              component={TabNav}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen name="Content" component={ContentScreen} />
-            <Stack.Screen name="Video" component={VideoScreen} />
-            <Stack.Screen name="Teacher" component={TeacherScreen} />
-            <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+            {!userDocCreated ? (
+              <Stack.Screen name="Save User" component={SaveUserScreen} />
+            ) : (
+              <>
+                <Stack.Screen
+                  name="TabNav"
+                  component={TabNav}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen name="Content" component={ContentScreen} />
+                <Stack.Screen name="Video" component={VideoScreen} />
+                <Stack.Screen name="Teacher" component={TeacherScreen} />
+                <Stack.Screen
+                  name="Edit Profile"
+                  component={EditProfileScreen}
+                />
+              </>
+            )}
           </>
         ) : (
           <>
@@ -56,7 +68,7 @@ const Navigator: React.FC = () => {
             <Stack.Screen
               name="Auth"
               component={AuthScreen}
-              options={{ mode: 'modal' }}
+              // options={{ mode: 'modal' }}
             />
           </>
         )}

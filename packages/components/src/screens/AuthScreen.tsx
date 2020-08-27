@@ -27,6 +27,7 @@ const LoginScreen: React.FC<Props> = ({ route }) => {
   const [auths, setAuths] = useState<null | string[]>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
   const minBirthday = moment().subtract(13, 'years').toDate();
@@ -63,6 +64,7 @@ const LoginScreen: React.FC<Props> = ({ route }) => {
       password,
       birthday: moment(birthday).format('YYYY-MM-DD'),
       language,
+      name,
     };
 
     if (password.length < 7) {
@@ -119,11 +121,18 @@ const LoginScreen: React.FC<Props> = ({ route }) => {
           />
 
           {auths && auths.length === 0 && (
-            <DatePicker
-              onDateChange={setBirthday}
-              translation={translation}
-              locale={language === Languages.Es ? 'es' : 'en'}
-            />
+            <>
+              <Input
+                label={translation.Username}
+                value={name}
+                onChangeText={setName}
+              />
+              <DatePicker
+                onDateChange={setBirthday}
+                translation={translation}
+                locale={language === Languages.Es ? 'es' : 'en'}
+              />
+            </>
           )}
         </>
       )}

@@ -22,7 +22,11 @@ import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width - 30;
 
-const EditProfileScreen: React.FC = () => {
+type Props = {
+  requiredPrompt: boolean;
+};
+
+const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
   const { user, translation } = useCurrentUser();
   const [name, setName] = useState(user.name);
   const [language, setLanguage] = useState(user.language);
@@ -50,7 +54,16 @@ const EditProfileScreen: React.FC = () => {
 
   return (
     <Container>
-      <PageHeading title={translation['Edit Profile']} />
+      <PageHeading
+        title={translation['Edit Profile']}
+        subtitle={
+          requiredPrompt
+            ? translation[
+                'Your profile is missing required information. Please update it below.'
+              ]
+            : ''
+        }
+      />
       <Form style={{ marginTop: 4 }}>
         <Input
           label={translation.Username}
@@ -103,6 +116,7 @@ const EditProfileScreen: React.FC = () => {
             );
           }}
           loading={loading}
+          disabled={!name || !language || !birthday}
           danger
           text={translation['Save Changes']}
         />

@@ -22,6 +22,7 @@ export type RootStackParamList = {
   Teacher: { teacher: Teacher };
   'Edit Profile': undefined;
   Auth: { language: Languages };
+  'Save User': undefined;
   Landing: undefined;
 };
 
