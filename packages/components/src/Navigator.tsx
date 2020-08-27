@@ -20,8 +20,9 @@ const Stack = createStackNavigator<RootStackParamList>();
 const Navigator: React.FC = () => {
   const { auth, user } = useCurrentUser();
   const userDocCreated =
-    user && user.email && user.birthday && user.name && user.language;
+    user && !!user.email && !!user.birthday && !!user.name && !!user.language;
 
+  console.log('USERDOC', userDocCreated, user);
   return (
     <NavigationContainer>
       <Stack.Navigator

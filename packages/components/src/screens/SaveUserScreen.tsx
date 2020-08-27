@@ -8,9 +8,10 @@ import {
   InitialUserDoc,
 } from 'services';
 import EditProfileScreen from './EditProfileScreen';
-import { Container, Error } from '../primitives';
+import { Error } from '../primitives';
 import { useCurrentUser, useMutation } from '../hooks';
-import { English, getTranslation } from 'services';
+import { getTranslation } from '../translations';
+import { English } from '../translations/en';
 
 const SaveUserScreen: React.FC = () => {
   const { auth } = useCurrentUser();
@@ -19,12 +20,12 @@ const SaveUserScreen: React.FC = () => {
   const [gettingStorage, setIsGetting] = useState(true);
   const [asyncError, setAsyncError] = useState<ApplicationError>();
 
-  const savedData: InitialUserDoc = {
+  const savedData: Partial<InitialUserDoc> = {
     id: auth.uid,
     email: auth.email,
-    name: '',
-    birthday: '',
-    language: '',
+    // name: '',
+    // birthday: '',
+    // language: '',
   };
 
   const service = new LocalStateService();
@@ -35,17 +36,23 @@ const SaveUserScreen: React.FC = () => {
   const getData = async (): Promise<void> => {
     try {
       // Pull extra signup data from Async storage
-      savedData.language = await service.getStorage('wmLanguage');
-      translation = getTranslation(savedData.language);
-      savedData.birthday = await service.getStorage('wmBirthday');
-      savedData.name = await service.getStorage('wmName');
-
-      // Delete the data from storage, keep language for quick app loading
-      service.removeStorage('wmBirthday');
-      service.removeStorage('wmName');
+      const savedLanguage = await service.getStorage('wmLanguage');
+      translation = getTranslation(savedLanguage);
+      if (savedLanguage) {
+        savedData.language = savedLanguage;
+      }
+      const savedBirthday = await service.getStorage('wmBirthday');
+      if (savedBirthday) {
+        savedData.birthday = savedBirthday;
+      }
+      const savedName = await service.getStorage('wmName');
+      if (savedName) {
+        savedData.name = savedName;
+      }
 
       // Save info to database
       mutate();
+      setIsGetting(false);
     } catch (err) {
       setIsGetting(false);
       setAsyncError(
@@ -62,11 +69,11 @@ const SaveUserScreen: React.FC = () => {
   return gettingStorage || loading ? (
     <Spinner text={translation['Creating account...']} />
   ) : (
-    <Container center>
+    <>
       <EditProfileScreen requiredPrompt />
       {error && <Error error={error} />}
       {asyncError && <Error error={asyncError} />}
-    </Container>
+    </>
   );
 };
 

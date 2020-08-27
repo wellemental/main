@@ -57,11 +57,10 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
       <PageHeading
         title={translation['Edit Profile']}
         subtitle={
-          requiredPrompt
-            ? translation[
-                'Your profile is missing required information. Please update it below.'
-              ]
-            : ''
+          requiredPrompt &&
+          translation[
+            'Your profile is missing required information. Please update it below.'
+          ]
         }
       />
       <Form style={{ marginTop: 4 }}>

@@ -27,7 +27,7 @@ class UpdateUserService implements UpdateUserServiceType {
     }
   }
 
-  public async createProfile(account: InitialUserDoc): Promise<void> {
+  public async createProfile(account: Partial<InitialUserDoc>): Promise<void> {
     const user = collection.doc(account.id);
 
     const userSnapshot = await user.get();
