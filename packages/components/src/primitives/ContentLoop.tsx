@@ -1,19 +1,19 @@
-import React, { ReactElement } from 'react';
-import { ScrollView, FlatList } from 'react-native';
+import React from 'react';
+import { ScrollView } from 'react-native';
 import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
-import { Content, Tags } from 'services';
+import { Content, Tags, Categories, TimeOfDay } from 'services';
 import ListEmpty from './ListEmpty';
 import { Teachers } from 'types';
 import Error from './Error';
 import Paragraph from './Paragraph';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 
 interface Props {
-  filter?: Tags;
+  filter?: Tags | TimeOfDay | Categories;
   favorites?: string[];
   search?: string;
   teacher?: Teachers;
-  header?: ReactElement;
   scrollEnabled?: boolean;
 }
 
@@ -22,12 +22,14 @@ const ContentLoop: React.FC<Props> = ({
   favorites,
   search,
   teacher,
-  header,
   scrollEnabled,
 }) => {
+  const { user } = useCurrentUser();
   const { content, teachers, contentError, teachersError } = useContent();
 
-  let filteredContent: Content[] = content;
+  let filteredContent: Content[] = content.filter(
+    (item: Content) => item.language !== user.language,
+  );
 
   if (filter && content) {
     filteredContent = filteredContent.filter((item: Content) =>
@@ -52,7 +54,6 @@ const ContentLoop: React.FC<Props> = ({
       item.title.includes(search),
     );
   }
-  // useEffect(() => {}, [filter, teacher, favorites, search]);
 
   return contentError || teachersError ? (
     <>
@@ -63,14 +64,6 @@ const ContentLoop: React.FC<Props> = ({
     </>
   ) : content && teachers && scrollEnabled ? (
     // If tabs and header need to be able to scroll up with the list
-    <FlatList
-      ListHeaderComponent={header}
-      data={filteredContent}
-      renderItem={({ item }) => (
-        <ContentCard content={item} teacher={teachers[item.teacher]} />
-      )}
-    />
-  ) : content && teachers ? (
     <ScrollView showsVerticalScrollIndicator={false}>
       {filteredContent.map((item, idx) => (
         <ContentCard
@@ -80,6 +73,10 @@ const ContentLoop: React.FC<Props> = ({
         />
       ))}
     </ScrollView>
+  ) : content && teachers ? (
+    filteredContent.map((item, idx) => (
+      <ContentCard key={idx} content={item} teacher={teachers[item.teacher]} />
+    ))
   ) : (
     <ListEmpty />
   );

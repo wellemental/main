@@ -14,7 +14,7 @@ import { getTranslation } from '../translations';
 import { English } from '../translations/en';
 
 const SaveUserScreen: React.FC = () => {
-  const { auth } = useCurrentUser();
+  const { auth, user } = useCurrentUser();
   let translation = English;
 
   const [gettingStorage, setIsGetting] = useState(true);
@@ -63,7 +63,7 @@ const SaveUserScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    getData();
+    if (!user || !user.name || !user.birthday || !user.language) getData();
   }, []);
 
   return gettingStorage || loading ? (

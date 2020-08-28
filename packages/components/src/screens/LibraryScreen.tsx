@@ -8,12 +8,14 @@ import {
 } from '../primitives';
 import { Tags } from 'services';
 import { useCurrentUser } from '../hooks';
+import { LibraryScreenRouteProp } from '../types';
+
+type Props = {
+  route: LibraryScreenRouteProp;
+};
 
 const LibraryScreen: React.FC = () => {
   const { translation } = useCurrentUser();
-  const [filter, setFilter] = useState<Tags | 'All' | 'Teachers'>('All');
-
-  console.log('FILTER', filter);
 
   const tabs = {
     [translation.All]: <ContentLoop key="All" />,

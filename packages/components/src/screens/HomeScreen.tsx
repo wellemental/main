@@ -1,13 +1,39 @@
 import React from 'react';
-import { PageHeading, Container, ContentLoop } from '../primitives';
+import { Text } from 'react-native';
+import {
+  PageHeading,
+  Container,
+  ContentLoop,
+  CategoryCard,
+  Spinner,
+} from '../primitives';
 import moment from 'moment';
-import { Tags } from 'services';
 import { TimeOfDay } from 'services';
-import { useCurrentUser } from '../hooks';
+import { useCurrentUser, useConfig } from '../hooks';
 
 const HomeScreen: React.FC = () => {
   const today = moment();
   const { translation } = useCurrentUser();
+  const { loading, data } = useConfig('featured');
+
+  console.log('LOAD', loading, 'DATA', !!data, 'CATEGORIES***', data);
+
+  // const categories: Category[] = [
+  //   {
+  //     title: 'Category One',
+  //     description: 'Lorem ipsum description and stuff.',
+  //     tag: Tags.Featured,
+  //     image:
+  //       'https://media.wired.com/photos/5b8999943667562d3024c321/master/w_2560%2Cc_limit/trash2-01.jpg',
+  //   },
+  //   {
+  //     title: 'Category One',
+  //     description: 'Lorem ipsum description and stuff.',
+  //     tag: Tags.Featured,
+  //     image:
+  //       'https://media.wired.com/photos/5b8999943667562d3024c321/master/w_2560%2Cc_limit/trash2-01.jpg',
+  //   },
+  // ];
 
   // Determine Time of Day
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
@@ -30,8 +56,18 @@ const HomeScreen: React.FC = () => {
         subtitle={tagline}
       />
       <ContentLoop filter={timeOfDay} />
-      <PageHeading title={translation.Featured} />
-      <ContentLoop filter={Tags.Featured} />
+      {!loading && data && data.categories ? (
+        <>
+          <PageHeading title={translation.Featured} />
+
+          {data.categories.map((item, idx) => (
+            <CategoryCard key={idx} category={item} />
+          ))}
+        </>
+      ) : (
+        <Spinner />
+      )}
+      {/* <ContentLoop filter={Tags.Featured} /> */}
     </Container>
   );
 };

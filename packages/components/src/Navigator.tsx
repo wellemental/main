@@ -7,6 +7,7 @@ import {
   TeacherScreen,
   ContentScreen,
   LandingScreen,
+  CategoryScreen,
   EditProfileScreen,
   SaveUserScreen,
 } from './screens';
@@ -22,7 +23,6 @@ const Navigator: React.FC = () => {
   const userDocCreated =
     user && !!user.email && !!user.birthday && !!user.name && !!user.language;
 
-  console.log('USERDOC', userDocCreated, user);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -48,6 +48,7 @@ const Navigator: React.FC = () => {
                   }}
                 />
                 <Stack.Screen name="Content" component={ContentScreen} />
+                <Stack.Screen name="Category" component={CategoryScreen} />
                 <Stack.Screen name="Video" component={VideoScreen} />
                 <Stack.Screen name="Teacher" component={TeacherScreen} />
                 <Stack.Screen

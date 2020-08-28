@@ -1,4 +1,6 @@
 import React from 'react';
+import defaultValues from '../services/RemoteConfigDefaults';
+
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
@@ -22,13 +24,6 @@ export enum Languages {
   Es = 'Español',
 }
 
-export enum Categories {
-  Meditate = 'Meditate',
-  Move = 'Move',
-  Sleep = 'Sleep',
-  Learn = 'Learn',
-}
-
 export enum TimeOfDay {
   Morning = 'Morning',
   Afternoon = 'Afternoon',
@@ -39,6 +34,7 @@ export enum Tags {
   Morning = 'Morning',
   Afternoon = 'Afternoon',
   Night = 'Night',
+  Evening = 'Evening',
   Calm = 'Calm',
   Breathing = 'Breathing',
   Visualization = 'Visualization',
@@ -53,6 +49,24 @@ export enum Tags {
   Learn = 'Learn',
   Featured = 'Featured',
 }
+
+export type Category = {
+  title: string;
+  description: string;
+  tag: Tags | TimeOfDay | Category;
+  image: string;
+};
+
+export enum Categories {
+  Meditate = 'Meditate',
+  Move = 'Move',
+  Sleep = 'Sleep',
+  Learn = 'Learn',
+}
+
+// export type Categories = Partial<
+//   Pick<Tags, Tags.Meditate | Tags.Move | Tags.Sleep | Tags.Learn>
+// >;
 
 export enum ContentStatus {
   Published = 'published',
@@ -139,6 +153,25 @@ export interface UpdateUserServiceType {
 
 export interface TeacherServiceType {
   buildTeacher(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Teacher;
-  findTeacherByName(name: string): Teacher;
+  findTeacherByName(name: string): Promise<Teacher | void>;
   getAllTeachers(): Promise<AllTeachers>;
+}
+
+export enum TrackingEvents {
+  Login = 'login',
+  SignUp = 'sign_up',
+  Logout = 'logout',
+  PasswordReset = 'password_reset',
+  PlayVideo = 'play_video',
+  Favorite = 'favorite',
+  Unfavorite = 'unfavorite',
+}
+
+export interface TrackingService {
+  track(name: TrackingEvents, params?: { [key: string]: any }): void;
+}
+
+export type RemoteConfigValues = keyof typeof defaultValues;
+export interface RemoteConfigService {
+  getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }

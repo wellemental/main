@@ -20,7 +20,6 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
       <CardItem
         cardBody
         button
-        // style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}
         onPress={() =>
           navigation.navigate(
             content.video_orientation === 'portrait' ? 'Video' : 'Content',

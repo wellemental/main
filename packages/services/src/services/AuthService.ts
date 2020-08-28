@@ -5,53 +5,51 @@ import auth from '@react-native-firebase/auth';
 import { NewAccount } from '../types';
 import LocalStateService from './LocalStateService';
 import Logger from './LoggerService';
+import tracker, { TrackingEvents } from './TrackerService';
 
 class AuthService {
   public async checkExistingLogins(email: string): Promise<string[]> {
     try {
       return await auth().fetchSignInMethodsForEmail(email);
     } catch (err) {
-      console.log('Error checking logins', err);
+      Logger.error('Error checking existing logins');
       return Promise.reject(new ApplicationError());
     }
   }
 
   public async login(email: string, password: string): Promise<void> {
+    // Reset local state before sign-in to avoid race conditions with listeners
+    const localStateService = new LocalStateService();
     try {
-      await auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((currentUser) => {
-          try {
-            // Need to fire signup event for GA
-            // tracker.track(EventName.SignUp);
-            currentUser.user.getIdTokenResult().then((idTokenResult) => {
-              return Promise.resolve();
-            });
-          } catch (err) {
-            Logger.error(`TOKEN ERR - ${err}`);
-            switch (err.code) {
-              case 'auth/invalid-email':
-                return Promise.reject(
-                  new AuthenticationError('Invalid email address.'),
-                );
-              case 'auth/user-not-found':
-                return Promise.reject(
-                  new AuthenticationError(
-                    'There is no account associated with that email. Please sign up first.',
-                  ),
-                );
-              case 'auth/wrong-password':
-                return Promise.reject(
-                  new AuthenticationError('Email and password do not match.'),
-                );
-              default:
-                return Promise.reject(new AuthenticationError());
-            }
-          }
-        });
-    } catch (err) {
-      return Promise.reject(new AuthenticationError(err));
+      localStateService.resetStorage();
+    } catch (error) {
+      return Promise.reject(error);
     }
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+    } catch (err) {
+      Logger.error('Error logging in');
+      switch (err.code) {
+        case 'auth/invalid-email':
+          return Promise.reject(
+            new AuthenticationError('Invalid email address.'),
+          );
+        case 'auth/user-not-found':
+          return Promise.reject(
+            new AuthenticationError(
+              'There is no account associated with that email. Please sign up first.',
+            ),
+          );
+        case 'auth/wrong-password':
+          return Promise.reject(
+            new AuthenticationError('Email and password do not match.'),
+          );
+        default:
+          return Promise.reject(new AuthenticationError());
+      }
+    }
+    tracker.track(TrackingEvents.Login);
+    return Promise.resolve();
   }
 
   public async signup(account: NewAccount): Promise<void> {
@@ -77,6 +75,7 @@ class AuthService {
         account.email,
         account.password,
       );
+      tracker.track(TrackingEvents.Login);
     } catch (err) {
       switch (err.code) {
         case 'auth/email-already-in-use': {
@@ -102,10 +101,12 @@ class AuthService {
         }
       }
     }
+    return Promise.resolve();
   }
 
   public async logout(): Promise<void> {
     try {
+      tracker.track(TrackingEvents.Logout);
       return auth().signOut();
     } catch (err) {
       return Promise.reject(
