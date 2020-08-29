@@ -2,7 +2,6 @@ import remoteConfig, {
   FirebaseRemoteConfigTypes,
 } from '@react-native-firebase/remote-config';
 import rcDefaults from './RemoteConfigDefaults';
-import BaseService from './BaseService';
 import { RemoteConfigService } from '../types';
 import { ApplicationError } from '../models/Errors';
 import logger from '../services/LoggerService';
@@ -17,9 +16,6 @@ class RemoteConfig implements RemoteConfigService {
   }
 
   private init = async (): Promise<void> => {
-    // if (__DEV__) {
-    //   remoteConfig().setConfigSettings({ isDeveloperModeEnabled: true });
-    // }
     return await remoteConfig()
       .setDefaults(rcDefaults)
       .then(() => remoteConfig().fetchAndActivate())

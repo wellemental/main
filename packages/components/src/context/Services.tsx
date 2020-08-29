@@ -10,7 +10,6 @@ export const ServicesProvider: React.FC = ({ children }) => {
   const { user: currentUser } = useCurrentUser();
 
   useEffect(() => {
-    console.log('USER SERVE', currentUser);
     if (currentUser) {
       setContainer(
         buildDependencies({

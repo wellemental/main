@@ -5,16 +5,17 @@ import {
   ContentService,
   AllTeachers,
   Content as ContentType,
+  Features,
 } from 'services';
-// import { Unsubscriber } from '../types';
-import { useQuery } from '../hooks';
+import { useQuery, useConfig } from '../hooks';
 
 interface ContentContext {
-  content: Content[];
+  content: ContentType[];
   teachers: AllTeachers;
   contentError: Error;
   teachersError: Error;
   loading: boolean;
+  features: Features;
 }
 
 export const Content = React.createContext<ContentContext>({
@@ -23,6 +24,7 @@ export const Content = React.createContext<ContentContext>({
   contentError: null,
   teachersError: null,
   loading: true,
+  features: null,
 });
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
@@ -42,7 +44,9 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
     error: contentError,
   } = useQuery<ContentType[]>(query2.current);
 
-  if (contentLoading || teacherLoading) {
+  const { loading: rcLoading, data: rcData } = useConfig('featured');
+
+  if (contentLoading || teacherLoading || rcLoading) {
     return <Spinner text="Loading Content..." />;
   }
 
@@ -53,17 +57,10 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         teachers,
         contentError,
         teachersError,
-        loading: teacherLoading || contentLoading,
+        features: rcData,
+        loading: teacherLoading || contentLoading || rcLoading,
       }}>
       {children}
     </Content.Provider>
   );
 };
-
-function hashArgs(...args: any) {
-  return args.reduce((acc: any, arg: any) => stringify(arg) + ':' + acc, '');
-}
-
-function stringify(val: any) {
-  return typeof val === 'object' ? JSON.stringify(val) : String(val);
-}

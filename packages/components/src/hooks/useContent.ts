@@ -10,5 +10,6 @@ export const useContent = () => {
     contentError: contentContext.contentError,
     teachersError: contentContext.teachersError,
     loading: contentContext.loading,
+    features: contentContext.features,
   };
 };

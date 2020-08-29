@@ -175,3 +175,8 @@ export type RemoteConfigValues = keyof typeof defaultValues;
 export interface RemoteConfigService {
   getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }
+
+export type Features = {
+  title: string;
+  categories: Category[];
+};

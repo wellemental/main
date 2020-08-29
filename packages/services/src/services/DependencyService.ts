@@ -55,7 +55,6 @@ const buildDependency = <T>(
 ): T => {
   const dependencyDescriptor = (dependenciesDescriptors as DescriptorMap)[name];
 
-  console.log('DEPEND', name, getDependency);
   if (!dependencyDescriptor) {
     throw new Error(
       `Missing dependency descriptor for: ${name} ${dependencyDescriptor}. Forgot to include it in dependencies's container?`,
@@ -102,7 +101,6 @@ export interface Dependency {
 }
 
 export function buildDependencies({ currentUser }: Params): Dependency {
-  console.log('DEP USER*******', currentUser);
   dependenciesInstances = {};
   dependenciesInstances.currentUser = currentUser;
   return {

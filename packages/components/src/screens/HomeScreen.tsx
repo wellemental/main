@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 import {
   PageHeading,
   Container,
@@ -9,31 +8,12 @@ import {
 } from '../primitives';
 import moment from 'moment';
 import { TimeOfDay } from 'services';
-import { useCurrentUser, useConfig } from '../hooks';
+import { useCurrentUser, useContent } from '../hooks';
 
 const HomeScreen: React.FC = () => {
   const today = moment();
   const { translation } = useCurrentUser();
-  const { loading, data } = useConfig('featured');
-
-  console.log('LOAD', loading, 'DATA', !!data, 'CATEGORIES***', data);
-
-  // const categories: Category[] = [
-  //   {
-  //     title: 'Category One',
-  //     description: 'Lorem ipsum description and stuff.',
-  //     tag: Tags.Featured,
-  //     image:
-  //       'https://media.wired.com/photos/5b8999943667562d3024c321/master/w_2560%2Cc_limit/trash2-01.jpg',
-  //   },
-  //   {
-  //     title: 'Category One',
-  //     description: 'Lorem ipsum description and stuff.',
-  //     tag: Tags.Featured,
-  //     image:
-  //       'https://media.wired.com/photos/5b8999943667562d3024c321/master/w_2560%2Cc_limit/trash2-01.jpg',
-  //   },
-  // ];
+  const { features } = useContent();
 
   // Determine Time of Day
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
@@ -56,11 +36,11 @@ const HomeScreen: React.FC = () => {
         subtitle={tagline}
       />
       <ContentLoop filter={timeOfDay} />
-      {!loading && data && data.categories ? (
+      {features && features.categories ? (
         <>
           <PageHeading title={translation.Featured} />
 
-          {data.categories.map((item, idx) => (
+          {features.categories.map((item, idx) => (
             <CategoryCard key={idx} category={item} />
           ))}
         </>

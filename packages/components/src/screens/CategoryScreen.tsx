@@ -8,9 +8,7 @@ type Props = {
 };
 
 const CategoryScreen: React.FC<Props> = ({ route }) => {
-  const { translation } = useCurrentUser();
   const { category } = route.params;
-  console.log('CATEGORY', category);
 
   return (
     <Container>
