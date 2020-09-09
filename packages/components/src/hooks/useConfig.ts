@@ -9,6 +9,7 @@ import {
 import {} from 'services';
 
 export type UseConfigResult<T> = Result<T>;
+const remoteConfigService = new RemoteConfig();
 
 export const useConfig = <T>(name: RemoteConfigValues): Result<T> => {
   //   const container = useDepends();
@@ -16,7 +17,6 @@ export const useConfig = <T>(name: RemoteConfigValues): Result<T> => {
   //     'remoteConfig',
   //   );
 
-  const remoteConfigService = new RemoteConfig();
   const fetchValueRef = useRef(function fetchValue(): Promise<T> {
     return remoteConfigService.getValue(name);
   });

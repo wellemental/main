@@ -19,7 +19,7 @@ type Props = {
   navigation: ContentScreenNavigationProp;
 };
 
-const deviceHeight = Dimensions.get('window').height - 140;
+const deviceHeight = Dimensions.get('window').height - 100;
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({

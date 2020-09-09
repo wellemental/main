@@ -11,6 +11,7 @@ import {
   Container,
   Error,
   Input,
+  Box,
   PageHeading,
   Button,
   DatePicker,
@@ -97,28 +98,28 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
           </NBButton>
         </Segment>
 
-        <Button
-          padder="top"
-          large
-          onPress={(): void => {
-            mutate(
-              () =>
-                Toast.show({
-                  text: 'Changes saved', //translation['Changes saved'],
-                  style: { marginBottom: 20 },
-                }),
-              () =>
-                Toast.show({
-                  text: 'Something went wrong', //translation['Something went wrong'],
-                  style: { marginBottom: 20 },
-                }),
-            );
-          }}
-          loading={loading}
-          disabled={!name || !language || !birthday}
-          danger
-          text={translation['Save Changes']}
-        />
+        <Box gt={2}>
+          <Button
+            onPress={(): void => {
+              mutate(
+                () =>
+                  Toast.show({
+                    text: 'Changes saved', //translation['Changes saved'],
+                    style: { marginBottom: 20 },
+                  }),
+                () =>
+                  Toast.show({
+                    text: 'Something went wrong', //translation['Something went wrong'],
+                    style: { marginBottom: 20 },
+                  }),
+              );
+            }}
+            loading={loading}
+            disabled={!name || !language || !birthday}
+            danger
+            text={translation['Save Changes']}
+          />
+        </Box>
         <Error error={error} />
       </Form>
     </Container>

@@ -5,6 +5,7 @@ export { default as RemoteConfig } from './services/RemoteConfig';
 export { default as UpdateUserService } from './services/UpdateUserService';
 export { default as ObserveUserService } from './services/ObserveUserService';
 export { default as BaseService } from './services/BaseService';
+export { default as ForgotPasswordService } from './services/ForgotPasswordService';
 export { buildDependencies, Dependency } from './services/DependencyService';
 export { default as LocalStateService } from './services/LocalStateService';
 export { default as Logger } from './services/LoggerService';

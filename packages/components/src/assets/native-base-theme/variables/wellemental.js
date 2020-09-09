@@ -22,7 +22,6 @@ const brandColors = {
   brandSuccess: '#A3CEC9',
   brandDanger: '#d9534f',
   brandWarning: '#CAAB29',
-  brandDark: 'rgba(11, 36, 64, 1)',
   brandLight: '#dfbead',
   lightGray: '#838383',
   offWhite: '#F4E6D0',
@@ -71,7 +70,7 @@ export default {
 
   // Button
   buttonFontFamily: platform === PLATFORM.IOS ? 'Inter' : 'Inter',
-  buttonDisabledBg: '#e7004c40', // '#b5b5b5',
+  buttonDisabledBg: this.textColor,
   buttonPadding: 6,
   get buttonPrimaryBg() {
     return this.brandPrimary;
@@ -195,7 +194,7 @@ export default {
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 40 : 50,
   toolbarBtnTextColor: '#fff',
-  toolbarDefaultBorder: brandColors.brandDark,
+  toolbarDefaultBorder: brandColors.textColor,
   iosStatusbar: 'light-content',
   get statusBarColor() {
     return color(this.toolbarDefaultBg).darken(0.2).hex();
@@ -215,7 +214,7 @@ export default {
   inputSuccessBorderColor: '#2b8339',
   inputErrorBorderColor: '#ed2f2f',
   inputHeightBase: 50,
-  inputColor: brandColors.brandDark,
+  inputColor: brandColors.textColor,
   get inputColorPlaceholder() {
     return this.textColor;
   },

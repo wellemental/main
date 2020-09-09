@@ -24,7 +24,7 @@ export const Content = React.createContext<ContentContext>({
   contentError: null,
   teachersError: null,
   loading: true,
-  features: null,
+  features: undefined,
 });
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {

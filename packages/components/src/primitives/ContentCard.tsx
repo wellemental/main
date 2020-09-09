@@ -22,7 +22,8 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
         button
         onPress={() =>
           navigation.navigate(
-            content.video_orientation === 'portrait' ? 'Video' : 'Content',
+            'Content',
+            // content.video_orientation === 'portrait' ? 'Video' : 'Content',
             {
               content,
               teacher,

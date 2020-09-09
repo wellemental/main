@@ -10,7 +10,11 @@ export type Translations = { [key: string]: string };
 enum SubStatus {
   Canceled = 'canceled',
   Active = 'active',
-  Trial = 'trialed',
+  Trial = 'trialing',
+  Unpaid = 'unpaid',
+  Incomplete = 'incomplete',
+  Incomplete_Expired = 'incomplete_expired',
+  Past_Due = 'past_due',
 }
 
 export enum Teachers {
@@ -179,4 +183,21 @@ export interface RemoteConfigService {
 export type Features = {
   title: string;
   categories: Category[];
+  version: string;
+  build: number;
+  forceUpgrade: boolean;
+  iosUrl: string;
+  upgradeText: string;
+  upgradeForceTitle: string;
+  upgradeForceBody: string;
+};
+
+export type Version = {
+  version: string;
+  build: number;
+  forceUpgrade: boolean;
+  iosUrl: string;
+  upgradeText: string;
+  upgradeForceTitle: string;
+  upgradeForceBody: string;
 };

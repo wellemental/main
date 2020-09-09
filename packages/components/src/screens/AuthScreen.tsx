@@ -6,19 +6,22 @@ import {
   Button,
   Input,
   Error,
+  Box,
   DatePicker,
 } from '../primitives';
 import moment from 'moment';
 import { AuthScreenRouteProp, Translations } from '../types';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   route: AuthScreenRouteProp;
 };
 
-const LoginScreen: React.FC<Props> = ({ route }) => {
+const AuthScreen: React.FC<Props> = ({ route }) => {
   // Import and save language selection to AsyncStorage
+  const navigation = useNavigation();
   const { language } = route.params;
   const translation: Translations =
     language === Languages.Es ? Español : English;
@@ -41,7 +44,7 @@ const LoginScreen: React.FC<Props> = ({ route }) => {
       const existingLogins = await service.checkExistingLogins(email);
       setAuths(existingLogins);
     } catch (err) {
-      setError(translation['Error. Please try again.']);
+      setError(err);
     }
     setLoading(false);
   };
@@ -51,7 +54,7 @@ const LoginScreen: React.FC<Props> = ({ route }) => {
     try {
       await service.login(email, password);
     } catch (err) {
-      setError('Did not work');
+      setError(err);
     }
     setLoading(false);
   };
@@ -105,9 +108,13 @@ const LoginScreen: React.FC<Props> = ({ route }) => {
 
       <Input
         label={translation.Email}
+        keyboard="email-address"
         value={email}
         autoFocus
         onChangeText={setEmail}
+        autoCapitalize="none"
+        autoCompleteType="email"
+        autoCorrect={false}
       />
 
       {auths && (
@@ -137,15 +144,24 @@ const LoginScreen: React.FC<Props> = ({ route }) => {
         </>
       )}
       <Button
-        large
         warning={language === Languages.Es}
-        text="Submit"
+        text={translation.Submit}
         loading={loading}
         onPress={handleStep}
       />
-      <Error error={error} />
+      <Box gt>
+        <Button
+          transparent
+          text={translation['Forgot password?']}
+          loading={loading}
+          onPress={() =>
+            navigation.navigate('Forgot Password', { translation })
+          }
+        />
+      </Box>
+      <Error center error={error} />
     </Container>
   );
 };
 
-export default LoginScreen;
+export default AuthScreen;

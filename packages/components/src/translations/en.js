@@ -53,4 +53,14 @@ export const English = {
     'You are not old enough to join Wellemental.',
   'Your profile is missing required information. Please update it below.':
     'Your profile is missing required information. Please update it below.',
+  Submit: 'Submit',
+  'Forgot password?': 'Forgot password?',
+  'Reset Password': 'Reset Password',
+  'Upgrade App': 'Upgrade App',
+  Download: 'Download',
+  'App Upgrade Required!': 'App Upgrade Required!',
+  'A critical update is required. Tap below to download the latest Wellemental update.':
+    'A critical update is required. Tap below to download the latest Wellemental update.',
+  'No Thanks': 'No Thanks',
+  Required: 'Required',
 };

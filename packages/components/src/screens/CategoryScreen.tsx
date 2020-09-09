@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, ContentLoop, PageHeading } from '../primitives';
-import { useCurrentUser } from '../hooks';
 import { CategoryScreenRouteProp } from '../types';
 
 type Props = {

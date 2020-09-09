@@ -33,7 +33,6 @@ const LandingScreen: React.FC = () => {
       <View style={{ position: 'absolute', bottom: 20, left: 15, right: 15 }}>
         <Box gv={1}>
           <Button
-            large
             text="English"
             loading={loading}
             onPress={() =>
@@ -42,7 +41,6 @@ const LandingScreen: React.FC = () => {
           />
         </Box>
         <Button
-          large
           warning
           // style={{ width: deviceWidth - 30 }}
           text="Español"

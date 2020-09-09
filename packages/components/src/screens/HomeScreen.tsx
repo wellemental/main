@@ -8,9 +8,12 @@ import {
 } from '../primitives';
 import moment from 'moment';
 import { TimeOfDay } from 'services';
-import { useCurrentUser, useContent } from '../hooks';
+import { useCurrentUser, useContent, useConfig } from '../hooks';
+import { useNavigation } from '@react-navigation/native';
+// import { getVersion } from 'react-native-device-info';
 
 const HomeScreen: React.FC = () => {
+  const navigation = useNavigation();
   const today = moment();
   const { translation } = useCurrentUser();
   const { features } = useContent();
@@ -29,12 +32,28 @@ const HomeScreen: React.FC = () => {
     tagline = 'Take some time for yourself this afternoon';
   }
 
+  // Determine if upgrade required
+  const { loading, data } = useConfig('version');
+  // const currVersion = getVersion();
+  // console.log('CURR VERSION', currVersion);
+  const canUpgrade = true; //false;
+  // if (version) {
+  //   canUpgrade = currVersion < version.version;
+  // }
+
+  console.log('V LOADING', features, 'HOME VERSION', data);
+  // useEffect(() => {})
+  if (data && canUpgrade) {
+    navigation.navigate('Upgrade', { version: data });
+  }
+
   return (
     <Container scrollEnabled>
       <PageHeading
         title={translation[`Good ${timeOfDay.toLowerCase()}`]}
         subtitle={tagline}
       />
+
       <ContentLoop filter={timeOfDay} />
       {features && features.categories ? (
         <>

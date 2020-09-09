@@ -1,11 +1,12 @@
 import React from 'react';
 // import { auth } from '../base';
-import { ApplicationError, AuthenticationError } from '../models/Errors';
+import { AuthenticationError } from '../models/Errors';
 import auth from '@react-native-firebase/auth';
 import { NewAccount } from '../types';
 import LocalStateService from './LocalStateService';
 import Logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
+import { FirebaseError } from 'firebase';
 
 class AuthService {
   public async checkExistingLogins(email: string): Promise<string[]> {
@@ -13,7 +14,7 @@ class AuthService {
       return await auth().fetchSignInMethodsForEmail(email);
     } catch (err) {
       Logger.error('Error checking existing logins');
-      return Promise.reject(new ApplicationError());
+      return Promise.reject(this.checkError(err));
     }
   }
 
@@ -29,24 +30,7 @@ class AuthService {
       await auth().signInWithEmailAndPassword(email, password);
     } catch (err) {
       Logger.error('Error logging in');
-      switch (err.code) {
-        case 'auth/invalid-email':
-          return Promise.reject(
-            new AuthenticationError('Invalid email address.'),
-          );
-        case 'auth/user-not-found':
-          return Promise.reject(
-            new AuthenticationError(
-              'There is no account associated with that email. Please sign up first.',
-            ),
-          );
-        case 'auth/wrong-password':
-          return Promise.reject(
-            new AuthenticationError('Email and password do not match.'),
-          );
-        default:
-          return Promise.reject(new AuthenticationError());
-      }
+      return Promise.reject(this.checkError(err));
     }
     tracker.track(TrackingEvents.Login);
     return Promise.resolve();
@@ -77,31 +61,31 @@ class AuthService {
       );
       tracker.track(TrackingEvents.Login);
     } catch (err) {
-      switch (err.code) {
-        case 'auth/email-already-in-use': {
-          return Promise.reject(
-            new AuthenticationError('Email already in use. Try signing in.'),
-          );
-        }
-        case 'auth/invalid-email': {
-          return Promise.reject(
-            new AuthenticationError('Invalid email address.'),
-          );
-        }
-        case 'auth/weak-password': {
-          return Promise.reject(
-            new AuthenticationError('Please use a stronger password.'),
-          );
-        }
-        default: {
-          Logger.error(`Failed to sign up user: ${err}`);
-          return Promise.reject(
-            new AuthenticationError('An unknown sign up error occurred.'),
-          );
-        }
-      }
+      return Promise.reject(this.checkError(err));
     }
     return Promise.resolve();
+  }
+
+  public checkError(err: FirebaseError): Error {
+    switch (err.code) {
+      case 'auth/email-already-in-use': {
+        return new AuthenticationError('Email already in use. Try signing in.');
+      }
+      case 'auth/weak-password': {
+        return new AuthenticationError('Please use a stronger password.');
+      }
+      case 'auth/invalid-email':
+        return new AuthenticationError('Invalid email address.');
+      case 'auth/user-not-found':
+        return new AuthenticationError(
+          'There is no account associated with that email. Please sign up first.',
+        );
+      case 'auth/wrong-password':
+        return new AuthenticationError('Email and password do not match.');
+      default: {
+        return new AuthenticationError('An unknown login error occurred.');
+      }
+    }
   }
 
   public async logout(): Promise<void> {

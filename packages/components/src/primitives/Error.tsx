@@ -5,9 +5,10 @@ import variables from '../assets/native-base-theme/variables/wellemental';
 
 interface Props {
   error?: Error | string;
+  center?: boolean;
 }
 
-const ErrorComponent: React.FC<Props> = ({ error }) => {
+const ErrorComponent: React.FC<Props> = ({ error, center }) => {
   const text =
     undefined || error === null
       ? null
@@ -22,7 +23,10 @@ const ErrorComponent: React.FC<Props> = ({ error }) => {
       : 'An unknown error occurred';
 
   return error ? (
-    <Paragraph gt={2} style={{ color: variables.brandDanger }}>
+    <Paragraph
+      center={center ? center : false}
+      gt={2}
+      style={{ color: variables.brandDanger }}>
       {text}
     </Paragraph>
   ) : null;
