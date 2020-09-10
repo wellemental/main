@@ -36,13 +36,10 @@ class DownloadVideoService implements DownloadVideoServiceType {
     const exists = await this.checkExists(videoUrl);
 
     if (exists) {
-      console.log('ALREADY DOWNLOADED');
       logger.info('Already downloaded');
       return Promise.resolve();
-    } else {
     }
 
-    console.log(' DOWNLOADING!!!');
     await RNFS.downloadFile({
       fromUrl: videoUrl,
       toFile: path_name.replace(/%20/g, '_'),
@@ -56,12 +53,6 @@ class DownloadVideoService implements DownloadVideoServiceType {
       .catch((err) => {
         console.log('err downloadFile', err);
       });
-
-    // } catch (err) {
-    //   logger.error(`Err downloadFile - ${err}`);
-    //   console.log('ERROR DOWNLOADING', err);
-    //   return Promise.reject(err);
-    // }
   }
 
   public async getVideo(videoUrl: string): Promise<string> {
