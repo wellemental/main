@@ -13,7 +13,6 @@ type Props = {
 const UpgradeScreen: React.FC<Props> = ({ route, navigation }) => {
   const { version } = route.params;
   const { translation } = useCurrentUser();
-  //   version.forceUpgrade === false
 
   const upgradeOnPress = (): void => {
     Linking.openURL(version.iosUrl).catch((err) =>

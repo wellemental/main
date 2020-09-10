@@ -8,12 +8,13 @@ import {
 } from 'react-native';
 import { H1, Button as NBButton, Icon } from 'native-base';
 import {
-  Container,
-  Button,
-  Paragraph,
   AvyName,
-  Favorite,
   Box,
+  Button,
+  Container,
+  Download,
+  Favorite,
+  Paragraph,
   Spinner,
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
@@ -109,7 +110,10 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
       /> */}
       <Box row justifyContent="space-between" gt={2} gb={1}>
         <H1>{content.title}</H1>
-        <Favorite onProfile contentId={content.id} />
+        <View>
+          <Favorite onProfile contentId={content.id} />
+          <Download content={content} />
+        </View>
       </Box>
 
       <Paragraph gb>

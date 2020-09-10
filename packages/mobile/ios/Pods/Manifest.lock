@@ -651,6 +651,8 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
+  - RNDeviceInfo (6.0.2):
+    - React
   - RNDevMenu (4.0.2):
     - React-Core
     - React-Core/DevSupport
@@ -674,6 +676,8 @@ PODS:
     - Firebase/RemoteConfig (~> 6.28.1)
     - React
     - RNFBApp
+  - RNFS (2.16.6):
+    - React
   - RNGestureHandler (1.7.0):
     - React
   - RNReanimated (1.13.0):
@@ -738,12 +742,14 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../../../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNDevMenu (from `../node_modules/react-native-dev-menu`)
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBRemoteConfig (from `../node_modules/@react-native-firebase/remote-config`)"
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -846,6 +852,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNDevMenu:
     :path: "../node_modules/react-native-dev-menu"
   RNFBAnalytics:
@@ -858,6 +866,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/firestore"
   RNFBRemoteConfig:
     :path: "../node_modules/@react-native-firebase/remote-config"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
@@ -931,12 +941,14 @@ SPEC CHECKSUMS:
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNDeviceInfo: bdd61e8b070d13a1dd9d022091981075ed4cde16
   RNDevMenu: fd325b5554b61fe7f48d9205a3877cf5ee88cd7c
   RNFBAnalytics: 5019ba3ae2a84c61ce784e431554abdd6b0376c0
   RNFBApp: abbab9c96e6d2f1cada6401c9138d3f8cb2ae930
   RNFBAuth: 310c2e57dd86cdf50eccb6ac83ba0212115ac919
   RNFBFirestore: e6de55217697a483c9dd54c2676fd82967b19349
   RNFBRemoteConfig: a4c21fbea624a993da3385a3db1c602a623fa5d4
+  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2

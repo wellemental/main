@@ -7,10 +7,10 @@ import {
   Spinner,
 } from '../primitives';
 import moment from 'moment';
-import { TimeOfDay } from 'services';
+import { TimeOfDay, Version } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
-// import { getVersion } from 'react-native-device-info';
+import { getVersion } from 'react-native-device-info';
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -18,7 +18,7 @@ const HomeScreen: React.FC = () => {
   const { translation } = useCurrentUser();
   const { features } = useContent();
 
-  // Determine Time of Day
+  // Determine Time of Day for header customization
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
   let tagline = 'Start the day with some morning stretches';
   if (
@@ -32,19 +32,17 @@ const HomeScreen: React.FC = () => {
     tagline = 'Take some time for yourself this afternoon';
   }
 
-  // Determine if upgrade required
-  const { loading, data } = useConfig('version');
-  // const currVersion = getVersion();
-  // console.log('CURR VERSION', currVersion);
-  const canUpgrade = true; //false;
-  // if (version) {
-  //   canUpgrade = currVersion < version.version;
-  // }
+  // Upgrade Screen prompt
+  const { data } = useConfig<Version>('version');
+  const currVersion = getVersion();
+  let canUpgrade = false;
+  // if there's a newer version available, display upgrade modal
+  if (data) {
+    canUpgrade = currVersion < data.version;
 
-  console.log('V LOADING', features, 'HOME VERSION', data);
-  // useEffect(() => {})
-  if (data && canUpgrade) {
-    navigation.navigate('Upgrade', { version: data });
+    if (canUpgrade) {
+      navigation.navigate('Upgrade', { version: data });
+    }
   }
 
   return (

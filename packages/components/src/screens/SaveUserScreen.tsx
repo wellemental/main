@@ -23,9 +23,6 @@ const SaveUserScreen: React.FC = () => {
   const savedData: Partial<InitialUserDoc> = {
     id: auth.uid,
     email: auth.email,
-    // name: '',
-    // birthday: '',
-    // language: '',
   };
 
   const service = new LocalStateService();
@@ -52,7 +49,7 @@ const SaveUserScreen: React.FC = () => {
 
       // Save info to database
       mutate();
-      setIsGetting(false);
+      // setIsGetting(false);
     } catch (err) {
       setIsGetting(false);
       setAsyncError(
@@ -63,7 +60,9 @@ const SaveUserScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!user || !user.name || !user.birthday || !user.language) getData();
+    if (!user || !user.name || !user.birthday || !user.language) {
+      getData();
+    }
   }, []);
 
   return gettingStorage || loading ? (

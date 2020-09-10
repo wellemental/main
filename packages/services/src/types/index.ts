@@ -144,9 +144,30 @@ export interface InitialUserDoc {
   language: Languages | string;
 }
 
+export type DownloadResult = {
+  jobId: number; // The download job ID, required if one wishes to cancel the download. See `stopDownload`.
+  statusCode: number; // The HTTP status code
+  bytesWritten: number; // The number of bytes written to the file
+};
+
+export type DownloadProgressCallbackResult = {
+  jobId: number; // The download job ID, required if one wishes to cancel the download. See `stopDownload`.
+  contentLength: number; // The total size in bytes of the download resource
+  bytesWritten: number; // The number of bytes written to the file so far
+};
+
 export interface ContentServiceType {
   buildContent(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Content;
   getContent(): Promise<Content[]>;
+}
+
+export interface DownloadVideoServiceType {
+  downloadVideo(
+    videoUrl: string,
+  ): Promise<void | { jobId: number; promise: Promise<DownloadResult> }>;
+  getVideo(videoUrl: string): Promise<string>;
+  deleteVideo(videoUrl: string): Promise<void>;
+  checkExists(filename: string): Promise<boolean>;
 }
 
 export interface UpdateUserServiceType {

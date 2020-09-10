@@ -8,6 +8,7 @@ export { default as Avatar } from './Avatar';
 export { default as AvyName } from './AvyName';
 export { default as Favorite } from './Favorite';
 export { default as Error } from './Error';
+export { default as Download } from './Download';
 export { default as Spinner } from './Spinner';
 export { default as Tabs } from './Tabs';
 export { default as DatePicker } from './DatePicker';
