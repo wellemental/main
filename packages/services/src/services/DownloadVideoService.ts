@@ -28,7 +28,6 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
   public async downloadVideo(
     videoUrl: string,
-    setProgress: (res: DownloadProgressCallbackResult) => void,
   ): Promise<void | { jobId: number; promise: Promise<DownloadResult> }> {
     const filename = this.convertUrlToFileName(videoUrl);
     const path_name = this.createPathname(filename);
@@ -44,8 +43,6 @@ class DownloadVideoService implements DownloadVideoServiceType {
       fromUrl: videoUrl,
       toFile: path_name.replace(/%20/g, '_'),
       background: true,
-      progress: setProgress,
-      progressDivider: 1,
     })
       .promise.then((res) => {
         console.log('File Downloaded', res);
@@ -60,10 +57,8 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
     try {
       const result = await RNFS.readDir(RNFS.DocumentDirectoryPath);
-      console.log('RESULT', result);
       result.forEach((element) => {
         if (element.name === filename.replace(/%20/g, '_')) {
-          console.log('MATCH THOOOO', element.path, filename);
           return Promise.resolve(element.path);
         }
       });
@@ -79,7 +74,7 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
     try {
       const res = await RNFS.unlink(path_name);
-      console.log('FILE DELETED', res);
+      logger.info(`File Deleted - ${res}`);
       return Promise.resolve();
     } catch (err) {
       logger.error('Error deleting video cache');

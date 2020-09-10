@@ -28,10 +28,11 @@ export const English = {
   'Are you sure you want to logout?': 'Are you sure you want to logout?',
   Cancel: 'Cancel',
   'Start the day with some morning stretches':
-    'Start the day with some morning stretches',
-  'Take some time for yourself this afternoon':
-    'Take some time for yourself this afternoon',
-  'Wind down from a long day': 'Wind down from a long day',
+    'Comienza el día con estiramientos matutinos',
+  'Shake out the day with some fun movement.':
+    'Sacude el día con movimientos divertidos. ',
+  'Get ready for bedtime with these soothing practices.':
+    'Prepárate para dormir con estas practicas calmantes',
   All: 'All',
   Move: 'Move',
   Meditate: 'Meditate',
@@ -53,6 +54,7 @@ export const English = {
     'You are not old enough to join Wellemental.',
   'Your profile is missing required information. Please update it below.':
     'Your profile is missing required information. Please update it below.',
+  'Practice with': 'Practica con',
   Submit: 'Submit',
   'Forgot password?': 'Forgot password?',
   'Reset Password': 'Reset Password',

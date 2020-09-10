@@ -14,11 +14,7 @@ import {
   UpgradeScreen,
 } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
-import {
-  RootStackParamList,
-  ModalStackParamList,
-  AuthStackParamList,
-} from './types';
+import { RootStackParamList, AuthStackParamList } from './types';
 import { useCurrentUser } from './hooks';
 import variables from './assets/native-base-theme/variables/wellemental';
 

@@ -98,12 +98,15 @@ export default (variables /* : * */ = variable) => {
         },
       },
       'NativeBase.Icon': {
-        color: variables.brandLight,
+        // color: variables.brandLight,
+        opacity: 0.5,
       },
       'NativeBase.IconNB': {
-        color: variables.brandLight,
+        // color: variables.brandLight,
+        opacity: 0.5,
       },
-      backgroundColor: variables.buttonDisabledBg,
+      // backgroundColor: variables.buttonDisabledBg,
+      opacity: 0.5,
     },
     '.bordered': {
       '.dark': {

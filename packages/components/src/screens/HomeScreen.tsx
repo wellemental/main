@@ -20,16 +20,17 @@ const HomeScreen: React.FC = () => {
 
   // Determine Time of Day for header customization
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
-  let tagline = 'Start the day with some morning stretches';
+  let tagline = translation['Start the day with some morning stretches'];
   if (
     today.isAfter(moment().hour(19), 'hour') ||
     today.isBefore(moment().hour(4), 'hour')
   ) {
     timeOfDay = TimeOfDay.Evening;
-    tagline = 'Wind down from a long day';
+    tagline = translation['Shake out the day with some fun movement.'];
   } else if (today.isAfter(moment().hour(12), 'hour')) {
     timeOfDay = TimeOfDay.Afternoon;
-    tagline = 'Take some time for yourself this afternoon';
+    tagline =
+      translation['Get ready for bedtime with these soothing practices.'];
   }
 
   // Upgrade Screen prompt

@@ -58,12 +58,14 @@ export const CurrentUserProvider = ({ children }: any) => {
       .onSnapshot(async (snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
         const userData = snapshot.data();
 
+        // If user isn't logged in or doc doesn't exist
         if (!user.email) {
           return Promise.resolve();
         } else if (!snapshot.exists) {
           return Promise.reject('User doc does not exist.');
         }
 
+        // Build user doc
         const userDoc: User = {
           id: user.uid,
           email: userData.email,

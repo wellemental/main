@@ -20,15 +20,15 @@ const UpgradeScreen: React.FC<Props> = ({ route, navigation }) => {
     );
   };
 
-  console.log('VERSION', version);
-
   return (
     <Container center>
       <Box gb={0.5}>
         <H1>{`${translation['Upgrade App']} ${translation.Required}!`}</H1>
       </Box>
       <Box gb={1.5}>
-        <Paragraph>{version.upgradeForceBody}</Paragraph>
+        <Paragraph>
+          {translation['Tap below to download the latest Wellemental update.']}
+        </Paragraph>
       </Box>
       <Button
         text={translation.Download}

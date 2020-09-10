@@ -6,6 +6,7 @@ import {
   UpdateUserService,
   Logger,
   InitialUserDoc,
+  Languages,
 } from 'services';
 import EditProfileScreen from './EditProfileScreen';
 import { Error } from '../primitives';
@@ -30,26 +31,21 @@ const SaveUserScreen: React.FC = () => {
   const { mutate, error, loading } = useMutation(() =>
     service2.createProfile(savedData),
   );
+
   const getData = async (): Promise<void> => {
     try {
       // Pull extra signup data from Async storage
+      // Set defaults in case of error with local storage to avoid blocked UX
       const savedLanguage = await service.getStorage('wmLanguage');
       translation = getTranslation(savedLanguage);
-      if (savedLanguage) {
-        savedData.language = savedLanguage;
-      }
+      savedData.language = savedLanguage ? savedLanguage : Languages.En;
       const savedBirthday = await service.getStorage('wmBirthday');
-      if (savedBirthday) {
-        savedData.birthday = savedBirthday;
-      }
+      savedData.birthday = savedBirthday ? savedBirthday : 'N/A';
       const savedName = await service.getStorage('wmName');
-      if (savedName) {
-        savedData.name = savedName;
-      }
+      savedData.name = savedName ? savedName : '';
 
       // Save info to database
       mutate();
-      // setIsGetting(false);
     } catch (err) {
       setIsGetting(false);
       setAsyncError(
@@ -60,8 +56,10 @@ const SaveUserScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!user || !user.name || !user.birthday || !user.language) {
-      getData();
+    if (user) {
+      if (!user.name || !user.birthday || !user.language) {
+        getData();
+      }
     }
   }, []);
 

@@ -110,17 +110,17 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
       /> */}
       <Box row justifyContent="space-between" gt={2} gb={1}>
         <H1>{content.title}</H1>
-        <View>
+        <Box row>
           <Favorite onProfile contentId={content.id} />
-          <Download content={content} />
-        </View>
+          <Download videoUrl={content.video} />
+        </Box>
       </Box>
 
-      <Paragraph gb>
+      <Paragraph gb={1}>
         {content.type.toUpperCase()} | {content.length}
       </Paragraph>
 
-      <Paragraph gb>{content.description}</Paragraph>
+      <Paragraph gb={2}>{content.description}</Paragraph>
 
       <Button
         transparent
