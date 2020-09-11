@@ -3,11 +3,20 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "firestore",
+      "functions",
+      "storage",
       "packages/*"
     ],
     "nohoist": [
       "**/react-native",
       "**/react-native/**",
+      "**/firebase",
+      "**/firebase/**",
+      "**/@react-native-firebase",
+      "**/@react-native-firebase/**",
+      "**/react-native-firebase",
+      "**/react-native-firebase/**",
       "**/react-native**",
       "**/react-native-gesture-handler/**",
       "**/react-native-screens/**",

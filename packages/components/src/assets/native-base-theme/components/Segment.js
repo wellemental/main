@@ -7,7 +7,7 @@ export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
   const segmentTheme = {
-    height: 45,
+    height: 60,
     borderColor: variables.segmentBorderColorMain,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -15,9 +15,9 @@ export default (variables /* : * */ = variable) => {
     'NativeBase.Button': {
       alignSelf: 'center',
       borderRadius: 0,
-      paddingTop: 3,
-      paddingBottom: 3,
-      height: 30,
+      paddingTop: 10,
+      paddingBottom: 10,
+      height: 50,
       backgroundColor: 'transparent',
       borderWidth: 1,
       borderLeftWidth: 0,
@@ -43,7 +43,7 @@ export default (variables /* : * */ = variable) => {
       },
       'NativeBase.Text': {
         color: variables.segmentTextColor,
-        fontSize: 14,
+        fontSize: 20,
       },
       'NativeBase.Icon': {
         fontSize: 22,

@@ -98,12 +98,15 @@ export default (variables /* : * */ = variable) => {
         },
       },
       'NativeBase.Icon': {
-        color: variables.brandLight,
+        // color: variables.brandLight,
+        opacity: 0.5,
       },
       'NativeBase.IconNB': {
-        color: variables.brandLight,
+        // color: variables.brandLight,
+        opacity: 0.5,
       },
-      backgroundColor: variables.buttonDisabledBg,
+      // backgroundColor: variables.buttonDisabledBg,
+      opacity: 0.5,
     },
     '.bordered': {
       '.dark': {
@@ -297,7 +300,7 @@ export default (variables /* : * */ = variable) => {
     '.large': {
       height: 60,
       'NativeBase.Text': {
-        fontSize: 22,
+        fontSize: 20, //22,
       },
     },
 
@@ -313,7 +316,8 @@ export default (variables /* : * */ = variable) => {
       marginLeft: 0,
       marginRight: 0,
       color: variables.inverseTextColor,
-      fontSize: variables.buttonTextSize,
+      fontSize: variables.buttonTextSize + 2,
+      fontWeight: '500',
       paddingHorizontal: 16,
       backgroundColor: 'transparent',
     },
@@ -370,7 +374,7 @@ export default (variables /* : * */ = variable) => {
     borderRadius: variables.borderRadiusBase,
     borderColor: variables.buttonPrimaryBg,
     borderWidth: null,
-    height: 45,
+    height: 55,
     flexDirection: 'row',
     elevation: 2,
     shadowColor:

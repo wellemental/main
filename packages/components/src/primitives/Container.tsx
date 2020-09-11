@@ -1,15 +1,16 @@
 import { NativeBase } from 'native-base';
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import variables from '../assets/native-base-theme/variables/platform';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 type ContainerProps = {
   noPadding?: 'vertical' | 'horizontal' | 'none';
   color?: string;
   center?: boolean;
+  scrollEnabled?: boolean;
 };
 
-const Container: React.FC<ContentProps & NativeBase.Content> = ({
+const Container: React.FC<ContainerProps & NativeBase.Content> = ({
   style,
   scrollEnabled = true,
   children,
@@ -31,6 +32,8 @@ const Container: React.FC<ContentProps & NativeBase.Content> = ({
           : variables.mainContentPaddingVertical,
       justifyContent: center ? 'center' : undefined,
       alignItems: center ? 'center' : undefined,
+      flex: 1,
+      alignContent: 'center',
     },
     style,
   ]);
@@ -48,7 +51,7 @@ const Container: React.FC<ContentProps & NativeBase.Content> = ({
   return (
     <SafeAreaView
       style={{
-        backgroundColor: color ? color : variables.containerBgColor,
+        backgroundColor: color ? color : variables.white,
         flex: 1,
       }}>
       {container}

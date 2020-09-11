@@ -1,52 +1,71 @@
 import React, { useState } from 'react';
-import { Segment } from 'native-base';
-import { Button, SearchBar, Container, Card } from '../primitives';
-import { seed } from './seed';
-import { Content as ContentType, Categories } from 'types';
+import {
+  Tabs,
+  Container,
+  ContentLoop,
+  PageHeading,
+  TeacherLoop,
+} from '../primitives';
+import { Tags } from 'services';
+import { useCurrentUser } from '../hooks';
+import { LibraryScreenRouteProp } from '../types';
+
+type Props = {
+  route: LibraryScreenRouteProp;
+};
 
 const LibraryScreen: React.FC = () => {
-  const [filter, setFilter] = useState<'All' | Categories>('All');
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const { translation } = useCurrentUser();
 
-  // const filterOptions = ['Teachers', 'Age', 'Type', 'Length'];
-  const filterOptions = ['All', 'Meditation', 'Movement'];
+  const tabs = {
+    [translation.All]: <ContentLoop key="All" />,
+    [translation.Move]: <ContentLoop key="Move" filter={Tags.Move} />,
+    [translation.Meditate]: (
+      <ContentLoop key="Meditate" filter={Tags.Meditate} />
+    ),
+    [translation.Learn]: <ContentLoop key="Learn" filter={Tags.Learn} />,
+    [translation.Sleep]: <ContentLoop key="Sleep" filter={Tags.Sleep} />,
+    [translation.Teachers]: <TeacherLoop key="Teachers" />,
+  };
 
-  // Filter data for Player Type and SearchTerm
-  const data: ContentType[] = seed;
-  let filteredData: ContentType[] | null = null;
-  if (data) {
-    filteredData = data
-      .filter((item) =>
-        filter === 'All'
-          ? item
-          : filter === Categories.Meditation
-          ? item.category === Categories.Meditation
-          : item.category === Categories.Movement,
-      )
-      .filter((item) =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-  }
+  // const tabs = [
+  //   [undefined, translation.All],
+  //   [Tags.Move, translation.Move],
+  //   [Tags.Meditate, translation.Meditate],
+  //   [Tags.Learn, translation.Learn],
+  //   [Tags.Sleep, translation.Sleep],
+  //   ['Teachers', translation.Teachers],
+  // ];
+
+  // const header = (
+  //   <>
+  //     <PageHeading title={translation["Let's Practice."]} />
+  //     <Tabs
+  //       filters={tabs.map((item) => item[1])}
+  //       onChangeTab={(e) => setFilter(tabs[e.i][0])}
+  //     />
+  //   </>
+  // );
 
   return (
     <Container>
-      <SearchBar value={searchTerm} setState={setSearchTerm} />
-
-      <Segment>
-        {filterOptions.map((option, idx) => (
-          <Button
-            text={option}
-            first={idx === 0}
-            last={idx + 1 === filterOptions.length}
-            onPress={(): void => setFilter(option)}
-            active={filter === option}
+      <PageHeading title={translation["Let's Practice."]} />
+      <Tabs
+        filters={tabs}
+        // filters={tabs.map((item) => item[1])}
+        // onChangeTab={(e) => setFilter(tabs[e.i][0])}
+      />
+      {/* <>
+        {filter === 'Teachers' ? (
+          <TeacherLoop scrollEnabled header={header} />
+        ) : (
+          <ContentLoop
+            scrollEnabled
+            header={header}
+            filter={filter === 'All' ? undefined : filter}
           />
-        ))}
-      </Segment>
-
-      {filteredData.map((content) => (
-        <Card content={content} />
-      ))}
+        )}
+      </> */}
     </Container>
   );
 };
