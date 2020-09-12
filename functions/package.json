@@ -8,6 +8,8 @@
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
+    "deploy:staging": "yarn run firebase deploy --only functions -P staging",
+    "deploy:production": "yarn run firebase deploy --only functions -P production",
     "logs": "firebase functions:log"
   },
   "engines": {

@@ -29,6 +29,7 @@
 		D3E1B36924F4546D008EF499 /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3E1B36724F4546D008EF499 /* Inter.ttf */; };
 		D3F2E65524F051FD001F7A3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D3F2E65424F051FD001F7A3D /* GoogleService-Info.plist */; };
 		D3FECA21250AEEF7001513D0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FECA20250AEEF7001513D0 /* StoreKit.framework */; };
+		D3FFB4BD250C3F0500EFD8A6 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,23 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = wellemental/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9507ADEF7AB39DBD7654C43D /* Pods-wellemental-wellementalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wellemental-wellementalTests.debug.xcconfig"; path = "Target Support Files/Pods-wellemental-wellementalTests/Pods-wellemental-wellementalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ACE5DEB9580379D7D6B7812E /* libPods-wellemental.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wellemental.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D35105FD250BE35200BF5CFC /* 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1024.png; sourceTree = "<group>"; };
+		D35105FE250BE35200BF5CFC /* 76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 76.png; sourceTree = "<group>"; };
+		D35105FF250BE35200BF5CFC /* 60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 60.png; sourceTree = "<group>"; };
+		D3510600250BE35200BF5CFC /* 58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 58.png; sourceTree = "<group>"; };
+		D3510601250BE35200BF5CFC /* 167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 167.png; sourceTree = "<group>"; };
+		D3510602250BE35200BF5CFC /* 120-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "120-1.png"; sourceTree = "<group>"; };
+		D3510603250BE35200BF5CFC /* 29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 29.png; sourceTree = "<group>"; };
+		D3510604250BE35200BF5CFC /* 120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 120.png; sourceTree = "<group>"; };
+		D3510605250BE35200BF5CFC /* 40-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "40-1.png"; sourceTree = "<group>"; };
+		D3510606250BE35200BF5CFC /* 20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 20.png; sourceTree = "<group>"; };
+		D3510607250BE35200BF5CFC /* 40-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "40-2.png"; sourceTree = "<group>"; };
+		D3510608250BE35200BF5CFC /* Contents.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
+		D3510609250BE35200BF5CFC /* 180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 180.png; sourceTree = "<group>"; };
+		D351060A250BE35200BF5CFC /* 80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 80.png; sourceTree = "<group>"; };
+		D351060B250BE35200BF5CFC /* 40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 40.png; sourceTree = "<group>"; };
+		D351060C250BE35200BF5CFC /* 87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 87.png; sourceTree = "<group>"; };
+		D351060D250BE35200BF5CFC /* 152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 152.png; sourceTree = "<group>"; };
 		D3D56AE024EE5706005F8582 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
 		D3D56AE124EE5706005F8582 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		D3D56AE224EE5706005F8582 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
@@ -151,6 +169,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				D35105FC250BE35200BF5CFC /* AppIcon.appiconset */,
 				D3D56ADC24EE5706005F8582 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* wellemental */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -182,6 +201,31 @@
 				F0B52D7BABCC7ADF46D9F873 /* Pods-wellemental-wellementalTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		D35105FC250BE35200BF5CFC /* AppIcon.appiconset */ = {
+			isa = PBXGroup;
+			children = (
+				D35105FD250BE35200BF5CFC /* 1024.png */,
+				D35105FE250BE35200BF5CFC /* 76.png */,
+				D35105FF250BE35200BF5CFC /* 60.png */,
+				D3510600250BE35200BF5CFC /* 58.png */,
+				D3510601250BE35200BF5CFC /* 167.png */,
+				D3510602250BE35200BF5CFC /* 120-1.png */,
+				D3510603250BE35200BF5CFC /* 29.png */,
+				D3510604250BE35200BF5CFC /* 120.png */,
+				D3510605250BE35200BF5CFC /* 40-1.png */,
+				D3510606250BE35200BF5CFC /* 20.png */,
+				D3510607250BE35200BF5CFC /* 40-2.png */,
+				D3510608250BE35200BF5CFC /* Contents.json */,
+				D3510609250BE35200BF5CFC /* 180.png */,
+				D351060A250BE35200BF5CFC /* 80.png */,
+				D351060B250BE35200BF5CFC /* 40.png */,
+				D351060C250BE35200BF5CFC /* 87.png */,
+				D351060D250BE35200BF5CFC /* 152.png */,
+			);
+			name = AppIcon.appiconset;
+			path = wellemental/Images.xcassets/AppIcon.appiconset;
 			sourceTree = "<group>";
 		};
 		D3D56ADC24EE5706005F8582 /* Fonts */ = {
@@ -253,7 +297,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1170;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -298,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3FFB4BD250C3F0500EFD8A6 /* main.jsbundle in Resources */,
 				D3D56AF824EE5706005F8582 /* FontAwesome.ttf in Resources */,
 				D3F2E65524F051FD001F7A3D /* GoogleService-Info.plist in Resources */,
 				D3E1B36524F45466008EF499 /* RecoletaAlt-Medium.ttf in Resources */,
@@ -330,7 +375,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\nexport EXTRA_PACKAGER_ARGS=\"--entry-file packages/mobile/index.js --reset-cache\"\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		271DACFCD436FB9D7A18E4BE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -482,6 +527,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -496,7 +542,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wellemental.app/wellemental";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wellemental.app/Wellemental";
 			};
 			name = Debug;
 		};
@@ -506,6 +552,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = wellementalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -517,7 +564,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wellemental.app/wellemental";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wellemental.app/Wellemental";
 			};
 			name = Release;
 		};
@@ -541,7 +588,7 @@
 				PRODUCT_NAME = Wellemental;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -564,7 +611,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.wellemental;
 				PRODUCT_NAME = Wellemental;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

@@ -30,7 +30,9 @@ export type StripeEvent = {
 };
 
 const stripe = require('stripe')(functions.config().stripe.sk);
+// const stripe = require('stripe')('');
 const endpointSecret = functions.config().stripe.webhooksecret;
+// const endpointSecret = '';
 
 export const webhookListen = functions.https.onRequest(
   (request: any, response: functions.Response): any => {

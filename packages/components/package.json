@@ -27,8 +27,8 @@
     "react-native-screens": "^2.10.1",
     "react-native-splash-screen": "^3.2.0",
     "react-native-video": "^5.1.0-alpha8",
-    "services": "0.0.1",
     "styled-components": "^5.1.1",
+    "services": "0.0.1",
     "types": "0.0.1"
   },
   "devDependencies": {

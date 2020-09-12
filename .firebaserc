@@ -1,7 +1,7 @@
 {
   "projects": {
     "default": "dev-wellemental",
-    "production": "dev-wellemental",
+    "production": "prod-wellemental",
     "staging": "dev-wellemental"
   }
 }
