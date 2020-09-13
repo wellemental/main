@@ -65,4 +65,6 @@ export const English = {
     'A critical update is required. Tap below to download the latest Wellemental update.',
   'No Thanks': 'No Thanks',
   Required: 'Required',
+  Plans: 'Plans',
+  Purchase: 'Purchase',
 };

@@ -12,6 +12,7 @@ import {
   SaveUserScreen,
   ForgotPasswordScreen,
   UpgradeScreen,
+  PlansScreen,
 } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList, AuthStackParamList } from './types';
@@ -72,6 +73,7 @@ const Navigator: React.FC = () => {
                   }}
                 />
                 <Stack.Screen name="Content" component={ContentScreen} />
+                <Stack.Screen name="Plans" component={PlansScreen} />
                 <Stack.Screen name="Category" component={CategoryScreen} />
                 <Stack.Screen name="Video" component={VideoScreen} />
                 <Stack.Screen

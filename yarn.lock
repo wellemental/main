@@ -2314,6 +2314,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-7.5.3.tgz#6659ed53e9cea0ab0d83d24feea304d62698cc81"
   integrity sha512-SX6Z89O4VilW5oU7oGTQScMjGb978Jp+JtWARBbbx+pB7RfCVOfd8LqJYHZKvJVz/ucd+8RGD7cdT+C5R7h0oQ==
 
+"@react-native-firebase/functions@^7.4.3":
+  version "7.4.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/functions/-/functions-7.4.3.tgz#fb00e005cae011b415600e893d71d9a57014ba3c"
+  integrity sha512-GRekoCLi83xUiDu2Zz3pOnbZ6hStTByNTDEIuMFjJG4T3Hf/+m5nRle3nxj7qCoxOkXu58MnJT0Q4r54C5pVcw==
+
 "@react-native-firebase/remote-config@^8.2.1":
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/remote-config/-/remote-config-8.2.1.tgz#9154ecdf231b12fef578f25d4d9ec1703a14e78d"
@@ -6062,6 +6067,11 @@ domutils@^1.5.1, domutils@^1.7.0:
   dependencies:
     dom-serializer "0"
     domelementtype "1"
+
+dooboolab-welcome@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/dooboolab-welcome/-/dooboolab-welcome-1.2.0.tgz#295818ce85a8e97dc90c0ec0510b4008e2d722dc"
+  integrity sha512-XgEbjJHAsKLge/e8jtuHsv84Ovg1Gx0GvnOTOmOlVGV1643nduTAkT3fyo/mxKbzvyXBr47RHaJAY4R2toI0UA==
 
 dot-case@^3.0.3:
   version "3.0.3"
@@ -13951,6 +13961,13 @@ react-native-gesture-handler@^1.7.0:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-iap@^4.5.3:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-4.5.3.tgz#f5eb68199faaa442c6d062121e7382eecc30c17c"
+  integrity sha512-jaWMAUpXmkwy5EqVmOiGtqIisaqLXjbjc0wWg5mmXjnYh5pxKX3Zmtpe7BfJaC4lIyyO8ZI3PiWUTMNnELU8vA==
+  dependencies:
+    dooboolab-welcome "^1.2.0"
 
 react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"

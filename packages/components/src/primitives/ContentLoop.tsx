@@ -27,6 +27,8 @@ const ContentLoop: React.FC<Props> = ({
   const { user } = useCurrentUser();
   const { content, teachers, contentError, teachersError } = useContent();
 
+  // console.log('CONTENT', content);
+
   let filteredContent: Content[] = content.filter(
     (item: Content) => user.language && item.language !== user.language,
   );

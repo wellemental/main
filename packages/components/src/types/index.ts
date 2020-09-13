@@ -26,6 +26,7 @@ export type RootStackParamList = {
   'Forgot Password': { translation: Translations };
   AuthStack: undefined;
   Upgrade: { version: Version };
+  Plans: undefined;
 };
 
 export type AuthStackParamList = {

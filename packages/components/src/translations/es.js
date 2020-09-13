@@ -69,4 +69,6 @@ export const Español = {
     'Se requiere una actualización crítica. Toque a continuación para descargar la última actualización de Wellemental.',
   'No Thanks': 'No, gracias',
   Required: 'Requerida',
+  Plans: 'Plans',
+  Purchase: 'Comprar',
 };

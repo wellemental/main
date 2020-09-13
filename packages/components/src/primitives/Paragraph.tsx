@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
-interface Props {
+export interface ParagraphProps {
   style?: RecursiveArray<false | TextStyle | RegisteredStyle<TextStyle>>;
   gb?: number;
   gt?: number;
@@ -17,7 +17,7 @@ interface Props {
   size?: number;
 }
 
-const Paragraph: React.FC<Props & NativeBase.Text> = ({
+const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
   style,
   children,
   size,
