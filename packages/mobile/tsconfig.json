@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,
-    "typeRoots": ["@types", "../../node_modules/@types"]
+    "typeRoots": ["@types"]
   },
   "include": ["index.js", "src"],
   "references": [

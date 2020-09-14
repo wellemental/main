@@ -38,7 +38,7 @@ export const IAPProvider = ({ children }: any) => {
 
     if (transactionReceipt !== undefined) {
       try {
-        await functions().httpsCallable('onCreatePlayerGamePlan')({
+        await functions().httpsCallable('onValidateIap')({
           receipt: transactionReceipt,
           productId: productId,
         });

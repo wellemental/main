@@ -7,6 +7,7 @@ import {
   CurrentUserProvider,
   ContentProvider,
   ServicesProvider,
+  IAPProvider,
 } from './context';
 import Navigator from './Navigator';
 // import { useCurrentUser, useContent } from './hooks';
@@ -47,19 +48,21 @@ const App: React.FC = () => {
     <CurrentUserProvider>
       <StyleProvider style={getTheme(wellemental)}>
         <ContentProvider>
-          <ServicesProvider>
-            {/* <CurrentUser2.Provider
+          <IAPProvider>
+            <ServicesProvider>
+              {/* <CurrentUser2.Provider
             value={{
               user: user,
               translation:
                 user && user.language === 'Español' ? Español : English,
             }}> */}
-            <Root>
-              {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-              <Navigator />
-            </Root>
-            {/* </CurrentUser2.Provider> */}
-          </ServicesProvider>
+              <Root>
+                {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
+                <Navigator />
+              </Root>
+              {/* </CurrentUser2.Provider> */}
+            </ServicesProvider>
+          </IAPProvider>
         </ContentProvider>
       </StyleProvider>
     </CurrentUserProvider>

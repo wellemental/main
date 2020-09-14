@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
-import { webhookListen, StripeEvent } from './subscription';
+import { webhookListen, StripeEvent } from './stripe';
+import { validateIap } from './iap';
 import * as firebase from 'firebase-admin';
 
 // Initialize Firebase
@@ -33,5 +34,7 @@ const onAddStripeEvent = functions.firestore
 
     return Promise.resolve(eventData);
   });
+
+const onValidateIap = functions.https.onCall(validateIap);
 
 export { onWebhookListen, onAddStripeEvent };

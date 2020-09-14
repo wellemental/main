@@ -20,6 +20,7 @@
     "firebase-admin": "^9.1.1",
     "firebase-functions": "^3.6.1",
     "moment": "^2.27.0",
+    "node-apple-receipt-verify": "^1.7.4",
     "stripe": "^8.90.0"
   },
   "devDependencies": {
