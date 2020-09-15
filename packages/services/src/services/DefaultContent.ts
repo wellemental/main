@@ -1,4 +1,4 @@
-export default [
+export const DefaultContent = [
   {
     created_at: { _nanoseconds: 0, _seconds: 1598432688 },
     description:

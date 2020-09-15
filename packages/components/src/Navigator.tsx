@@ -40,9 +40,7 @@ const AuthStackScreen: React.FC = () => {
 };
 
 const Navigator: React.FC = () => {
-  const { auth, user } = useCurrentUser();
-  const userDocCreated =
-    user && !!user.email && !!user.birthday && !!user.name && !!user.language;
+  const { auth } = useCurrentUser();
 
   return (
     <NavigationContainer>
@@ -61,36 +59,26 @@ const Navigator: React.FC = () => {
         }}>
         {auth ? (
           <>
-            {!userDocCreated ? (
-              <Stack.Screen name="Save User" component={SaveUserScreen} />
-            ) : (
-              <>
-                {/* <Stack.Screen name="Plans" component={PlansScreen} /> */}
-                <Stack.Screen
-                  name="TabNav"
-                  component={TabNav}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen name="Content" component={ContentScreen} />
-
-                <Stack.Screen name="Category" component={CategoryScreen} />
-                <Stack.Screen name="Video" component={VideoScreen} />
-                <Stack.Screen
-                  name="Upgrade"
-                  component={UpgradeScreen}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen name="Teacher" component={TeacherScreen} />
-                <Stack.Screen
-                  name="Edit Profile"
-                  component={EditProfileScreen}
-                />
-              </>
-            )}
+            <Stack.Screen
+              name="TabNav"
+              component={TabNav}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="Content" component={ContentScreen} />
+            <Stack.Screen name="Plans" component={PlansScreen} />
+            <Stack.Screen name="Category" component={CategoryScreen} />
+            <Stack.Screen name="Video" component={VideoScreen} />
+            <Stack.Screen
+              name="Upgrade"
+              component={UpgradeScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="Teacher" component={TeacherScreen} />
+            <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
           </>
         ) : (
           <>

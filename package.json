@@ -1,6 +1,9 @@
 {
   "name": "wellemental",
   "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
   "workspaces": {
     "packages": [
       "firestore",
@@ -8,38 +11,9 @@
       "storage",
       "packages/*"
     ],
-    "nohoist": [
-      "**/react-native",
-      "**/react-native/**",
-      "**/firebase",
-      "**/firebase/**",
-      "**/@react-native-firebase",
-      "**/@react-native-firebase/**",
-      "**/react-native-firebase",
-      "**/react-native-firebase/**",
-      "**/react-native**",
-      "**/react-native-gesture-handler/**",
-      "**/react-native-screens/**",
-      "**/@react-navigation/**",
-      "**/react-native-reanimated/**",
-      "**/react-native-safe-area-context/**",
-      "**/@react-native-community/masked-view",
-      "**/react-native-vector-icons"
-    ]
+    "nohoist": []
   },
-  "scripts": {
-    "android": "yarn workspace mobile android",
-    "compile": "tsc -b --incremental",
-    "ios": "yarn workspace mobile  ios",
-    "studio": "yarn workspace mobile studio",
-    "xcode": "yarn workspace mobile xcode"
-  },
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/vosters/wellemental.git",
-  "author": "Vosters <mike.r.vosters@gmail.com>",
-  "license": "MIT",
   "dependencies": {
-    "react-native": "0.63.2"
+    "react-native": "*"
   }
 }

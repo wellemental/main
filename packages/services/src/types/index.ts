@@ -81,14 +81,20 @@ export type Action = {
   favorited: boolean;
 };
 
-export interface User {
-  id: string;
+export interface LocalUser {
   name: string;
-  email: string;
   birthday: string;
   language: Languages;
-  subStatus: SubStatus;
-  actions: { [key: string]: Action };
+  onboardingComplete: boolean;
+}
+
+export interface User {
+  name: string;
+  birthday: string;
+  language: Languages;
+  onboardingComplete?: boolean;
+  subStatus?: SubStatus;
+  actions?: { [key: string]: Action };
 }
 
 export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
@@ -142,6 +148,7 @@ export interface InitialUserDoc {
   name: string;
   birthday: string;
   language: Languages | string;
+  onboardingComplete: boolean;
 }
 
 export type DownloadResult = {

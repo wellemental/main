@@ -27,8 +27,10 @@ export const Content = React.createContext<ContentContext>({
   features: undefined,
 });
 
+const service = new TeacherService();
+const service2 = new ContentService();
+
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
-  const service = new TeacherService();
   const query = useRef(service.getAllTeachers);
   const {
     loading: teacherLoading,
@@ -36,7 +38,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
     error: teachersError,
   } = useQuery<AllTeachers>(query.current);
 
-  const service2 = new ContentService();
   const query2 = useRef(service2.getContent);
   const {
     loading: contentLoading,

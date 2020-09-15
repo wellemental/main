@@ -2,7 +2,7 @@ import React from 'react';
 // import { auth } from '../base';
 import { AuthenticationError } from '../models/Errors';
 import auth from '@react-native-firebase/auth';
-import { NewAccount } from '../types';
+import { NewAccount, LocalUser } from '../types';
 import LocalStateService from './LocalStateService';
 import Logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
@@ -46,11 +46,17 @@ class AuthService {
         return Promise.reject(err);
       }
 
+      // Create base local user for Async Storage, not storing sensitive info
+      const localUser: LocalUser = {
+        name: account.name,
+        birthday: account.birthday,
+        language: account.language,
+        onboardingComplete: false,
+      };
+
       // Save extra login info to LocalStorage so we can save to database on redirect
       try {
-        await localStateService.setStorage('wmBirthday', account.birthday);
-        await localStateService.setStorage('wmLanguage', account.language);
-        await localStateService.setStorage('wmName', account.name);
+        await localStateService.setStorage('wmUser', localUser);
       } catch (err) {
         Logger.error(`Failed to set async storage for new account: ${err}`);
       }

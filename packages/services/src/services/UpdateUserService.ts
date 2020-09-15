@@ -13,16 +13,24 @@ class UpdateUserService implements UpdateUserServiceType {
     contentId: string,
     isFav: boolean,
   ): Promise<void> {
-    const doc = collection.doc(id);
+    const doc = collection.doc(id); //
+    const userSnapshot = await doc.get();
 
     const favUpdate = {};
     favUpdate[`actions.${contentId}.favorited`] = isFav;
 
     try {
-      await doc.update({
-        ...favUpdate,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-      });
+      if (userSnapshot.exists) {
+        await doc.update({
+          ...favUpdate,
+          updatedAt: firestore.FieldValue.serverTimestamp(),
+        });
+      } else {
+        await doc.set({
+          ...favUpdate,
+          updatedAt: firestore.FieldValue.serverTimestamp(),
+        });
+      }
       if (isFav) {
         tracker.track(TrackingEvents.Favorite);
       } else {
@@ -32,6 +40,7 @@ class UpdateUserService implements UpdateUserServiceType {
       Logger.error('Failed to favorite content');
       throw new ApplicationError('Unable to fav content');
     }
+
     return Promise.resolve();
   }
 

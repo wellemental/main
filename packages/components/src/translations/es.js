@@ -31,7 +31,7 @@ export const Español = {
   'Start the day with some morning stretches':
     'Comienza el día con estiramientos matutinos',
   'Shake out the day with some fun movement.':
-    'Sacude el día con movimientos divertidos. ',
+    'Sacude el día con movimientos divertidos.',
   'Get ready for bedtime with these soothing practices.':
     'Prepárate para dormir con estas practicas calmantes',
   All: 'Todo',
@@ -71,4 +71,5 @@ export const Español = {
   Required: 'Requerida',
   Plans: 'Plans',
   Purchase: 'Comprar',
+  Subscription: 'Subscription',
 };

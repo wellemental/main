@@ -29,28 +29,37 @@ const ContentLoop: React.FC<Props> = ({
 
   // console.log('CONTENT', content);
 
-  let filteredContent: Content[] = content.filter(
-    (item: Content) => user.language && item.language !== user.language,
-  );
+  let filteredContent: Content[] = content;
 
+  // Filter by language
+  if (user && user.language && content) {
+    filteredContent = filteredContent.filter(
+      (item: Content) => item.language !== user.language,
+    );
+  }
+
+  // Filter by tag or category
   if (filter && content) {
     filteredContent = filteredContent.filter((item: Content) =>
       item.tags.includes(filter),
     );
   }
 
+  // Filter by favorites
   if (favorites && content) {
     filteredContent = filteredContent.filter((item: Content) =>
       favorites.includes(item.id),
     );
   }
 
+  // Filter by teacher
   if (teacher && content) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.teacher === teacher,
     );
   }
 
+  // Filter by search term
   if (search && content) {
     filteredContent = filteredContent.filter((item: Content) =>
       item.title.includes(search),

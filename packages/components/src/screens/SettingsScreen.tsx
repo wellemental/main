@@ -31,9 +31,9 @@ const SettingsScreen: React.FC = () => {
     navigation.navigate(screen);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      service.logout();
+      await service.logout();
     } catch (err) {
       setError(err);
     }
@@ -55,6 +55,11 @@ const SettingsScreen: React.FC = () => {
       label: translation['Edit Profile'],
       onPress: () => handleNavigate('Edit Profile'),
       iconName: 'ios-person',
+    },
+    {
+      label: translation.Subscription,
+      onPress: () => handleNavigate('Plans'),
+      iconName: 'cart',
     },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
   ];

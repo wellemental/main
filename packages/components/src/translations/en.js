@@ -28,11 +28,11 @@ export const English = {
   'Are you sure you want to logout?': 'Are you sure you want to logout?',
   Cancel: 'Cancel',
   'Start the day with some morning stretches':
-    'Comienza el día con estiramientos matutinos',
+    'Start the day with some morning stretches',
   'Shake out the day with some fun movement.':
-    'Sacude el día con movimientos divertidos. ',
+    'Shake out the day with some fun movement.',
   'Get ready for bedtime with these soothing practices.':
-    'Prepárate para dormir con estas practicas calmantes',
+    'Get ready for bedtime with these soothing practices.',
   All: 'All',
   Move: 'Move',
   Meditate: 'Meditate',
@@ -67,4 +67,5 @@ export const English = {
   Required: 'Required',
   Plans: 'Plans',
   Purchase: 'Purchase',
+  Subscription: 'Subscription',
 };
