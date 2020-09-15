@@ -5,13 +5,18 @@ import * as moment from 'moment';
 const appleReceiptVerify = require('node-apple-receipt-verify');
 appleReceiptVerify.config({
   secret: functions.config().ios.iapsecret,
-  environment: [process.env.APPLE_APP_STORE_ENV],
+  // environment: ['Sandbox'],
   excludeOldTransactions: true,
 });
 
+type IapValidate = {
+  receipt: any;
+  productId: string;
+};
+
 export const validateIap = async (
-  data: any,
-  context: https.CallableContext,
+  data: IapValidate,
+  context: functions.https.CallableContext,
 ): Promise<void> => {
   if (!context.auth) {
     console.error('No auth context');
@@ -30,17 +35,38 @@ export const validateIap = async (
     // check if products exist
     if (Array.isArray(products)) {
       // get the latest purchased product (subscription tier)
-      let { expirationDate } = products[0];
+      const { expirationDate } = products[0];
       // convert ms to secs
-      let expirationUnix = Math.round(expirationDate / 1000);
+      const expirationUnix = Math.round(expirationDate / 1000);
       // persist in database
-      const userDoc = await admin
-        .firestore()
-        .collection('players')
-        .doc(userId)
-        .update({ plan: { autoRenew, nextRenewal, planId: productId } });
+      // add to user doc in db
+      try {
+        await admin
+          .firestore()
+          .collection('players')
+          .doc(userId)
+          .update({
+            plan: { autoRenew, nextRenewal, planId: productId, expirationUnix },
+          });
+      } catch (err) {
+        console.error('Failed to update UserDoc IAP in database', err);
+      }
+
+      // store receipt in db
+      try {
+        await admin.firestore().collection('receipts-iap').add({
+          user_id: userId,
+          receipt: receipt,
+          verified: true,
+          products: products,
+          timestamp: moment().unix(),
+        }); // Add the event to the database
+      } catch (err) {
+        console.error('Failed to add receipt to database', err); // Catch any errors saving to the database
+      }
     }
   } catch (e) {
     // transaction receipt is invalid
+    console.error('Failed. Transaction receipt is invalid.');
   }
 };

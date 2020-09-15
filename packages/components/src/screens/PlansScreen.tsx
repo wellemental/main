@@ -23,8 +23,11 @@ const PlansScreen: React.FC = () => {
   const handleSubscription = async () => {
     try {
       setProcessing(true);
-      await requestSubscription(selectedPlan, false);
+      const res = await requestSubscription(selectedPlan, false);
+      console.log('PURCHASE SUCCESS', res);
+      setProcessing(false);
     } catch (err) {
+      console.log('PURCHASE ERROR', err);
       setProcessing(false);
     }
   };

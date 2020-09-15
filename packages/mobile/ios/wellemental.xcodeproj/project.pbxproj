@@ -14,6 +14,8 @@
 		498A1C18BD1D4E98F148F6E0 /* libPods-wellemental.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACE5DEB9580379D7D6B7812E /* libPods-wellemental.a */; };
 		52A4692CE67B0DBC3E48B2A7 /* libPods-wellemental-wellementalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77E06464A176259DB460D627 /* libPods-wellemental-wellementalTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		D360582C2510344800D69FA3 /* GoogleService-Info.Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = D360582A2510344800D69FA3 /* GoogleService-Info.Release.plist */; };
+		D360582D2510344800D69FA3 /* GoogleService-Info.Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = D360582B2510344800D69FA3 /* GoogleService-Info.Debug.plist */; };
 		D3D56AF024EE5706005F8582 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3D56AE024EE5706005F8582 /* Entypo.ttf */; };
 		D3D56AF124EE5706005F8582 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3D56AE124EE5706005F8582 /* FontAwesome5_Brands.ttf */; };
 		D3D56AF224EE5706005F8582 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3D56AE224EE5706005F8582 /* MaterialCommunityIcons.ttf */; };
@@ -28,7 +30,6 @@
 		D3E1B36824F4546D008EF499 /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3E1B36724F4546D008EF499 /* Inter.ttf */; };
 		D3E1B36924F4546D008EF499 /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3E1B36724F4546D008EF499 /* Inter.ttf */; };
 		D3FECA21250AEEF7001513D0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FECA20250AEEF7001513D0 /* StoreKit.framework */; };
-		D3FFB4BD250C3F0500EFD8A6 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,8 @@
 		D351060B250BE35200BF5CFC /* 40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 40.png; sourceTree = "<group>"; };
 		D351060C250BE35200BF5CFC /* 87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 87.png; sourceTree = "<group>"; };
 		D351060D250BE35200BF5CFC /* 152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 152.png; sourceTree = "<group>"; };
+		D360582A2510344800D69FA3 /* GoogleService-Info.Release.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.Release.plist"; sourceTree = "<group>"; };
+		D360582B2510344800D69FA3 /* GoogleService-Info.Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.Debug.plist"; sourceTree = "<group>"; };
 		D3D56AE024EE5706005F8582 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
 		D3D56AE124EE5706005F8582 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		D3D56AE224EE5706005F8582 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
@@ -133,6 +136,8 @@
 		13B07FAE1A68108700A75B9A /* wellemental */ = {
 			isa = PBXGroup;
 			children = (
+				D360582B2510344800D69FA3 /* GoogleService-Info.Debug.plist */,
+				D360582A2510344800D69FA3 /* GoogleService-Info.Release.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -274,6 +279,7 @@
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				D360582E2510358B00D69FA3 /* Copy environment-specific Google-Services.plist */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				973E4AA2A5189E28815D0219 /* [CP] Copy Pods Resources */,
@@ -339,10 +345,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3FFB4BD250C3F0500EFD8A6 /* main.jsbundle in Resources */,
 				D3D56AF824EE5706005F8582 /* FontAwesome.ttf in Resources */,
 				D3E1B36524F45466008EF499 /* RecoletaAlt-Medium.ttf in Resources */,
 				D3D56AF724EE5706005F8582 /* FontAwesome5_Regular.ttf in Resources */,
+				D360582D2510344800D69FA3 /* GoogleService-Info.Debug.plist in Resources */,
 				D3D56AF524EE5706005F8582 /* Ionicons.ttf in Resources */,
 				D3D56AF024EE5706005F8582 /* Entypo.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
@@ -352,6 +358,7 @@
 				D3D56AFC24EE5706005F8582 /* MaterialIcons.ttf in Resources */,
 				D3D56AF624EE5706005F8582 /* FontAwesome5_Solid.ttf in Resources */,
 				D3D56AF224EE5706005F8582 /* MaterialCommunityIcons.ttf in Resources */,
+				D360582C2510344800D69FA3 /* GoogleService-Info.Release.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,6 +453,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		D360582E2510358B00D69FA3 /* Copy environment-specific Google-Services.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy environment-specific Google-Services.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DESTINATION_DIR=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nCONFIG_FILE=\"GoogleService-Info.${CONFIGURATION}.plist\"\n\nif [ ! -d \"${DESTINATION_DIR}\" ]; then\n  echo \"error: Target directory for Google Service config file is not a directory: ${DESTINATION_DIR}\"\n  exit 1\nfi\n\nif [ ! -f \"${CONFIG_FILE}\" ]; then\n  echo \"error: Google Service config file: ${CONFIG_FILE} doesn't exist and is required\"\n  exit 1\nfi\n\ncp \"${CONFIG_FILE}\" \"${DESTINATION_DIR}/GoogleService-Info.plist\"\n";
 		};
 		EF3EEE0E6B145A6678A4A2FC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

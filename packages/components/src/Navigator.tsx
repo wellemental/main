@@ -65,6 +65,7 @@ const Navigator: React.FC = () => {
               <Stack.Screen name="Save User" component={SaveUserScreen} />
             ) : (
               <>
+                {/* <Stack.Screen name="Plans" component={PlansScreen} /> */}
                 <Stack.Screen
                   name="TabNav"
                   component={TabNav}
@@ -73,7 +74,7 @@ const Navigator: React.FC = () => {
                   }}
                 />
                 <Stack.Screen name="Content" component={ContentScreen} />
-                <Stack.Screen name="Plans" component={PlansScreen} />
+
                 <Stack.Screen name="Category" component={CategoryScreen} />
                 <Stack.Screen name="Video" component={VideoScreen} />
                 <Stack.Screen

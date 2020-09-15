@@ -37,4 +37,4 @@ const onAddStripeEvent = functions.firestore
 
 const onValidateIap = functions.https.onCall(validateIap);
 
-export { onWebhookListen, onAddStripeEvent };
+export { onWebhookListen, onAddStripeEvent, onValidateIap };
