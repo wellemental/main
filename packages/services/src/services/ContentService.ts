@@ -34,13 +34,13 @@ class ContentService implements ContentServiceType {
       language: data.language,
       status: data.status,
       updated_at: data.updated_at,
-      created_at: data.updated_at,
+      created_at: data.created_at,
     };
   };
 
-  public getContent = async (): Promise<Content[]> => {
+  public getContent = async (limit?: number): Promise<Content[]> => {
     // With no tags passed, get all Content
-    const query: FirebaseFirestoreTypes.CollectionReference = collection.orderBy(
+    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection.orderBy(
       'updated_at',
       'desc',
     );
@@ -53,6 +53,22 @@ class ContentService implements ContentServiceType {
       return await query
         .get()
         .then((snapshot) => snapshot.docs.map((doc) => this.buildContent(doc)));
+    } catch (err) {
+      return Promise.reject(new ApplicationError(err));
+    }
+  };
+
+  public getLatestUpdate = async (): Promise<Date> => {
+    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection
+      .orderBy('updated_at', 'desc')
+      .limit(1);
+
+    try {
+      const content = await query
+        .get()
+        .then((snapshot) => snapshot.docs.map((doc) => this.buildContent(doc)));
+
+      return content[0].updated_at.toDate();
     } catch (err) {
       return Promise.reject(new ApplicationError(err));
     }

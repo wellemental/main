@@ -1,13 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Spinner } from '../primitives';
 import {
   TeacherService,
   ContentService,
   AllTeachers,
+  LocalStateService,
   Content as ContentType,
   Features,
 } from 'services';
-import { useQuery, useConfig } from '../hooks';
+import { useConfig } from '../hooks';
+import { Logger } from 'services';
 
 interface ContentContext {
   content: ContentType[];
@@ -16,6 +18,7 @@ interface ContentContext {
   teachersError: Error;
   loading: boolean;
   features: Features;
+  updateAvailable: boolean;
 }
 
 export const Content = React.createContext<ContentContext>({
@@ -25,29 +28,102 @@ export const Content = React.createContext<ContentContext>({
   teachersError: null,
   loading: true,
   features: undefined,
+  updateAvailable: false,
 });
 
-const service = new TeacherService();
-const service2 = new ContentService();
+const localStateService = new LocalStateService();
+const teacherService = new TeacherService();
+const contentService = new ContentService();
+
+const setLocalContent = async (content, teachers) => {
+  await localStateService.setStorage('wmContent', {
+    content,
+    teachers,
+  });
+};
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
-  const query = useRef(service.getAllTeachers);
-  const {
-    loading: teacherLoading,
-    data: teachers,
-    error: teachersError,
-  } = useQuery<AllTeachers>(query.current);
+  const [content, setContent] = useState<ContentType[] | null>(null);
+  const [teachers, setTeachers] = useState<AllTeachers | null>(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(!content || !teachers ? true : false);
+  const [updateAvailable, setUpdateAvailable] = useState(false);
 
-  const query2 = useRef(service2.getContent);
-  const {
-    loading: contentLoading,
-    data: content,
-    error: contentError,
-  } = useQuery<ContentType[]>(query2.current);
+  const localUpdatedAt = useRef<Date | undefined>();
 
+  const getDbContent = async () => {
+    // Get teachers and content from firestore
+    try {
+      const dbTeachers = await teacherService.getAllTeachers();
+      const dbContent = await contentService.getContent();
+
+      // Update AsyncStorage with firestore data
+      setLocalContent(dbContent, dbTeachers);
+
+      // Update state with firestore data
+      setContent(dbContent);
+      setTeachers(dbTeachers);
+    } catch (err) {
+      Logger.error(`Error getting firestore content data - ${err}`);
+      setError(err);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const fetchContent = async (): Promise<void> => {
+      // First, try to fetch from AsyncStorage
+      try {
+        const localData = await localStateService.getContent();
+
+        if (localData) {
+          console.log('GOT SAVED LOCAL CONTENT');
+
+          if (localData.content) {
+            setContent(localData.content);
+          }
+          if (localData.teachers) {
+            setTeachers(localData.teachers);
+          }
+          if (localData.updated_at) {
+            localUpdatedAt.current = localData.updated_at;
+          }
+          setLoading(false);
+        } else {
+          // If nothing in AsyncStorage, pull from Database
+          await getDbContent();
+        }
+      } catch (err) {
+        Logger.error(`Error getting local content data - ${err}`);
+        setError(err);
+      }
+    };
+
+    if (!teachers || !content) {
+      fetchContent();
+    }
+
+    const calcUpdateAvailable = async () => {
+      // Get latest updated_at times from firestore
+      const dbContentLatest = await contentService.getLatestUpdate();
+      const dbTeacherLatest = await teacherService.getLatestUpdate();
+
+      // Set updateAvailable to true if either database updated_at is more recent
+      setUpdateAvailable(
+        dbContentLatest > localUpdatedAt.current ||
+          dbTeacherLatest > localUpdatedAt.current,
+      );
+    };
+
+    if (localUpdatedAt.current) {
+      calcUpdateAvailable();
+    }
+  }, []);
+
+  // Get Featured Content from Remote Config
   const { loading: rcLoading, data: rcData } = useConfig('featured');
 
-  if (contentLoading || teacherLoading || rcLoading) {
+  if (loading || rcLoading) {
     return <Spinner text="Loading Content..." />;
   }
 
@@ -56,10 +132,9 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       value={{
         content,
         teachers,
-        contentError,
-        teachersError,
         features: rcData,
-        loading: teacherLoading || contentLoading || rcLoading,
+        loading: loading || rcLoading,
+        updateAvailable,
       }}>
       {children}
     </Content.Provider>

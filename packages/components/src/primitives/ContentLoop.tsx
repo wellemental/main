@@ -4,7 +4,7 @@ import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
 import { Content, Tags, Categories, TimeOfDay } from 'services';
 import ListEmpty from './ListEmpty';
-import { Teachers } from 'types';
+import { Teachers } from 'services';
 import Error from './Error';
 import Paragraph from './Paragraph';
 import { useCurrentUser } from '../hooks/useCurrentUser';
@@ -27,14 +27,12 @@ const ContentLoop: React.FC<Props> = ({
   const { user } = useCurrentUser();
   const { content, teachers, contentError, teachersError } = useContent();
 
-  // console.log('CONTENT', content);
-
   let filteredContent: Content[] = content;
 
   // Filter by language
   if (user && user.language && content) {
     filteredContent = filteredContent.filter(
-      (item: Content) => item.language !== user.language,
+      (item: Content) => item.language === user.language,
     );
   }
 

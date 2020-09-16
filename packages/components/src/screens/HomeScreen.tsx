@@ -15,7 +15,7 @@ import { getVersion } from 'react-native-device-info';
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
   const today = moment();
-  const { translation } = useCurrentUser();
+  const { translation, user } = useCurrentUser();
   const { features } = useContent();
 
   // Determine Time of Day for header customization
@@ -49,7 +49,9 @@ const HomeScreen: React.FC = () => {
   return (
     <Container scrollEnabled>
       <PageHeading
-        title={translation[`Good ${timeOfDay.toLowerCase()}`]}
+        title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}${
+          user && user.name && `, ${user.name}`
+        }`}
         subtitle={tagline}
       />
 

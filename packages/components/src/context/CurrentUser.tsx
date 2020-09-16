@@ -11,25 +11,14 @@ import { Español } from '../translations/es.js';
 import { LocalStateService } from 'services';
 import { Spinner } from '../primitives';
 
-// Store bday, language, username, and email during signup
-// After nav transitions, pull data from localStorage and create userDoc
+const localStateService = new LocalStateService();
 
-// setCurrentUser: () => {},
-
-const service = new LocalStateService();
-
-const getLocalUser = async (): Promise<LocalUser> => {
-  try {
-    const res = await service.getStorage('wmUser');
-    return JSON.parse(res);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
 const completeOnboarding = async () => {
-  const json = await getLocalUser();
-  json.onboardingComplete = true;
-  await service.setStorage('wmUser', JSON.stringify(json));
+  const userObj = await localStateService.getUser();
+  if (userObj) {
+    userObj.onboardingComplete = true;
+  }
+  await localStateService.setStorage('wmUser', userObj);
 };
 
 export const CurrentUser = React.createContext<any>({
@@ -50,23 +39,49 @@ export const CurrentUserProvider = ({ children }: any) => {
   const [creatingUser, setCreatingUser] = useState(false);
   const [error, setError] = useState('');
 
-  const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
-    null,
-  );
+  // If no AsyncStorage user, get from firestore
+  const getDbUser = async (userId) => {
+    const userSnap = await firestore().collection('users').doc(userId).get();
+    const userData = userSnap.data();
+
+    const newUser = {
+      name: userData.name,
+      language: userData.language,
+      birthday: userData.birthday,
+      onboardingComplete: userData.onboardingComplete,
+    };
+
+    // Save to AsyncStorage
+    await localStateService.setStorage('wmUser', newUser);
+
+    // Set user state
+    setCurrentUser(newUser);
+  };
 
   useEffect(() => {
-    // On mount, subscribe to auth and playerDoc listeners
+    // On mount, subscribe to auth listener
     const authUnsubscriber = auth().onAuthStateChanged((user) => {
       setCurrentAuth(user);
 
-      // Unsubscribe from previous userDoc listener if exists
-      if (userDocUnsubscriber.current) {
-        userDocUnsubscriber.current();
-      }
-
-      // If user logged in, subscribe to their player document
+      // If user logged in, get CurrentUser
       if (user) {
-        subscribeToUserDoc(user);
+        const getLocalUser = async () => {
+          try {
+            const localUser = await localStateService.getUser();
+
+            if (localUser) {
+              // If AsyncStorage exists, set it to user state
+              setCurrentUser(localUser);
+            } else {
+              // If it doesn't exist, get state from firestore
+              await getDbUser(user.uid);
+            }
+          } catch (err) {
+            setError(err);
+          }
+        };
+
+        getLocalUser();
       } else {
         setCurrentUser(null);
       }
@@ -76,20 +91,16 @@ export const CurrentUserProvider = ({ children }: any) => {
 
     // If app.tsx unmounts, cleanup all subscriptions
     return function cleanup() {
-      if (userDocUnsubscriber.current) {
-        userDocUnsubscriber.current();
-      }
+      // if (userDocUnsubscriber.current) {
+      //   userDocUnsubscriber.current();
+      // }
       authUnsubscriber();
     };
   }, []);
 
   useEffect(() => {
-    // If userDoc hasn't been created yet, then create it in database
+    // If userDoc hasn't been created yet (onboarding not complete), then create it in database
     if (!!currentAuth && !!currentUser && !currentUser.onboardingComplete) {
-      console.log('CREATING USER DOC******');
-      console.log('CURRENT AUTH******', !!currentAuth);
-      console.log('CURRENT USER******', !!currentUser);
-      console.log('CURRENT ONB******', !currentUser.onboardingComplete);
       setCreatingUser(true);
       const profileService = new UpdateUserService();
       profileService.createProfile({
@@ -105,48 +116,6 @@ export const CurrentUserProvider = ({ children }: any) => {
       setCreatingUser(false);
     }
   }, [currentAuth, currentUser]);
-
-  const subscribeToUserDoc = async (user: FirebaseAuthTypes.User) => {
-    const usersRef = firestore().collection('users').doc(user.uid);
-
-    userDocUnsubscriber.current = usersRef.onSnapshot(
-      async (snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
-        const userData = snapshot.data();
-
-        // If user isn't logged in or doc doesn't exist
-        if (!user.email) {
-          return Promise.resolve();
-        }
-
-        if (!snapshot.exists) {
-          console.log('SNAPSHOT DOESNT EXIST, CREATE IT');
-          // If userDoc doesn't exist, create it
-          const getUser = async () => {
-            try {
-              const res = await getLocalUser();
-              setCurrentUser(res);
-            } catch (err) {
-              setError(err);
-            }
-          };
-
-          getUser();
-        } else {
-          // Build user doc
-          const userDoc: User = {
-            name: userData.name,
-            language: userData.language,
-            birthday: userData.birthday,
-            subStatus: userData.subStatus,
-            actions: userData.actions,
-            onboardingComplete: userData.onboardingComplete,
-          };
-
-          setCurrentUser(userDoc);
-        }
-      },
-    );
-  };
 
   if (creatingUser) {
     return <Spinner text="Creating account..." />;

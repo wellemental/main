@@ -1,14 +1,15 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { ApplicationError } from '../models/Errors';
-import { LocalUser, User } from '../types';
-import logger from './LoggerService';
+import { LocalUser, LocalContent } from '../types';
+import Logger from './LoggerService';
+import firestore from '@react-native-firebase/firestore';
 
 class LocalStateService {
   public async resetStorage(): Promise<void> {
     try {
-      await AsyncStorage.multiRemove(['wmUser']);
+      await AsyncStorage.multiRemove(['wmUser', 'wmContent']);
     } catch (error) {
-      logger.error(`Failed to reset local state: ${error}`);
+      Logger.error(`Failed to reset local state: ${error}`);
       return Promise.reject(
         new ApplicationError('Unable to reset local state.'),
       );
@@ -22,12 +23,18 @@ class LocalStateService {
     value: string | { [key: string]: string } | LocalUser,
   ): Promise<void> {
     try {
+      let newValue: any = value;
+      if (typeof value === 'object') {
+        newValue = { ...value };
+        newValue.updated_at = firestore.Timestamp.fromDate(new Date());
+      }
+
       await AsyncStorage.setItem(
         key,
-        typeof value !== 'string' ? JSON.stringify(value) : value,
+        typeof newValue !== 'string' ? JSON.stringify(newValue) : newValue,
       );
     } catch (err) {
-      logger.error(`Failed to set ${key} to async storage`);
+      Logger.error(`Failed to set ${key} to async storage`);
       return Promise.reject(new ApplicationError('Unable to set local state.'));
     }
   }
@@ -35,10 +42,51 @@ class LocalStateService {
   public async getStorage(key: string): Promise<string> {
     try {
       return await AsyncStorage.getItem(key);
-      // return res ? JSON.parse(res) : res;
     } catch (err) {
-      logger.error(`Failed to get ${key} from async storage`);
+      Logger.error(`Failed to get ${key} from async storage`);
       return Promise.reject(new ApplicationError('Unable to get local state.'));
+    }
+  }
+
+  public async getContent(): Promise<LocalContent> {
+    try {
+      const json = await this.getStorage('wmContent');
+      const obj = JSON.parse(json);
+
+      // Create Firestore Timestamp from object
+      if (obj && obj.updated_at) {
+        obj.updated_at = new firestore.Timestamp(
+          obj.updated_at._seconds,
+          obj.updated_at._nanoseconds,
+        ).toDate();
+      }
+      return obj;
+    } catch (err) {
+      Logger.error(`Failed to get wmContent from async storage - ${err}`);
+      return Promise.reject(
+        new ApplicationError('Unable to get local content state.'),
+      );
+    }
+  }
+
+  public async getUser(): Promise<LocalUser> {
+    try {
+      const json = await this.getStorage('wmUser');
+      const obj = JSON.parse(json);
+
+      // Create Firestore Timestamp from object
+      if (obj && obj.updated_at) {
+        obj.updated_at = new firestore.Timestamp(
+          obj.updated_at._seconds,
+          obj.updated_at._nanoseconds,
+        ).toDate();
+      }
+      return obj;
+    } catch (err) {
+      Logger.error(`Failed to get wmUser from async storage - ${err}`);
+      return Promise.reject(
+        new ApplicationError('Unable to get local user state.'),
+      );
     }
   }
 
@@ -46,7 +94,7 @@ class LocalStateService {
     try {
       await AsyncStorage.removeItem(key);
     } catch (err) {
-      logger.error(`Failed to remove ${key} from async storage`);
+      Logger.error(`Failed to remove ${key} from async storage`);
       return Promise.reject(
         new ApplicationError('Unable to remove local state.'),
       );

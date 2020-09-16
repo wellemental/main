@@ -19,6 +19,8 @@ class TeacherService implements TeacherServiceType {
       name: data.name,
       photo: data.photo,
       bio: data.bio,
+      language: data.language,
+      updated_at: data.updated_at,
     };
   };
 
@@ -44,19 +46,35 @@ class TeacherService implements TeacherServiceType {
     const query = teachersCollection;
     const teachers = {};
 
-    await query.get().then((snapshot) =>
-      snapshot.docs.forEach(
-        (doc) =>
-          (teachers[doc.data().name] = {
-            id: doc.id,
-            name: doc.data().name,
-            bio: doc.data().bio,
-            photo: doc.data().photo,
-          }),
-      ),
-    );
+    try {
+      await query
+        .get()
+        .then((snapshot) =>
+          snapshot.docs.forEach(
+            (doc) => (teachers[doc.data().name] = this.buildTeacher(doc)),
+          ),
+        );
+    } catch (err) {
+      return Promise.reject(new ApplicationError(err));
+    }
 
     return teachers;
+  };
+
+  public getLatestUpdate = async (): Promise<Date> => {
+    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = teachersCollection
+      .orderBy('updated_at', 'desc')
+      .limit(1);
+
+    try {
+      const teachers = await query
+        .get()
+        .then((snapshot) => snapshot.docs.map((doc) => this.buildTeacher(doc)));
+
+      return teachers[0].updated_at.toDate();
+    } catch (err) {
+      return Promise.reject(new ApplicationError(err));
+    }
   };
 }
 

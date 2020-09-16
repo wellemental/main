@@ -1,9 +1,5 @@
-import React from 'react';
 import defaultValues from '../services/RemoteConfigDefaults';
-
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 export type Translations = { [key: string]: string };
 
@@ -86,6 +82,13 @@ export interface LocalUser {
   birthday: string;
   language: Languages;
   onboardingComplete: boolean;
+  updated_at?: Date;
+}
+
+export interface LocalContent {
+  content: Content[];
+  teachers: AllTeachers;
+  updated_at?: Date;
 }
 
 export interface User {
@@ -113,8 +116,8 @@ export interface Content {
   length: string;
   language: Languages;
   status: ContentStatus;
-  updated_at: typeof firestore.Timestamp;
-  created_at: Date; //typeof firestore.Timestamp;
+  updated_at: FirebaseFirestoreTypes.Timestamp;
+  created_at: FirebaseFirestoreTypes.Timestamp; //typeof firestore.Timestamp;
 }
 
 export interface Teacher {
@@ -122,6 +125,8 @@ export interface Teacher {
   name: string; //Teachers;
   bio: string;
   photo: string;
+  language: Languages;
+  updated_at: FirebaseFirestoreTypes.Timestamp;
 }
 
 export interface AllTeachers {
@@ -166,6 +171,7 @@ export type DownloadProgressCallbackResult = {
 export interface ContentServiceType {
   buildContent(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Content;
   getContent(): Promise<Content[]>;
+  getLatestUpdate(): Promise<Date>;
 }
 
 export interface DownloadVideoServiceType {
@@ -187,6 +193,7 @@ export interface TeacherServiceType {
   buildTeacher(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Teacher;
   findTeacherByName(name: string): Promise<Teacher | void>;
   getAllTeachers(): Promise<AllTeachers>;
+  getLatestUpdate(): Promise<Date>;
 }
 
 export enum TrackingEvents {
