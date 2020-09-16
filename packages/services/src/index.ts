@@ -9,7 +9,7 @@ export { default as DownloadVideoService } from './services/DownloadVideoService
 export { default as ForgotPasswordService } from './services/ForgotPasswordService';
 export { buildDependencies, Dependency } from './services/DependencyService';
 export { default as LocalStateService } from './services/LocalStateService';
-export { default as Logger } from './services/LoggerService';
+export { default as logger } from './services/LoggerService';
 export * from './services/DimensionsService';
 export { firestore, auth } from './base';
 export { ApplicationError, ModelError } from './models/Errors';

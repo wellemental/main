@@ -10,7 +10,11 @@
     "deploy": "firebase deploy --only functions",
     "deploy:staging": "yarn run firebase deploy --only functions -P staging",
     "deploy:production": "yarn run firebase deploy --only functions -P production",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "cloneEnv:toStaging": "firebase functions:config:clone --from prod-wellemental",
+    "cloneEnv:toProduction": "firebase functions:config:clone --from dev-wellemental",
+    "setActive:production": "firebase use production",
+    "setActive:staging": "firebase use staging"
   },
   "engines": {
     "node": "10"

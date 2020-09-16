@@ -4,7 +4,7 @@ import {
   LocalStateService,
   ApplicationError,
   UpdateUserService,
-  Logger,
+  logger,
   InitialUserDoc,
   Languages,
 } from 'services';
@@ -51,7 +51,7 @@ const SaveUserScreen: React.FC = () => {
       setAsyncError(
         new ApplicationError(translation['Error creating profile. Try again.']),
       );
-      Logger.error(`Failed to get data from async storage: ${err}`);
+      logger.error(`Failed to get data from async storage: ${err}`);
     }
   };
 

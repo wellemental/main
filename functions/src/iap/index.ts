@@ -5,7 +5,7 @@ import * as moment from 'moment';
 const appleReceiptVerify = require('node-apple-receipt-verify');
 appleReceiptVerify.config({
   secret: functions.config().ios.iapsecret,
-  // environment: ['Sandbox'],
+  environment: ['Sandbox', 'Production'],
   excludeOldTransactions: true,
 });
 
@@ -18,6 +18,7 @@ export const validateIap = async (
   data: IapValidate,
   context: functions.https.CallableContext,
 ): Promise<void> => {
+  console.log('Starting Validation');
   if (!context.auth) {
     console.error('No auth context');
     return;
@@ -26,7 +27,11 @@ export const validateIap = async (
   const { receipt, productId } = data;
   const { autoRenew, nextRenewal } = receipt;
 
+  console.log('Uid', userId, 'ProductId', productId);
+  console.log('autoRenew', autoRenew, 'nextRenewal', nextRenewal);
+
   try {
+    console.log('Attempt to verify receipt');
     // attempt to verify receipt
     const products = await appleReceiptVerify.validate({
       excludeOldTransactions: true,
@@ -54,6 +59,7 @@ export const validateIap = async (
 
       // store receipt in db
       try {
+        console.log('Attempt to store receipt in firestore');
         await admin.firestore().collection('receipts-iap').add({
           user_id: userId,
           receipt: receipt,

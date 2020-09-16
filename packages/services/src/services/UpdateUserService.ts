@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 import { ApplicationError } from '../models/Errors';
 import { UserProfile, UpdateUserServiceType, InitialUserDoc } from '../types';
-import Logger from './LoggerService';
+import logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
 
 const COLLECTION = 'users';
@@ -37,7 +37,7 @@ class UpdateUserService implements UpdateUserServiceType {
         tracker.track(TrackingEvents.Unfavorite);
       }
     } catch (error) {
-      Logger.error('Failed to favorite content');
+      logger.error('Failed to favorite content');
       throw new ApplicationError('Unable to fav content');
     }
 
@@ -58,7 +58,7 @@ class UpdateUserService implements UpdateUserServiceType {
           created_at,
         });
       } catch (err) {
-        Logger.error('Failed to update user doc');
+        logger.error('Failed to update user doc');
       }
     } else {
       try {
@@ -67,7 +67,7 @@ class UpdateUserService implements UpdateUserServiceType {
           created_at,
         });
       } catch (err) {
-        Logger.error('Failed to create user doc');
+        logger.error('Failed to create user doc');
       }
     }
   }
@@ -81,7 +81,7 @@ class UpdateUserService implements UpdateUserServiceType {
         updated_at: firestore.FieldValue.serverTimestamp(),
       });
     } catch (error) {
-      Logger.error(`Failed to update user '${id}'`);
+      logger.error(`Failed to update user '${id}'`);
       throw new ApplicationError('Unable to update');
     }
     return Promise.resolve();

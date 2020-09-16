@@ -9,7 +9,7 @@ import {
   Features,
 } from 'services';
 import { useConfig } from '../hooks';
-import { Logger } from 'services';
+import { logger } from 'services';
 
 interface ContentContext {
   content: ContentType[];
@@ -64,7 +64,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       setContent(dbContent);
       setTeachers(dbTeachers);
     } catch (err) {
-      Logger.error(`Error getting firestore content data - ${err}`);
+      logger.error(`Error getting firestore content data - ${err}`);
       setError(err);
     }
     setLoading(false);
@@ -92,7 +92,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
           await getDbContent();
         }
       } catch (err) {
-        Logger.error(`Error getting local content data - ${err}`);
+        logger.error(`Error getting local content data - ${err}`);
         setError(err);
       }
     };

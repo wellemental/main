@@ -4,7 +4,7 @@ import { AuthenticationError } from '../models/Errors';
 import auth from '@react-native-firebase/auth';
 import { NewAccount, LocalUser } from '../types';
 import LocalStateService from './LocalStateService';
-import Logger from './LoggerService';
+import logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
 import { FirebaseError } from 'firebase';
 
@@ -13,7 +13,7 @@ class AuthService {
     try {
       return await auth().fetchSignInMethodsForEmail(email);
     } catch (err) {
-      Logger.error('Error checking existing logins');
+      logger.error('Error checking existing logins');
       return Promise.reject(this.checkError(err));
     }
   }
@@ -29,7 +29,7 @@ class AuthService {
     try {
       await auth().signInWithEmailAndPassword(email, password);
     } catch (err) {
-      Logger.error('Error logging in');
+      logger.error('Error logging in');
       return Promise.reject(this.checkError(err));
     }
     tracker.track(TrackingEvents.Login);
@@ -58,7 +58,7 @@ class AuthService {
       try {
         await localStateService.setStorage('wmUser', localUser);
       } catch (err) {
-        Logger.error(`Failed to set async storage for new account: ${err}`);
+        logger.error(`Failed to set async storage for new account: ${err}`);
       }
 
       await auth().createUserWithEmailAndPassword(
