@@ -16,6 +16,8 @@ const ErrorComponent: React.FC<Props> = ({ error, center }) => {
       ? error.errors().join('\n')
       : error instanceof ApplicationError
       ? error.message
+      : error && error.message
+      ? error.message
       : typeof error === 'string'
       ? error
       : !error

@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 // import { auth, firestore } from 'services';
 import { Languages, UpdateUserService, User, UserProfile } from 'services';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
@@ -59,10 +57,6 @@ export const CurrentUserProvider = ({ children }: any) => {
 
   // Update state and storage from Edit Profile
   const updateUser = async (fields: UserProfile) => {
-    console.log('CURRENT USER', currentUser);
-    console.log('UPDATE FIELDS', fields);
-    console.log('UPDATED USER STATE', { ...currentUser, ...fields });
-
     const mergedFields = { ...currentUser, ...fields };
     // Update Async Storage
     await localStateService.setStorage('wmUser', { ...currentUser, ...fields });
@@ -73,7 +67,7 @@ export const CurrentUserProvider = ({ children }: any) => {
 
   useEffect(() => {
     // On mount, subscribe to auth listener
-    const authUnsubscriber = auth().onAuthStateChanged((user) => {
+    return auth().onAuthStateChanged((user) => {
       setCurrentAuth(user);
 
       // If user logged in, get CurrentUser
@@ -101,9 +95,6 @@ export const CurrentUserProvider = ({ children }: any) => {
 
       setLoading(false);
     });
-
-    // If app.tsx unmounts, cleanup all subscriptions
-    return authUnsubscriber();
   }, []);
 
   useEffect(() => {

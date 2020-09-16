@@ -23,12 +23,9 @@ class LocalStateService {
     value: string | { [key: string]: string } | LocalUser | UserProfile,
   ): Promise<void> {
     try {
-      console.log('*****PRE VALUE', value);
       if (typeof value === 'object') {
         value.updated_at = firestore.Timestamp.fromDate(new Date());
       }
-
-      console.log('UPDATED VALUE', value);
 
       await AsyncStorage.setItem(
         key,

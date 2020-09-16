@@ -12,6 +12,7 @@ import {
 // import { setActivePlan } from '../actions';
 import { AsyncStorage } from 'react-native';
 import functions from '@react-native-firebase/functions';
+import { LocalStateService } from 'services';
 
 export const IAPContext: React.Context<any> = React.createContext({
   processing: false,
@@ -19,11 +20,10 @@ export const IAPContext: React.Context<any> = React.createContext({
   activePlan: 0,
 });
 
+const localStateService = new LocalStateService();
+
 const storePlanAsync = async (planData: any) => {
-  const userSettings: any = await AsyncStorage.getItem('user_settings');
-  const json = JSON.parse(userSettings);
-  json.plan = planData;
-  await AsyncStorage.setItem('user_settings', JSON.stringify(json));
+  await localStateService.setStorage('wmPlan', planData);
 };
 
 export const IAPProvider = ({ children }: any) => {
@@ -36,7 +36,10 @@ export const IAPProvider = ({ children }: any) => {
   const processNewPurchase = async (purchase: any) => {
     const { productId, transactionReceipt } = purchase;
 
+    console.log('PROCESSING NEW PURCHASE ***', productId);
+
     if (transactionReceipt !== undefined) {
+      console.log('HAS TRANS RECEIPT, CALLING FUNCTION ***');
       try {
         await functions().httpsCallable('onValidateIap')({
           receipt: transactionReceipt,
@@ -56,6 +59,7 @@ export const IAPProvider = ({ children }: any) => {
       async (purchase: InAppPurchase | SubscriptionPurchase) => {
         const receipt = purchase.transactionReceipt;
         if (receipt) {
+          console.log('HAS RECEIPT ***');
           try {
             if (Platform.OS === 'ios') {
               finishTransactionIOS(purchase.transactionId);

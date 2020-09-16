@@ -9,7 +9,6 @@ import {
   LandingScreen,
   CategoryScreen,
   EditProfileScreen,
-  SaveUserScreen,
   ForgotPasswordScreen,
   UpgradeScreen,
   PlansScreen,

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Container, Button, Paragraph } from '../primitives';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Button, Paragraph, Error } from '../primitives';
 import { H1 } from 'native-base';
 import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
@@ -16,23 +16,37 @@ export const IAP_SKUS = Platform.select({
 const PlansScreen: React.FC = () => {
   const { translation } = useCurrentUser();
   const [selectedPlan, setPlanId] = useState(IAP_SKUS[0]);
+  const [error, setError] = useState('');
+  const [products, setProducts] = useState();
 
-  console.log('SKUSSS', IAP_SKUS);
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const products: RNIap.Product[] = await RNIap.getProducts(IAP_SKUS);
+        setProducts(products);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  console.log('SELECTED PLAN', selectedPlan);
+    getProducts();
+  }, []);
 
   // fetch values from context
   const { processing, setProcessing } = useIap();
 
   // handle new subscription request
   const handleSubscription = async () => {
+    console.log('REQUEST PURCHASE***');
     try {
+      setError('');
       setProcessing(true);
-      const res = await requestSubscription(selectedPlan, false);
+      const res = await requestSubscription(selectedPlan);
       console.log('PURCHASE SUCCESS', res);
       setProcessing(false);
     } catch (err) {
       console.log('PURCHASE ERROR', err);
+      setError(err);
       setProcessing(false);
     }
   };
@@ -55,6 +69,11 @@ const PlansScreen: React.FC = () => {
         text={translation.Purchase}
         onPress={() => handleSubscription()}
       />
+      <Box gt={2}>
+        <Paragraph>
+          Error? <Error error={error} />
+        </Paragraph>
+      </Box>
     </Container>
   );
 };
