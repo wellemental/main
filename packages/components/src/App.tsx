@@ -10,36 +10,9 @@ import {
   IAPProvider,
 } from './context';
 import Navigator from './Navigator';
-// import { useCurrentUser, useContent } from './hooks';
-// import { ObserveUserService } from 'services';
-// import { English } from './translations/en';
-// import { Español } from './translations/es';
 import SplashScreen from 'react-native-splash-screen';
 
 const App: React.FC = () => {
-  // const [user, setUser] = useState();
-  // const [userObserver] = useState(new ObserveUserService(setUser));
-  // useEffect(() => {
-  //   userObserver.subscribe();
-
-  //   return userObserver.unsubscribe();
-  // }, []);
-
-  // const { user, translation } = useCurrentUser();
-  // const { content, teachers } = useContent();
-
-  // !user || !content || !teachers ? (
-  //   <Spinner
-  //     text={
-  //       !user
-  //         ? 'Loading user...'
-  //         : !content
-  //         ? 'Loading Content...'
-  //         : 'Loading teachers...'
-  //     }
-  //   />
-  // ) :
-
   useEffect(() => {
     SplashScreen.hide();
   }, []);
@@ -50,17 +23,10 @@ const App: React.FC = () => {
         <ContentProvider>
           <IAPProvider>
             <ServicesProvider>
-              {/* <CurrentUser2.Provider
-            value={{
-              user: user,
-              translation:
-                user && user.language === 'Español' ? Español : English,
-            }}> */}
               <Root>
                 {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
                 <Navigator />
               </Root>
-              {/* </CurrentUser2.Provider> */}
             </ServicesProvider>
           </IAPProvider>
         </ContentProvider>

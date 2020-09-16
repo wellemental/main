@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { auth, firestore } from 'services';
 import { Languages, UpdateUserService, User, UserProfile } from 'services';
 import firestore from '@react-native-firebase/firestore';
