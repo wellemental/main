@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { ApplicationError } from '../models/Errors';
-import { LocalUser, LocalContent } from '../types';
+import { LocalUser, LocalContent, UserProfile } from '../types';
 import Logger from './LoggerService';
 import firestore from '@react-native-firebase/firestore';
 
@@ -20,21 +20,22 @@ class LocalStateService {
 
   public async setStorage(
     key: string,
-    value: string | { [key: string]: string } | LocalUser,
+    value: string | { [key: string]: string } | LocalUser | UserProfile,
   ): Promise<void> {
     try {
-      let newValue: any = value;
+      console.log('*****PRE VALUE', value);
       if (typeof value === 'object') {
-        newValue = { ...value };
-        newValue.updated_at = firestore.Timestamp.fromDate(new Date());
+        value.updated_at = firestore.Timestamp.fromDate(new Date());
       }
+
+      console.log('UPDATED VALUE', value);
 
       await AsyncStorage.setItem(
         key,
-        typeof newValue !== 'string' ? JSON.stringify(newValue) : newValue,
+        typeof value !== 'string' ? JSON.stringify(value) : value,
       );
     } catch (err) {
-      Logger.error(`Failed to set ${key} to async storage`);
+      Logger.error(`Failed to set ${key} to async storage - ${err}`);
       return Promise.reject(new ApplicationError('Unable to set local state.'));
     }
   }

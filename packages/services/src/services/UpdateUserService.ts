@@ -3,12 +3,9 @@ import { ApplicationError } from '../models/Errors';
 import { UserProfile, UpdateUserServiceType, InitialUserDoc } from '../types';
 import Logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
-import LocalStateService from './LocalStateService';
 
 const COLLECTION = 'users';
 const collection = firestore().collection(COLLECTION);
-
-const localStateService = new LocalStateService();
 
 class UpdateUserService implements UpdateUserServiceType {
   public async favorite(
@@ -84,7 +81,7 @@ class UpdateUserService implements UpdateUserServiceType {
         updated_at: firestore.FieldValue.serverTimestamp(),
       });
     } catch (error) {
-      Logger.error(`Failed to update player '${id}'`);
+      Logger.error(`Failed to update user '${id}'`);
       throw new ApplicationError('Unable to update');
     }
     return Promise.resolve();

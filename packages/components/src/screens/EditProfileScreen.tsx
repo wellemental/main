@@ -28,7 +28,7 @@ type Props = {
 };
 
 const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
-  const { user, translation } = useCurrentUser();
+  const { auth, user, translation, updateUser } = useCurrentUser();
   const [name, setName] = useState(user.name);
   const [language, setLanguage] = useState(user.language);
   const [birthday, setBirthday] = useState(user.birthday);
@@ -50,8 +50,25 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
   const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
 
   const { loading, error, mutate } = useMutation(() =>
-    service.updateProfile(user.id, newProfile),
+    service.updateProfile(auth.uid, newProfile),
   );
+
+  const handleUpdate = async () => {
+    await updateUser(newProfile);
+
+    mutate(
+      () =>
+        Toast.show({
+          text: 'Changes saved', //translation['Changes saved'],
+          style: { marginBottom: 20 },
+        }),
+      () =>
+        Toast.show({
+          text: 'Something went wrong', //translation['Something went wrong'],
+          style: { marginBottom: 20 },
+        }),
+    );
+  };
 
   return (
     <Container>
@@ -100,20 +117,7 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
 
         <Box gt={2}>
           <Button
-            onPress={(): void => {
-              mutate(
-                () =>
-                  Toast.show({
-                    text: 'Changes saved', //translation['Changes saved'],
-                    style: { marginBottom: 20 },
-                  }),
-                () =>
-                  Toast.show({
-                    text: 'Something went wrong', //translation['Something went wrong'],
-                    style: { marginBottom: 20 },
-                  }),
-              );
-            }}
+            onPress={handleUpdate}
             loading={loading}
             disabled={!name || !language || !birthday}
             danger

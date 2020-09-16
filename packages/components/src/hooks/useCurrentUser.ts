@@ -9,5 +9,6 @@ export const useCurrentUser = () => {
     user: userContext.currentUser,
     loading: userContext.loading,
     translation: userContext.translation,
+    updateUser: userContext.updateUser,
   };
 };

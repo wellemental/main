@@ -98,6 +98,7 @@ export interface User {
   onboardingComplete?: boolean;
   subStatus?: SubStatus;
   actions?: { [key: string]: Action };
+  updated_at?: Date;
 }
 
 export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
@@ -137,6 +138,7 @@ export interface UserProfile {
   name?: string;
   birthday?: string;
   language?: Languages;
+  updated_at?: FirebaseFirestoreTypes.Timestamp;
 }
 
 export interface NewAccount {

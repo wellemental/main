@@ -77,8 +77,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         const localData = await localStateService.getContent();
 
         if (localData) {
-          console.log('GOT SAVED LOCAL CONTENT');
-
           if (localData.content) {
             setContent(localData.content);
           }

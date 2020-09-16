@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 // import { auth, firestore } from 'services';
-import { Languages, UpdateUserService, User, LocalUser } from 'services';
-import { Unsubscriber } from '../types';
+import { Languages, UpdateUserService, User, UserProfile } from 'services';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
@@ -40,7 +39,7 @@ export const CurrentUserProvider = ({ children }: any) => {
   const [error, setError] = useState('');
 
   // If no AsyncStorage user, get from firestore
-  const getDbUser = async (userId) => {
+  const getDbUser = async (userId): Promise<void> => {
     const userSnap = await firestore().collection('users').doc(userId).get();
     const userData = userSnap.data();
 
@@ -56,6 +55,20 @@ export const CurrentUserProvider = ({ children }: any) => {
 
     // Set user state
     setCurrentUser(newUser);
+  };
+
+  // Update state and storage from Edit Profile
+  const updateUser = async (fields: UserProfile) => {
+    console.log('CURRENT USER', currentUser);
+    console.log('UPDATE FIELDS', fields);
+    console.log('UPDATED USER STATE', { ...currentUser, ...fields });
+
+    const mergedFields = { ...currentUser, ...fields };
+    // Update Async Storage
+    await localStateService.setStorage('wmUser', { ...currentUser, ...fields });
+
+    // Update CurrentUser state
+    setCurrentUser({ ...mergedFields, updated_at: new Date() });
   };
 
   useEffect(() => {
@@ -90,12 +103,7 @@ export const CurrentUserProvider = ({ children }: any) => {
     });
 
     // If app.tsx unmounts, cleanup all subscriptions
-    return function cleanup() {
-      // if (userDocUnsubscriber.current) {
-      //   userDocUnsubscriber.current();
-      // }
-      authUnsubscriber();
-    };
+    return authUnsubscriber();
   }, []);
 
   useEffect(() => {
@@ -129,6 +137,7 @@ export const CurrentUserProvider = ({ children }: any) => {
         loading,
         translation:
           currentUser && currentUser.language === 'Español' ? Español : English,
+        updateUser,
       }}>
       {children}
     </CurrentUser.Provider>
