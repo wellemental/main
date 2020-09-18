@@ -13,6 +13,11 @@ export type TabParamList = {
   Settings: undefined;
 };
 
+export type MenuItem = {
+  label: string;
+  filter?: Tags;
+};
+
 export type Unsubscriber = () => void;
 
 export type RootStackParamList = {

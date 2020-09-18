@@ -9,16 +9,18 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '../types';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import { useCurrentUser } from '../hooks';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabNav: React.FC = () => {
   const { translation } = useCurrentUser();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused }) => {
           let iconName = focused
             ? route.name.toLowerCase()
             : route.name.toLowerCase().concat('-outline');
@@ -40,9 +42,9 @@ const TabNav: React.FC = () => {
         activeTintColor: variables.white,
         style: {
           backgroundColor: variables.brandPrimary,
-          height: 60,
+          height: 60 + insets.bottom,
           paddingTop: 10,
-          paddingBottom: 10,
+          paddingBottom: 0 + insets.bottom,
         },
       }}>
       <Tab.Screen

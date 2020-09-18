@@ -8,7 +8,6 @@ import { Teachers } from 'services';
 import Error from './Error';
 import Paragraph from './Paragraph';
 import { useCurrentUser } from '../hooks/useCurrentUser';
-import { useFirstInstallTime } from 'react-native-device-info';
 
 interface Props {
   filter?: Tags | TimeOfDay | Categories;

@@ -11,6 +11,7 @@ import {
 } from './context';
 import Navigator from './Navigator';
 import SplashScreen from 'react-native-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -24,8 +25,12 @@ const App: React.FC = () => {
           <IAPProvider>
             <ServicesProvider>
               <Root>
-                {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-                <Navigator />
+                <SafeAreaProvider>
+                  {Platform.OS === 'ios' && (
+                    <StatusBar barStyle="dark-content" />
+                  )}
+                  <Navigator />
+                </SafeAreaProvider>
               </Root>
             </ServicesProvider>
           </IAPProvider>
