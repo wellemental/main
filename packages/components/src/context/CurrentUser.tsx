@@ -42,10 +42,12 @@ export const CurrentUserProvider = ({ children }: any) => {
     const userData = userSnap.data();
 
     const newUser = {
+      id: userId,
       name: userData.name,
       language: userData.language,
       birthday: userData.birthday,
       onboardingComplete: userData.onboardingComplete,
+      favorites: userData.favorites,
     };
 
     // Save to AsyncStorage
@@ -59,8 +61,26 @@ export const CurrentUserProvider = ({ children }: any) => {
   const updateUser = async (fields: UserProfile) => {
     const mergedFields = { ...currentUser, ...fields };
     // Update Async Storage
-    await localStateService.setStorage('wmUser', { ...currentUser, ...fields });
+    await localStateService.setStorage('wmUser', mergedFields);
 
+    // Update CurrentUser state
+    setCurrentUser({ ...mergedFields, updated_at: new Date() });
+  };
+
+  // Update state and storage from Edit Profile
+  const updateFavorites = async (contentId: string, isFav: boolean) => {
+    const mergedFields = {
+      ...currentUser,
+      favorites: {
+        ...currentUser.favorites,
+        [contentId]: {
+          favorited: isFav,
+          updated_at: new Date(),
+        },
+      },
+    };
+    // Update Async Storage
+    await localStateService.setStorage('wmUser', mergedFields);
     // Update CurrentUser state
     setCurrentUser({ ...mergedFields, updated_at: new Date() });
   };
@@ -129,6 +149,8 @@ export const CurrentUserProvider = ({ children }: any) => {
         translation:
           currentUser && currentUser.language === 'Español' ? Español : English,
         updateUser,
+        updateFavorites,
+        getDbUser,
       }}>
       {children}
     </CurrentUser.Provider>

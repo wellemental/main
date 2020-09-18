@@ -4,7 +4,6 @@ import { H1 } from 'native-base';
 import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';
-// import * as RNIap from 'react-native-iap';
 
 const bullets = ['Selling Point 1', 'Pint 2', 'point 3'];
 
@@ -17,13 +16,13 @@ const PlansScreen: React.FC = () => {
   const { translation } = useCurrentUser();
   const [selectedPlan, setPlanId] = useState(IAP_SKUS[0]);
   const [error, setError] = useState('');
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const products: RNIap.Product[] = await RNIap.getProducts(IAP_SKUS);
-        setProducts(products);
+        const gotProd = await RNIap.getProducts(IAP_SKUS);
+        setProducts(gotProd);
       } catch (err) {
         console.log(err);
       }
@@ -33,7 +32,7 @@ const PlansScreen: React.FC = () => {
   }, []);
 
   // fetch values from context
-  const { processing, setProcessing } = useIap();
+  const { processing, setProcessing, status } = useIap();
 
   // handle new subscription request
   const handleSubscription = async () => {
@@ -49,6 +48,7 @@ const PlansScreen: React.FC = () => {
       setError(err);
       setProcessing(false);
     }
+    setProcessing(false);
   };
 
   return (
@@ -74,6 +74,13 @@ const PlansScreen: React.FC = () => {
           Error? <Error error={error} />
         </Paragraph>
       </Box>
+      <Paragraph>Status***</Paragraph>
+      {status &&
+        status.map((item, idx) => (
+          <Paragraph note key={idx + item}>
+            *** {item}
+          </Paragraph>
+        ))}
     </Container>
   );
 };

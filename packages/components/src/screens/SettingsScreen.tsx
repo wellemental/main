@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
 import { AuthService } from 'services';
 import { Error, PageHeading, Container } from '../primitives';
-import {
-  Body,
-  Left,
-  List,
-  Icon,
-  ListItem,
-  Right,
-  Text,
-  Toast,
-} from 'native-base';
+import { Body, Left, List, Icon, ListItem, Right, Text } from 'native-base';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useCurrentUser } from '../hooks';
+import { useCurrentUser, useContent } from '../hooks';
 
 type SettingsLink = {
   label: string;
@@ -22,7 +13,8 @@ type SettingsLink = {
 };
 
 const SettingsScreen: React.FC = () => {
-  const { translation } = useCurrentUser();
+  const { translation, getDbUser } = useCurrentUser();
+  const { getDbContent } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
   const service = new AuthService();
@@ -62,6 +54,8 @@ const SettingsScreen: React.FC = () => {
       iconName: 'cart',
     },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
+    { label: 'Refresh Content', onPress: getDbContent, iconName: 'refresh' },
+    { label: 'Refresh User', onPress: getDbUser, iconName: 'refresh' },
   ];
 
   return (

@@ -40,8 +40,9 @@ const TabNav: React.FC = () => {
         activeTintColor: variables.white,
         style: {
           backgroundColor: variables.brandPrimary,
-          height: 90,
+          height: 60,
           paddingTop: 10,
+          paddingBottom: 10,
         },
       }}>
       <Tab.Screen

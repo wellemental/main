@@ -12,7 +12,7 @@ type ContainerProps = {
 
 const Container: React.FC<ContainerProps & NativeBase.Content> = ({
   style,
-  scrollEnabled = true,
+  scrollEnabled = false,
   children,
   color,
   center,
@@ -32,7 +32,6 @@ const Container: React.FC<ContainerProps & NativeBase.Content> = ({
           : variables.mainContentPaddingVertical,
       justifyContent: center ? 'center' : undefined,
       alignItems: center ? 'center' : undefined,
-      flex: 1,
       alignContent: 'center',
     },
     style,
@@ -43,7 +42,7 @@ const Container: React.FC<ContainerProps & NativeBase.Content> = ({
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles}
       children={children}
-      style={{ backgroundColor: variables.containerBgColor }}
+      style={{ backgroundColor: variables.containerBgColor, flex: 1 }}
     />
   ) : (
     <View style={[{ flex: 1 }, styles]} children={children} />

@@ -151,7 +151,7 @@ export default {
 
   // Date Picker
   datePickerTextColor: brandColors.textColor,
-  datePickerBg: 'transparent',
+  datePickerBg: '#222', //'transparent',
 
   // FAB
   fabWidth: 56,

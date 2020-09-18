@@ -8,9 +8,9 @@ const FavoritesScreen: React.FC = () => {
   const { user, translation } = useCurrentUser();
   const favorites =
     user &&
-    user.actions &&
-    Object.keys(user.actions).filter(
-      (item: string) => user.actions[item].favorited,
+    user.favorites &&
+    Object.keys(user.favorites).filter(
+      (item: string) => user.favorites[item].favorited,
     );
 
   const tabs: TabsType = {
@@ -30,7 +30,7 @@ const FavoritesScreen: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container scrollEnabled={false}>
       <PageHeading title={translation['Your Favorites']} tabs={tabs} />
       <Tabs filters={tabs} />
     </Container>

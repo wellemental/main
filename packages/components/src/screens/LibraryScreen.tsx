@@ -48,7 +48,7 @@ const LibraryScreen: React.FC = () => {
   // );
 
   return (
-    <Container>
+    <Container scrollEnabled>
       <PageHeading title={translation["Let's Practice."]} />
       <Tabs
         filters={tabs}

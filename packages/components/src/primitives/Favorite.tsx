@@ -11,25 +11,27 @@ interface Props {
 }
 
 const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
-  const { user } = useCurrentUser();
+  const { user, updateFavorites } = useCurrentUser();
   const [isFav, toggleFav] = useState(
     user &&
-      user.actions &&
-      user.actions[contentId] &&
-      user.actions[contentId].favorited,
+      user.favorites &&
+      user.favorites[contentId] &&
+      user.favorites[contentId].favorited,
   );
 
   const [error, setError] = useState();
+
   const service = new UpdateUserService();
   const { loading, mutate } = useMutation(() =>
     service.favorite(user.id, contentId, !isFav),
   );
 
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
     try {
-      mutate();
-      toggleFav(!isFav);
+      await updateFavorites(contentId, !isFav);
+      mutate(() => toggleFav(!isFav));
     } catch (err) {
+      console.log('ERR FAVORITING', err);
       setError('Error');
     }
   };

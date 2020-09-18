@@ -7,7 +7,7 @@ const SearchScreen: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
-    <Container>
+    <Container scrollEnabled>
       <PageHeading title={translation.Search} />
       <SearchBar value={searchTerm} setState={setSearchTerm} />
       <ContentLoop search={searchTerm} />

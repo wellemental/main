@@ -13,13 +13,17 @@ class UpdateUserService implements UpdateUserServiceType {
     contentId: string,
     isFav: boolean,
   ): Promise<void> {
+    console.log('FAVORITING 1***', id);
     const doc = collection.doc(id); //
     const userSnapshot = await doc.get();
-
     const favUpdate = {};
-    favUpdate[`actions.${contentId}.favorited`] = isFav;
+    favUpdate[`favorites.${contentId}.favorited`] = isFav;
+    favUpdate[
+      `favorites.${contentId}.updated_at`
+    ] = firestore.Timestamp.fromDate(new Date());
 
     try {
+      console.log('FAVORITING');
       if (userSnapshot.exists) {
         await doc.update({
           ...favUpdate,

@@ -7,9 +7,10 @@ export const useContent = () => {
   return {
     content: contentContext.content,
     teachers: contentContext.teachers,
-    contentError: contentContext.contentError,
-    teachersError: contentContext.teachersError,
     loading: contentContext.loading,
     features: contentContext.features,
+    error: contentContext.error,
+    status: contentContext.status,
+    getDbContent: contentContext.getDbContent,
   };
 };

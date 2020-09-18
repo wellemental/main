@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { ApplicationError } from '../models/Errors';
 import { LocalUser, LocalContent, UserProfile } from '../types';
-import logger from './loggerService';
+import logger from './LoggerService';
 import firestore from '@react-native-firebase/firestore';
 
 class LocalStateService {

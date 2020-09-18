@@ -73,8 +73,9 @@ export enum ContentStatus {
   Draft = 'draft',
 }
 
-export type Action = {
+export type Favorite = {
   favorited: boolean;
+  updated_at: Date;
 };
 
 export interface LocalUser {
@@ -97,7 +98,7 @@ export interface User {
   language: Languages;
   onboardingComplete?: boolean;
   subStatus?: SubStatus;
-  actions?: { [key: string]: Action };
+  favorites?: { [key: string]: Favorite };
   updated_at?: Date;
 }
 

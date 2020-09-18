@@ -10,5 +10,7 @@ export const useCurrentUser = () => {
     loading: userContext.loading,
     translation: userContext.translation,
     updateUser: userContext.updateUser,
+    updateFavorites: userContext.updateFavorites,
+    getDbUser: userContext.dbUser,
   };
 };

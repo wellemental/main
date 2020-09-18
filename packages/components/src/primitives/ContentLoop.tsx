@@ -8,6 +8,7 @@ import { Teachers } from 'services';
 import Error from './Error';
 import Paragraph from './Paragraph';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import { useFirstInstallTime } from 'react-native-device-info';
 
 interface Props {
   filter?: Tags | TimeOfDay | Categories;
@@ -25,7 +26,7 @@ const ContentLoop: React.FC<Props> = ({
   scrollEnabled,
 }) => {
   const { user } = useCurrentUser();
-  const { content, teachers, contentError, teachersError } = useContent();
+  const { content, teachers, status, error } = useContent();
 
   let filteredContent: Content[] = content;
 
@@ -64,30 +65,49 @@ const ContentLoop: React.FC<Props> = ({
     );
   }
 
-  return contentError || teachersError ? (
+  return (
     <>
-      <Paragraph>Content Error</Paragraph>
-      <Error error={contentError} />
-      <Paragraph>Teacher Error</Paragraph>
-      <Error error={teachersError} />
+      <Error error={error} />
+
+      {content && teachers && scrollEnabled ? (
+        // If tabs and header need to be able to scroll up with the list
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {filteredContent.map((item, idx) => (
+            <ContentCard
+              key={idx}
+              content={item}
+              teacher={teachers[item.teacher]}
+            />
+          ))}
+        </ScrollView>
+      ) : content && teachers ? (
+        filteredContent.map((item, idx) => (
+          <ContentCard
+            key={idx}
+            content={item}
+            teacher={teachers[item.teacher]}
+          />
+        ))
+      ) : (
+        <ListEmpty />
+      )}
+      <Paragraph>
+        Language: {user && user.language ? user.language : 'N/A'}
+      </Paragraph>
+      <Paragraph>Got Content? {content && !!content.toString()}</Paragraph>
+      <Paragraph>Got Teachers? {content && !!content.toString()}</Paragraph>
+      {filter && <Paragraph>Filter: {filter}</Paragraph>}
+      {favorites && <Paragraph>Favs!</Paragraph>}
+      {teacher && <Paragraph>Teacher: {teacher}</Paragraph>}
+      {/* {search && <Paragraph>Search: {search}</Paragraph>} */}
+      <Paragraph>Status***</Paragraph>
+      {status &&
+        status.map((item, idx) => (
+          <Paragraph note key={idx + item}>
+            *** {item}
+          </Paragraph>
+        ))}
     </>
-  ) : content && teachers && scrollEnabled ? (
-    // If tabs and header need to be able to scroll up with the list
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {filteredContent.map((item, idx) => (
-        <ContentCard
-          key={idx}
-          content={item}
-          teacher={teachers[item.teacher]}
-        />
-      ))}
-    </ScrollView>
-  ) : content && teachers ? (
-    filteredContent.map((item, idx) => (
-      <ContentCard key={idx} content={item} teacher={teachers[item.teacher]} />
-    ))
-  ) : (
-    <ListEmpty />
   );
 };
 

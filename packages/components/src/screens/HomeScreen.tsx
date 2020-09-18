@@ -5,6 +5,7 @@ import {
   ContentLoop,
   CategoryCard,
   Spinner,
+  Error,
 } from '../primitives';
 import moment from 'moment';
 import { TimeOfDay, Version } from 'services';
@@ -16,7 +17,7 @@ const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
   const today = moment();
   const { translation, user } = useCurrentUser();
-  const { features } = useContent();
+  const { features, error, updateAvailable } = useContent();
 
   // Determine Time of Day for header customization
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
