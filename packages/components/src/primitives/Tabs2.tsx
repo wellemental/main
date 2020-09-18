@@ -7,6 +7,8 @@ type Props = {
   // filters: string[];
 };
 
+
+// NOT USING THIS ANYMORE
 const Tabs: React.FC<Props & NativeBase.Tabs> = ({ filters, ...props }) => {
   const tabTitles = Object.keys(filters);
   const tabContent = Object.values(filters);

@@ -5,7 +5,11 @@ import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';
 
-const bullets = ['Selling Point 1', 'Pint 2', 'point 3'];
+const bullets = [
+  '50+ meditation and yoga videos',
+  'Available in both English and Spanish',
+  '100% from teachers of color',
+];
 
 // defining IAP SKUs by platform in `constants.ts`
 export const IAP_SKUS = Platform.select({
@@ -53,13 +57,15 @@ const PlansScreen: React.FC = () => {
 
   return (
     <Container center>
-      <Box gb={0.5}>
+      <Box gb={1}>
         <H1>{`${translation.Plans}`}</H1>
       </Box>
 
-      <Box gb={1.5}>
+      <Box gb={2}>
         {bullets.map((bullet) => (
-          <Paragraph key={bullet}>{bullet}</Paragraph>
+          <Paragraph key={bullet} style={{ alignSelf: 'center' }}>
+            {bullet}
+          </Paragraph>
         ))}
       </Box>
       <Button
@@ -70,9 +76,7 @@ const PlansScreen: React.FC = () => {
         onPress={() => handleSubscription()}
       />
       <Box gt={2}>
-        <Paragraph>
-          Error? <Error error={error} />
-        </Paragraph>
+        <Error error={error} />
       </Box>
       <Paragraph>Status***</Paragraph>
       {status &&

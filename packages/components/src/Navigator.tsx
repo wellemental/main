@@ -13,7 +13,6 @@ import {
   UpgradeScreen,
   PlansScreen,
 } from './screens';
-
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList, AuthStackParamList } from './types';
 import { useCurrentUser } from './hooks';

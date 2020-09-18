@@ -5,7 +5,6 @@ import {
   ContentLoop,
   CategoryCard,
   Spinner,
-  Error,
 } from '../primitives';
 import moment from 'moment';
 import { TimeOfDay, Version } from 'services';
