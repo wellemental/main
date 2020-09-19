@@ -36,6 +36,8 @@ export const CurrentUserProvider = ({ children }: any) => {
   const [creatingUser, setCreatingUser] = useState(false);
   const [error, setError] = useState('');
 
+  // localStateService.resetStorage();
+
   // If no AsyncStorage user, get from firestore
   const getDbUser = async (userId): Promise<void> => {
     const userSnap = await firestore().collection('users').doc(userId).get();

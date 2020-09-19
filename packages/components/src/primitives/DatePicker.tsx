@@ -1,15 +1,34 @@
-import React from 'react';
-import { DatePicker as NBDatePicker, Item, Label } from 'native-base';
+import React, { useState } from 'react';
+import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
+// import { DatePicker as NBDatePicker, Item, Label } from 'native-base';
 import moment from 'moment';
+import { Platform } from 'react-native';
+import { Text, View, Item, Label } from 'native-base';
+import Modal from 'react-native-modal';
 import { Translations } from '../types';
+import Button from './Button';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 type Props = {
-  date?: Date | string | null;
+  date?: Date;
   translation: Translations;
   onDateChange: React.Dispatch<(prevState: undefined) => undefined>;
   locale?: 'es' | 'en';
 };
+
+// interface Props {
+//   mode: 'date' | 'time';
+//   initialValue: Date;
+//   disabled: boolean;
+//   value?: Date;
+//   placeholderText?: string;
+//   maximumDate?: Date;
+//   minimumDate?: Date;
+//   // onChange?(value: Date): void;
+//   onDateChange: React.Dispatch<(prevState: undefined) => undefined>;
+//   willDismiss?(): void;
+//   full?: boolean;
+// }
 
 const DatePicker: React.FC<Props> = ({
   date,
@@ -17,44 +36,40 @@ const DatePicker: React.FC<Props> = ({
   onDateChange,
   locale,
 }) => {
+  // const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  // const handleDateChange = (newDate) => {
+  //   onDateChange(newDate);
+  // };
+
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    onDateChange(currentDate);
+  };
+
   return (
     <>
       <Label style={{ fontSize: 15, color: variables.textColor }}>
         {translation.Birthday}
       </Label>
-
-      <NBDatePicker
-        defaultDate={
-          typeof date === 'string' // If date is a string, convert to Date
-            ? moment(date).toDate()
-            : date // If date prop is a Date, keep as-is
-            ? date
-            : moment().subtract(13, 'years').toDate() // If no date prop, set date to 13yo
-        }
-        maximumDate={moment().toDate()}
-        locale={locale ? locale : 'en'}
-        timeZoneOffsetInMinutes={undefined}
-        modalTransparent={false}
-        animationType={'fade'}
-        androidMode={'default'}
-        placeHolderText={
-          date
-            ? moment(date).format('MMM DD, YYYY')
-            : translation['Select birthday']
-        }
-        textStyle={{
-          fontSize: 18,
-          marginLeft: 0,
-          paddingLeft: 0,
-        }}
-        placeHolderTextStyle={{
-          color: variables.textColor,
-          paddingLeft: 0,
-          fontSize: 18,
-        }}
-        onDateChange={onDateChange}
-        disabled={false}
+      <Button
+        transparent
+        onPress={() => setShow(true)}
+        text={moment(date).format('MM/DD/YYYY')}
       />
+
+      {show && date && (
+        <DateTimePicker
+          // mode="date"
+          value={new Date()}
+          display="default"
+          onChange={() => handleDateChange}
+          // maximumDate={this.props.maximumDate}
+          // minimumDate={this.props.minimumDate}
+        />
+      )}
+
       <Item style={{ marginLeft: 0, marginBottom: 25, alignSelf: 'stretch' }} />
     </>
   );

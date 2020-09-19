@@ -41,7 +41,7 @@ class AuthService {
       // Reset local state before creating the user to avoid race conditions with listeners
       const localStateService = new LocalStateService();
       try {
-        localStateService.resetStorage();
+        await localStateService.resetStorage();
       } catch (err) {
         return Promise.reject(err);
       }
