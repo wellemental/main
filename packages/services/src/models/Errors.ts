@@ -10,6 +10,12 @@ class AuthenticationError extends ApplicationError {
   }
 }
 
+class InvalidPromoCodeError extends ApplicationError {
+  constructor(message = 'An authentication error occurred.') {
+    super(message);
+  }
+}
+
 class NoUserError extends AuthenticationError {
   constructor(message = 'Current user is not available.') {
     super(message);
@@ -75,6 +81,7 @@ export {
   ApplicationError,
   AuthenticationError,
   NoUserError,
+  InvalidPromoCodeError,
   UnimplementedError,
   InvalidPlayerProfileError,
   ModelError,

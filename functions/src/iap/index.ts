@@ -48,7 +48,7 @@ export const validateIap = async (
       try {
         await admin
           .firestore()
-          .collection('players')
+          .collection('users')
           .doc(userId)
           .update({
             plan: { autoRenew, nextRenewal, planId: productId, expirationUnix },

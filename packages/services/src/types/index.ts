@@ -177,6 +177,19 @@ export interface ContentServiceType {
   getLatestUpdate(): Promise<Date>;
 }
 
+type PromoCode = {
+  id: string;
+  code: string;
+  limit: number;
+  used: number;
+};
+
+export interface PromoCodeServiceType {
+  validateCode(code: string): Promise<PromoCode>;
+  upgradeUser(userId: string, code: string): Promise<void>;
+  validateAndUpgrade(userId: string, code: string): Promise<void>;
+}
+
 export interface DownloadVideoServiceType {
   downloadVideo(
     videoUrl: string,

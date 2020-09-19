@@ -68,4 +68,6 @@ export const English = {
   Plans: 'Plans',
   Purchase: 'Purchase',
   Subscription: 'Subscription',
+  'Promo code': 'Promo code',
+  'Promo code?': 'Promo code?',
 };

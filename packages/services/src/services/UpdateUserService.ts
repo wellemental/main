@@ -50,7 +50,6 @@ class UpdateUserService implements UpdateUserServiceType {
 
   public async createProfile(account: Partial<InitialUserDoc>): Promise<void> {
     const user = collection.doc(account.id);
-
     const userSnapshot = await user.get();
 
     const created_at = firestore.Timestamp.fromDate(new Date());
@@ -76,7 +75,10 @@ class UpdateUserService implements UpdateUserServiceType {
     }
   }
 
-  public async updateProfile(id: string, fields: UserProfile): Promise<void> {
+  public async updateProfile(
+    id: string,
+    fields: UserProfile | { [key: string]: any },
+  ): Promise<void> {
     const doc = collection.doc(id);
 
     try {
