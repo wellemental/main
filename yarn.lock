@@ -2078,6 +2078,13 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/datetimepicker@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.0.2.tgz#6e52cda7fa46ecebfb216f5520cfbf2754348299"
+  integrity sha512-NLcV3HLrjtvyYM4CU4O+nWJ+LsjB4XnkUiXjK52PgnlRrg5i3hJQHcp/GsrHQbB62UC+Zn96+Hy+jiw4K5Rw/w==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/eslint-config@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-config/-/eslint-config-2.0.0.tgz#35dcc529a274803fc4e0a6b3d6c274551fb91774"
@@ -11797,31 +11804,7 @@ native-base-shoutem-theme@0.3.1:
     lodash "^4.17.14"
     prop-types "^15.5.10"
 
-native-base@^2.13.14:
-  version "2.13.14"
-  resolved "https://registry.yarnpkg.com/native-base/-/native-base-2.13.14.tgz#57a71d871bb1df96122bf13af6298b8c22f48536"
-  integrity sha512-k9E1FX6kgLjp6Du7jOA/p6viKrmMrG1BelN4ui15hZBObBd+s0ExI5oh8U/Wa9U++hBHuKeHhzDF9OVqOo4t2w==
-  dependencies:
-    "@codler/react-native-keyboard-aware-scroll-view" "1.0.0"
-    blueimp-md5 "^2.5.0"
-    clamp "^1.0.1"
-    color "~3.1.2"
-    create-react-class "^15.6.3"
-    eslint-config-prettier "^6.0.0"
-    fs-extra "^2.0.0"
-    jest-react-native "^18.0.0"
-    lodash "^4.17.14"
-    native-base-shoutem-theme "0.3.1"
-    opencollective-postinstall "^2.0.2"
-    print-message "^2.1.0"
-    prop-types "^15.5.10"
-    react-native-drawer "2.5.1"
-    react-native-easy-grid "0.2.2"
-    react-native-vector-icons "^7.0.0"
-    react-tween-state "^0.1.5"
-    tween-functions "^1.0.1"
-
-"native-base@https://github.com/vosters/NativeBase.git":
+native-base@^2.13.14, "native-base@https://github.com/vosters/NativeBase.git":
   version "2.13.14"
   resolved "https://github.com/vosters/NativeBase.git#924fcf7ba36837c8e23328f8c834334edc78f3a5"
   dependencies:

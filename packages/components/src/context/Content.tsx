@@ -16,6 +16,7 @@ interface ContentContext {
   teachers: AllTeachers;
   error: Error | string;
   loading: boolean;
+  rcLoading: boolean;
   features: Features;
   updateAvailable: boolean;
   status: string[];
@@ -27,6 +28,7 @@ export const Content = React.createContext<ContentContext>({
   teachers: null,
   error: null,
   loading: false,
+  rcLoading: false
   features: undefined,
   updateAvailable: false,
   status: [],
@@ -218,7 +220,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
     !!rcData,
   );
   if ((auth && loading) || (auth && rcLoading)) {
-    return <Spinner text="Loading Content..." />;
+    // return <Spinner text="Loading Content..." />;
   }
 
   return (
@@ -227,7 +229,8 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         content,
         teachers,
         features: rcData,
-        loading: loading || rcLoading,
+        loading: loading,
+        rcLoading: rcLoading
         updateAvailable,
         error,
         status: statuses,

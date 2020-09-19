@@ -8,6 +8,7 @@ export const useContent = () => {
     content: contentContext.content,
     teachers: contentContext.teachers,
     loading: contentContext.loading,
+    rcLoading: contentContext.rcLoading,
     features: contentContext.features,
     error: contentContext.error,
     status: contentContext.status,

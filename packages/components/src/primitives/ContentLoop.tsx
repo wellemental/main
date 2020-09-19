@@ -25,7 +25,7 @@ const ContentLoop: React.FC<Props> = ({
   scrollEnabled,
 }) => {
   const { user } = useCurrentUser();
-  const { content, teachers, status, error } = useContent();
+  const { content, teachers, status, error, loading, rcLoading } = useContent();
 
   let filteredContent: Content[] = content;
 
@@ -93,6 +93,8 @@ const ContentLoop: React.FC<Props> = ({
       <Paragraph>
         Language: {user && user.language ? user.language : 'N/A'}
       </Paragraph>
+      <Paragraph>Content Loading? {loading.toString()}</Paragraph>
+      <Paragraph>Remote Config Loading? {rcLoading.toString()}</Paragraph>
       <Paragraph>Got Content? {content && !!content.toString()}</Paragraph>
       <Paragraph>Got Teachers? {content && !!content.toString()}</Paragraph>
       {filter && <Paragraph>Filter: {filter}</Paragraph>}

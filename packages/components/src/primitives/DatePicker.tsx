@@ -13,7 +13,7 @@ type Props = {
   date?: Date;
   translation: Translations;
   onDateChange: React.Dispatch<(prevState: undefined) => undefined>;
-  locale?: 'es' | 'en';
+  // locale?: 'es' | 'en';
 };
 
 // interface Props {
@@ -34,7 +34,7 @@ const DatePicker: React.FC<Props> = ({
   date,
   translation,
   onDateChange,
-  locale,
+  // locale,
 }) => {
   // const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
