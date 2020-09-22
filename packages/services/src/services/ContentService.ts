@@ -5,6 +5,7 @@ import firestore, {
 import { Content, ContentServiceType } from '../types';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
+import logger from './LoggerService';
 
 const COLLECTION = 'content';
 const collection = firestore().collection(COLLECTION);
@@ -29,8 +30,10 @@ class ContentService implements ContentServiceType {
         : typeof data.tags === 'string'
         ? data.tags.split(', ')
         : Object.values(data.tags),
-      seconds: data.length,
-      length: moment().startOf('day').seconds(data.length).format('m:ss'),
+      seconds: data.seconds,
+      length: data.seconds
+        ? moment().startOf('day').seconds(data.seconds).format('m:ss')
+        : undefined,
       language: data.language,
       status: data.status,
       updated_at: data.updated_at,
@@ -38,7 +41,7 @@ class ContentService implements ContentServiceType {
     };
   };
 
-  public getContent = async (limit?: number): Promise<Content[]> => {
+  public getContent = async (): Promise<Content[]> => {
     // With no tags passed, get all Content
     const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection.orderBy(
       'updated_at',
@@ -54,6 +57,7 @@ class ContentService implements ContentServiceType {
         .get()
         .then((snapshot) => snapshot.docs.map((doc) => this.buildContent(doc)));
     } catch (err) {
+      logger.error(`Unable to get all content - ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
   };
@@ -70,6 +74,7 @@ class ContentService implements ContentServiceType {
 
       return content[0].updated_at.toDate();
     } catch (err) {
+      logger.error('Unable to get latest content update');
       return Promise.reject(new ApplicationError(err));
     }
   };

@@ -4,6 +4,7 @@ import { H1 } from 'native-base';
 import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';
+import { PromoCodeService } from 'services';
 
 const bullets = [
   '50+ meditation and yoga videos',
@@ -17,15 +18,20 @@ export const IAP_SKUS = Platform.select({
 });
 
 const PlansScreen: React.FC = () => {
-  const { translation } = useCurrentUser();
+  const { auth, translation } = useCurrentUser();
   const [selectedPlan, setPlanId] = useState(IAP_SKUS[0]);
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
 
+  const { processing, setProcessing, status } = useIap();
+
   useEffect(() => {
+    setProcessing(true);
     const getProducts = async () => {
       try {
+        console.log('GETTING PRODCUTSI');
         const gotProd = await RNIap.getProducts(IAP_SKUS);
+        console.log('GOT PRODCUTSI', gotProd);
         setProducts(gotProd);
       } catch (err) {
         console.log(err);
@@ -33,15 +39,21 @@ const PlansScreen: React.FC = () => {
     };
 
     getProducts();
-  }, []);
+  }, [setProcessing]);
 
+  console.log('PRODUCTS', products, 'SELECTED', selectedPlan);
   // fetch values from context
-  const { processing, setProcessing, status } = useIap();
+
+  useEffect(() => {
+    if (products) {
+      setProcessing(false);
+    }
+  }, [products, setProcessing]);
 
   // handle new subscription request
   const handleSubscription = async () => {
-    console.log('REQUEST PURCHASE***');
     try {
+      console.log('REQUEST PURCHASE***');
       setError('');
       setProcessing(true);
       const res = await requestSubscription(selectedPlan);
@@ -65,9 +77,14 @@ const PlansScreen: React.FC = () => {
   // Input Promo Code
   const [promoCode, setPromoCode] = useState('');
 
-  const handlePromoCode = () => {
+  const handlePromoCode = async () => {
+    const service = new PromoCodeService();
     try {
-    } catch (err) {}
+      await service.validateAndUpgrade(auth.uid, promoCode);
+    } catch (err) {
+      console.log('ERR', err);
+      setError(err);
+    }
   };
 
   return (
@@ -83,15 +100,6 @@ const PlansScreen: React.FC = () => {
           </Paragraph>
         ))}
       </Box>
-
-      <Input
-        label={translation['Promo code']}
-        value={promoCode}
-        autoFocus
-        onChangeText={setPromoCode}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
 
       <Button
         primary
@@ -113,6 +121,21 @@ const PlansScreen: React.FC = () => {
       <Box gt={2}>
         <Error error={error} />
       </Box>
+      <Input
+        label={translation['Promo code']}
+        value={promoCode}
+        autoFocus
+        onChangeText={setPromoCode}
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
+      <Button
+        primary
+        disabled={processing}
+        loading={processing}
+        text={translation.Purchase}
+        onPress={() => handlePromoCode()}
+      />
       <Paragraph>Status***</Paragraph>
       {status &&
         status.map((item, idx) => (

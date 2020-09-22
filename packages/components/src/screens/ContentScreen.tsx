@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
 
 const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const { content, teacher } = route.params;
-  const player = useRef();
+  // const player = useRef();
 
-  if (player.current) {
-    player.current.presentFullscreenPlayer();
-  }
+  // if (player.current) {
+  //   player.current.presentFullscreenPlayer();
+  // }
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
   const [videoRef, setVideoRef] = useState();
 
   const onBuffer = () => {
@@ -109,8 +109,8 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         style={{ height: 200, width: null, flex: 1 }}
       /> */}
       <Box row justifyContent="space-between" gt={2} gb={1}>
-        <H1>{content.title}</H1>
-        <Box row>
+        <H1 style={{ flex: 4 }}>{content.title}</H1>
+        <Box row style={{ flex: 1 }}>
           <Favorite onProfile contentId={content.id} />
           <Download videoUrl={content.video} />
         </Box>

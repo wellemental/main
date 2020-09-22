@@ -4,6 +4,7 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import { Teacher, AllTeachers, TeacherServiceType } from '../types';
 import { ApplicationError } from '../models/Errors';
+import logger from './LoggerService';
 
 const COLLECTION = 'teachers';
 const teachersCollection = firestore().collection(COLLECTION);
@@ -55,6 +56,7 @@ class TeacherService implements TeacherServiceType {
           ),
         );
     } catch (err) {
+      logger.error(`Unable to get all teachers - ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
 
@@ -73,6 +75,7 @@ class TeacherService implements TeacherServiceType {
 
       return teachers[0].updated_at.toDate();
     } catch (err) {
+      logger.error('Unable to get latest teacher update');
       return Promise.reject(new ApplicationError(err));
     }
   };

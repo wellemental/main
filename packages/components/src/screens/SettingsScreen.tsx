@@ -13,7 +13,7 @@ type SettingsLink = {
 };
 
 const SettingsScreen: React.FC = () => {
-  const { translation, getDbUser } = useCurrentUser();
+  const { auth, translation, getDbUser } = useCurrentUser();
   const { getDbContent } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
@@ -60,7 +60,7 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <Container>
-      <PageHeading title="Account" />
+      <PageHeading title="Account" subtitle={auth.email} />
       <Error error={error} />
       <List>
         {list.map((item: SettingsLink, idx: number) => {

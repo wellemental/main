@@ -7,6 +7,7 @@ export { default as ObserveUserService } from './services/ObserveUserService';
 export { default as BaseService } from './services/BaseService';
 export { default as DownloadVideoService } from './services/DownloadVideoService';
 export { default as ForgotPasswordService } from './services/ForgotPasswordService';
+export { default as PromoCodeService } from './services/PromoCodeService';
 export { buildDependencies, Dependency } from './services/DependencyService';
 export { default as LocalStateService } from './services/LocalStateService';
 export { default as logger } from './services/LoggerService';

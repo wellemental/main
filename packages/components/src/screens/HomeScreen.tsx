@@ -1,16 +1,19 @@
 import React from 'react';
+import { TouchableOpacity, Linking } from 'react-native';
 import {
   PageHeading,
   Container,
   ContentLoop,
   CategoryCard,
   Spinner,
+  Paragraph,
 } from '../primitives';
 import moment from 'moment';
 import { TimeOfDay, Version } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -41,13 +44,34 @@ const HomeScreen: React.FC = () => {
   if (data) {
     canUpgrade = currVersion < data.version;
 
-    if (canUpgrade) {
-      navigation.navigate('Upgrade', { version: data });
-    }
+    // if (canUpgrade) {
+    //   navigation.navigate('Upgrade', { version: data });
+    // }
   }
+
+  const upgradeOnPress = (): void => {
+    Linking.openURL(data.iosUrl).catch((err) =>
+      console.error('An error occurred', err),
+    );
+  };
 
   return (
     <Container scrollEnabled>
+      {!canUpgrade && (
+        <TouchableOpacity
+          onPress={upgradeOnPress}
+          style={{
+            borderBottomColor: variables.brandDanger,
+            borderBottomWidth: 1,
+            paddingTop: 5,
+            paddingBottom: 15,
+            marginBottom: -10,
+          }}>
+          <Paragraph center style={{ color: variables.brandDanger }}>
+            {translation['Tap to download the latest Wellemental update.']}
+          </Paragraph>
+        </TouchableOpacity>
+      )}
       <PageHeading
         title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}${
           user && user.name && `, ${user.name}`

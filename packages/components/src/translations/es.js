@@ -65,6 +65,8 @@ export const Español = {
   'App Upgrade Required!': '¡Se requiere actualización de la aplicación!',
   'Tap below to download the latest Wellemental update.':
     'Toque a continuación para descargar la última actualización de Wellemental.',
+  'Tap to download the latest Wellemental update.':
+    'Toque para descargar la última actualización de Wellemental.',
   'A critical update is required. Tap below to download the latest Wellemental update.':
     'Se requiere una actualización crítica. Toque a continuación para descargar la última actualización de Wellemental.',
   'No Thanks': 'No, gracias',
@@ -74,4 +76,5 @@ export const Español = {
   Subscription: 'Subscription',
   'Promo code': 'Promo code',
   'Promo code?': '¿Promo code?',
+  'No results': 'No results',
 };

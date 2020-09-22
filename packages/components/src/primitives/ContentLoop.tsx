@@ -25,7 +25,7 @@ const ContentLoop: React.FC<Props> = ({
   scrollEnabled,
 }) => {
   const { user } = useCurrentUser();
-  const { content, teachers, status, error, loading, rcLoading } = useContent();
+  const { content, teachers, error } = useContent();
 
   let filteredContent: Content[] = content;
 
@@ -39,7 +39,7 @@ const ContentLoop: React.FC<Props> = ({
   // Filter by tag or category
   if (filter && content) {
     filteredContent = filteredContent.filter((item: Content) =>
-      item.tags.includes(filter),
+      item.tags.includes(filter.toLowerCase()),
     );
   }
 
@@ -79,7 +79,7 @@ const ContentLoop: React.FC<Props> = ({
             />
           ))}
         </ScrollView>
-      ) : content && teachers ? (
+      ) : content && teachers && filteredContent.length > 0 ? (
         filteredContent.map((item, idx) => (
           <ContentCard
             key={idx}
@@ -90,7 +90,7 @@ const ContentLoop: React.FC<Props> = ({
       ) : (
         <ListEmpty />
       )}
-      <Paragraph>
+      {/* <Paragraph>
         Language: {user && user.language ? user.language : 'N/A'}
       </Paragraph>
       <Paragraph>Content Loading? {loading.toString()}</Paragraph>
@@ -99,15 +99,15 @@ const ContentLoop: React.FC<Props> = ({
       <Paragraph>Got Teachers? {content && !!content.toString()}</Paragraph>
       {filter && <Paragraph>Filter: {filter}</Paragraph>}
       {favorites && <Paragraph>Favs!</Paragraph>}
-      {teacher && <Paragraph>Teacher: {teacher}</Paragraph>}
+      {teacher && <Paragraph>Teacher: {teacher}</Paragraph>} */}
       {/* {search && <Paragraph>Search: {search}</Paragraph>} */}
-      <Paragraph>Status***</Paragraph>
-      {status &&
+      {/* <Paragraph>Status***</Paragraph> */}
+      {/* {status &&
         status.map((item, idx) => (
           <Paragraph note key={idx + item}>
             *** {item}
           </Paragraph>
-        ))}
+        ))} */}
     </>
   );
 };

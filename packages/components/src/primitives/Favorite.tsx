@@ -29,9 +29,9 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
   const handleFavorite = async () => {
     try {
       await updateFavorites(contentId, !isFav);
-      mutate(() => toggleFav(!isFav));
+      mutate();
+      toggleFav(!isFav);
     } catch (err) {
-      console.log('ERR FAVORITING', err);
       setError('Error');
     }
   };

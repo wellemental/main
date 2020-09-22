@@ -59,6 +59,8 @@ export const English = {
   'Forgot password?': 'Forgot password?',
   'Reset Password': 'Reset Password',
   'Upgrade App': 'Upgrade App',
+  'Tap to download the latest Wellemental update.':
+    'Tap to download the latest Wellemental update',
   Download: 'Download',
   'App Upgrade Required!': 'App Upgrade Required!',
   'A critical update is required. Tap below to download the latest Wellemental update.':
@@ -70,4 +72,5 @@ export const English = {
   Subscription: 'Subscription',
   'Promo code': 'Promo code',
   'Promo code?': 'Promo code?',
+  'No results': 'No results',
 };

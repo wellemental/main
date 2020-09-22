@@ -67,7 +67,7 @@ const LibraryScreen: React.FC = () => {
       <Tabs tabs={tabs} active={tab} setTab={setTab} />
 
       {tab.label === 'Teachers' ? (
-        <TeacherLoop />
+        <TeacherLoop scrollEnabled />
       ) : (
         <ContentLoop filter={tab.filter === 'All' ? undefined : tab.filter} />
       )}

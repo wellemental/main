@@ -30,21 +30,23 @@ export const IAPProvider = ({ children }: any) => {
   const [activePlan, setActivePlan] = useState(0);
   const [statuses, setStatus] = useState([]);
 
-  let purchaseUpdateSubscription = null;
-  let purchaseErrorSubscription = null;
+  const purchaseUpdateSubscription = useRef(null);
+  const purchaseErrorSubscription = useRef(null);
 
   const processNewPurchase = async (purchase: any) => {
     const { productId, transactionReceipt } = purchase;
 
     setStatus((status) => [...status, 'Proessing New Purcahase']);
-    logger.info('PROCESSING NEW PURCHASE ***');
-
+    logger.info(
+      `PROCESSING NEW PURCHASE *** PRODUCT ID ${productId} ** RECEIPT ${transactionReceipt}`,
+    );
     if (transactionReceipt !== undefined) {
       setStatus((status) => [
         ...status,
         'HAS TRANS RECEIPT, CALLING FUNCTION ***',
       ]);
       console.log('HAS TRANS RECEIPT, CALLING FUNCTION ***');
+
       try {
         await functions().httpsCallable('onValidateIap')({
           receipt: transactionReceipt,
@@ -62,7 +64,7 @@ export const IAPProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
-    purchaseUpdateSubscription = purchaseUpdatedListener(
+    purchaseUpdateSubscription.current = purchaseUpdatedListener(
       async (purchase: InAppPurchase | SubscriptionPurchase) => {
         const receipt = purchase.transactionReceipt;
         setStatus((status) => [...status, 'Listener Started']);
@@ -85,7 +87,7 @@ export const IAPProvider = ({ children }: any) => {
         }
       },
     );
-    purchaseErrorSubscription = purchaseErrorListener(
+    purchaseErrorSubscription.current = purchaseErrorListener(
       (error: PurchaseError) => {
         setStatus((status) => [...status, 'Purchase error listener']);
         logger.error(`purchaseErrorListener - ${error}`);
@@ -95,12 +97,12 @@ export const IAPProvider = ({ children }: any) => {
 
     return () => {
       if (purchaseUpdateSubscription) {
-        purchaseUpdateSubscription.remove();
-        purchaseUpdateSubscription = null;
+        purchaseUpdateSubscription.current.remove();
+        purchaseUpdateSubscription.current = null;
       }
       if (purchaseErrorSubscription) {
-        purchaseErrorSubscription.remove();
-        purchaseErrorSubscription = null;
+        purchaseErrorSubscription.current.remove();
+        purchaseErrorSubscription.current = null;
       }
     };
   }, []);

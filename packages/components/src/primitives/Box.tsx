@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StyleProp } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 
 type Props = {
   gt?: number;
@@ -7,7 +7,14 @@ type Props = {
   gv?: number;
   row?: boolean;
   center?: boolean;
-  justifyContent?: string;
+  justifyContent?:
+    | 'center'
+    | 'flex-start'
+    | 'flex-end'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
+  style?: ViewStyle;
 };
 
 const Box: React.FC<Props> = ({

@@ -28,15 +28,13 @@ export const Content = React.createContext<ContentContext>({
   teachers: null,
   error: null,
   loading: false,
-  rcLoading: false
+  rcLoading: false,
   features: undefined,
   updateAvailable: false,
   status: [],
 });
 
 const localStateService = new LocalStateService();
-const teacherService = new TeacherService();
-const contentService = new ContentService();
 
 const setLocalContent = async (content, teachers) => {
   await localStateService.setStorage('wmContent', {
@@ -61,10 +59,19 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const getDbContent = async () => {
     // Get teachers and content from firestore
     try {
+      const teacherService = new TeacherService();
+      const contentService = new ContentService();
       const dbTeachers = await teacherService.getAllTeachers();
       const dbContent = await contentService.getContent();
 
       // Update AsyncStorage with firestore data
+      if (dbTeachers) {
+        setStatus((status) => [...status, 'Successly got Teachers']);
+      }
+      if (dbContent) {
+        setStatus((status) => [...status, 'Successly got content']);
+      }
+
       if (dbTeachers && dbContent) {
         setStatus((status) => [
           ...status,
@@ -78,7 +85,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
           'No results from fb for teachers or content. Not setting locally.',
         ]);
         logger.info(
-          'No results from fb for teachers or content. Not setting locally.',
+          `No results from fb for teachers or content. Not setting locally.`,
         );
       }
 
@@ -86,8 +93,11 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       setContent(dbContent);
       setTeachers(dbTeachers);
     } catch (err) {
-      setStatus(status.concat('Error fetching content from database'));
-      setError('Error fetching content from database');
+      setStatus((status) => [
+        ...status,
+        `Error fetching content from database - ${err}`,
+      ]);
+      setError(`Error fetching content from database - ${err}`);
       logger.error('Error getting firestore content data');
       logger.error(`Error getting firestore content data - ${err}`);
     }
@@ -102,6 +112,8 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       ]);
       logger.info('Calculating update available');
       // Get latest updated_at times from firestore
+      const teacherService = new TeacherService();
+      const contentService = new ContentService();
       const dbContentLatest = await contentService.getLatestUpdate();
       const dbTeacherLatest = await teacherService.getLatestUpdate();
 
@@ -177,7 +189,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         await calcUpdateAvailable();
       } catch (err) {
         setStatus((status) => [...status, 'Error fetching content']);
-        ('No local data, fetching from database');
         logger.error('Error getting local content data');
       }
     };
@@ -230,7 +241,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         teachers,
         features: rcData,
         loading: loading,
-        rcLoading: rcLoading
+        rcLoading: rcLoading,
         updateAvailable,
         error,
         status: statuses,
