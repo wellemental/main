@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Button, Paragraph, Error, Input } from '../primitives';
+import {
+  Box,
+  Container,
+  Button,
+  Paragraph,
+  Error,
+  Input,
+  PageHeading,
+} from '../primitives';
 import { H1 } from 'native-base';
 import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';
 import { PromoCodeService } from 'services';
-
-const bullets = [
-  '50+ meditation and yoga videos',
-  'Available in both English and Spanish',
-  '100% from teachers of color',
-];
 
 // defining IAP SKUs by platform in `constants.ts`
 export const IAP_SKUS = Platform.select({
@@ -22,8 +24,14 @@ const PlansScreen: React.FC = () => {
   const [selectedPlan, setPlanId] = useState(IAP_SKUS[0]);
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
-
   const { processing, setProcessing, status } = useIap();
+
+  const bullets = [
+    translation['100+ meditation and yoga videos'],
+    translation['Available in English and Spanish'],
+    translation['Led by diverse teachers'],
+    translation['Save for offline use'],
+  ];
 
   useEffect(() => {
     setProcessing(true);
@@ -89,27 +97,41 @@ const PlansScreen: React.FC = () => {
   };
 
   return (
-    <Container center scrollEnabled>
-      <Box gb={1}>
-        <H1>{`${translation.Plans}`}</H1>
-      </Box>
+    <Container scrollEnabled>
+      <PageHeading
+        title={translation.Subscribe}
+        subtitle={
+          translation[
+            'Get unlimited access to our content with an annual or monthly subscription.'
+          ]
+        }
+      />
 
       <Box gb={2}>
         {bullets.map((bullet) => (
-          <Paragraph key={bullet} style={{ alignSelf: 'center' }}>
-            {bullet}
-          </Paragraph>
+          <Paragraph key={bullet}>* {bullet}</Paragraph>
         ))}
       </Box>
 
       {!showAccessDisplay ? (
-        <Button
-          primary
-          disabled={processing}
-          loading={processing}
-          text={translation.Purchase}
-          onPress={() => handleSubscription()}
-        />
+        <>
+          <Button
+            primary
+            disabled={processing}
+            loading={processing}
+            text={translation['Subscribe for $6.99 / mo']}
+            onPress={() => handleSubscription()}
+          />
+          <Box gt={1}>
+            <Button
+              danger
+              disabled={processing}
+              loading={processing}
+              text={translation['Subscribe for $55 / yr']}
+              onPress={() => handleSubscription()}
+            />
+          </Box>
+        </>
       ) : (
         <>
           <Input

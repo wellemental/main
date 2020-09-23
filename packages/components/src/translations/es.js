@@ -80,4 +80,17 @@ export const Español = {
   'Access code': 'Access code',
   'No results': 'No results',
   'New account?': 'New account?',
+  Subscribe: 'Subscribe',
+  'Get unlimited access to our content with an annual or monthly subscription.':
+    'Get unlimited access to our content with an annual or monthly subscription.',
+  'Or enter your access code': 'Or enter your access code',
+  '100+ meditation and yoga videos': '100+ meditation and yoga videos',
+  'Available in English and Spanish': 'Available in English and Spanish',
+  'Led by diverse teachers': 'Led by diverse teachers',
+  'Online or offline use': 'Online or offline use',
+  'Save for offline use': 'Save for offline use',
+  mo: 'mo',
+  yr: 'yr',
+  'Subscribe for $6.99 / mo': 'Subscribe for $6.99 / mo',
+  'Subscribe for $55 / yr': 'Subscribe for $55 / yr',
 };

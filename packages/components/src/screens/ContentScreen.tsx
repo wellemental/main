@@ -104,6 +104,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           fullscreenOrientation={content.video_orientation}
           controls={true}
           playInBackground={true}
+          ignoreSilentSwitch="ignore"
           resizeMode="cover"
           paused={true}
           // poster={content.thumbnail}

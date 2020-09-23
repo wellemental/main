@@ -60,11 +60,16 @@ export const CurrentUserProvider = ({ children }: any) => {
   };
 
   // Update state and storage from Edit Profile
-  const updateUser = async (fields: UserProfile) => {
+  const updateUser = async (fields: Partial<UserProfile>) => {
     const mergedFields = { ...currentUser, ...fields };
-    // Update Async Storage
-    await localStateService.setStorage('wmUser', mergedFields);
 
+    console.log('MERGED FIELDS', mergedFields);
+    // Update Async Storage
+    try {
+      await localStateService.setStorage('wmUser', mergedFields);
+    } catch (err) {
+      return Promise.reject('Error updating user settings');
+    }
     // Update CurrentUser state
     setCurrentUser({ ...mergedFields, updated_at: new Date() });
   };

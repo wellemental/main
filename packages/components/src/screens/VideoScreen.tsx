@@ -50,6 +50,7 @@ const VideoScreen: React.FC<Props> = ({ route }) => {
           fullscreenOrientation={content.video_orientation}
           controls={true}
           playInBackground={true}
+          ignoreSilentSwitch="ignore"
           // resizeMode="cover"
           // paused={true}
           onLoad={() => <Spinner />}

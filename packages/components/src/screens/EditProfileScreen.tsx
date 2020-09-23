@@ -32,6 +32,7 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
   const [name, setName] = useState(user.name);
   const [language, setLanguage] = useState(user.language);
   const [birthday, setBirthday] = useState(user.birthday);
+  const [error, setError] = useState('');
 
   // Only submit what's changed upon saving
   const newProfile: UserProfile = {};
@@ -49,12 +50,18 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
 
   const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
 
-  const { loading, error, mutate } = useMutation(() =>
+  const { loading, error: mutateError, mutate } = useMutation(() =>
     service.updateProfile(auth.uid, newProfile),
   );
 
   const handleUpdate = async () => {
-    await updateUser(newProfile);
+    try {
+      await updateUser(newProfile);
+    } catch (err) {
+      setError(err);
+    }
+
+    console.log('NEW PROFILE', newProfile);
 
     mutate(
       () =>
@@ -72,15 +79,7 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
 
   return (
     <Container scrollEnabled>
-      <PageHeading
-        title={translation['Edit Profile']}
-        subtitle={
-          requiredPrompt &&
-          translation[
-            'Your profile is missing required information. Please update it below.'
-          ]
-        }
-      />
+      <PageHeading title={translation['Edit Profile']} />
       <Form style={{ marginTop: 4 }}>
         <Input
           label={translation.Username}
@@ -124,7 +123,7 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
             text={translation['Save Changes']}
           />
         </Box>
-        <Error error={error} />
+        <Error error={error || mutateError} />
       </Form>
     </Container>
   );

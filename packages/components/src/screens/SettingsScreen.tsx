@@ -60,7 +60,10 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <Container>
-      <PageHeading title="Account" subtitle={auth ? auth.email : undefined} />
+      <PageHeading
+        title={translation.Account}
+        subtitle={auth ? auth.email : undefined}
+      />
       <Error error={error} />
       <List>
         {list.map((item: SettingsLink, idx: number) => {

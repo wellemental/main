@@ -31,7 +31,7 @@ const LibraryScreen: React.FC = () => {
   // };
 
   const tabs: MenuItem[] = [
-    { label: translation.All },
+    { label: translation.All, filter: 'All' },
     { label: translation.Move, filter: Tags.Move },
     { label: translation.Meditate, filter: Tags.Meditate },
     { label: translation.Learn, filter: Tags.Learn },

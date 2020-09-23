@@ -29,36 +29,38 @@ const ContentLoop: React.FC<Props> = ({
 
   let filteredContent: Content[] = content;
 
+  const hasFilteredContent = filteredContent && filteredContent.length > 0;
+
   // Filter by language
-  if (user && user.language && content) {
+  if (user && user.language && hasFilteredContent) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.language === user.language,
     );
   }
 
   // Filter by tag or category
-  if (filter && content) {
+  if (filter && hasFilteredContent) {
     filteredContent = filteredContent.filter((item: Content) =>
       item.tags.includes(filter.toLowerCase()),
     );
   }
 
   // Filter by favorites
-  if (favorites && content) {
+  if (favorites && hasFilteredContent) {
     filteredContent = filteredContent.filter((item: Content) =>
       favorites.includes(item.id),
     );
   }
 
   // Filter by teacher
-  if (teacher && content) {
+  if (teacher && hasFilteredContent) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.teacher === teacher,
     );
   }
 
   // Filter by search term
-  if (search && content) {
+  if (search && hasFilteredContent) {
     filteredContent = filteredContent.filter((item: Content) =>
       item.title.includes(search),
     );
@@ -68,7 +70,7 @@ const ContentLoop: React.FC<Props> = ({
     <>
       <Error error={error} />
 
-      {content && teachers && scrollEnabled ? (
+      {content && teachers && scrollEnabled && hasFilteredContent ? (
         // If tabs and header need to be able to scroll up with the list
         <ScrollView showsVerticalScrollIndicator={false}>
           {filteredContent.map((item, idx) => (
@@ -79,7 +81,7 @@ const ContentLoop: React.FC<Props> = ({
             />
           ))}
         </ScrollView>
-      ) : content && teachers && filteredContent.length > 0 ? (
+      ) : content && teachers && hasFilteredContent ? (
         filteredContent.map((item, idx) => (
           <ContentCard
             key={idx}
