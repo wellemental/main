@@ -59,19 +59,19 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
     mutate(
       () =>
         Toast.show({
-          text: 'Changes saved', //translation['Changes saved'],
+          text: translation['Changes saved'], //translation['Changes saved'],
           style: { marginBottom: 20 },
         }),
       () =>
         Toast.show({
-          text: 'Something went wrong', //translation['Something went wrong'],
+          text: translation['Error. Please try again.'], //translation['Something went wrong'],
           style: { marginBottom: 20 },
         }),
     );
   };
 
   return (
-    <Container>
+    <Container scrollEnabled>
       <PageHeading
         title={translation['Edit Profile']}
         subtitle={

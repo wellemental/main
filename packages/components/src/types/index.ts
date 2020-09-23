@@ -24,7 +24,7 @@ export type RootStackParamList = {
   TabNav: undefined;
   Content: { content: Content; teacher: Teacher };
   Category: { category: Category };
-  Video: { content: Content; teacher: Teacher };
+  Video: { content: Content; teacher: Teacher; savedVideoPath?: string };
   Teacher: { teacher: Teacher };
   'Edit Profile': undefined;
   'Save User': undefined;

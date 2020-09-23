@@ -19,8 +19,8 @@ type Props = {
   navigation: ContentScreenNavigationProp;
 };
 
-const deviceHeight = Dimensions.get('window').height - 100;
 const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = deviceWidth * 1.78;
 
 const styles = StyleSheet.create({
   backgroundVideo: {
@@ -32,81 +32,33 @@ const styles = StyleSheet.create({
   },
 });
 
-const VideoScreen: React.FC<Props> = ({ navigation, route }) => {
-  const { content, teacher } = route.params;
-  const player = useRef();
-
-  if (player.current !== undefined) {
-    player.current.presentFullscreenPlayer();
-  }
-
-  const [loading, setLoading] = useState(false);
+const VideoScreen: React.FC<Props> = ({ route }) => {
+  const { content, savedVideoPath } = route.params;
   const [error, setError] = useState();
 
-  const [videoRef, setVideoRef] = useState();
-
-  const onBuffer = () => {
-    setLoading(true);
-  };
-
-  const onLoad = (payload) => {
-    if (videoRef) {
-      console.log('PAYLOAD', payload);
-      videoRef.presentFullscreenPlayer();
-    }
-  };
-
   return (
-    <View>
+    <View style={{ backgroundColor: '#000' }}>
       <View style={{ height: deviceHeight, width: deviceWidth }}>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <Video
-            source={{
-              uri: content.video,
-            }} // Can be a URL or a local file.
-            ref={(ref) => {
-              setVideoRef(ref);
-            }}
-            fullscreenAutorotate={false}
-            fullscreenOrientation={content.video_orientation}
-            playInBackground={true}
-            controls={true}
-            resizeMode="cover"
-            paused={true}
-            // onReadyForDisplay={onLoad}
-            // onBuffer={onBuffer} // Callback when remote video is buffering
-            onError={setError}
-            style={styles.backgroundVideo}
-          />
-        )}
+        <Video
+          source={{
+            uri: savedVideoPath ? savedVideoPath : content.video,
+          }} // Can be a URL or a local file.
+          // ref={(ref) => {
+          //   setVideoRef(ref);
+          // }}
+          fullscreenAutorotate={false}
+          fullscreenOrientation={content.video_orientation}
+          controls={true}
+          playInBackground={true}
+          // resizeMode="cover"
+          // paused={true}
+          onLoad={() => <Spinner />}
+          onBuffer={() => <Spinner />}
+          onError={setError}
+          style={styles.backgroundVideo}
+        />
       </View>
       <Error error={error} />
-      {/* <Image
-        source={{ uri: content.thumbnail }}
-        style={{ height: 200, width: null, flex: 1 }}
-      /> */}
-      {/* <Box row justifyContent="space-between" gt={2} gb={1}>
-        <H1>{content.title}</H1>
-        <Favorite onProfile contentId={content.id} />
-      </Box> */}
-
-      {/* <Paragraph gb>
-        {content.type.toUpperCase()} | {content.length}
-      </Paragraph>
-
-      <Paragraph gb>{content.description}</Paragraph> */}
-
-      {/* <Button
-        transparent
-        onPress={() =>
-          navigation.navigate('Teacher', {
-            teacher,
-          })
-        }>
-        <AvyName source={teacher.photo} name={content.teacher} onProfile />
-      </Button> */}
     </View>
   );
 };

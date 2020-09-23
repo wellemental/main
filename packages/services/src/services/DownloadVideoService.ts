@@ -54,18 +54,21 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
   public async getVideo(videoUrl: string): Promise<string> {
     const filename = this.convertUrlToFileName(videoUrl);
+    let path_name = videoUrl;
 
     try {
       const result = await RNFS.readDir(RNFS.DocumentDirectoryPath);
       result.forEach((element) => {
-        if (element.name === filename.replace(/%20/g, '_')) {
-          return Promise.resolve(element.path);
+        console.log('ELEMENT', element.name);
+        if (element.name === filename) {
+          console.log('PATH', element.path);
+          path_name = element.path;
         }
       });
     } catch (err) {
       logger.error(`Error getting video - ${err}`);
     }
-    return Promise.resolve(videoUrl);
+    return Promise.resolve(path_name);
   }
 
   public async deleteVideo(videoUrl: string): Promise<void> {

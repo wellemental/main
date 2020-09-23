@@ -76,6 +76,7 @@ const PlansScreen: React.FC = () => {
 
   // Input Promo Code
   const [promoCode, setPromoCode] = useState('');
+  const [showAccessDisplay, toggleDisplay] = useState(false);
 
   const handlePromoCode = async () => {
     const service = new PromoCodeService();
@@ -88,7 +89,7 @@ const PlansScreen: React.FC = () => {
   };
 
   return (
-    <Container center>
+    <Container center scrollEnabled>
       <Box gb={1}>
         <H1>{`${translation.Plans}`}</H1>
       </Box>
@@ -101,41 +102,50 @@ const PlansScreen: React.FC = () => {
         ))}
       </Box>
 
-      <Button
-        primary
-        disabled={processing}
-        loading={processing}
-        text={translation.Purchase}
-        onPress={() => handleSubscription()}
-      />
+      {!showAccessDisplay ? (
+        <Button
+          primary
+          disabled={processing}
+          loading={processing}
+          text={translation.Purchase}
+          onPress={() => handleSubscription()}
+        />
+      ) : (
+        <>
+          <Input
+            label={translation['Access code']}
+            value={promoCode}
+            autoFocus
+            onChangeText={setPromoCode}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <Button
+            primary
+            disabled={processing}
+            loading={processing}
+            text={translation.Submit}
+            onPress={() => handlePromoCode()}
+          />
+        </>
+      )}
       <Box gt={1}>
         <Button
-          light
           transparent
           disabled={processing}
           loading={processing}
-          text={translation['Promo code?']}
-          onPress={handlePromoCode}
+          text={
+            showAccessDisplay
+              ? translation['New account?']
+              : translation['Access code?']
+          }
+          onPress={() => toggleDisplay(!showAccessDisplay)}
         />
       </Box>
       <Box gt={2}>
         <Error error={error} />
       </Box>
-      <Input
-        label={translation['Promo code']}
-        value={promoCode}
-        autoFocus
-        onChangeText={setPromoCode}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-      <Button
-        primary
-        disabled={processing}
-        loading={processing}
-        text={translation.Purchase}
-        onPress={() => handlePromoCode()}
-      />
+
       <Paragraph>Status***</Paragraph>
       {status &&
         status.map((item, idx) => (

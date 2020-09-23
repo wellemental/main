@@ -72,5 +72,8 @@ export const English = {
   Subscription: 'Subscription',
   'Promo code': 'Promo code',
   'Promo code?': 'Promo code?',
+  'Access code?': 'Access code?',
+  'Access code': 'Access code',
   'No results': 'No results',
+  'New account?': 'New account?',
 };

@@ -68,7 +68,20 @@ const Navigator: React.FC = () => {
             <Stack.Screen name="Content" component={ContentScreen} />
             <Stack.Screen name="Plans" component={PlansScreen} />
             <Stack.Screen name="Category" component={CategoryScreen} />
-            <Stack.Screen name="Video" component={VideoScreen} />
+            <Stack.Screen
+              name="Video"
+              component={VideoScreen}
+              options={{
+                headerStyle: {
+                  backgroundColor: '#000',
+                  shadowOpacity: 0,
+                },
+                headerTintColor: '#fff',
+                cardStyle: {
+                  backgroundColor: '#000',
+                },
+              }}
+            />
             <Stack.Screen
               name="Upgrade"
               component={UpgradeScreen}

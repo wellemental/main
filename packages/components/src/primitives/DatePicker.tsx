@@ -69,11 +69,11 @@ const DatePicker: React.FC<Props> = ({
         style={{ paddingLeft: 0, alignItems: 'flex-start', marginRight: 0 }}
       /> */}
 
-      {show && date && (
+      {show && (
         <DateTimePicker
           style={{ backgroundColor: '#ccc', color: '#fff' }}
           mode="date"
-          value={date}
+          value={date ? date : new Date()}
           display="default"
           onChange={() => handleDateChange}
           locale={locale}

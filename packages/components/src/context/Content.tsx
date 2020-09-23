@@ -105,100 +105,102 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   };
 
   useEffect(() => {
-    const calcUpdateAvailable = async () => {
-      setStatus((status) => [
-        ...status,
-        'Getting latest updates from content and teachers',
-      ]);
-      logger.info('Calculating update available');
-      // Get latest updated_at times from firestore
-      const teacherService = new TeacherService();
-      const contentService = new ContentService();
-      const dbContentLatest = await contentService.getLatestUpdate();
-      const dbTeacherLatest = await teacherService.getLatestUpdate();
-
-      // Set updateAvailable to true if either database updated_at is more recent
-      if (dbContentLatest || dbTeacherLatest) {
-        logger.info('Calculating update available');
-        setStatus((status) => [...status, 'Successfully got latest from db']);
-
+    if (auth) {
+      const calcUpdateAvailable = async () => {
         setStatus((status) => [
           ...status,
-          `Local - ${localUpdatedAt.current} - Content - ${dbContentLatest} - Teacher - ${dbTeacherLatest}`,
-          `isContentNewer? - ${dbContentLatest > localUpdatedAt.current}`,
-          `isTEacherNewer? - ${dbTeacherLatest > localUpdatedAt.current}`,
+          'Getting latest updates from content and teachers',
         ]);
+        logger.info('Calculating update available');
+        // Get latest updated_at times from firestore
+        const teacherService = new TeacherService();
+        const contentService = new ContentService();
+        const dbContentLatest = await contentService.getLatestUpdate();
+        const dbTeacherLatest = await teacherService.getLatestUpdate();
 
-        logger.info(
-          `Local - ${localUpdatedAt.current} - Content - ${dbContentLatest} - Teacher - ${dbTeacherLatest}`,
-        );
-        logger.info(
-          `isContentNewer? - ${dbContentLatest > localUpdatedAt.current}`,
-        );
-        logger.info(
-          `isTEacherNewer? - ${dbTeacherLatest > localUpdatedAt.current}`,
-        );
-        setUpdateAvailable(
-          dbContentLatest > localUpdatedAt.current ||
-            dbTeacherLatest > localUpdatedAt.current,
-        );
-      } else {
-        logger.info('Failed to get latest from db');
-        setStatus((status) => [...status, 'Failed to get latest from db']);
-      }
-    };
+        // Set updateAvailable to true if either database updated_at is more recent
+        if (dbContentLatest || dbTeacherLatest) {
+          logger.info('Calculating update available');
+          setStatus((status) => [...status, 'Successfully got latest from db']);
 
-    const fetchContent = async (): Promise<void> => {
-      // First, try to fetch from AsyncStorage
-      try {
-        setStatus((status) => [...status, 'Fetching local data']);
-
-        const localData = await localStateService.getContent();
-
-        if (localData) {
-          setStatus((status) => [...status, 'Got local data']);
-          logger.info('Got local data');
-          if (localData.content) {
-            logger.info('Got local content');
-            setStatus((status) => [...status, 'Got local content']);
-            setContent(localData.content);
-          }
-          if (localData.teachers) {
-            logger.info('Got local teachers');
-            setStatus((status) => [...status, 'Got local teachers']);
-            setTeachers(localData.teachers);
-          }
-          if (localData.updated_at) {
-            setStatus((status) => [
-              ...status,
-              `Got local updated_at - ${localData.updated_at}`,
-            ]);
-            setStatus((status) => [...status, 'Got local updated_at']);
-            localUpdatedAt.current = localData.updated_at;
-          }
-          setLoading(false);
-        } else {
           setStatus((status) => [
             ...status,
-            'No local data, fetching from database',
+            `Local - ${localUpdatedAt.current} - Content - ${dbContentLatest} - Teacher - ${dbTeacherLatest}`,
+            `isContentNewer? - ${dbContentLatest > localUpdatedAt.current}`,
+            `isTEacherNewer? - ${dbTeacherLatest > localUpdatedAt.current}`,
           ]);
-          logger.info('No local data, fetching from database');
-          // If nothing in AsyncStorage, pull from Database
-          await getDbContent();
-        }
-        await calcUpdateAvailable();
-      } catch (err) {
-        setStatus((status) => [...status, 'Error fetching content']);
-        logger.error('Error getting local content data');
-      }
-    };
 
-    if (!teachers || !content) {
-      setStatus((status) => [
-        ...status,
-        'No content or teachers. Fetching local data',
-      ]);
-      fetchContent();
+          logger.info(
+            `Local - ${localUpdatedAt.current} - Content - ${dbContentLatest} - Teacher - ${dbTeacherLatest}`,
+          );
+          logger.info(
+            `isContentNewer? - ${dbContentLatest > localUpdatedAt.current}`,
+          );
+          logger.info(
+            `isTEacherNewer? - ${dbTeacherLatest > localUpdatedAt.current}`,
+          );
+          setUpdateAvailable(
+            dbContentLatest > localUpdatedAt.current ||
+              dbTeacherLatest > localUpdatedAt.current,
+          );
+        } else {
+          logger.info('Failed to get latest from db');
+          setStatus((status) => [...status, 'Failed to get latest from db']);
+        }
+      };
+
+      const fetchContent = async (): Promise<void> => {
+        // First, try to fetch from AsyncStorage
+        try {
+          setStatus((status) => [...status, 'Fetching local data']);
+
+          const localData = await localStateService.getContent();
+
+          if (localData) {
+            setStatus((status) => [...status, 'Got local data']);
+            logger.info('Got local data');
+            if (localData.content) {
+              logger.info('Got local content');
+              setStatus((status) => [...status, 'Got local content']);
+              setContent(localData.content);
+            }
+            if (localData.teachers) {
+              logger.info('Got local teachers');
+              setStatus((status) => [...status, 'Got local teachers']);
+              setTeachers(localData.teachers);
+            }
+            if (localData.updated_at) {
+              setStatus((status) => [
+                ...status,
+                `Got local updated_at - ${localData.updated_at}`,
+              ]);
+              setStatus((status) => [...status, 'Got local updated_at']);
+              localUpdatedAt.current = localData.updated_at;
+            }
+            setLoading(false);
+          } else {
+            setStatus((status) => [
+              ...status,
+              'No local data, fetching from database',
+            ]);
+            logger.info('No local data, fetching from database');
+            // If nothing in AsyncStorage, pull from Database
+            await getDbContent();
+          }
+          await calcUpdateAvailable();
+        } catch (err) {
+          setStatus((status) => [...status, 'Error fetching content']);
+          logger.error('Error getting local content data');
+        }
+      };
+
+      if (!teachers || !content) {
+        setStatus((status) => [
+          ...status,
+          'No content or teachers. Fetching local data',
+        ]);
+        fetchContent();
+      }
     }
   }, [content, teachers, auth]);
 

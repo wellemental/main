@@ -103,7 +103,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   }
 
   return (
-    <Container>
+    <Container scrollEnabled>
       <PageHeading title={translation.Login} />
 
       <Input
@@ -135,6 +135,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
                 onChangeText={setName}
               />
               <DatePicker
+                date={moment().subtract(13, 'years').toDate()}
                 onDateChange={setBirthday}
                 translation={translation}
                 locale={language === Languages.Es ? 'es' : 'en'}

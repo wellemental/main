@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -19,6 +19,7 @@ import {
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
+import { DownloadVideoService } from 'services';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -38,24 +39,32 @@ const styles = StyleSheet.create({
 
 const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const { content, teacher } = route.params;
-  // const player = useRef();
-
-  // if (player.current) {
-  //   player.current.presentFullscreenPlayer();
-  // }
-
-  const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState();
+  const [video, setVideo] = useState(content.video);
   const [videoRef, setVideoRef] = useState();
 
-  const onBuffer = () => {
-    setLoading(true);
+  const [error, setError] = useState();
+
+  const service = new DownloadVideoService();
+
+  useEffect(() => {
+    const handleGetVideo = async () => {
+      const newVideo = await service.getVideo(video);
+      console.log('THIS BE RUNNING', newVideo);
+      setVideo(newVideo);
+    };
+
+    handleGetVideo();
+  }, []);
+
+  const handleError = (err: any) => {
+    console.log('ERROR', err);
+    setError(err);
   };
 
   return (
     <Container>
-      <View style={{ width: deviceWidth, height: deviceHeight }}>
-        {content.video_orientation === 'portrait' ? (
+      {content.video_orientation === 'portrait' ? (
+        <View style={{ width: deviceWidth, height: deviceHeight }}>
           <ImageBackground
             source={{ uri: content.thumbnail }}
             style={{
@@ -69,6 +78,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
                 navigation.navigate('Video', {
                   content,
                   teacher,
+                  savedVideoPath: video,
                 })
               }
               style={{
@@ -81,29 +91,30 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
               <Icon name="play" style={{ fontSize: 30 }} />
             </NBButton>
           </ImageBackground>
-        ) : (
-          <Video
-            source={{
-              uri: content.video,
-            }} // Can be a URL or a local file.
-            ref={(ref) => {
-              setVideoRef(ref);
-            }}
-            fullscreenAutorotate={false}
-            fullscreenOrientation={content.video_orientation}
-            controls={true}
-            playInBackground={true}
-            resizeMode="cover"
-            paused={true}
-            poster={content.thumbnail}
-            posterResizeMode="cover"
-            onLoad={() => <Spinner />}
-            onBuffer={() => <Spinner />} // Callback when remote video is buffering
-            //onError={this.videoError} // Callback when video cannot be loaded
-            style={styles.backgroundVideo}
-          />
-        )}
-      </View>
+        </View>
+      ) : (
+        <Video
+          source={{
+            uri: content.video, //content.video,
+          }} // Can be a URL or a local file.
+          ref={(ref) => {
+            setVideoRef(ref);
+          }}
+          fullscreenAutorotate={false}
+          fullscreenOrientation={content.video_orientation}
+          controls={true}
+          playInBackground={true}
+          resizeMode="cover"
+          paused={true}
+          // poster={content.thumbnail}
+          // posterResizeMode="cover"
+          onLoad={() => <Spinner />}
+          onBuffer={() => <Spinner />} // Callback when remote video is buffering
+          onError={handleError} // Callback when video cannot be loaded
+          style={styles.backgroundVideo}
+        />
+      )}
+
       {/* <Image
         source={{ uri: content.thumbnail }}
         style={{ height: 200, width: null, flex: 1 }}
