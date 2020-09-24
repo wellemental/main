@@ -16,7 +16,7 @@ const ErrorComponent: React.FC<Props> = ({ error, center }) => {
       ? error.errors().join('\n')
       : error instanceof ApplicationError
       ? error.message
-      : error && error.message
+      : error && typeof error !== 'string' && error.message
       ? error.message
       : typeof error === 'string'
       ? error
@@ -27,11 +27,13 @@ const ErrorComponent: React.FC<Props> = ({ error, center }) => {
   return error ? (
     <Paragraph
       center={center ? center : false}
-      gt={2}
+      gt={1}
       style={{ color: variables.brandDanger }}>
       {text}
     </Paragraph>
-  ) : null;
+  ) : (
+    <></>
+  );
 };
 
 export default ErrorComponent;

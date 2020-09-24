@@ -11,16 +11,22 @@ import {
 import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';
-import { PromoCodeService } from 'services';
+import { PromoCodeService, logger } from 'services';
 
 // defining IAP SKUs by platform in `constants.ts`
 export const IAP_SKUS = Platform.select({
   ios: ['wellemental_pro', 'wellemental_pro_year'],
 });
 
+export enum PlanId {
+  Monthly = 'wellemental_pro',
+  Yearly = 'wellemental_pro_year',
+  Free = 'free',
+  Group = 'group',
+}
+
 const PlansScreen: React.FC = () => {
-  const { auth, translation } = useCurrentUser();
-  const [selectedPlan, setPlanId] = useState(IAP_SKUS[0]);
+  const { auth, user, translation } = useCurrentUser();
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
   const { processing, setProcessing, status } = useIap();
@@ -36,50 +42,33 @@ const PlansScreen: React.FC = () => {
     setProcessing(true);
     const getProducts = async () => {
       try {
-        console.log('GETTING PRODCUTSI');
         const gotProd = await RNIap.getProducts(IAP_SKUS);
-        console.log('GOT PRODCUTSI', gotProd);
         setProducts(gotProd);
       } catch (err) {
-        console.log(err);
+        setError(
+          `Unable to retrieve products. Please try again or contact support@wellemental.co`,
+        );
+        logger.error(`Error retrieving Iap Products - ${err}`);
       }
+      setProcessing(false);
     };
 
     getProducts();
   }, [setProcessing]);
 
-  console.log('PRODUCTS', products, 'SELECTED', selectedPlan);
-  // fetch values from context
-
-  useEffect(() => {
-    if (products) {
-      setProcessing(false);
-    }
-  }, [products, setProcessing]);
-
   // handle new subscription request
-  const handleSubscription = async () => {
+  const handleSubscription = async (plan: PlanId) => {
     try {
-      console.log('REQUEST PURCHASE***');
       setError('');
       setProcessing(true);
-      const res = await requestSubscription(selectedPlan);
-      console.log('PURCHASE SUCCESS', res);
+      await requestSubscription(plan);
       setProcessing(false);
     } catch (err) {
-      console.log('PURCHASE ERROR', err);
       setError(err);
       setProcessing(false);
     }
     setProcessing(false);
   };
-  // submit promo code
-  // Check database to see if it's valid
-  // that it exists in the db
-  // that it's not over it's maximum
-  // Update the users to give them access
-  // Store local and in db
-  // Increment the amount on the promo code
 
   // Input Promo Code
   const [promoCode, setPromoCode] = useState('');
@@ -119,7 +108,7 @@ const PlansScreen: React.FC = () => {
             disabled={processing}
             loading={processing}
             text={translation['Subscribe for $6.99 / mo']}
-            onPress={() => handleSubscription()}
+            onPress={() => handleSubscription(PlanId.Monthly)}
           />
           <Box gt={1}>
             <Button
@@ -127,7 +116,7 @@ const PlansScreen: React.FC = () => {
               disabled={processing}
               loading={processing}
               text={translation['Subscribe for $55 / yr']}
-              onPress={() => handleSubscription()}
+              onPress={() => handleSubscription(PlanId.Yearly)}
             />
           </Box>
         </>
@@ -163,17 +152,32 @@ const PlansScreen: React.FC = () => {
           onPress={() => toggleDisplay(!showAccessDisplay)}
         />
       </Box>
-      <Box gt={2}>
-        <Error error={error} />
-      </Box>
 
-      <Paragraph>Status***</Paragraph>
-      {status &&
-        status.map((item, idx) => (
-          <Paragraph note key={idx + item}>
-            *** {item}
-          </Paragraph>
-        ))}
+      <Error error={error} center />
+
+      {auth && auth.email === 'mike.r.vosters@gmail.com' && status && (
+        <Box gt={2}>
+          <Paragraph>USER PLAN ***</Paragraph>
+          {user && !user.plan ? (
+            <Paragraph>No Plan</Paragraph>
+          ) : user && user.plan ? (
+            <Paragraph>
+              {user.plan.status} - {user.plan.planId}
+            </Paragraph>
+          ) : (
+            <Paragraph>No user</Paragraph>
+          )}
+
+          <Box gt={1}>
+            <Paragraph>DEBUGGING</Paragraph>
+            {status.map((item, idx) => (
+              <Paragraph note key={idx + item}>
+                *** {item}
+              </Paragraph>
+            ))}
+          </Box>
+        </Box>
+      )}
     </Container>
   );
 };

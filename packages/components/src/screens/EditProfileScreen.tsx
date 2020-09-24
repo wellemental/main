@@ -61,8 +61,6 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
       setError(err);
     }
 
-    console.log('NEW PROFILE', newProfile);
-
     mutate(
       () =>
         Toast.show({

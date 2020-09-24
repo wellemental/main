@@ -57,7 +57,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <Container scrollEnabled>
-      {!canUpgrade && (
+      {canUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}
           style={{

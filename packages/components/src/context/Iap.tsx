@@ -12,6 +12,7 @@ import {
 // import { setActivePlan } from '../actions';
 import functions from '@react-native-firebase/functions';
 import { LocalStateService, logger } from 'services';
+import { useCurrentUser } from '../hooks';
 
 export const IAPContext: React.Context<any> = React.createContext({
   processing: false,
@@ -26,6 +27,7 @@ const storePlanAsync = async (planData: any) => {
 };
 
 export const IAPProvider = ({ children }: any) => {
+  const { user, updateUser } = useCurrentUser();
   const [processing, setProcessing] = useState(false);
   const [activePlan, setActivePlan] = useState(0);
   const [statuses, setStatus] = useState([]);
@@ -41,18 +43,12 @@ export const IAPProvider = ({ children }: any) => {
       ...status,
       `*** PRODUCT ID ${productId} ** RECEIPT ${!!transactionReceipt}`,
     ]);
-    logger.info(
-      `PROCESSING NEW PURCHASE *** PRODUCT ID ${productId} ** RECEIPT ${transactionReceipt}`,
-    );
     if (transactionReceipt !== undefined) {
       try {
         setStatus((status) => [
           ...status,
           `HAS TRANS RECEIPT, CALLING FUNCTION *** PRODUCTID ${productId} `,
         ]);
-        logger.info(
-          `HAS TRANS RECEIPT, CALLING VALIDATEIAP FUNCTION *** PRODUCTID ${productId} `,
-        );
         await functions().httpsCallable('onValidateIap')({
           // data: {
           receipt: transactionReceipt,
@@ -60,8 +56,17 @@ export const IAPProvider = ({ children }: any) => {
           // },
         });
 
-        storePlanAsync({ planId: productId });
+        if (user) {
+          setStatus((status) => [
+            ...status,
+            `Updated user state in local storage - ${productId} `,
+          ]);
+          updateUser({ plan: { status: 'active', planId: productId } });
+        }
+
+        // storePlanAsync({ planId: productId });
         setActivePlan(productId);
+        setProcessing(false);
       } catch (err) {
         setStatus((status) => [...status, `PROCESSING PURCHASE ERR ***${err}`]);
         logger.error(`PROCESSING PURCHASE ERR *** - ${err}`);
@@ -77,25 +82,19 @@ export const IAPProvider = ({ children }: any) => {
         setStatus((status) => [...status, 'Iap Listener Started']);
         if (receipt) {
           setStatus((status) => [...status, `Has receipt`]);
-          logger.info('HAS RECEIPT ***');
 
           try {
             if (Platform.OS === 'ios') {
-              setStatus((status) => [...status, `Finish iOS transaction`]);
               setStatus((status) => [
                 ...status,
                 `Finish iOS transaction - TRANSACTION ID ${purchase.transactionId}`,
               ]);
-              logger.info(
-                `Finish iOS transaction ***  RANSACTION ID - ${purchase.transactionId}`,
-              );
               finishTransactionIOS(purchase.transactionId);
             }
             setStatus((status) => [
               ...status,
               `Finishing Transaction? ${!!purchase} - ${purchase}`,
             ]);
-            logger.info(`Finish transaction? *** ${!!purchase} - ${purchase}`);
 
             await finishTransaction(purchase);
             setStatus((status) => [
@@ -103,23 +102,20 @@ export const IAPProvider = ({ children }: any) => {
               'Finished Transaction, going to process purchase',
             ]);
             await processNewPurchase(purchase);
-          } catch (ackErr) {
+          } catch (err) {
             setStatus((status) => [...status, 'Error finishing transaction']);
-            logger.error(`ackErr - ${ackErr}`);
-            // console.log('ackErr', ackErr);
+            logger.error(`Error Finishing or Processing Iap - ${err}`);
           }
         }
       },
     );
     purchaseErrorSubscription.current = purchaseErrorListener(
       (error: PurchaseError) => {
-        setStatus((status) => [...status, 'Purchase error listener']);
         setStatus((status) => [
           ...status,
           `Purchase error listener - ${error}`,
         ]);
         logger.error(`purchaseErrorListener - ${error}`);
-        console.log('PURCHASE LISTEN ERROR', error);
       },
     );
 

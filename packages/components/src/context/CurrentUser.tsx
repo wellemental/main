@@ -50,6 +50,7 @@ export const CurrentUserProvider = ({ children }: any) => {
       birthday: userData.birthday,
       onboardingComplete: userData.onboardingComplete,
       favorites: userData.favorites,
+      plan: userData.plan,
     };
 
     // Save to AsyncStorage
@@ -63,7 +64,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   const updateUser = async (fields: Partial<UserProfile>) => {
     const mergedFields = { ...currentUser, ...fields };
 
-    console.log('MERGED FIELDS', mergedFields);
     // Update Async Storage
     try {
       await localStateService.setStorage('wmUser', mergedFields);

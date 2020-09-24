@@ -35,7 +35,12 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
             source={{
               uri: category.image,
             }}
-            style={{ height: 120, width: 120, flex: 1, borderRadius: 20 }}
+            style={{
+              height: 120,
+              width: 120,
+              borderRadius: 20,
+              marginLeft: 10,
+            }}
           />
         </Right>
       </CardItem>

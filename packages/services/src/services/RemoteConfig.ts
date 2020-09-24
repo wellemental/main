@@ -32,7 +32,7 @@ class RemoteConfig implements RemoteConfigService {
           }
         });
     } catch (err) {
-      console.log('RC ERR********', err);
+      logger.error(`Error initiating remote config: ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
   };

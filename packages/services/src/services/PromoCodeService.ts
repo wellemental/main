@@ -38,24 +38,19 @@ class PromoCodeService implements PromoCodeServiceType {
   public async validateCode(code: string): Promise<PromoCode | void> {
     const query = promoCodeColl.where('code', '==', code).limit(1);
 
-    console.log('QUERY', query);
-
     try {
       const snapshots = await query.get();
       const doc = snapshots.docs[0];
 
       if (doc) {
         const data = doc.data();
-        console.log('PROMO CODE', data);
 
         // Accept if it exist and is below limit
         if (data.used < data.limit) {
-          console.log('CODES LEFT!!!');
           const stuff = { id: doc.id, ...data } as PromoCode;
           return stuff;
         } else {
           // Reject if promo code is at it's limit
-          console.log('CODES OVER LIMIT!!!');
           logger.error("Promo code has reached it's limit");
           return Promise.reject(
             new InvalidPromoCodeError("Promo code has reached it's limit"),
@@ -76,9 +71,8 @@ class PromoCodeService implements PromoCodeServiceType {
 
   public async validateAndUpgrade(userId: string, code: string): Promise<void> {
     try {
-      console.log('STARTING');
       const promoCodeData = await this.validateCode(code);
-      console.log('PROMO CODES DATA', promoCodeData);
+
       if (promoCodeData && promoCodeData.id) {
         await this.upgradeUser(userId, code);
         await promoCodeColl

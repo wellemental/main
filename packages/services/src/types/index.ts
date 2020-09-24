@@ -92,6 +92,44 @@ export interface LocalContent {
   updated_at?: Date;
 }
 
+type IapValidate = {
+  receipt: any;
+  productId: string;
+};
+
+export enum PlanId {
+  Monthly = 'wellemental_pro',
+  Yearly = 'wellemental_pro_year',
+  Free = 'free',
+}
+
+type UserPlan = {
+  type: 'iosIap' | 'promoCode';
+  auto_renew_status: boolean;
+  nextRenewelDate: Date;
+  nextRenewalUnix: number; // unix timestamp
+  canceledAtUnix?: number;
+  planId: string;
+  status: 'canceled' | 'active' | 'trialing' | 'pending';
+};
+
+type Product = {
+  bundleId: string;
+  expirationDate: number;
+  originalTransactionId: string;
+  productId: PlanId;
+  quantity: number;
+  transactionId: string;
+};
+
+type ReceiptIap = {
+  userId: string;
+  receipt: string;
+  verified: boolean;
+  products: Product[];
+  timestamp: number;
+};
+
 export interface User {
   name: string;
   birthday: string;
@@ -99,6 +137,7 @@ export interface User {
   onboardingComplete?: boolean;
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
+  plan?: UserPlan;
   updated_at?: Date;
 }
 

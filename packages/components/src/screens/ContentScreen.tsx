@@ -49,7 +49,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   useEffect(() => {
     const handleGetVideo = async () => {
       const newVideo = await service.getVideo(video);
-      console.log('THIS BE RUNNING', newVideo);
       setVideo(newVideo);
     };
 
@@ -57,7 +56,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   }, []);
 
   const handleError = (err: any) => {
-    console.log('ERROR', err);
     setError(err);
   };
 

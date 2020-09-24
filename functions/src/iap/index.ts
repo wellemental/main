@@ -5,7 +5,7 @@ import * as moment from 'moment';
 const appleReceiptVerify = require('node-apple-receipt-verify');
 appleReceiptVerify.config({
   secret: functions.config().ios.iapsecret,
-  environment: ['Sandbox', 'Production'],
+  environment: [functions.config().apple.env],
   excludeOldTransactions: true,
 });
 
@@ -26,7 +26,7 @@ type UserPlan = {
   nextRenewelDate: Date;
   nextRenewalUnix: number; // unix timestamp
   canceledAtUnix?: number;
-  planId: PlanId;
+  planId: string;
   status: 'canceled' | 'active' | 'trialing' | 'pending';
 };
 
@@ -52,7 +52,7 @@ type ReceiptIap = {
 };
 
 export const validateIap = async (
-  data: any, //IapValidate,
+  data: IapValidate,
   context: functions.https.CallableContext,
 ): Promise<void> => {
   console.log('Starting Validation');
@@ -76,10 +76,12 @@ export const validateIap = async (
     });
     // check if products exist
     if (Array.isArray(products)) {
+      console.log('Got products array', products[0]);
       // get the latest purchased product (subscription tier)
       const { expirationDate } = products[0];
       // convert ms to secs
       const expirationUnix = Math.round(expirationDate / 1000);
+      console.log('Got expirationDate', expirationDate, expirationDate);
       // persist in database
       // add to user doc in db
       try {
@@ -122,6 +124,9 @@ export const validateIap = async (
   } catch (e) {
     // transaction receipt is invalid
     console.error('Failed. Transaction receipt is invalid.');
+    return Promise.reject(
+      'Failed. Transaction receipt is invalid. Please try again',
+    );
   }
 };
 

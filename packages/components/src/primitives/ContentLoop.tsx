@@ -66,14 +66,6 @@ const ContentLoop: React.FC<Props> = ({
 
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
-  console.log('favorites', favorites);
-  console.log('filteredContent', filteredContent);
-  console.log(
-    'hasFilteredContent',
-    hasFilteredContent,
-    filteredContent && filteredContent.length,
-  );
-
   return (
     <>
       <Error error={error} />
