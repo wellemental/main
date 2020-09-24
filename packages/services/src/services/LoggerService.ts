@@ -60,10 +60,10 @@ class FirebaseLogger implements Logger {
   }
 }
 
-const logger =
-  Config.ENABLE_FIREBASE_LOGGING === 'true'
-    ? new FirebaseLogger()
-    : new ConsoleLogger();
+const logger = new FirebaseLogger();
+// Config.ENABLE_FIREBASE_LOGGING === 'true'
+//   ? new FirebaseLogger()
+//   : new ConsoleLogger();
 
 export const buildLogger = (): Logger => logger;
 

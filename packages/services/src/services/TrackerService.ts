@@ -25,10 +25,10 @@ class FirebaseTracker extends Tracker {
   }
 }
 
-const tracker =
-  Config.ENABLE_FIREBASE_LOGGING === 'true'
-    ? new FirebaseTracker()
-    : new ConsoleTracker();
+const tracker = new FirebaseTracker();
+// Config.ENABLE_FIREBASE_LOGGING === 'true'
+//   ? new FirebaseTracker()
+//   : new ConsoleTracker();
 
 export const buildTracker = (): Tracker => tracker;
 export default tracker;

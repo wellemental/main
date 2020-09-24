@@ -37,26 +37,33 @@ export const IAPProvider = ({ children }: any) => {
     const { productId, transactionReceipt } = purchase;
 
     setStatus((status) => [...status, 'Proessing New Purcahase']);
+    setStatus((status) => [
+      ...status,
+      `*** PRODUCT ID ${productId} ** RECEIPT ${!!transactionReceipt}`,
+    ]);
     logger.info(
       `PROCESSING NEW PURCHASE *** PRODUCT ID ${productId} ** RECEIPT ${transactionReceipt}`,
     );
     if (transactionReceipt !== undefined) {
-      setStatus((status) => [
-        ...status,
-        'HAS TRANS RECEIPT, CALLING FUNCTION ***',
-      ]);
-      console.log('HAS TRANS RECEIPT, CALLING FUNCTION ***');
-
       try {
+        setStatus((status) => [
+          ...status,
+          `HAS TRANS RECEIPT, CALLING FUNCTION *** PRODUCTID ${productId} `,
+        ]);
+        logger.info(
+          `HAS TRANS RECEIPT, CALLING VALIDATEIAP FUNCTION *** PRODUCTID ${productId} `,
+        );
         await functions().httpsCallable('onValidateIap')({
+          // data: {
           receipt: transactionReceipt,
           productId: productId,
+          // },
         });
 
         storePlanAsync({ planId: productId });
         setActivePlan(productId);
       } catch (err) {
-        setStatus((status) => [...status, `PROCESSING PURCHASE ERR ***`]);
+        setStatus((status) => [...status, `PROCESSING PURCHASE ERR ***${err}`]);
         logger.error(`PROCESSING PURCHASE ERR *** - ${err}`);
         setProcessing(false);
       }
@@ -67,17 +74,34 @@ export const IAPProvider = ({ children }: any) => {
     purchaseUpdateSubscription.current = purchaseUpdatedListener(
       async (purchase: InAppPurchase | SubscriptionPurchase) => {
         const receipt = purchase.transactionReceipt;
-        setStatus((status) => [...status, 'Listener Started']);
+        setStatus((status) => [...status, 'Iap Listener Started']);
         if (receipt) {
           setStatus((status) => [...status, `Has receipt`]);
           logger.info('HAS RECEIPT ***');
 
           try {
             if (Platform.OS === 'ios') {
+              setStatus((status) => [...status, `Finish iOS transaction`]);
+              setStatus((status) => [
+                ...status,
+                `Finish iOS transaction - TRANSACTION ID ${purchase.transactionId}`,
+              ]);
+              logger.info(
+                `Finish iOS transaction ***  RANSACTION ID - ${purchase.transactionId}`,
+              );
               finishTransactionIOS(purchase.transactionId);
             }
-            setStatus((status) => [...status, 'Finishing Transaction?']);
+            setStatus((status) => [
+              ...status,
+              `Finishing Transaction? ${!!purchase} - ${purchase}`,
+            ]);
+            logger.info(`Finish transaction? *** ${!!purchase} - ${purchase}`);
+
             await finishTransaction(purchase);
+            setStatus((status) => [
+              ...status,
+              'Finished Transaction, going to process purchase',
+            ]);
             await processNewPurchase(purchase);
           } catch (ackErr) {
             setStatus((status) => [...status, 'Error finishing transaction']);
@@ -90,6 +114,10 @@ export const IAPProvider = ({ children }: any) => {
     purchaseErrorSubscription.current = purchaseErrorListener(
       (error: PurchaseError) => {
         setStatus((status) => [...status, 'Purchase error listener']);
+        setStatus((status) => [
+          ...status,
+          `Purchase error listener - ${error}`,
+        ]);
         logger.error(`purchaseErrorListener - ${error}`);
         console.log('PURCHASE LISTEN ERROR', error);
       },

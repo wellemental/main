@@ -8,7 +8,6 @@ import {
   Input,
   PageHeading,
 } from '../primitives';
-import { H1 } from 'native-base';
 import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';

@@ -24,47 +24,55 @@ const ContentLoop: React.FC<Props> = ({
   teacher,
   scrollEnabled,
 }) => {
-  const { user } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const { content, teachers, error } = useContent();
 
   let filteredContent: Content[] = content;
 
-  const hasFilteredContent = filteredContent && filteredContent.length > 0;
-
   // Filter by language
-  if (user && user.language && hasFilteredContent) {
+  if (user && user.language && filteredContent) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.language === user.language,
     );
   }
 
   // Filter by tag or category
-  if (filter && hasFilteredContent) {
+  if (filter && filteredContent) {
     filteredContent = filteredContent.filter((item: Content) =>
       item.tags.includes(filter.toLowerCase()),
     );
   }
 
   // Filter by favorites
-  if (favorites && hasFilteredContent) {
+  if (favorites && filteredContent) {
     filteredContent = filteredContent.filter((item: Content) =>
       favorites.includes(item.id),
     );
   }
 
   // Filter by teacher
-  if (teacher && hasFilteredContent) {
+  if (teacher && filteredContent) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.teacher === teacher,
     );
   }
 
   // Filter by search term
-  if (search && hasFilteredContent) {
+  if (search && filteredContent) {
     filteredContent = filteredContent.filter((item: Content) =>
       item.title.includes(search),
     );
   }
+
+  const hasFilteredContent = filteredContent && filteredContent.length > 0;
+
+  console.log('favorites', favorites);
+  console.log('filteredContent', filteredContent);
+  console.log(
+    'hasFilteredContent',
+    hasFilteredContent,
+    filteredContent && filteredContent.length,
+  );
 
   return (
     <>
@@ -74,11 +82,14 @@ const ContentLoop: React.FC<Props> = ({
         // If tabs and header need to be able to scroll up with the list
         <ScrollView showsVerticalScrollIndicator={false}>
           {filteredContent.map((item, idx) => (
-            <ContentCard
-              key={idx}
-              content={item}
-              teacher={teachers[item.teacher]}
-            />
+            <>
+              <Paragraph>First one</Paragraph>
+              <ContentCard
+                key={idx}
+                content={item}
+                teacher={teachers[item.teacher]}
+              />
+            </>
           ))}
         </ScrollView>
       ) : content && teachers && hasFilteredContent ? (
@@ -89,6 +100,10 @@ const ContentLoop: React.FC<Props> = ({
             teacher={teachers[item.teacher]}
           />
         ))
+      ) : favorites ? (
+        <ListEmpty>
+          {translation['Tap the heart icon to favorite content']}
+        </ListEmpty>
       ) : (
         <ListEmpty />
       )}

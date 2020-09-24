@@ -93,4 +93,6 @@ export const Español = {
   yr: 'yr',
   'Subscribe for $6.99 / mo': 'Subscribe for $6.99 / mo',
   'Subscribe for $55 / yr': 'Subscribe for $55 / yr',
+  'Tap the heart icon to favorite content':
+    'Tap the heart icon to favorite content',
 };

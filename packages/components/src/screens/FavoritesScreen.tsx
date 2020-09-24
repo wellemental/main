@@ -29,21 +29,21 @@ const FavoritesScreen: React.FC = () => {
   //   ),
   // };
 
-  const tabs: MenuItem[] = [
-    { label: translation.All },
-    { label: translation.Move, filter: Tags.Move },
-    { label: translation.Meditate, filter: Tags.Meditate },
-    { label: translation.Learn, filter: Tags.Learn },
-    { label: translation.Sleep, filter: Tags.Sleep },
-  ];
+  // const tabs: MenuItem[] = [
+  //   { label: translation.All },
+  //   { label: translation.Move, filter: Tags.Move },
+  //   { label: translation.Meditate, filter: Tags.Meditate },
+  //   { label: translation.Learn, filter: Tags.Learn },
+  //   { label: translation.Sleep, filter: Tags.Sleep },
+  // ];
 
-  const [tab, setTab] = useState(tabs[0]);
+  // const [tab, setTab] = useState(tabs[0]);
 
   return (
     <Container scrollEnabled>
-      <PageHeading title={translation['Your Favorites']} tabs={tabs} />
-      <Tabs tabs={tabs} active={tab} setTab={setTab} />
-      <ContentLoop favorites={favorites} filter={tab.filter} />
+      <PageHeading title={translation['Your Favorites']} />
+      {/* <Tabs tabs={tabs} active={tab} setTab={setTab} /> */}
+      <ContentLoop favorites={favorites} />
     </Container>
   );
 };

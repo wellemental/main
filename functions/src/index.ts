@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import { webhookListen, StripeEvent } from './stripe';
-import { validateIap } from './iap';
+import { validateIap, renewOrCancelSubscriptions } from './iap';
 import * as firebase from 'firebase-admin';
 
 // Initialize Firebase
@@ -37,4 +37,14 @@ const onAddStripeEvent = functions.firestore
 
 const onValidateIap = functions.https.onCall(validateIap);
 
-export { onWebhookListen, onAddStripeEvent, onValidateIap };
+const EVERY_HOUR_CRON = '0 * * * *';
+const runPlanRenewal = functions.pubsub
+  .schedule(EVERY_HOUR_CRON)
+  .onRun(renewOrCancelSubscriptions);
+
+export {
+  onWebhookListen,
+  onAddStripeEvent,
+  onValidateIap,
+  runRenewOrCancelSubs,
+};

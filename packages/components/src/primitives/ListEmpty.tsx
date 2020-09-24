@@ -7,11 +7,7 @@ const ListEmpty: React.FC<ParagraphProps & NativeBase.Text> = ({
   children,
   ...props
 }) => (
-  <Paragraph
-    gt={1}
-    center
-    {...props}
-    style={{ color: variables.lightTextColor }}>
+  <Paragraph gt={1} {...props} style={{ color: variables.lightTextColor }}>
     {children ? children : 'No results'}
   </Paragraph>
 );
