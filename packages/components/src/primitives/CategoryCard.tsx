@@ -21,7 +21,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
         <Body
           style={{
             flex: 2,
-            justifyContent: 'space-between',
+            justifyContent: 'space-around',
             padding: 15,
             paddingBottom: 15,
           }}>
@@ -30,7 +30,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
             <Paragraph>{category.description}</Paragraph>
           )}
         </Body>
-        <Right>
+        <Right style={{ flex: 1, marginLeft: 10 }}>
           <Image
             source={{
               uri: category.image,
@@ -39,7 +39,6 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
               height: 120,
               width: 120,
               borderRadius: 20,
-              marginLeft: 10,
             }}
           />
         </Right>

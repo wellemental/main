@@ -92,7 +92,7 @@ export interface LocalContent {
   updated_at?: Date;
 }
 
-type IapValidate = {
+export type IapValidate = {
   receipt: any;
   productId: string;
 };
@@ -103,7 +103,7 @@ export enum PlanId {
   Free = 'free',
 }
 
-type UserPlan = {
+export type UserPlan = {
   type: 'iosIap' | 'promoCode';
   auto_renew_status: boolean;
   nextRenewelDate: Date;

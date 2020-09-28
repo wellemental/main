@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Platform } from 'react-native';
-import {
+import { Platform, Alert } from 'react-native';
+import RNIap, {
   InAppPurchase,
   PurchaseError,
   SubscriptionPurchase,
@@ -17,7 +17,8 @@ import { useCurrentUser } from '../hooks';
 export const IAPContext: React.Context<any> = React.createContext({
   processing: false,
   setProcessing: () => {},
-  activePlan: 0,
+  activePlan: 'free',
+  error: '',
 });
 
 const localStateService = new LocalStateService();
@@ -26,108 +27,182 @@ const storePlanAsync = async (planData: any) => {
   await localStateService.setStorage('wmPlan', planData);
 };
 
+let purchaseUpdateSubscription;
+let purchaseErrorSubscription;
+
 export const IAPProvider = ({ children }: any) => {
   const { user, updateUser } = useCurrentUser();
   const [processing, setProcessing] = useState(false);
-  const [activePlan, setActivePlan] = useState(0);
+  const [activePlan, setActivePlan] = useState('free');
   const [statuses, setStatus] = useState([]);
+  const [error, setError] = useState<PurchaseError | string>('');
 
-  const purchaseUpdateSubscription = useRef(null);
-  const purchaseErrorSubscription = useRef(null);
+  // const purchaseUpdateSubscription = useRef(null);
+  // const purchaseErrorSubscription = useRef(null);
 
   const processNewPurchase = async (purchase: any) => {
     const { productId, transactionReceipt } = purchase;
 
-    setStatus((status) => [...status, 'Proessing New Purcahase']);
+    setStatus((status) => [...status, '^^^Processing New Purcahase^^^']);
     setStatus((status) => [
       ...status,
-      `*** PRODUCT ID ${productId} ** RECEIPT ${!!transactionReceipt}`,
+      `PRODUCT ID ${productId} - RECEIPT ${!!transactionReceipt}`,
     ]);
-    if (transactionReceipt !== undefined) {
+    if (transactionReceipt) {
       try {
         setStatus((status) => [
           ...status,
-          `HAS TRANS RECEIPT, CALLING FUNCTION *** PRODUCTID ${productId} `,
+          `Has transaction Receipt, Calling iapValidate Function`,
         ]);
-        await functions().httpsCallable('onValidateIap')({
-          // data: {
-          receipt: transactionReceipt,
-          productId: productId,
-          // },
-        });
+        const validateResult = await functions().httpsCallable('onValidateIap')(
+          {
+            // data: {
+            receipt: transactionReceipt,
+            productId: productId,
+            // },
+          },
+        );
 
-        if (user) {
+        setStatus((status) => [
+          ...status,
+          `iapValidate Succeeded! - Validated Receipt - ${validateResult} `,
+        ]);
+
+        try {
           setStatus((status) => [
             ...status,
-            `Updated user state in local storage - ${productId} `,
+            `Updating user state in local storage - ${JSON.stringify({
+              plan: { status: 'active', planId: productId },
+            })} `,
           ]);
-          updateUser({ plan: { status: 'active', planId: productId } });
+
+          await updateUser({ plan: { status: 'active', planId: productId } });
+          setStatus((status) => [...status, `Local storage updated!`]);
+        } catch (err) {
+          setStatus((status) => [
+            ...status,
+            `Error updating user state in local storage - ${err} `,
+          ]);
         }
 
         // storePlanAsync({ planId: productId });
+        setStatus((status) => [
+          ...status,
+          `Setting active plan state ${productId}`,
+        ]);
         setActivePlan(productId);
         setProcessing(false);
       } catch (err) {
-        setStatus((status) => [...status, `PROCESSING PURCHASE ERR ***${err}`]);
-        logger.error(`PROCESSING PURCHASE ERR *** - ${err}`);
+        setStatus((status) => [
+          ...status,
+          `Error Validating or updating - ${err.code} - ${err.message}`,
+        ]);
+        logger.error(
+          `Error Validating or updating - ${err.code} - ${err.message}`,
+        );
         setProcessing(false);
       }
+    } else {
+      setStatus((status) => [...status, `ERROR - NO TRANSACTION RECEIPT`]);
+      setProcessing(false);
     }
   };
 
   useEffect(() => {
-    purchaseUpdateSubscription.current = purchaseUpdatedListener(
-      async (purchase: InAppPurchase | SubscriptionPurchase) => {
-        const receipt = purchase.transactionReceipt;
-        setStatus((status) => [...status, 'Iap Listener Started']);
-        if (receipt) {
-          setStatus((status) => [...status, `Has receipt`]);
+    const initConnection = async () => {
+      try {
+        setStatus((status) => [...status, `Initiating connection?`]);
+        const result = await RNIap.initConnection();
+        setStatus((status) => [...status, `isIniated? ${result}`]);
+        console.log('isIniated?', result);
+        setStatus((status) => [...status, `Starting Android Flush`]);
+        console.log('CONNECTION INIT', result);
+        await RNIap.flushFailedPurchasesCachedAsPendingAndroid();
+        setStatus((status) => [...status, `Starting Android Flush`]);
+      } catch (err) {
+        console.warn(err.code, err.message);
+      }
+    };
 
-          try {
-            if (Platform.OS === 'ios') {
+    initConnection().then(() => {
+      purchaseUpdateSubscription = purchaseUpdatedListener(
+        async (purchase: InAppPurchase | SubscriptionPurchase) => {
+          const receipt = purchase.transactionReceipt;
+          console.log('LISTENING', receipt);
+          setStatus((status) => [...status, 'Iap Listener Started']);
+          if (receipt) {
+            setStatus((status) => [...status, `Has receipt`]);
+
+            try {
               setStatus((status) => [
                 ...status,
-                `Finish iOS transaction - TRANSACTION ID ${purchase.transactionId}`,
+                `Processing Puchase? ${!!purchase} - ${purchase}`,
               ]);
-              finishTransactionIOS(purchase.transactionId);
-            }
-            setStatus((status) => [
-              ...status,
-              `Finishing Transaction? ${!!purchase} - ${purchase}`,
-            ]);
+              await processNewPurchase(purchase);
 
-            await finishTransaction(purchase);
-            setStatus((status) => [
-              ...status,
-              'Finished Transaction, going to process purchase',
-            ]);
-            await processNewPurchase(purchase);
-          } catch (err) {
-            setStatus((status) => [...status, 'Error finishing transaction']);
-            logger.error(`Error Finishing or Processing Iap - ${err}`);
+              if (Platform.OS === 'ios') {
+                setStatus((status) => [
+                  ...status,
+                  `Finish iOS transaction - TRANSACTION ID ${purchase.transactionId}`,
+                ]);
+                finishTransactionIOS(purchase.transactionId);
+              } else if (Platform.OS === 'android') {
+                // If not consumable
+                // acknowledgePurchaseAndroid(purchase.purchaseToken);
+              }
+
+              setStatus((status) => [
+                ...status,
+                `Finishing Transaction? ${!!purchase} - ${purchase}`,
+              ]);
+
+              // If not consumable
+              await finishTransaction(purchase, false);
+              setStatus((status) => [...status, 'Finished Transaction']);
+            } catch (err) {
+              setStatus((status) => [
+                ...status,
+                `Error Finishing or Processing Iap - ${
+                  err && err.message ? err.message : err
+                }`,
+              ]);
+              logger.error(
+                `Error Finishing or Processing Iap - ${
+                  err && err.message ? err.message : err
+                }`,
+              );
+            }
+          } else {
+            // Retry / conclude the purchase is fraudulent, etc...
+            setStatus((status) => [...status, 'No receipt, should retry']);
+            setProcessing(false);
           }
-        }
-      },
-    );
-    purchaseErrorSubscription.current = purchaseErrorListener(
-      (error: PurchaseError) => {
-        setStatus((status) => [
-          ...status,
-          `Purchase error listener - ${error}`,
-        ]);
-        logger.error(`purchaseErrorListener - ${error}`);
-      },
-    );
+        },
+      );
+
+      purchaseErrorSubscription = purchaseErrorListener(
+        (err: PurchaseError) => {
+          setStatus((status) => [
+            ...status,
+            `Purchase error listener - ${error}`,
+          ]);
+          logger.error(`purchaseErrorListener - ${error}`);
+          setError(err);
+          // Alert.alert('purchase error', JSON.stringify(error));
+        },
+      );
+    });
 
     return () => {
       if (purchaseUpdateSubscription) {
-        purchaseUpdateSubscription.current.remove();
-        purchaseUpdateSubscription.current = null;
+        purchaseUpdateSubscription.remove();
+        purchaseUpdateSubscription = null;
       }
       if (purchaseErrorSubscription) {
-        purchaseErrorSubscription.current.remove();
-        purchaseErrorSubscription.current = null;
+        purchaseErrorSubscription.remove();
+        purchaseErrorSubscription = null;
       }
+      RNIap.endConnection();
     };
   }, []);
 
@@ -138,6 +213,7 @@ export const IAPProvider = ({ children }: any) => {
         setProcessing: setProcessing,
         activePlan: activePlan,
         status: statuses,
+        error: error,
       }}>
       {children}
     </IAPContext.Provider>

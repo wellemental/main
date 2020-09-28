@@ -1,16 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { auth, firestore } from 'services';
 import { Languages, UpdateUserService, User, UserProfile } from 'services';
 import firestore from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
-import { LocalStateService, UserPlan } from 'services';
+import { LocalStateService } from 'services';
 import { Spinner } from '../primitives';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 const localStateService = new LocalStateService();
-const profileService = new UpdateUserService();
+
+const completeOnboarding = async () => {
+  const userObj = await localStateService.getUser();
+  if (userObj) {
+    userObj.onboardingComplete = true;
+  }
+  await localStateService.setStorage('wmUser', userObj);
+};
 
 export const CurrentUser = React.createContext<any>({
   currentUser: {
@@ -18,7 +24,6 @@ export const CurrentUser = React.createContext<any>({
     language: Languages.En,
     birthday: '',
     name: '',
-    plan: {},
   },
 });
 
@@ -30,10 +35,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   const [loading, setLoading] = useState(true);
   const [creatingUser, setCreatingUser] = useState(false);
   const [error, setError] = useState('');
-
-  // const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
-  //   null,
-  // );
 
   // localStateService.resetStorage();
 
@@ -91,127 +92,60 @@ export const CurrentUserProvider = ({ children }: any) => {
     setCurrentUser({ ...mergedFields, updated_at: new Date() });
   };
 
-  const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
-    null,
-  );
-
   useEffect(() => {
     // On mount, subscribe to auth listener
-    const authUnsubscriber = auth().onAuthStateChanged((user) => {
+    return auth().onAuthStateChanged((user) => {
       setCurrentAuth(user);
-
-      // Unsubscribe from previous userDoc listener if exists
-      if (userDocUnsubscriber.current) {
-        userDocUnsubscriber.current();
-      }
 
       // If user logged in, get CurrentUser
       if (user) {
-        subscribeToUserDoc(user);
+        const getLocalUser = async () => {
+          try {
+            const localUser = await localStateService.getUser();
+
+            if (localUser) {
+              // If AsyncStorage exists, set it to user state
+              setCurrentUser(localUser);
+            } else {
+              // If it doesn't exist, get state from firestore
+              await getDbUser(user.uid);
+            }
+          } catch (err) {
+            setError(err);
+          }
+        };
+
+        getLocalUser();
       } else {
         setCurrentUser(null);
       }
 
       setLoading(false);
     });
-
-    // If app.tsx unmounts, cleanup all subscriptions
-    return function cleanup() {
-      if (userDocUnsubscriber.current) {
-        userDocUnsubscriber.current();
-      }
-      authUnsubscriber();
-    };
   }, []);
 
-  const subscribeToUserDoc = async (user: FirebaseAuthTypes.User) => {
-    userDocUnsubscriber.current = firestore()
-      .collection('users')
-      .doc(user.uid)
-      .onSnapshot(async (snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
-        const userData = snapshot.data();
-
-        // If user just signed up, save their user data to database
-        if (!snapshot.exists) {
-          setCreatingUser(true);
-
-          try {
-            const localUser = await localStateService.getUser();
-            if (localUser) {
-              // If AsyncStorage exists, set it to user state
-              setCurrentUser(localUser);
-            }
-          } catch (err) {
-            console.log('Error getting local user');
-          }
-
-          console.log('LOCAL USER', localUser);
-
-          await profileService.createProfile({
-            id: currentAuth.uid,
-            email: currentAuth.email,
-            name: currentUser.name,
-            birthday: currentUser.birthday,
-            language: currentUser.language,
-            onboardingComplete: true,
-          });
-
-          // Set onboardingComplete locally so this doesn't run after first load
-          setCreatingUser(false);
-        }
-
-        // If user isn't logged in or doc doesn't exist
-        if (!user.email) {
-          return Promise.resolve();
-        } else if (!snapshot.exists) {
-          return Promise.reject('User doc does not exist.');
-        }
-
-        // Build user doc
-        const userDoc: User = {
-          name: userData.name,
-          language: userData.language,
-          birthday: userData.birthday,
-          favorites: userData.favorites,
-          plan: userData.plan,
-        };
-
-        setCurrentUser(userDoc);
-      });
-  };
-
-  const prevUser = useRef(currentUser);
   useEffect(() => {
-    if (
-      currentUser &&
-      JSON.stringify(prevUser) !== JSON.stringify(currentUser)
-    ) {
-      localStateService.setStorage('wmUser', currentUser);
+    // If userDoc hasn't been created yet (onboarding not complete), then create it in database
+    if (!!currentAuth && !!currentUser && !currentUser.onboardingComplete) {
+      setCreatingUser(true);
+      const profileService = new UpdateUserService();
+      profileService.createProfile({
+        id: currentAuth.uid,
+        email: currentAuth.email,
+        name: currentUser.name,
+        birthday: currentUser.birthday,
+        language: currentUser.language,
+        onboardingComplete: true,
+      });
+      // Set onboardingComplete locally so this doesn't run after first load
+      completeOnboarding();
+      setCreatingUser(false);
     }
-
-    // if (auth && !currentUser) {
-    //   const getLocaluser = async () => {
-    //     try {
-    //       const localUser = await localStateService.getUser();
-
-    //       if (localUser) {
-    //         // If AsyncStorage exists, set it to user state
-    //         setCurrentUser(localUser);
-    //       }
-    //     } catch (err) {
-    //       setError(err);
-    //     }
-    //   };
-
-    //   getLocaluser();
-    // }
-  }, [currentUser]);
+  }, [currentAuth, currentUser]);
 
   if (creatingUser) {
     return <Spinner text="Creating account..." />;
   }
-
-  console.log('CURRENT USER', currentUser);
 
   return (
     <CurrentUser.Provider
@@ -224,7 +158,7 @@ export const CurrentUserProvider = ({ children }: any) => {
         updateUser,
         updateFavorites,
         getDbUser,
-        activePlan:
+        planActive:
           !auth || !currentUser
             ? false
             : currentUser &&

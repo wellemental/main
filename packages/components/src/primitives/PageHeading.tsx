@@ -17,13 +17,14 @@ const PageHeading: React.FC<Props> = ({ title, subtitle, avatar, center }) => {
   return (
     <View
       style={{
-        paddingTop: insets.top === 0 ? 25 : 45,
+        paddingTop: insets.top === 0 ? 25 : 35,
+        paddingHorizontal: 5,
         paddingBottom: 25,
         alignItems: center ? 'center' : 'flex-start',
       }}>
       {avatar && <Avatar source={avatar} size={200} mb={30} />}
       <H1>{title}</H1>
-      {subtitle && <Paragraph>{subtitle}</Paragraph>}
+      {subtitle && <Paragraph style={{ paddingTop: 5 }}>{subtitle}</Paragraph>}
     </View>
   );
 };

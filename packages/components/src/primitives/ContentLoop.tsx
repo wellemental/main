@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
 import { Content, Tags, Categories, TimeOfDay } from 'services';
@@ -15,6 +15,7 @@ interface Props {
   search?: string;
   teacher?: Teachers;
   scrollEnabled?: boolean;
+  hasPadding?: boolean; // Apply horizontal margin for Library screen bc of tabs full width requirement
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -23,6 +24,7 @@ const ContentLoop: React.FC<Props> = ({
   search,
   teacher,
   scrollEnabled,
+  hasPadding,
 }) => {
   const { user, translation } = useCurrentUser();
   const { content, teachers, error } = useContent();
@@ -67,7 +69,7 @@ const ContentLoop: React.FC<Props> = ({
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (
-    <>
+    <View style={{ marginHorizontal: hasPadding ? 15 : 0 }}>
       <Error error={error} />
 
       {content && teachers && scrollEnabled && hasFilteredContent ? (
@@ -117,7 +119,7 @@ const ContentLoop: React.FC<Props> = ({
             *** {item}
           </Paragraph>
         ))} */}
-    </>
+    </View>
   );
 };
 

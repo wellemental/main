@@ -28,7 +28,7 @@ type Props = {
 };
 
 const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
-  const { auth, user, translation, updateUser } = useCurrentUser();
+  const { auth, user, translation } = useCurrentUser();
   const [name, setName] = useState(user.name);
   const [language, setLanguage] = useState(user.language);
   const [birthday, setBirthday] = useState(user.birthday);
@@ -55,12 +55,6 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
   );
 
   const handleUpdate = async () => {
-    try {
-      await updateUser(newProfile);
-    } catch (err) {
-      setError(err);
-    }
-
     mutate(
       () =>
         Toast.show({

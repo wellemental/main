@@ -14,7 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabNav: React.FC = () => {
-  const { translation } = useCurrentUser();
+  const { translation, auth, activePlan } = useCurrentUser();
   const insets = useSafeAreaInsets();
 
   return (
@@ -57,16 +57,21 @@ const TabNav: React.FC = () => {
         component={LibraryScreen}
         options={{ title: translation.Library }}
       />
-      <Tab.Screen
-        name="Favorites"
-        component={FavoritesScreen}
-        options={{ title: translation.Favorites }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{ title: translation.Search }}
-      />
+
+      {activePlan && (
+        <>
+          <Tab.Screen
+            name="Favorites"
+            component={FavoritesScreen}
+            options={{ title: translation.Favorites }}
+          />
+          <Tab.Screen
+            name="Search"
+            component={SearchScreen}
+            options={{ title: translation.Search }}
+          />
+        </>
+      )}
       <Tab.Screen
         name="Settings"
         component={SettingsScreen}

@@ -5,8 +5,9 @@ import * as moment from 'moment';
 const appleReceiptVerify = require('node-apple-receipt-verify');
 appleReceiptVerify.config({
   secret: functions.config().ios.iapsecret,
-  environment: [functions.config().apple.env],
+  environment: ['sandbox', 'production'], //functions.config().apple.env],
   excludeOldTransactions: true,
+  verbose: true,
 });
 
 type IapValidate = {
@@ -28,6 +29,7 @@ type UserPlan = {
   canceledAtUnix?: number;
   planId: string;
   status: 'canceled' | 'active' | 'trialing' | 'pending';
+  createdAt: Date;
 };
 
 interface User {
@@ -49,21 +51,31 @@ type ReceiptIap = {
   verified: boolean;
   products: Product[];
   timestamp: number;
+  timestampDate: Date;
+  environment: 'sandbox' | 'production';
 };
 
 export const validateIap = async (
   data: IapValidate,
   context: functions.https.CallableContext,
-): Promise<void> => {
-  console.log('Starting Validation');
+): Promise<string> => {
+  console.log('Starting Validation', functions.config().apple.env);
   if (!context.auth) {
     console.error('No auth context');
-    return;
+    return Promise.reject('User not logged in');
   }
   const userId = context.auth.uid;
   const { receipt, productId } = data;
   const { auto_renew_status, nextRenewal } = receipt;
 
+  console.log(
+    'AUTO RENEW TESTS',
+    receipt.autoRenewingAndroid,
+    'BOOL',
+    receipt.auto_renew_status,
+  );
+
+  console.log('RECEIPT', receipt);
   console.log('Uid', userId, 'ProductId', productId);
   console.log('autoRenew', auto_renew_status, 'nextRenewal', nextRenewal);
 
@@ -74,8 +86,9 @@ export const validateIap = async (
       excludeOldTransactions: true,
       receipt: receipt,
     });
+    console.log('Got Products', products);
     // check if products exist
-    if (Array.isArray(products)) {
+    if (Array.isArray(products) && products.length > 0) {
       console.log('Got products array', products[0]);
       // get the latest purchased product (subscription tier)
       const { expirationDate } = products[0];
@@ -88,13 +101,16 @@ export const validateIap = async (
         const userPlan: User = {
           plan: {
             type: 'iosIap',
-            auto_renew_status: auto_renew_status,
+            auto_renew_status: true,
             nextRenewelDate: expirationDate,
             nextRenewalUnix: expirationUnix,
             planId: productId,
             status: 'active',
+            createdAt: new Date(),
           },
         };
+
+        console.log('Updating user plan', userPlan);
 
         await admin
           .firestore()
@@ -114,16 +130,22 @@ export const validateIap = async (
           verified: true,
           products: products,
           timestamp: moment().unix(),
+          timestampDate: moment().toDate(),
+          environment: functions.config().apple.env,
         };
 
         await admin.firestore().collection('receipts-iap').add(receiptIap); // Add the event to the database
       } catch (err) {
         console.error('Failed to add receipt to database', err); // Catch any errors saving to the database
       }
+      return Promise.resolve('Purchase complete!');
+    } else {
+      console.error('Products either undefined or not an array', products);
+      return Promise.reject('Products either undefined or not an array');
     }
   } catch (e) {
     // transaction receipt is invalid
-    console.error('Failed. Transaction receipt is invalid.');
+    console.error('Failed. Transaction receipt is invalid.', e);
     return Promise.reject(
       'Failed. Transaction receipt is invalid. Please try again',
     );
@@ -158,7 +180,7 @@ export const renewOrCancelSubscriptions = async (): Promise<void> => {
       // get latest transaction from receipt
       const receiptSnapshots = await admin
         .firestore()
-        .collection('iap-receipts')
+        .collection('receipts-iap')
         .where('userId', '==', account.id)
         .orderBy('timestamp', 'desc')
         .get();
@@ -194,8 +216,8 @@ export const renewOrCancelSubscriptions = async (): Promise<void> => {
           // get the latest purchase from receipt verification
           const latestPurchase = purchases[0];
           // reformat the expiration date as a unix timestamp
-          let latestExpiryTimestamp = latestPurchase.expirationDate;
           const productId = latestPurchase.productId;
+          let latestExpiryTimestamp = latestPurchase.expirationDate;
           latestExpiryTimestamp = Math.round(latestExpiryTimestamp / 1000);
           // update renewal date if more than current one
           if (latestExpiryTimestamp > expiryTimestamp) {

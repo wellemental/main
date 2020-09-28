@@ -29,11 +29,11 @@ const HomeScreen: React.FC = () => {
     today.isBefore(moment().hour(4), 'hour')
   ) {
     timeOfDay = TimeOfDay.Evening;
-    tagline = translation['Shake out the day with some fun movement.'];
-  } else if (today.isAfter(moment().hour(12), 'hour')) {
-    timeOfDay = TimeOfDay.Afternoon;
     tagline =
       translation['Get ready for bedtime with these soothing practices.'];
+  } else if (today.isAfter(moment().hour(12), 'hour')) {
+    timeOfDay = TimeOfDay.Afternoon;
+    tagline = translation['Shake out the day with some fun movement.'];
   }
 
   // Upgrade Screen prompt
@@ -73,9 +73,7 @@ const HomeScreen: React.FC = () => {
         </TouchableOpacity>
       )}
       <PageHeading
-        title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}${
-          user && user.name && `, ${user.name}`
-        }`}
+        title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}`}
         subtitle={tagline}
       />
 

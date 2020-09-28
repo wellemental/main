@@ -91,8 +91,14 @@ export const Español = {
   'Save for offline use': 'Save for offline use',
   mo: 'mo',
   yr: 'yr',
+  'Subscribe Annually': 'Subscribe Annually',
+  'Subscribe Monthly': 'Subscribe Monthly',
   'Subscribe for $6.99 / mo': 'Subscribe for $6.99 / mo',
   'Subscribe for $55 / yr': 'Subscribe for $55 / yr',
   'Tap the heart icon to favorite content':
     'Tap the heart icon to favorite content',
+  'Save your favorite videos': 'Save your favorite videos',
+  Monthly: 'Monthly',
+  Annual: 'Annual',
+  'Content refreshed': 'Contenido actualizado',
 };

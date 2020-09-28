@@ -5,6 +5,7 @@ type Props = {
   gt?: number;
   gb?: number;
   gv?: number;
+  gh?: number;
   row?: boolean;
   center?: boolean;
   justifyContent?:
@@ -21,6 +22,7 @@ const Box: React.FC<Props> = ({
   gt,
   gb,
   gv,
+  gh,
   center,
   justifyContent,
   row,
@@ -32,6 +34,7 @@ const Box: React.FC<Props> = ({
     view: {
       paddingTop: gv ? spacing * gv : gt ? spacing * gt : 0,
       paddingBottom: gv ? spacing * gv : gb ? spacing * gb : 0,
+      paddingHorizontal: gh ? spacing * gh : 0,
       alignItems: center ? 'center' : 'flex-start',
       flexDirection: row ? 'row' : 'column',
       justifyContent: center

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { TouchableOpacity } from 'react-native';
+import { H2 } from 'native-base';
 import {
   Box,
   Container,
@@ -12,6 +14,19 @@ import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';
 import { PromoCodeService, logger } from 'services';
+import styled from 'styled-components';
+import variables from '../assets/native-base-theme/variables/wellemental';
+
+const PlanSelect = styled(TouchableOpacity)`
+  flex: 1;
+  border-color: #999;
+  border-width: 1px;
+  border-radius: 8px;
+  align-items: center;
+  color: #999;
+  padding: 20px;
+  margin-bottom: 20px;
+`;
 
 // defining IAP SKUs by platform in `constants.ts`
 export const IAP_SKUS = Platform.select({
@@ -29,20 +44,28 @@ const PlansScreen: React.FC = () => {
   const { auth, user, translation } = useCurrentUser();
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
-  const { processing, setProcessing, status } = useIap();
+  const [loading, setLoading] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState(IAP_SKUS[0]);
+  const {
+    processing,
+    setProcessing,
+    status,
+    error: iapError,
+    activePlan,
+  } = useIap();
 
   const bullets = [
     translation['100+ meditation and yoga videos'],
     translation['Available in English and Spanish'],
     translation['Led by diverse teachers'],
+    translation['Save your favorite videos'],
     translation['Save for offline use'],
   ];
 
   useEffect(() => {
-    setProcessing(true);
     const getProducts = async () => {
       try {
-        const gotProd = await RNIap.getProducts(IAP_SKUS);
+        const gotProd = await RNIap.getSubscriptions(IAP_SKUS);
         setProducts(gotProd);
       } catch (err) {
         setError(
@@ -50,7 +73,7 @@ const PlansScreen: React.FC = () => {
         );
         logger.error(`Error retrieving Iap Products - ${err}`);
       }
-      setProcessing(false);
+      setLoading(false);
     };
 
     getProducts();
@@ -58,6 +81,7 @@ const PlansScreen: React.FC = () => {
 
   // handle new subscription request
   const handleSubscription = async (plan: PlanId) => {
+    setSelectedPlan(plan);
     try {
       setError('');
       setProcessing(true);
@@ -97,28 +121,95 @@ const PlansScreen: React.FC = () => {
 
       <Box gb={2}>
         {bullets.map((bullet) => (
-          <Paragraph key={bullet}>* {bullet}</Paragraph>
+          <Paragraph style={{ paddingHorizontal: 5 }} key={bullet}>
+            * {bullet}
+          </Paragraph>
         ))}
       </Box>
 
       {!showAccessDisplay ? (
         <>
+          <Box row justifyContent="space-evenly">
+            <PlanSelect
+              style={{
+                marginRight: 5,
+                borderColor:
+                  selectedPlan === PlanId.Monthly
+                    ? variables.brandPrimary
+                    : variables.lightTextColor,
+              }}
+              onPress={() => setSelectedPlan(PlanId.Monthly)}>
+              <H2
+                style={{
+                  color:
+                    selectedPlan === PlanId.Monthly
+                      ? variables.brandPrimary
+                      : variables.lightTextColor,
+                }}>
+                {translation.Monthly}
+              </H2>
+              <H2
+                style={{
+                  color:
+                    selectedPlan === PlanId.Monthly
+                      ? variables.brandPrimary
+                      : variables.lightTextColor,
+                }}>
+                $5.99 / mo
+              </H2>
+              <Paragraph
+                style={{
+                  color: 'white',
+                }}>
+                ***
+              </Paragraph>
+            </PlanSelect>
+
+            <PlanSelect
+              style={{
+                marginLeft: 5,
+                borderColor:
+                  selectedPlan === PlanId.Yearly
+                    ? variables.brandPrimary
+                    : variables.lightTextColor,
+              }}
+              onPress={() => setSelectedPlan(PlanId.Yearly)}>
+              <H2
+                style={{
+                  color:
+                    selectedPlan === PlanId.Yearly
+                      ? variables.brandPrimary
+                      : variables.lightTextColor,
+                }}>
+                {translation.Annual}
+              </H2>
+              <H2
+                style={{
+                  color:
+                    selectedPlan === PlanId.Yearly
+                      ? variables.brandPrimary
+                      : variables.lightTextColor,
+                }}>
+                $4.58 / mo
+              </H2>
+              <Paragraph
+                style={{
+                  color:
+                    selectedPlan === PlanId.Yearly
+                      ? variables.brandPrimary
+                      : variables.lightTextColor,
+                }}>
+                $59.99 / year
+              </Paragraph>
+            </PlanSelect>
+          </Box>
           <Button
             primary
-            disabled={processing}
+            disabled={loading || processing}
             loading={processing}
-            text={translation['Subscribe for $6.99 / mo']}
+            text={translation['Subscribe']}
             onPress={() => handleSubscription(PlanId.Monthly)}
           />
-          <Box gt={1}>
-            <Button
-              danger
-              disabled={processing}
-              loading={processing}
-              text={translation['Subscribe for $55 / yr']}
-              onPress={() => handleSubscription(PlanId.Yearly)}
-            />
-          </Box>
         </>
       ) : (
         <>
@@ -133,7 +224,6 @@ const PlansScreen: React.FC = () => {
           <Button
             primary
             disabled={processing}
-            loading={processing}
             text={translation.Submit}
             onPress={() => handlePromoCode()}
           />
@@ -153,26 +243,36 @@ const PlansScreen: React.FC = () => {
         />
       </Box>
 
-      <Error error={error} center />
+      {/* <Error error={error} center /> */}
 
       {auth && auth.email === 'mike.r.vosters@gmail.com' && status && (
         <Box gt={2}>
-          <Paragraph>USER PLAN ***</Paragraph>
+          <Paragraph>IAP Error Msg:</Paragraph>
+          <Error error={iapError} center />
+          <Paragraph>******</Paragraph>
+          <Paragraph>SELECTED PLAN</Paragraph>
+          <Paragraph>{selectedPlan}</Paragraph>
+          <Paragraph>******</Paragraph>
+          <Paragraph>IAP ACTIVE PLAN</Paragraph>
+          <Paragraph>{activePlan}</Paragraph>
+          <Paragraph>******</Paragraph>
+          <Paragraph>USER PLAN</Paragraph>
           {user && !user.plan ? (
             <Paragraph>No Plan</Paragraph>
           ) : user && user.plan ? (
             <Paragraph>
-              {user.plan.status} - {user.plan.planId}
+              {user.plan.staatus} - {user.plan.planId}
             </Paragraph>
           ) : (
             <Paragraph>No user</Paragraph>
           )}
 
           <Box gt={1}>
+            <Paragraph>******</Paragraph>
             <Paragraph>DEBUGGING</Paragraph>
             {status.map((item, idx) => (
               <Paragraph note key={idx + item}>
-                *** {item}
+                *{item}
               </Paragraph>
             ))}
           </Box>

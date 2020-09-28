@@ -20,7 +20,7 @@ interface ContentContext {
   features: Features;
   updateAvailable: boolean;
   status: string[];
-  getDbContent?: () => void;
+  getDbContent: () => void;
 }
 
 export const Content = React.createContext<ContentContext>({
@@ -32,6 +32,7 @@ export const Content = React.createContext<ContentContext>({
   features: undefined,
   updateAvailable: false,
   status: [],
+  getDbContent: null,
 });
 
 const localStateService = new LocalStateService();
@@ -223,15 +224,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   // Get Featured Content from Remote Config
   const { loading: rcLoading, data: rcData } = useConfig('featured');
 
-  console.log('LOADING', loading, rcLoading, 'AUTH', !!auth);
-  console.log(
-    'CONTENT',
-    !!content,
-    'TEACHERS',
-    !!teachers,
-    'FEATURES',
-    !!rcData,
-  );
   if ((auth && loading) || (auth && rcLoading)) {
     // return <Spinner text="Loading Content..." />;
   }

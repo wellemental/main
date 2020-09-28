@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
-import { AuthService } from 'services';
+import { AuthService, LocalStateService } from 'services';
 import { Error, PageHeading, Container } from '../primitives';
-import { Body, Left, List, Icon, ListItem, Right, Text } from 'native-base';
+import {
+  Body,
+  Left,
+  List,
+  Icon,
+  ListItem,
+  Right,
+  Text,
+  Toast,
+} from 'native-base';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
@@ -11,13 +20,14 @@ type SettingsLink = {
   onPress: () => void;
   iconName: string;
 };
+const service = new AuthService();
+const localStateService = new LocalStateService();
 
 const SettingsScreen: React.FC = () => {
   const { auth, translation, getDbUser } = useCurrentUser();
   const { getDbContent } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
-  const service = new AuthService();
 
   const handleNavigate = (screen: string): void => {
     navigation.navigate(screen);
@@ -26,6 +36,7 @@ const SettingsScreen: React.FC = () => {
   const handleLogout = async () => {
     try {
       await service.logout();
+      await localStateService.resetStorage();
     } catch (err) {
       setError(err);
     }
@@ -38,8 +49,24 @@ const SettingsScreen: React.FC = () => {
         style: 'destructive',
         onPress: handleLogout,
       },
-      { text: translation['Cancel'], style: 'cancel' },
+      { text: translation.Cancel, style: 'cancel' },
     ]);
+  };
+
+  const handleRefresh = async (): Promise<void> => {
+    try {
+      await getDbContent();
+      Toast.show({
+        text: translation['Content refreshed'],
+        style: { marginBottom: 20 },
+      });
+    } catch (err) {
+      console.log('ERRO', err);
+      Toast.show({
+        text: translation['Error. Please try again.'],
+        style: { marginBottom: 20 },
+      });
+    }
   };
 
   const list: SettingsLink[] = [
@@ -53,9 +80,9 @@ const SettingsScreen: React.FC = () => {
       onPress: () => handleNavigate('Plans'),
       iconName: 'cart',
     },
+    { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
+    // { label: 'Refresh User', onPress: getDbUser, iconName: 'refresh' },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
-    { label: 'Refresh Content', onPress: getDbContent, iconName: 'refresh' },
-    { label: 'Refresh User', onPress: getDbUser, iconName: 'refresh' },
   ];
 
   return (

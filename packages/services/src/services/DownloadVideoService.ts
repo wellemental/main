@@ -59,9 +59,7 @@ class DownloadVideoService implements DownloadVideoServiceType {
     try {
       const result = await RNFS.readDir(RNFS.DocumentDirectoryPath);
       result.forEach((element) => {
-        console.log('ELEMENT', element.name);
         if (element.name === filename) {
-          console.log('PATH', element.path);
           path_name = element.path;
         }
       });

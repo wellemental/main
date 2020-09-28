@@ -28,7 +28,7 @@ const ErrorComponent: React.FC<Props> = ({ error, center }) => {
     <Paragraph
       center={center ? center : false}
       gt={1}
-      style={{ color: variables.brandDanger }}>
+      style={{ color: variables.brandDanger, paddingHorizontal: 5 }}>
       {text}
     </Paragraph>
   ) : (

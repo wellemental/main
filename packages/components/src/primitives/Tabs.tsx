@@ -18,11 +18,13 @@ const Tabs: React.FC<Props> = ({ tabs, active, setTab }) => {
       showsHorizontalScrollIndicator={false}
       data={tabs}
       keyExtractor={(item) => item.label}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <TouchableOpacity
           style={{
-            paddingHorizontal: 20,
-            minWidth: 60,
+            marginLeft: index === 0 ? 15 : 0,
+            marginBottom: 15,
+            paddingHorizontal: 15,
+            minWidth: 50,
             borderBottomColor:
               active.label === item.label
                 ? variables.brandPrimary
