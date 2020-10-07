@@ -8,6 +8,8 @@ import {
   Paragraph,
   Error,
   Input,
+  Spinner,
+  LegalLinks,
   PageHeading,
 } from '../primitives';
 import { useCurrentUser, useIap } from '../hooks';
@@ -16,6 +18,7 @@ import { Platform } from 'react-native';
 import { PromoCodeService, logger } from 'services';
 import styled from 'styled-components';
 import variables from '../assets/native-base-theme/variables/wellemental';
+import AskParentsScreen from './AskParentsScreen';
 
 const PlanSelect = styled(TouchableOpacity)`
   flex: 1;
@@ -24,7 +27,7 @@ const PlanSelect = styled(TouchableOpacity)`
   border-radius: 8px;
   align-items: center;
   color: #999;
-  padding: 20px;
+  padding: 20px 5px;
   margin-bottom: 20px;
 `;
 
@@ -45,6 +48,7 @@ const PlansScreen: React.FC = () => {
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [parentalLock, setParentalLock] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState(IAP_SKUS[0]);
   const {
     processing,
@@ -59,7 +63,7 @@ const PlansScreen: React.FC = () => {
     translation['Available in English and Spanish'],
     translation['Led by diverse teachers'],
     translation['Save your favorite videos'],
-    translation['Save for offline use'],
+    translation['Online or offline use'],
   ];
 
   useEffect(() => {
@@ -97,18 +101,23 @@ const PlansScreen: React.FC = () => {
   // Input Promo Code
   const [promoCode, setPromoCode] = useState('');
   const [showAccessDisplay, toggleDisplay] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
 
   const handlePromoCode = async () => {
     const service = new PromoCodeService();
     try {
       await service.validateAndUpgrade(auth.uid, promoCode);
+      setUpgrading(true);
     } catch (err) {
-      console.log('ERR', err);
       setError(err);
     }
   };
 
-  return (
+  return parentalLock ? (
+    <AskParentsScreen setLock={setParentalLock} />
+  ) : upgrading ? (
+    <Spinner text={translation['One moment...']} />
+  ) : (
     <Container scrollEnabled>
       <PageHeading
         title={translation.Subscribe}
@@ -131,6 +140,7 @@ const PlansScreen: React.FC = () => {
         <>
           <Box row justifyContent="space-evenly">
             <PlanSelect
+              activeOpacity={1}
               style={{
                 marginRight: 5,
                 borderColor:
@@ -155,7 +165,7 @@ const PlansScreen: React.FC = () => {
                       ? variables.brandPrimary
                       : variables.lightTextColor,
                 }}>
-                $5.99 / mo
+                $5.99 / {translation.mo}
               </H2>
               <Paragraph
                 style={{
@@ -166,6 +176,7 @@ const PlansScreen: React.FC = () => {
             </PlanSelect>
 
             <PlanSelect
+              activeOpacity={1}
               style={{
                 marginLeft: 5,
                 borderColor:
@@ -190,7 +201,7 @@ const PlansScreen: React.FC = () => {
                       ? variables.brandPrimary
                       : variables.lightTextColor,
                 }}>
-                $4.58 / mo
+                $59.99 / {translation.yr}
               </H2>
               <Paragraph
                 style={{
@@ -199,7 +210,7 @@ const PlansScreen: React.FC = () => {
                       ? variables.brandPrimary
                       : variables.lightTextColor,
                 }}>
-                $59.99 / year
+                $4.58 / {translation.mo}
               </Paragraph>
             </PlanSelect>
           </Box>
@@ -207,9 +218,12 @@ const PlansScreen: React.FC = () => {
             primary
             disabled={loading || processing}
             loading={processing}
-            text={translation['Subscribe']}
+            text={translation.Subscribe}
             onPress={() => handleSubscription(PlanId.Monthly)}
           />
+          <Box gt={1.5}>
+            <LegalLinks subs />
+          </Box>
         </>
       ) : (
         <>
@@ -229,7 +243,7 @@ const PlansScreen: React.FC = () => {
           />
         </>
       )}
-      <Box gt={1}>
+      {/* <Box gt={1}>
         <Button
           transparent
           disabled={processing}
@@ -241,9 +255,9 @@ const PlansScreen: React.FC = () => {
           }
           onPress={() => toggleDisplay(!showAccessDisplay)}
         />
-      </Box>
+      </Box> */}
 
-      {/* <Error error={error} center /> */}
+      <Error error={error} center />
 
       {auth && auth.email === 'mike.r.vosters@gmail.com' && status && (
         <Box gt={2}>

@@ -39,7 +39,7 @@ const AuthStackScreen: React.FC = () => {
 };
 
 const Navigator: React.FC = () => {
-  const { auth } = useCurrentUser();
+  const { auth, user } = useCurrentUser();
 
   return (
     <NavigationContainer>
@@ -56,7 +56,7 @@ const Navigator: React.FC = () => {
             transform: [{ rotateZ: '-90deg' }],
           },
         }}>
-        {auth ? (
+        {user ? (
           <>
             <Stack.Screen
               name="TabNav"

@@ -50,7 +50,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const [error, setError] = useState('');
   const [statuses, setStatus] = useState([]);
   const [updateAvailable, setUpdateAvailable] = useState(false);
-  const { auth } = useCurrentUser();
+  const { user } = useCurrentUser();
   const [loading, setLoading] = useState(
     // !auth ? false : !content || !teachers ? true : false,
     !content || !teachers ? true : false,
@@ -106,7 +106,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   };
 
   useEffect(() => {
-    if (auth) {
+    if (user) {
       const calcUpdateAvailable = async () => {
         setStatus((status) => [
           ...status,
@@ -203,7 +203,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         fetchContent();
       }
     }
-  }, [content, teachers, auth]);
+  }, [content, teachers, user]);
 
   // If updateAvailable, refetch content from database automatically
   useEffect(() => {
@@ -224,7 +224,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   // Get Featured Content from Remote Config
   const { loading: rcLoading, data: rcData } = useConfig('featured');
 
-  if ((auth && loading) || (auth && rcLoading)) {
+  if ((user && loading) || (user && rcLoading)) {
     // return <Spinner text="Loading Content..." />;
   }
 

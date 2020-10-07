@@ -14,7 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabNav: React.FC = () => {
-  const { translation, auth, activePlan } = useCurrentUser();
+  const { translation, activePlan } = useCurrentUser();
   const insets = useSafeAreaInsets();
 
   return (

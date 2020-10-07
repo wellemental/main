@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import { auth, firestore } from 'services';
-import { Languages, UpdateUserService, User, UserProfile } from 'services';
+import {
+  Languages,
+  UpdateUserService,
+  User,
+  UserProfile,
+  LocalStateService,
+  logger,
+} from 'services';
 import firestore from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
-import { LocalStateService, UserPlan } from 'services';
 import { Spinner } from '../primitives';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
@@ -14,10 +20,9 @@ const profileService = new UpdateUserService();
 
 export const CurrentUser = React.createContext<any>({
   currentUser: {
-    onboardingComplete: false,
     language: Languages.En,
-    birthday: '',
-    name: '',
+    // birthday: '',
+    // name: '',
     plan: {},
   },
 });
@@ -44,10 +49,9 @@ export const CurrentUserProvider = ({ children }: any) => {
 
     const newUser = {
       id: userId,
-      name: userData.name,
+      // name: userData.name,
       language: userData.language,
-      birthday: userData.birthday,
-      onboardingComplete: userData.onboardingComplete,
+      // birthday: userData.birthday,
       favorites: userData.favorites,
       plan: userData.plan,
     };
@@ -128,55 +132,60 @@ export const CurrentUserProvider = ({ children }: any) => {
     userDocUnsubscriber.current = firestore()
       .collection('users')
       .doc(user.uid)
-      .onSnapshot(async (snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
-        const userData = snapshot.data();
-
+      .onSnapshot((snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
         // If user just signed up, save their user data to database
-        if (!snapshot.exists) {
-          setCreatingUser(true);
+        // if (!snapshot.exists) {
+        //   setCreatingUser(true);
 
-          try {
-            const localUser = await localStateService.getUser();
-            if (localUser) {
-              // If AsyncStorage exists, set it to user state
-              setCurrentUser(localUser);
-            }
-          } catch (err) {
-            console.log('Error getting local user');
-          }
+        //   const newDoc: User = {
+        //     id: currentAuth.uid,
+        //     email: currentAuth.email,
+        //     birthday: '',
+        //     name: '',
+        //     language: Languages.En,
+        //     onboardingComplete: false,
+        //   };
 
-          console.log('LOCAL USER', localUser);
+        //   try {
+        //     const localUser = await localStateService.getUser();
+        //     if (localUser) {
+        //       console.log('LOCAL USER', localUser);
 
-          await profileService.createProfile({
-            id: currentAuth.uid,
-            email: currentAuth.email,
-            name: currentUser.name,
-            birthday: currentUser.birthday,
-            language: currentUser.language,
-            onboardingComplete: true,
-          });
+        //       newDoc.birthday = localUser.birthday;
+        //       newDoc.language = localUser.language;
+        //       newDoc.name = localUser.name;
+        //       newDoc.onboardingComplete = true;
+        //     }
+        //   } catch (err) {
+        //     logger.error(`Error getting local user - ${err}`);
+        //   }
 
-          // Set onboardingComplete locally so this doesn't run after first load
-          setCreatingUser(false);
-        }
+        //   console.log('AUTH***', currentAuth);
+        //   await profileService.createProfile(newDoc);
+
+        //   // Set onboardingComplete locally so this doesn't run after first load
+        //   setCreatingUser(false);
+        // }
 
         // If user isn't logged in or doc doesn't exist
         if (!user.email) {
           return Promise.resolve();
-        } else if (!snapshot.exists) {
-          return Promise.reject('User doc does not exist.');
         }
 
         // Build user doc
-        const userDoc: User = {
-          name: userData.name,
-          language: userData.language,
-          birthday: userData.birthday,
-          favorites: userData.favorites,
-          plan: userData.plan,
-        };
+        if (snapshot) {
+          const userData = snapshot.data();
 
-        setCurrentUser(userDoc);
+          const userDoc: User = {
+            // name: userData.name,
+            language: userData.language,
+            // birthday: userData.birthday,
+            favorites: userData.favorites,
+            plan: userData.plan,
+          };
+
+          setCurrentUser(userDoc);
+        }
       });
   };
 
@@ -210,8 +219,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   if (creatingUser) {
     return <Spinner text="Creating account..." />;
   }
-
-  console.log('CURRENT USER', currentUser);
 
   return (
     <CurrentUser.Provider

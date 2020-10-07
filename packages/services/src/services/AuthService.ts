@@ -4,10 +4,12 @@ import { AuthenticationError } from '../models/Errors';
 import auth from '@react-native-firebase/auth';
 import { NewAccount, LocalUser } from '../types';
 import LocalStateService from './LocalStateService';
+import UpdateUserService from './UpdateUserService';
 import logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
 import { FirebaseError } from 'firebase';
 
+const profileService = new UpdateUserService();
 class AuthService {
   public async checkExistingLogins(email: string): Promise<string[]> {
     try {
@@ -46,26 +48,41 @@ class AuthService {
         return Promise.reject(err);
       }
 
-      // Create base local user for Async Storage, not storing sensitive info
-      const localUser: LocalUser = {
-        name: account.name,
-        birthday: account.birthday,
-        language: account.language,
-        onboardingComplete: false,
-      };
+      // // Create base local user for Async Storage, not storing sensitive info
+      // const localUser: LocalUser = {
+      //   name: account.name,
+      //   birthday: account.birthday,
+      //   language: account.language,
+      //   onboardingComplete: false,
+      // };
 
-      // Save extra login info to LocalStorage so we can save to database on redirect
-      try {
-        await localStateService.setStorage('wmUser', localUser);
-      } catch (err) {
-        logger.error(`Failed to set async storage for new account: ${err}`);
-      }
+      // // Save extra login info to LocalStorage so we can save to database on redirect
+      // try {
+      //   await localStateService.setStorage('wmUser', localUser);
+      // } catch (err) {
+      //   logger.error(`Failed to set async storage for new account: ${err}`);
+      // }
 
-      await auth().createUserWithEmailAndPassword(
-        account.email,
-        account.password,
-      );
-      tracker.track(TrackingEvents.Login);
+      await auth()
+        .createUserWithEmailAndPassword(account.email, account.password)
+        .then(async (user) => {
+          try {
+            await profileService.createProfile({
+              id: user.user.uid,
+              email: user.user.email,
+              // name: account.name,
+              // birthday: account.birthday,
+              language: account.language,
+            });
+          } catch (err) {
+            console.log('Cmon NOW', err);
+            logger.error(`Error creating user doc - ${err}`);
+          }
+        })
+        .catch((err) => {
+          logger.error(`Error creating user and userDoc - ${err}`);
+        });
+      tracker.track(TrackingEvents.SignUp);
     } catch (err) {
       return Promise.reject(this.checkError(err));
     }

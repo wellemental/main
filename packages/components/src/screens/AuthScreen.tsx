@@ -7,7 +7,7 @@ import {
   Input,
   Error,
   Box,
-  DatePicker,
+  LegalLinks,
 } from '../primitives';
 import moment from 'moment';
 import { AuthScreenRouteProp, Translations } from '../types';
@@ -33,8 +33,8 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   const [name, setName] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
-  const minBirthday = moment().subtract(13, 'years').toDate();
-  const [birthday, setBirthday] = useState<Date>(minBirthday);
+  // const minBirthday = moment().subtract(13, 'years').toDate();
+  // const [birthday, setBirthday] = useState<Date>(minBirthday);
 
   const service = new AuthService();
 
@@ -65,7 +65,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
     const newAccount = {
       email,
       password,
-      birthday: moment(birthday).format('YYYY-MM-DD'),
+      // birthday: moment(birthday).format('YYYY-MM-DD'),
       language,
       name,
     };
@@ -76,14 +76,14 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
       return;
     }
 
-    if (birthday > minBirthday) {
-      setError(translation['You are not old enough to join Wellemental.']);
-      setEmail('');
-      setPassword('');
-      setAuths(null);
-      setLoading(false);
-      return;
-    }
+    // if (birthday > minBirthday) {
+    //   setError(translation['You are not old enough to join Wellemental.']);
+    //   setEmail('');
+    //   setPassword('');
+    //   setAuths(null);
+    //   setLoading(false);
+    //   return;
+    // }
 
     try {
       await service.signup(newAccount);
@@ -129,17 +129,19 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
 
           {auths && auths.length === 0 && (
             <>
-              <Input
+              {/* <Input
                 label={translation.Username}
                 value={name}
                 onChangeText={setName}
-              />
-              <DatePicker
+              /> */}
+              {/* <DatePicker
                 date={moment().subtract(13, 'years').toDate()}
                 onDateChange={setBirthday}
                 translation={translation}
                 locale={language === Languages.Es ? 'es' : 'en'}
-              />
+              /> */}
+
+              <LegalLinks />
             </>
           )}
         </>

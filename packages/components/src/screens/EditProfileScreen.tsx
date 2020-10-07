@@ -14,11 +14,11 @@ import {
   Box,
   PageHeading,
   Button,
-  DatePicker,
+  // DatePicker,
 } from '../primitives';
 import { useCurrentUser, useMutation } from '../hooks';
 import { UserProfile, UpdateUserService, Languages } from 'services';
-import moment from 'moment';
+// import moment from 'moment';
 import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width - 30;
@@ -29,20 +29,20 @@ type Props = {
 
 const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
   const { auth, user, translation } = useCurrentUser();
-  const [name, setName] = useState(user.name);
+  // const [name, setName] = useState(user.name);
   const [language, setLanguage] = useState(user.language);
-  const [birthday, setBirthday] = useState(user.birthday);
+  // const [birthday, setBirthday] = useState(user.birthday);
   const [error, setError] = useState('');
 
   // Only submit what's changed upon saving
   const newProfile: UserProfile = {};
-  if (name !== user.name) {
-    newProfile.name = name;
-  }
+  // if (name !== user.name) {
+  //   newProfile.name = name;
+  // }
 
-  if (birthday !== user.birthday) {
-    newProfile.birthday = moment(birthday).format('YYYY-MM-DD');
-  }
+  // if (birthday !== user.birthday) {
+  //   newProfile.birthday = moment(birthday).format('YYYY-MM-DD');
+  // }
 
   if (language !== user.language) {
     newProfile.language = language;
@@ -71,23 +71,23 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
 
   return (
     <Container scrollEnabled>
-      <PageHeading title={translation['Edit Profile']} />
+      <PageHeading title={translation['Select language']} />
       <Form style={{ marginTop: 4 }}>
-        <Input
+        {/* <Input
           label={translation.Username}
           value={name}
           onChangeText={setName}
           disabled={loading}
-        />
+        /> */}
 
-        <DatePicker
-          date={moment(birthday).toDate()}
+        {/* <DatePicker
+          date={birthday ? moment(birthday).toDate() : new Date()}
           translation={translation}
           onDateChange={setBirthday}
           locale={user.language === Languages.Es ? 'es' : 'en'}
-        />
+        /> */}
 
-        <Label>{translation.Language}</Label>
+        {/* <Label>{translation.Language}</Label> */}
         <Segment style={{ marginTop: 15 }}>
           <NBButton
             first
@@ -110,7 +110,7 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
           <Button
             onPress={handleUpdate}
             loading={loading}
-            disabled={!name || !language || !birthday}
+            disabled={!language}
             danger
             text={translation['Save Changes']}
           />

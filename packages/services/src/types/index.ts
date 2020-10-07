@@ -79,10 +79,10 @@ export type Favorite = {
 };
 
 export interface LocalUser {
-  name: string;
-  birthday: string;
+  id?: string;
+  // name: string;
+  // birthday: string;
   language: Languages;
-  onboardingComplete: boolean;
   updated_at?: Date;
 }
 
@@ -131,10 +131,11 @@ type ReceiptIap = {
 };
 
 export interface User {
-  name: string;
-  birthday: string;
+  email?: string;
+  id?: string;
+  // name: string;
+  // birthday: string;
   language: Languages;
-  onboardingComplete?: boolean;
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;
@@ -175,8 +176,8 @@ export interface AllTeachers {
 }
 
 export interface UserProfile {
-  name?: string;
-  birthday?: string;
+  // name?: string;
+  // birthday?: string;
   language?: Languages;
   updated_at?: FirebaseFirestoreTypes.Timestamp;
 }
@@ -184,18 +185,17 @@ export interface UserProfile {
 export interface NewAccount {
   email: string;
   password: string;
-  name: string;
-  birthday: string;
+  // name: string;
+  // birthday: string;
   language: Languages;
 }
 
 export interface InitialUserDoc {
   id: string;
   email: string;
-  name: string;
-  birthday: string;
+  // name: string;
+  // birthday: string;
   language: Languages | string;
-  onboardingComplete: boolean;
 }
 
 export type DownloadResult = {

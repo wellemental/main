@@ -114,9 +114,7 @@ export const IAPProvider = ({ children }: any) => {
         setStatus((status) => [...status, `Initiating connection?`]);
         const result = await RNIap.initConnection();
         setStatus((status) => [...status, `isIniated? ${result}`]);
-        console.log('isIniated?', result);
         setStatus((status) => [...status, `Starting Android Flush`]);
-        console.log('CONNECTION INIT', result);
         await RNIap.flushFailedPurchasesCachedAsPendingAndroid();
         setStatus((status) => [...status, `Starting Android Flush`]);
       } catch (err) {
@@ -128,7 +126,6 @@ export const IAPProvider = ({ children }: any) => {
       purchaseUpdateSubscription = purchaseUpdatedListener(
         async (purchase: InAppPurchase | SubscriptionPurchase) => {
           const receipt = purchase.transactionReceipt;
-          console.log('LISTENING', receipt);
           setStatus((status) => [...status, 'Iap Listener Started']);
           if (receipt) {
             setStatus((status) => [...status, `Has receipt`]);

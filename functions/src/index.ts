@@ -35,6 +35,47 @@ firebase.initializeApp();
 //     return Promise.resolve(eventData);
 //   });
 
+// Triggers on signup
+const createStreamTokenAndClaims = async (
+  user: firebase.auth.UserRecord,
+): Promise<void> => {
+  const userDoc = firebase.firestore().collection('players').doc(user.uid);
+
+  try {
+    await userDoc.set({
+      id: user.uid,
+      email: user.email,
+      createdAt: firebase.firestore.Timestamp.fromDate(
+        new Date(user.metadata.creationTime),
+      ),
+    });
+  } catch (err) {
+    console.log('Error creating user doc: ', err);
+  }
+
+  return;
+};
+
+const createUser = functions.https.onCall();
+
+const onCreateUser = functions.auth.user().onCreate(async (user) => {
+  const userDoc = firebase.firestore().collection('users').doc(user.uid);
+
+  try {
+    await userDoc.set({
+      id: user.uid,
+      email: user.email,
+      createdAt: firebase.firestore.Timestamp.fromDate(
+        new Date(user.metadata.creationTime),
+      ),
+    });
+  } catch (err) {
+    console.log('Error creating user doc: ', err);
+  }
+
+  return;
+});
+
 const onValidateIap = functions.https.onCall(validateIap);
 
 const EVERY_HOUR_CRON = '0 * * * *';

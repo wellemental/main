@@ -24,7 +24,7 @@ const service = new AuthService();
 const localStateService = new LocalStateService();
 
 const SettingsScreen: React.FC = () => {
-  const { auth, translation, getDbUser } = useCurrentUser();
+  const { auth, translation } = useCurrentUser();
   const { getDbContent } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
@@ -71,15 +71,15 @@ const SettingsScreen: React.FC = () => {
 
   const list: SettingsLink[] = [
     {
-      label: translation['Edit Profile'],
+      label: translation['Select language'],
       onPress: () => handleNavigate('Edit Profile'),
       iconName: 'ios-person',
     },
-    {
-      label: translation.Subscription,
-      onPress: () => handleNavigate('Plans'),
-      iconName: 'cart',
-    },
+    // {
+    //   label: translation.Subscription,
+    //   onPress: () => handleNavigate('Plans'),
+    //   iconName: 'cart',
+    // },
     { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
     // { label: 'Refresh User', onPress: getDbUser, iconName: 'refresh' },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
