@@ -10,7 +10,7 @@ const CategoryScreen: React.FC<Props> = ({ route }) => {
   const { category } = route.params;
 
   return (
-    <Container>
+    <Container scrollEnabled>
       <PageHeading
         title={category.title} // translation[category.title]}
         subtitle={

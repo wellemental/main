@@ -12,7 +12,7 @@ export const Español = {
   Language: 'Idioma',
   'Select language': 'Selecciona idioma',
   'Select birthday': 'Selecciona cumpleaños',
-  'Changes saved': 'Cambios guardados',
+  'Changes saved': 'Changes saved',
   'Something went wrong': 'Algo salió mal',
   'Save Changes': 'Guardar cambios',
   Home: 'Inicio',
@@ -23,7 +23,7 @@ export const Español = {
   Favorites: 'Favoritos',
   Settings: 'Configuración',
   Loading: 'Descargando',
-  Account: 'Cuenta',
+  Account: 'Tu Cuenta',
   Logout: 'Cerrar Sesión',
   'Yes, Logout': 'Si, cerrar sesión',
   'Are you sure you want to logout?':
@@ -103,8 +103,22 @@ export const Español = {
   Annual: 'Anual',
   'Content refreshed': 'Contenido actualizado',
   'One moment...': 'Un momento...',
-  'Ask your parents': 'Pregunta a tus padres',
+  'Ask your parents': '¡Pregunta a tus padres!',
   'What is 6 x 7?': 'Lo que es 6 x 7?',
-  'Please ask your parents to proceed': 'Pide a tus padres que continúen',
+  'Please ask your parents to proceed': 'Pide a tus padres que continúen.',
   Answer: 'Tu respuesta',
+  'You did it!': '¡Lo hiciste!',
+  'Keep going': 'Sigue adelante',
+  'Explore by age range': 'Explorar por rango de edad',
+  'Under 4 years': 'Menores de 4 años',
+  'Simple practices for early learners':
+    'Prácticas sencillas para principiantes',
+  '4–9 year olds': '4-9 años',
+  'Elementary mindful practices': 'Consciente elemental',
+  '10–14 year olds': '10-14 años',
+  'Practices designed for middle-school learning':
+    'Prácticas de la escuela secundaria',
+  '14–18 year olds': '14-18 años',
+  'Resources for mindful development':
+    'Recursos para el crecimiento consciente',
 };

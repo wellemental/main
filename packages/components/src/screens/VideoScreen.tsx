@@ -1,25 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Image, Dimensions } from 'react-native';
-import { H1 } from 'native-base';
-import {
-  Container,
-  Button,
-  Paragraph,
-  AvyName,
-  Spinner,
-  Favorite,
-  Box,
-  Error,
-} from '../primitives';
-import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Error } from '../primitives';
+import { VideoScreenNavigationProp, VideoScreenRouteProp } from '../types';
 import Video from 'react-native-video';
+import { useNavigation } from '../hooks';
+import { deviceWidth } from 'services';
 
 type Props = {
-  route: ContentScreenRouteProp;
-  navigation: ContentScreenNavigationProp;
+  route: VideoScreenRouteProp;
+  navigation: VideoScreenNavigationProp;
 };
 
-const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = deviceWidth * 1.78;
 
 const styles = StyleSheet.create({
@@ -33,8 +24,32 @@ const styles = StyleSheet.create({
 });
 
 const VideoScreen: React.FC<Props> = ({ route }) => {
+  const navigation = useNavigation();
   const { content, savedVideoPath } = route.params;
   const [error, setError] = useState();
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(content.seconds);
+  const [isOver, toggleOver] = useState(false);
+
+  if (!isOver && currentTime >= duration - 1) {
+    toggleOver(true);
+  }
+
+  useEffect(() => {
+    if (isOver) {
+      navigation.navigate('Celebration');
+    }
+  }, [isOver]);
+
+  const onProgress = (data) => {
+    if (!isOver) {
+      setCurrentTime(data.currentTime);
+    }
+  };
+
+  const onLoad = (data) => {
+    setDuration(data.duration);
+  };
 
   return (
     <View style={{ backgroundColor: '#000' }}>
@@ -43,9 +58,6 @@ const VideoScreen: React.FC<Props> = ({ route }) => {
           source={{
             uri: savedVideoPath ? savedVideoPath : content.video,
           }} // Can be a URL or a local file.
-          // ref={(ref) => {
-          //   setVideoRef(ref);
-          // }}
           fullscreenAutorotate={false}
           fullscreenOrientation={content.video_orientation}
           controls={true}
@@ -53,8 +65,8 @@ const VideoScreen: React.FC<Props> = ({ route }) => {
           ignoreSilentSwitch="ignore"
           // resizeMode="cover"
           // paused={true}
-          onLoad={() => <Spinner />}
-          onBuffer={() => <Spinner />}
+          onProgress={onProgress}
+          onLoad={onLoad}
           onError={setError}
           style={styles.backgroundVideo}
         />

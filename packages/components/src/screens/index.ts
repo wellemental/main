@@ -15,3 +15,4 @@ export { default as LandingScreen } from './LandingScreen';
 export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
 export { default as SaveUserScreen } from './SaveUserScreen';
 export { default as PlansScreen } from './PlansScreen';
+export { default as CelebrationScreen } from './CelebrationScreen';

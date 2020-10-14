@@ -15,7 +15,7 @@ const isIphoneX =
     deviceHeight === 896 ||
     deviceWidth === 896);
 
-const brandColors = {
+export const brandColors = {
   brandPrimary: '#214f4b',
   brandSecondary: '#2A2968',
   brandInfo: '#9554C2',
@@ -27,10 +27,10 @@ const brandColors = {
   offWhite: '#F4E6D0',
   white: '#ffffff',
   placeholderGray: '#dbdbdb',
-  dimGray: '#6b6b6b',
   textColor: '#333',
   lightTextColor: 'rgba(0, 0, 0, 0.4)',
   darkTextColor: 'rgba(0, 0, 0, 0.87)',
+  skyBlue: '#dde2e6',
 };
 
 export default {

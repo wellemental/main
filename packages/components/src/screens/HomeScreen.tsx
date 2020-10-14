@@ -55,6 +55,33 @@ const HomeScreen: React.FC = () => {
     );
   };
 
+  const ageGroups = [
+    {
+      title: translation['Under 4 years'],
+      description: translation['Simple practices for early learners'],
+      image: require('../assets/images/age_under_4.png'),
+      tag: 'toddler',
+    },
+    {
+      title: translation['4–9 year olds'],
+      description: translation['Elementary mindful practices'],
+      image: require('../assets/images/age_4_9.png'),
+      tag: 'K-5',
+    },
+    {
+      title: translation['10–14 year olds'],
+      description: translation['Practices designed for middle-school learning'],
+      image: require('../assets/images/age_10_14.png'),
+      tag: '6-8',
+    },
+    {
+      title: translation['14–18 year olds'],
+      description: translation['Resources for mindful development'],
+      image: require('../assets/images/age_14_18.png'),
+      tag: '9-12',
+    },
+  ];
+
   return (
     <Container scrollEnabled>
       {canUpgrade && (
@@ -72,12 +99,13 @@ const HomeScreen: React.FC = () => {
           </Paragraph>
         </TouchableOpacity>
       )}
+
       <PageHeading
         title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}`}
         subtitle={tagline}
       />
-
       <ContentLoop filter={timeOfDay} />
+
       {features && features.categories ? (
         <>
           <PageHeading title={translation.Featured} />
@@ -89,7 +117,11 @@ const HomeScreen: React.FC = () => {
       ) : (
         <Spinner />
       )}
-      {/* <ContentLoop filter={Tags.Featured} /> */}
+
+      <PageHeading title={`${translation['Explore by age range']}`} />
+      {ageGroups.map((item, idx) => (
+        <CategoryCard key={idx} category={item} />
+      ))}
     </Container>
   );
 };

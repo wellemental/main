@@ -14,7 +14,9 @@
     "cloneEnv:toStaging": "firebase functions:config:clone --from prod-wellemental",
     "cloneEnv:toProduction": "firebase functions:config:clone --from dev-wellemental",
     "setActive:production": "firebase use production",
-    "setActive:staging": "firebase use staging"
+    "setActive:staging": "firebase use staging",
+    "runMigration:staging": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=staging.json node lib/migrations/command.js",
+    "runMigration:production": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=production.json node lib/migrations/command.js"
   },
   "engines": {
     "node": "10"

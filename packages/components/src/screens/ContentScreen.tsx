@@ -1,10 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
   Dimensions,
-  Image,
   ImageBackground,
+  Image,
+  Animated,
 } from 'react-native';
 import { H1, Button as NBButton, Icon } from 'native-base';
 import {
@@ -15,11 +16,11 @@ import {
   Download,
   Favorite,
   Paragraph,
-  Spinner,
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { DownloadVideoService } from 'services';
+import FadeIn from 'react-native-fade-in-image';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -35,14 +36,45 @@ const styles = StyleSheet.create({
     height: deviceHeight,
     width: deviceWidth,
   },
+  nativeVideoControls: {
+    top: 0,
+    height: '100%',
+    width: deviceWidth,
+  },
+  videoPoster: {
+    height: deviceHeight,
+    width: deviceWidth,
+    justifyContent: 'center',
+    flex: 1,
+    top: 0,
+    position: 'absolute',
+    backgroundColor: 'white',
+  },
 });
 
 const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const { content, teacher } = route.params;
   const [video, setVideo] = useState(content.video);
-  const [videoRef, setVideoRef] = useState();
-
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(content.seconds);
+  const [isBuffering, setBuffering] = useState(false);
+  const [isOver, toggleOver] = useState(false);
+  const [showPoster, togglePoster] = useState(true);
   const [error, setError] = useState();
+
+  if (showPoster && currentTime > 0) {
+    togglePoster(false);
+  }
+
+  if (!isOver && currentTime >= duration - 1) {
+    toggleOver(true);
+  }
+
+  useEffect(() => {
+    if (isOver) {
+      navigation.navigate('Celebration');
+    }
+  }, [isOver]);
 
   const service = new DownloadVideoService();
 
@@ -57,6 +89,20 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const handleError = (err: any) => {
     setError(err);
+  };
+
+  const onProgress = (data) => {
+    if (!isOver) {
+      setCurrentTime(data.currentTime);
+    }
+  };
+
+  const onLoad = (data) => {
+    setDuration(data.duration);
+  };
+
+  const onBuffer = ({ isBuffering }: { isBuffering: boolean }) => {
+    setBuffering(isBuffering);
   };
 
   return (
@@ -91,27 +137,36 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           </ImageBackground>
         </View>
       ) : (
-        <Video
-          source={{
-            uri: content.video, //content.video,
-          }} // Can be a URL or a local file.
-          ref={(ref) => {
-            setVideoRef(ref);
-          }}
-          fullscreenAutorotate={false}
-          fullscreenOrientation={content.video_orientation}
-          controls={true}
-          playInBackground={true}
-          ignoreSilentSwitch="ignore"
-          resizeMode="cover"
-          paused={true}
-          // poster={content.thumbnail}
-          // posterResizeMode="cover"
-          onLoad={() => <Spinner />}
-          onBuffer={() => <Spinner />} // Callback when remote video is buffering
-          onError={handleError} // Callback when video cannot be loaded
-          style={styles.backgroundVideo}
-        />
+        <View style={{ width: deviceWidth, height: deviceHeight }}>
+          <Video
+            source={{
+              uri: content.video, //content.video,
+            }} // Can be a URL or a local file.
+            style={styles.nativeVideoControls}
+            // fullscreen
+            // fullscreenAutorotate={true}
+            // fullscreenOrientation={content.video_orientation}
+            controls={true}
+            playInBackground={true}
+            ignoreSilentSwitch="ignore"
+            resizeMode="cover"
+            paused={true}
+            poster={content.thumbnail}
+            posterResizeMode="cover"
+            onBuffer={onBuffer}
+            onProgress={onProgress}
+            onLoad={onLoad}
+            onError={handleError} // Callback when video cannot be loaded
+          />
+          {showPoster && (
+            <FadeIn style={styles.videoPoster}>
+              <Image
+                source={{ uri: content.thumbnail }}
+                style={styles.videoPoster}
+              />
+            </FadeIn>
+          )}
+        </View>
       )}
 
       {/* <Image

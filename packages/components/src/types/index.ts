@@ -32,6 +32,7 @@ export type RootStackParamList = {
   AuthStack: undefined;
   Upgrade: { version: Version };
   Plans: undefined;
+  Celebration: undefined;
 };
 
 export type AuthStackParamList = {

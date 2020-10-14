@@ -32,7 +32,7 @@ const ContentLoop: React.FC<Props> = ({
   let filteredContent: Content[] = content;
 
   // Filter by language
-  if (user && user.language && filteredContent) {
+  if (user && user.language && filteredContent && favorites === undefined) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.language === user.language,
     );

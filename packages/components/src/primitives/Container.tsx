@@ -21,7 +21,7 @@ const Container: React.FC<ContainerProps & NativeBase.Content> = ({
 }) => {
   const styles = StyleSheet.flatten([
     {
-      backgroundColor: variables.containerBgColor,
+      backgroundColor: color ? color : variables.containerBgColor,
       paddingHorizontal:
         noPadding === 'horizontal' || noPadding === 'none'
           ? 0
@@ -42,7 +42,10 @@ const Container: React.FC<ContainerProps & NativeBase.Content> = ({
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles}
       children={children}
-      style={{ backgroundColor: variables.containerBgColor, flex: 1 }}
+      style={{
+        backgroundColor: color ? color : variables.containerBgColor,
+        flex: 1,
+      }}
     />
   ) : (
     <View style={[{ flex: 1 }, styles]} children={children} />
@@ -50,7 +53,7 @@ const Container: React.FC<ContainerProps & NativeBase.Content> = ({
   return (
     <SafeAreaView
       style={{
-        backgroundColor: color ? color : variables.white,
+        backgroundColor: color ? color : variables.containerBgColor,
         flex: 1,
       }}>
       {container}

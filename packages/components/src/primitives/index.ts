@@ -11,6 +11,7 @@ export { default as LegalLinks } from './LegalLinks';
 export { default as Error } from './Error';
 export { default as Download } from './Download';
 export { default as Spinner } from './Spinner';
+export { default as Image } from './Image';
 export { default as Tabs } from './Tabs';
 export { default as DatePicker } from './DatePicker';
 export { default as Box } from './Box';

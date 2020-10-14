@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { H2 } from 'native-base';
+import { TouchableOpacity, Image, View, ImageBackground } from 'react-native';
+import { H2, Icon } from 'native-base';
 import {
   Box,
   Container,
@@ -19,16 +19,23 @@ import { PromoCodeService, logger } from 'services';
 import styled from 'styled-components';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import AskParentsScreen from './AskParentsScreen';
+import { deviceWidth, deviceHeight } from 'services';
+import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 
 const PlanSelect = styled(TouchableOpacity)`
   flex: 1;
   border-color: #999;
-  border-width: 1px;
+  border-width: 3px;
   border-radius: 8px;
   align-items: center;
   color: #999;
   padding: 20px 5px;
   margin-bottom: 20px;
+  background-color: white;
+`;
+
+const Header2 = styled(H2)`
+  color: ${brandColors.brandPrimary};
 `;
 
 // defining IAP SKUs by platform in `constants.ts`
@@ -118,132 +125,116 @@ const PlansScreen: React.FC = () => {
   ) : upgrading ? (
     <Spinner text={translation['One moment...']} />
   ) : (
-    <Container scrollEnabled>
-      <PageHeading
-        title={translation.Subscribe}
-        subtitle={
-          translation[
-            'Get unlimited access to our content with an annual or monthly subscription.'
-          ]
-        }
-      />
+    <View
+      style={{
+        flex: 1,
+        width: deviceWidth,
+        height: deviceHeight,
+        backgroundColor: brandColors.skyBlue,
+      }}>
+      <ImageBackground
+        source={require('../assets/images/cloud_bg.png')}
+        style={{
+          // justifyContent: 'center',
+          width: deviceWidth,
+          height: deviceHeight,
+          // position: 'absolute',
+          // top: 0,
+          flex: 1,
+        }}>
+        <Container scrollEnabled color="rgba(0,0,0,0)">
+          <PageHeading
+            title={translation.Subscribe}
+            subtitle={
+              translation[
+                'Get unlimited access to our content with an annual or monthly subscription.'
+              ]
+            }
+          />
 
-      <Box gb={2}>
-        {bullets.map((bullet) => (
-          <Paragraph style={{ paddingHorizontal: 5 }} key={bullet}>
-            * {bullet}
-          </Paragraph>
-        ))}
-      </Box>
+          <Box gb={2}>
+            {bullets.map((bullet) => (
+              <Box row key={bullet} gb={0.5}>
+                <Icon
+                  name="ios-checkmark-sharp"
+                  style={{ fontSize: 22, color: brandColors.brandWarning }}
+                />
 
-      {!showAccessDisplay ? (
-        <>
-          <Box row justifyContent="space-evenly">
-            <PlanSelect
-              activeOpacity={1}
-              style={{
-                marginRight: 5,
-                borderColor:
-                  selectedPlan === PlanId.Monthly
-                    ? variables.brandPrimary
-                    : variables.lightTextColor,
-              }}
-              onPress={() => setSelectedPlan(PlanId.Monthly)}>
-              <H2
-                style={{
-                  color:
-                    selectedPlan === PlanId.Monthly
-                      ? variables.brandPrimary
-                      : variables.lightTextColor,
-                }}>
-                {translation.Monthly}
-              </H2>
-              <H2
-                style={{
-                  color:
-                    selectedPlan === PlanId.Monthly
-                      ? variables.brandPrimary
-                      : variables.lightTextColor,
-                }}>
-                $5.99 / {translation.mo}
-              </H2>
-              <Paragraph
-                style={{
-                  color: 'white',
-                }}>
-                ***
-              </Paragraph>
-            </PlanSelect>
-
-            <PlanSelect
-              activeOpacity={1}
-              style={{
-                marginLeft: 5,
-                borderColor:
-                  selectedPlan === PlanId.Yearly
-                    ? variables.brandPrimary
-                    : variables.lightTextColor,
-              }}
-              onPress={() => setSelectedPlan(PlanId.Yearly)}>
-              <H2
-                style={{
-                  color:
-                    selectedPlan === PlanId.Yearly
-                      ? variables.brandPrimary
-                      : variables.lightTextColor,
-                }}>
-                {translation.Annual}
-              </H2>
-              <H2
-                style={{
-                  color:
-                    selectedPlan === PlanId.Yearly
-                      ? variables.brandPrimary
-                      : variables.lightTextColor,
-                }}>
-                $59.99 / {translation.yr}
-              </H2>
-              <Paragraph
-                style={{
-                  color:
-                    selectedPlan === PlanId.Yearly
-                      ? variables.brandPrimary
-                      : variables.lightTextColor,
-                }}>
-                $4.58 / {translation.mo}
-              </Paragraph>
-            </PlanSelect>
+                <Paragraph style={{ paddingHorizontal: 5 }} key={bullet}>
+                  {bullet}
+                </Paragraph>
+              </Box>
+            ))}
           </Box>
-          <Button
-            primary
-            disabled={loading || processing}
-            loading={processing}
-            text={translation.Subscribe}
-            onPress={() => handleSubscription(PlanId.Monthly)}
-          />
-          <Box gt={1.5}>
-            <LegalLinks subs />
-          </Box>
-        </>
-      ) : (
-        <>
-          <Input
-            label={translation['Access code']}
-            value={promoCode}
-            autoFocus
-            onChangeText={setPromoCode}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          <Button
-            primary
-            disabled={processing}
-            text={translation.Submit}
-            onPress={() => handlePromoCode()}
-          />
-        </>
-      )}
-      {/* <Box gt={1}>
+
+          {!showAccessDisplay ? (
+            <>
+              <Box row justifyContent="space-evenly">
+                <PlanSelect
+                  activeOpacity={1}
+                  style={{
+                    marginRight: 5,
+                    borderColor:
+                      selectedPlan === PlanId.Monthly
+                        ? variables.brandWarning
+                        : variables.lightTextColor,
+                  }}
+                  onPress={() => setSelectedPlan(PlanId.Monthly)}>
+                  <Header2>{translation.Monthly}</Header2>
+                  <Header2>$6.99 / {translation.mo}</Header2>
+                  <Paragraph
+                    style={{
+                      color: 'white',
+                    }}>
+                    ***
+                  </Paragraph>
+                </PlanSelect>
+
+                <PlanSelect
+                  activeOpacity={1}
+                  style={{
+                    marginLeft: 5,
+                    borderColor:
+                      selectedPlan === PlanId.Yearly
+                        ? variables.brandWarning
+                        : variables.lightTextColor,
+                  }}
+                  onPress={() => setSelectedPlan(PlanId.Yearly)}>
+                  <Header2>{translation.Annual}</Header2>
+                  <Header2>$59.99 / {translation.yr}</Header2>
+                  <Paragraph>$4.58 / {translation.mo}</Paragraph>
+                </PlanSelect>
+              </Box>
+              <Button
+                primary
+                disabled={loading || processing}
+                loading={processing}
+                text={translation.Subscribe}
+                onPress={() => handleSubscription(PlanId.Monthly)}
+              />
+              <Box gt={1.5}>
+                <LegalLinks subs />
+              </Box>
+            </>
+          ) : (
+            <>
+              <Input
+                label={translation['Access code']}
+                value={promoCode}
+                autoFocus
+                onChangeText={setPromoCode}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Button
+                primary
+                disabled={processing}
+                text={translation.Submit}
+                onPress={() => handlePromoCode()}
+              />
+            </>
+          )}
+          {/* <Box gt={1}>
         <Button
           transparent
           disabled={processing}
@@ -257,42 +248,54 @@ const PlansScreen: React.FC = () => {
         />
       </Box> */}
 
-      <Error error={error} center />
+          <Error error={error} center />
 
-      {auth && auth.email === 'mike.r.vosters@gmail.com' && status && (
-        <Box gt={2}>
-          <Paragraph>IAP Error Msg:</Paragraph>
-          <Error error={iapError} center />
-          <Paragraph>******</Paragraph>
-          <Paragraph>SELECTED PLAN</Paragraph>
-          <Paragraph>{selectedPlan}</Paragraph>
-          <Paragraph>******</Paragraph>
-          <Paragraph>IAP ACTIVE PLAN</Paragraph>
-          <Paragraph>{activePlan}</Paragraph>
-          <Paragraph>******</Paragraph>
-          <Paragraph>USER PLAN</Paragraph>
-          {user && !user.plan ? (
-            <Paragraph>No Plan</Paragraph>
-          ) : user && user.plan ? (
-            <Paragraph>
-              {user.plan.staatus} - {user.plan.planId}
-            </Paragraph>
-          ) : (
-            <Paragraph>No user</Paragraph>
+          {auth && auth.email === 'mike.r.vosters@gmail.com' && status && (
+            <Box gt={2}>
+              <Paragraph>IAP Error Msg:</Paragraph>
+              <Error error={iapError} center />
+              <Paragraph>******</Paragraph>
+              <Paragraph>SELECTED PLAN</Paragraph>
+              <Paragraph>{selectedPlan}</Paragraph>
+              <Paragraph>******</Paragraph>
+              <Paragraph>IAP ACTIVE PLAN</Paragraph>
+              <Paragraph>{activePlan}</Paragraph>
+              <Paragraph>******</Paragraph>
+              <Paragraph>USER PLAN</Paragraph>
+              {user && !user.plan ? (
+                <Paragraph>No Plan</Paragraph>
+              ) : user && user.plan ? (
+                <Paragraph>
+                  {user.plan.staatus} - {user.plan.planId}
+                </Paragraph>
+              ) : (
+                <Paragraph>No user</Paragraph>
+              )}
+
+              <Box gt={1}>
+                <Paragraph>******</Paragraph>
+                <Paragraph>DEBUGGING</Paragraph>
+                {status.map((item, idx) => (
+                  <Paragraph note key={idx + item}>
+                    *{item}
+                  </Paragraph>
+                ))}
+              </Box>
+            </Box>
           )}
-
-          <Box gt={1}>
-            <Paragraph>******</Paragraph>
-            <Paragraph>DEBUGGING</Paragraph>
-            {status.map((item, idx) => (
-              <Paragraph note key={idx + item}>
-                *{item}
-              </Paragraph>
-            ))}
-          </Box>
-        </Box>
-      )}
-    </Container>
+        </Container>
+      </ImageBackground>
+      <Image
+        source={require('../assets/images/grass.png')}
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: -10,
+          width: deviceWidth,
+        }}
+      />
+    </View>
   );
 };
 

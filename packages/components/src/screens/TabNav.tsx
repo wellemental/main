@@ -45,6 +45,8 @@ const TabNav: React.FC = () => {
           height: 60 + insets.bottom,
           paddingTop: 10,
           paddingBottom: 0 + insets.bottom,
+          borderTopWidth: 1,
+          borderTopColor: variables.brandPrimary,
         },
       }}>
       <Tab.Screen

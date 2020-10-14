@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, CardItem, Left, Body, H3 } from 'native-base';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { Content } from 'services';
 import AvyName from './AvyName';
+import Image from './Image';
 import { useNavigation } from '@react-navigation/native';
 import { Teacher } from 'services';
 import Paragraph from './Paragraph';

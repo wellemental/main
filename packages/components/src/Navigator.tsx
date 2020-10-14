@@ -11,6 +11,7 @@ import {
   EditProfileScreen,
   ForgotPasswordScreen,
   UpgradeScreen,
+  CelebrationScreen,
   PlansScreen,
 } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -66,6 +67,21 @@ const Navigator: React.FC = () => {
               }}
             />
             <Stack.Screen name="Content" component={ContentScreen} />
+            <Stack.Screen
+              name="Celebration"
+              component={CelebrationScreen}
+              options={{
+                headerShown: false,
+                // headerStyle: {
+                //   backgroundColor: '#000',
+                //   shadowOpacity: 0,
+                // },
+                // headerTintColor: '#fff',
+                // cardStyle: {
+                //   backgroundColor: '#000',
+                // },
+              }}
+            />
             <Stack.Screen name="Plans" component={PlansScreen} />
             <Stack.Screen name="Category" component={CategoryScreen} />
             <Stack.Screen

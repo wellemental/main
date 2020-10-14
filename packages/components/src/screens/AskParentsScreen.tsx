@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { H2 } from 'native-base';
+import { TouchableOpacity, ImageBackground, View } from 'react-native';
+import { H2, H1, Card, CardItem, Body, Input, Item } from 'native-base';
 import {
   Box,
   Container,
   Button,
   Paragraph,
   Error,
-  Input,
   Spinner,
   PageHeading,
 } from '../primitives';
@@ -17,6 +16,8 @@ import { Platform } from 'react-native';
 import { PromoCodeService, logger } from 'services';
 import styled from 'styled-components';
 import variables from '../assets/native-base-theme/variables/wellemental';
+import { deviceHeight, deviceWidth } from 'services';
+import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 
 type Props = {
   setLock: React.Dispatch<boolean>;
@@ -38,44 +39,70 @@ const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
   };
 
   return (
-    <Container scrollEnabled>
-      <PageHeading title={translation['Ask your parents']} />
+    <View
+      style={{
+        flex: 1,
+        width: deviceWidth,
+        height: deviceHeight,
+        backgroundColor: brandColors.skyBlue,
+      }}>
+      <ImageBackground
+        source={require('../assets/images/parents_bg.png')}
+        style={{
+          width: deviceWidth,
+          height: deviceHeight,
+          flex: 1,
+        }}>
+        <Container scrollEnabled color="rgba(0,0,0,0)">
+          <H1
+            style={{
+              color: 'white',
+              alignSelf: 'center',
+              paddingBottom: 20,
+              paddingTop: 40,
+            }}>
+            {translation['Ask your parents']}
+          </H1>
 
-      <>
-        <H2>{translation['What is 6 x 7?']}</H2>
-        <Input
-          label={translation.Answer}
-          value={answer}
-          autoFocus
-          type="number"
-          onChangeText={setAnswer}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <Button
-          primary
-          disabled={!answer}
-          text={translation.Submit}
-          onPress={handleAnswer}
-        />
-      </>
+          <Card>
+            <CardItem>
+              <Body style={{ paddingVertical: 20, paddingHorizontal: 10 }}>
+                <H1 style={{ alignSelf: 'center' }}>
+                  {translation['What is 6 x 7?']}
+                </H1>
 
-      {/* <Box gt={1}>
-        <Button
-          transparent
-          disabled={processing}
-          loading={processing}
-          text={
-            showAccessDisplay
-              ? translation['New account?']
-              : translation['Access code?']
-          }
-          onPress={() => toggleDisplay(!showAccessDisplay)}
-        />
-      </Box> */}
+                <Item inlineLabel style={{ marginVertical: 25 }}>
+                  <Input
+                    // label={translation.Answer}
+                    value={answer}
+                    autoFocus
+                    type="number"
+                    onChangeText={setAnswer}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    style={{
+                      fontSize: 32,
+                      height: 40,
+                      textAlign: 'center',
+                      marginBottom: 10,
+                    }}
+                  />
+                </Item>
+                <Button
+                  primary
+                  large
+                  disabled={!answer}
+                  text={translation.Submit}
+                  onPress={handleAnswer}
+                />
+              </Body>
+            </CardItem>
+          </Card>
 
-      <Error error={error} center />
-    </Container>
+          <Error error={error} center />
+        </Container>
+      </ImageBackground>
+    </View>
   );
 };
 

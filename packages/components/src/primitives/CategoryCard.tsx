@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardItem, Right, Body, H3 } from 'native-base';
-import { Image } from 'react-native';
+import Image from './Image';
 import { useNavigation } from '@react-navigation/native';
 import Paragraph from './Paragraph';
 import { Category } from 'services';
@@ -32,9 +32,13 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
         </Body>
         <Right style={{ flex: 1, marginLeft: 10 }}>
           <Image
-            source={{
-              uri: category.image,
-            }}
+            source={
+              typeof category.image === 'string'
+                ? {
+                    uri: category.image,
+                  }
+                : category.image
+            }
             style={{
               height: 120,
               width: 120,
