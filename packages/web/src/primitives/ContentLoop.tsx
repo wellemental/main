@@ -26,8 +26,9 @@ const ContentLoop: React.FC<Props> = ({
 }) => {
   const { user, translation } = useCurrentUser();
   const { content, teachers, error } = useContent();
-
   let filteredContent: Content[] | null = content;
+  console.log('SEARCH', search);
+  console.log('content', content);
 
   // Filter by language
   if (user && user.language && filteredContent && favorites === undefined) {
@@ -63,14 +64,14 @@ const ContentLoop: React.FC<Props> = ({
   // Filter by search term
   if (search && filteredContent) {
     filteredContent = filteredContent.filter((item: Content) =>
-      item.title.includes(search),
+      item.title.toLowerCase().includes(search.toLowerCase()),
     );
   }
 
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (
-    <div style={{ margin: `0px ${hasPadding ? '15px' : '0px'}` }}>
+    <div>
       <Error error={error} />
 
       {content &&

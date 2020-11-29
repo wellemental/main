@@ -302,3 +302,22 @@ export type Version = {
   upgradeForceTitle: string;
   upgradeForceBody: string;
 };
+
+export type TabParamList = {
+  Library: { default: string };
+  Home: undefined;
+  Favorites: undefined;
+  Search: undefined;
+  Settings: undefined;
+};
+
+export type MenuItem = {
+  label: string;
+  filter?: Tags | 'All';
+};
+
+export interface LocationState {
+  from?: {
+    pathname: string;
+  };
+}

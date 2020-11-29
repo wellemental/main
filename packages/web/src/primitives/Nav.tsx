@@ -137,6 +137,9 @@ const Nav: React.FC<Props> = (props) => {
 
         <Divider />
         <ListItemLink to="/" primary="Home" />
+        <ListItemLink to="/library" primary="Library" />
+        <ListItemLink to="/favorites" primary="Favorites" />
+        <ListItemLink to="/search" primary="Search" />
         <ListItemLink to="/about" primary="About" />
         <Divider />
         <ListItem

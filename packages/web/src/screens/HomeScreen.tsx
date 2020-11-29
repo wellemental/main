@@ -64,7 +64,6 @@ const HomeScreen: React.FC = () => {
   ];
 
   return (
-    // <Container scrollEnabled>
     <>
       <PageHeading
         title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}`}
@@ -92,7 +91,6 @@ const HomeScreen: React.FC = () => {
           ))}
         </>
       )}
-      {/* </Container> */}
     </>
   );
 };

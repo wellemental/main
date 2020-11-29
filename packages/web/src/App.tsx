@@ -10,6 +10,9 @@ import {
   PromoCodeScreen,
   HomeScreen,
   PrivateRoute,
+  FavoritesScreen,
+  SearchScreen,
+  LibraryScreen,
 } from './screens';
 import Nav from './primitives/Nav';
 import Page from './primitives/Page';
@@ -30,6 +33,9 @@ function App() {
                 <Route path="/access-code" component={PromoCodeScreen} />
                 <Route path="/download" component={DownloadScreen} />
                 <Route path="/login" component={AuthScreen} />
+                <Route path="/library" component={LibraryScreen} />
+                <Route path="/search" component={SearchScreen} />
+                <Route path="/favorites" component={FavoritesScreen} />
                 <Route path="/" component={HomeScreen} />
               </Switch>
             </Page>

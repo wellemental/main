@@ -27,19 +27,17 @@ const AvyName: React.FC<Props> = ({
   const Name = Paragraph;
 
   return (
-    <Box display="flex" flexDirection="row">
+    <Box display="flex">
       <Box
         display="flex"
         flexDirection="row"
         style={{
           flex: 5,
-          flexDirection: 'row',
-          alignContent: 'space-between',
-          marginTop: 9,
+          marginTop: '9px',
         }}>
         <Avatar source={source} mb={mb} size={size} />
 
-        <Name style={{ lineHeight: 40, marginLeft: 10 }}>{name}</Name>
+        <Name style={{ lineHeight: '40px', marginLeft: '10px' }}>{name}</Name>
       </Box>
 
       {favoriteId && <Favorite contentId={favoriteId} />}

@@ -7,6 +7,7 @@ import {
   Favorite as FavIcon,
   FavoriteBorder as FavBorder,
 } from '@material-ui/icons';
+import { brandColors } from '../assets/styles/theme';
 
 interface Props {
   contentId: string;
@@ -52,19 +53,19 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
     <IconButton
       disabled={loading}
       style={{
-        paddingRight: '0px',
-        paddingBottom: '0px',
-        marginTop: onProfile ? '-14px' : '0px',
+        padding: '5px',
+        height: '38px',
+        marginTop: onProfile ? '-14px' : '11px',
       }}
       onClick={handleFavorite}>
       <Icon
         style={{
           marginTop: 0,
           paddingTop: 0,
-          //   color: variables.brandLight,
           marginRight: 0,
           fontSize: onProfile ? 36 : 30,
           lineHeight: 40,
+          color: brandColors.brandLight,
         }}
         name={isFav ? 'heart' : 'heart-outline'}
       />

@@ -2,4 +2,8 @@ export { default as AuthScreen } from './AuthScreen';
 export { default as DownloadScreen } from './DownloadScreen';
 export { default as PromoCodeScreen } from './PromoCodeScreen';
 export { default as HomeScreen } from './HomeScreen';
+export { default as FavoritesScreen } from './FavoritesScreen';
+export { default as LibraryScreen } from './LibraryScreen';
+export { default as PlansScreen } from './PlansScreen';
+export { default as SearchScreen } from './SearchScreen';
 export { default as PrivateRoute } from './PrivateRoute';
