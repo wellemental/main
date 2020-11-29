@@ -58,7 +58,7 @@ type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const Nav: React.FC<Props> = (props) => {
   const classes = useStyles();
-  const { user } = useCurrentUser();
+  const { user, auth } = useCurrentUser();
   const history = useHistory();
   const { pathname } = useLocation();
   // const trigger = useScrollTrigger();
@@ -98,20 +98,14 @@ const Nav: React.FC<Props> = (props) => {
           <>
             <ListItem
               button
-              onClick={() => history.push('/dashboard')}
+              onClick={() => history.push('/settings')}
               alignItems="flex-start">
-              {user.avatar ? (
-                <ListItemAvatar>
-                  <Avatar alt={user.name && user.name} src={user.avatar} />
-                </ListItemAvatar>
-              ) : (
-                <ListItemIcon>
-                  <UserIcon />
-                </ListItemIcon>
-              )}
+              <ListItemIcon>
+                <UserIcon />
+              </ListItemIcon>
 
               <ListItemText
-                primary={user.name ? user.name : user.email}
+                primary={auth.email}
                 secondary={
                   <Typography
                     component="span"
@@ -158,7 +152,7 @@ const Nav: React.FC<Props> = (props) => {
                 component="span"
                 variant="body2"
                 color="textSecondary">
-                hello@mentalhealthleague.com
+                hello@wellemental.co
               </Typography>
             }
           />

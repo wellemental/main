@@ -11,8 +11,10 @@ import {
   HomeScreen,
   PrivateRoute,
   FavoritesScreen,
+  EditProfileScreen,
   SearchScreen,
   LibraryScreen,
+  SettingsScreen,
 } from './screens';
 import Nav from './primitives/Nav';
 import Page from './primitives/Page';
@@ -34,8 +36,10 @@ function App() {
                 <Route path="/download" component={DownloadScreen} />
                 <Route path="/login" component={AuthScreen} />
                 <Route path="/library" component={LibraryScreen} />
+                <Route path="/language" component={EditProfileScreen} />
                 <Route path="/search" component={SearchScreen} />
                 <Route path="/favorites" component={FavoritesScreen} />
+                <Route path="/settings" component={SettingsScreen} />
                 <Route path="/" component={HomeScreen} />
               </Switch>
             </Page>

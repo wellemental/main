@@ -27,8 +27,6 @@ const ContentLoop: React.FC<Props> = ({
   const { user, translation } = useCurrentUser();
   const { content, teachers, error } = useContent();
   let filteredContent: Content[] | null = content;
-  console.log('SEARCH', search);
-  console.log('content', content);
 
   // Filter by language
   if (user && user.language && filteredContent && favorites === undefined) {
