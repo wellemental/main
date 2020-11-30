@@ -10,6 +10,8 @@ import {
   PromoCodeScreen,
   HomeScreen,
   PrivateRoute,
+  ContentScreen,
+  TeacherScreen,
   FavoritesScreen,
   EditProfileScreen,
   SearchScreen,
@@ -40,6 +42,8 @@ function App() {
                 <Route path="/search" component={SearchScreen} />
                 <Route path="/favorites" component={FavoritesScreen} />
                 <Route path="/settings" component={SettingsScreen} />
+                <Route path="/content" component={ContentScreen} />
+                <Route path="/teacher" component={TeacherScreen} />
                 <Route path="/" component={HomeScreen} />
               </Switch>
             </Page>

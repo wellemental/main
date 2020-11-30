@@ -8,4 +8,6 @@ export { default as PlansScreen } from './PlansScreen';
 export { default as SettingsScreen } from './SettingsScreen';
 export { default as EditProfileScreen } from './EditProfileScreen';
 export { default as SearchScreen } from './SearchScreen';
+export { default as TeacherScreen } from './TeacherScreen';
+export { default as ContentScreen } from './ContentScreen';
 export { default as PrivateRoute } from './PrivateRoute';

@@ -10,20 +10,16 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListItemAvatar,
-  Avatar,
   Slide,
   Box,
   Button,
   Toolbar,
   Typography,
-  // useScrollTrigger,
 } from '@material-ui/core';
 import {
   Menu as MenuIcon,
   AccountCircle as UserIcon,
   ExitToApp as LogoutIcon,
-  InfoOutlined as AboutIcon,
 } from '@material-ui/icons';
 import ListItemLink from './ListItemLink';
 import { useHistory, useLocation } from 'react-router-dom';

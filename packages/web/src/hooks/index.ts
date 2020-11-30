@@ -1,9 +1,12 @@
 export * from './useCurrentUser';
 export * from './useQuery';
 export * from './useMutation';
+export * from './useRouteMatch';
 export * from './useCache';
 export * from './useContent';
 export * from './useLocation';
 export * from './useDepends';
+export * from './useUrlParams';
 export * from './useConfig';
+export * from './useRouteMatch';
 export { useHistory } from './useHistory';

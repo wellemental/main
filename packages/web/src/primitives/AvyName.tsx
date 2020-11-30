@@ -23,9 +23,6 @@ const AvyName: React.FC<Props> = ({
   favoriteId,
   onProfile,
 }) => {
-  // const Name = onProfile ? H3 : Paragraph;
-  const Name = Paragraph;
-
   return (
     <Box display="flex">
       <Box
@@ -37,7 +34,11 @@ const AvyName: React.FC<Props> = ({
         }}>
         <Avatar source={source} mb={mb} size={size} />
 
-        <Name style={{ lineHeight: '40px', marginLeft: '10px' }}>{name}</Name>
+        <Paragraph
+          variant={onProfile ? 'subtitle2' : 'body1'}
+          style={{ lineHeight: '40px', marginLeft: '10px' }}>
+          {name}
+        </Paragraph>
       </Box>
 
       {favoriteId && <Favorite contentId={favoriteId} />}

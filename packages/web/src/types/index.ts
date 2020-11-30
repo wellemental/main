@@ -317,7 +317,5 @@ export type MenuItem = {
 };
 
 export interface LocationState {
-  from?: {
-    pathname: string;
-  };
+  [key: string]: any;
 }

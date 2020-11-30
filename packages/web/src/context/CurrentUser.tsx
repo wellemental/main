@@ -30,8 +30,6 @@ export const CurrentUserProvider = ({ children }: any) => {
     null,
   );
 
-  console.log('CURRETN USER', currentUser, 'AUTH', currentAuth);
-
   useEffect(() => {
     // On mount, subscribe to auth and playerDoc listeners
     const authUnsubscriber = firebase.auth().onAuthStateChanged((user) => {
