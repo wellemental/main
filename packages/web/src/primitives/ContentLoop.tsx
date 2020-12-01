@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
 import { Content, Tags, Categories, TimeOfDay, Teachers } from '../types';
 import ListEmpty from './ListEmpty';
 import Error from './Error';
 import Paragraph from './Paragraph';
+import Button from './Button';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 
 interface Props {
@@ -28,8 +29,16 @@ const ContentLoop: React.FC<Props> = ({
   const { content, teachers, error } = useContent();
   let filteredContent: Content[] | null = content;
 
+  const [isLangFilter, setLangFilter] = useState(true);
+
   // Filter by language
-  if (user && user.language && filteredContent && favorites === undefined) {
+  if (
+    isLangFilter &&
+    user &&
+    user.language &&
+    filteredContent &&
+    favorites === undefined
+  ) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.language === user.language,
     );
@@ -41,7 +50,7 @@ const ContentLoop: React.FC<Props> = ({
       if (item && item.tags) {
         return item.tags.includes(filter.toLowerCase() as Tags);
       }
-      return;
+      return item;
     });
   }
 
@@ -69,7 +78,7 @@ const ContentLoop: React.FC<Props> = ({
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (
-    <div>
+    <>
       <Error error={error} />
 
       {content &&
@@ -103,27 +112,17 @@ const ContentLoop: React.FC<Props> = ({
           {translation['Tap the heart icon to favorite content']}
         </ListEmpty>
       ) : (
-        <ListEmpty />
+        <>
+          <ListEmpty center />
+          <Button
+            onClick={() => setLangFilter(false)}
+            text={translation['See all languages']}
+            size="small"
+            variant="text"
+          />
+        </>
       )}
-      {/* <Paragraph>
-        Language: {user && user.language ? user.language : 'N/A'}
-      </Paragraph>
-      <Paragraph>Content Loading? {loading.toString()}</Paragraph>
-      <Paragraph>Remote Config Loading? {rcLoading.toString()}</Paragraph>
-      <Paragraph>Got Content? {content && !!content.toString()}</Paragraph>
-      <Paragraph>Got Teachers? {content && !!content.toString()}</Paragraph>
-      {filter && <Paragraph>Filter: {filter}</Paragraph>}
-      {favorites && <Paragraph>Favs!</Paragraph>}
-      {teacher && <Paragraph>Teacher: {teacher}</Paragraph>} */}
-      {/* {search && <Paragraph>Search: {search}</Paragraph>} */}
-      {/* <Paragraph>Status***</Paragraph> */}
-      {/* {status &&
-        status.map((item, idx) => (
-          <Paragraph note key={idx + item}>
-            *** {item}
-          </Paragraph>
-        ))} */}
-    </div>
+    </>
   );
 };
 

@@ -20,9 +20,11 @@ const Spinner: React.FC<Props> = ({ text }) => {
   return (
     <Grid container className={classes.spinning}>
       <Grid item xs={12}>
-        <Typography variant="subtitle2" gutterBottom>
-          {text ? text : "You're doing great..."}
-        </Typography>
+        {text && (
+          <Typography variant="subtitle2" gutterBottom>
+            {text}
+          </Typography>
+        )}
         <CircularProgress />
       </Grid>
     </Grid>

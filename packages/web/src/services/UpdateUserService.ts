@@ -1,9 +1,8 @@
-// import firestore from '@react-native-firebase/firestore';
 import firebase from 'firebase/app';
-// import { ApplicationError } from '../models/Errors';
+import { ApplicationError } from '../models/Errors';
 import { UserProfile, UpdateUserServiceType, InitialUserDoc } from '../types';
-// import logger from './LoggerService';
-// import tracker, { TrackingEvents } from './TrackerService';
+import logger from './LoggerService';
+import tracker, { TrackingEvents } from './TrackerService';
 
 const COLLECTION = 'users';
 const collection = firebase.firestore().collection(COLLECTION);
@@ -14,37 +13,39 @@ class UpdateUserService implements UpdateUserServiceType {
     contentId: string,
     isFav: boolean,
   ): Promise<void> {
-    // const doc = collection.doc(id); //
-    // try {
-    //   const userSnapshot = await doc.get();
-    //   const favUpdate = {};
-    //   favUpdate[`favorites.${contentId}.favorited`] = isFav;
-    //   favUpdate[
-    //     `favorites.${contentId}.updated_at`
-    //   ] = firebase.firestore.Timestamp.fromDate(new Date());
+    const doc = collection.doc(id); //
+    try {
+      const userSnapshot = await doc.get();
+      const favUpdate: {
+        [key: string]: boolean | firebase.firestore.Timestamp;
+      } = {};
+      favUpdate[`favorites.${contentId}.favorited`] = isFav;
+      favUpdate[
+        `favorites.${contentId}.updated_at`
+      ] = firebase.firestore.Timestamp.fromDate(new Date());
 
-    //   try {
-    //     if (userSnapshot.exists) {
-    //       await doc.update({
-    //         ...favUpdate,
-    //         updated_at: firebase.firestore.FieldValue.serverTimestamp(),
-    //       });
-    //     } else {
-    //       await doc.set({
-    //         ...favUpdate,
-    //         updated_at: firebase.firestore.FieldValue.serverTimestamp(),
-    //       });
-    //     }
-    //     if (isFav) {
-    //       //   tracker.track(TrackingEvents.Favorite);
-    //     } else {
-    //       //   tracker.track(TrackingEvents.Unfavorite);
-    //     }
-    //   } catch (error) {
-    //     // logger.error('Failed to favorite content');
-    //     // throw new ApplicationError('Unable to fav content');
-    //   }
-    // } catch (err) {}
+      try {
+        if (userSnapshot.exists) {
+          await doc.update({
+            ...favUpdate,
+            updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+        } else {
+          await doc.set({
+            ...favUpdate,
+            updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+        }
+        if (isFav) {
+          tracker.track(TrackingEvents.Favorite);
+        } else {
+          tracker.track(TrackingEvents.Unfavorite);
+        }
+      } catch (error) {
+        logger.error('Failed to favorite content');
+        throw new ApplicationError('Unable to fav content');
+      }
+    } catch (err) {}
     return Promise.resolve();
   }
 

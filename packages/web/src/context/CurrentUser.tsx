@@ -1,10 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-// import { Spinner } from '../components';
 import firebase, { FbUser } from '../base';
-// import logger from '../services/LoggerService';
-import { Unsubscriber } from '../types';
-import { UpdateUserService } from '../services';
-import { Languages, User, UserProfile } from '../types';
+import { Unsubscriber, Languages, User } from '../types';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { Spinner } from '../primitives';
@@ -12,8 +8,6 @@ import { Spinner } from '../primitives';
 export const CurrentUser = React.createContext<any>({
   currentUser: {
     language: Languages.En,
-    // birthday: '',
-    // name: '',
     plan: {},
   },
 });
@@ -24,7 +18,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   );
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [creatingUser, setCreatingUser] = useState(false);
 
   const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
     null,
@@ -84,13 +77,14 @@ export const CurrentUserProvider = ({ children }: any) => {
           };
 
           setCurrentUser(userDoc);
+          setLoading(false);
         }
       });
   };
 
-  // if (creatingUser) {
-  //   return <Spinner text="Creating account..." />;
-  // }
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <CurrentUser.Provider

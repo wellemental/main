@@ -5,13 +5,12 @@ import {
   CssBaseline,
   ContainerProps,
 } from '@material-ui/core';
-import { useHistory, useCurrentUser } from '../hooks';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     center: {
-      height: 'calc(100vh + 13px)',
+      height: 'calc(100vh - 65px)',
       justifyContent: 'center',
       textAlign: 'center',
     },
@@ -35,8 +34,6 @@ const Page: React.FC<Props & ContainerProps> = ({
   disableGutters,
 }) => {
   const classes = useStyles();
-  const { auth } = useCurrentUser();
-  const history = useHistory();
 
   return (
     <>

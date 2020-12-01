@@ -126,4 +126,8 @@ export const English = {
     'An inclusive space for kids to breathe.',
   'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.':
     'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.',
+  'Friends & Family': 'Friends & Family',
+  'Check your email for a reset password link.':
+    'Check your email for a reset password link.',
+  'See all languages': 'See all languages',
 };

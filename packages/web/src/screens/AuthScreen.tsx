@@ -3,7 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { Box, Card, CardContent, Collapse } from '@material-ui/core';
 import { Button, Input, Paragraph, Headline, Error, Page } from '../primitives';
 import AuthService from '../services/AuthService';
-import { Languages } from '../types';
+import { Languages, Translations } from '../types';
+import { useLocation } from '../hooks';
+import { English } from '../translations/en.js';
+import { Español } from '../translations/es.js';
 // import moment from 'moment';
 // import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 // import MomentUtils from '@date-io/moment';
@@ -25,6 +28,14 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { state, location } = useLocation();
+  const language = state && state.language;
+
+  const isFriends = location.pathname === '/friends' ? true : false;
+
+  const translation: Translations =
+    language && language === Languages.Es ? Español : English;
+
   const handleCheckEmail = async () => {
     setLoading(true);
     try {
@@ -45,7 +56,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
         history.push(redirect);
       } else {
         // Show regular user UI.
-        history.push('/access-code');
+        history.push(isFriends ? '/access-code' : '/');
       }
     } catch (err) {
       setError(err);
@@ -116,18 +127,19 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
     <Page>
       <Card elevation={0}>
         <CardContent>
-          <Paragraph align="center" color="textSecondary">
-            Friends &amp; Family
-          </Paragraph>
+          {isFriends && (
+            <Paragraph align="center" color="textSecondary">
+              {translation['Friends & Family']}
+            </Paragraph>
+          )}
           <Headline align="center" variant="h5" gutterBottom>
             {headline}
           </Headline>
           <Input
             id="email-input"
             autoFocus
-            label="Email"
+            label={translation.Email}
             type="email"
-            mt={5}
             value={email}
             onKeyPress={handleStep}
             changeState={setEmail}
@@ -137,7 +149,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
               <Input
                 id="password-input"
                 autoFocus
-                label="Password"
+                label={translation.Password}
                 type="password"
                 value={password}
                 autoComplete="current-password"
@@ -146,16 +158,24 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
               />
             )}
           </Collapse>
-          <Box mt={3}>
+          <Box mt={3} mb={3}>
             <Button
               fullWidth
               disabled={!email}
               loading={loading}
               onClick={handleStep}
               type="submit"
-              text="Submit"
+              text={translation.Submit}
             />
           </Box>
+
+          <Button
+            onClick={() => history.push('/forgot-password', { translation })}
+            variant="text"
+            size="small"
+            style={{ color: '#999' }}
+            text={translation['Forgot password?']}
+          />
 
           <Box mt={2}>
             <Error error={error} />

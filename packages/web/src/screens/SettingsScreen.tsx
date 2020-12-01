@@ -1,23 +1,8 @@
 import React, { useState } from 'react';
 import { AuthService } from '../services';
 import { Error, PageHeading } from '../primitives';
-import { useHistory, useCurrentUser, useContent } from '../hooks';
-import {
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-  Slide,
-  Box,
-  Button,
-  Toolbar,
-  Typography,
-  // useScrollTrigger,
-} from '@material-ui/core';
+import { useHistory, useCurrentUser } from '../hooks';
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import {
   Person as UserIcon,
   ExitToApp as LogoutIcon,
@@ -33,7 +18,6 @@ const service = new AuthService();
 
 const SettingsScreen: React.FC = () => {
   const { auth, translation } = useCurrentUser();
-  const { getDbContent } = useContent();
   const [error, setError] = useState();
   const history = useHistory();
 

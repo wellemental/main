@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 // import { H3 } from 'native-base';
 import Paragraph from './Paragraph';
 import Favorite from './Favorite';
 import Avatar from './Avatar';
 // import Box from './Box';
 import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
+import { useHistory } from '../hooks';
+import { Teacher } from '../types';
+import { slugify } from '../services/helpers';
 
 type Props = {
   source: string;
@@ -13,6 +17,31 @@ type Props = {
   name: string;
   favoriteId?: string;
   onProfile?: boolean;
+  teacher?: Teacher;
+};
+
+type ContProps = {
+  onProfile: boolean;
+  teacher: Teacher;
+};
+
+const LinkContainer: React.FC<ContProps & PropsWithChildren<any>> = ({
+  onProfile,
+  teacher,
+  children,
+}) => {
+  const history = useHistory();
+  const parent = onProfile ? (
+    <Link
+      underline="none"
+      onClick={() => history.push(`/teacher/${slugify(teacher.name)}`)}>
+      {children}
+    </Link>
+  ) : (
+    <>{children}</>
+  );
+
+  return parent;
 };
 
 const AvyName: React.FC<Props> = ({
@@ -22,24 +51,27 @@ const AvyName: React.FC<Props> = ({
   name,
   favoriteId,
   onProfile,
+  teacher,
 }) => {
   return (
     <Box display="flex">
-      <Box
-        display="flex"
-        flexDirection="row"
-        style={{
-          flex: 5,
-          marginTop: '9px',
-        }}>
-        <Avatar source={source} mb={mb} size={size} />
+      <LinkContainer onProfile={onProfile} teacher={teacher}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          style={{
+            flex: 5,
+            marginTop: '9px',
+          }}>
+          <Avatar source={source} mb={mb} size={size} />
 
-        <Paragraph
-          variant={onProfile ? 'subtitle2' : 'body1'}
-          style={{ lineHeight: '40px', marginLeft: '10px' }}>
-          {name}
-        </Paragraph>
-      </Box>
+          <Paragraph
+            variant={onProfile ? 'subtitle2' : 'body1'}
+            style={{ lineHeight: '40px', marginLeft: '10px' }}>
+            {name}
+          </Paragraph>
+        </Box>
+      </LinkContainer>
 
       {favoriteId && <Favorite contentId={favoriteId} />}
     </Box>

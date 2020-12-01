@@ -4,7 +4,7 @@ import 'firebase/firestore';
 import 'firebase/analytics';
 import 'firebase/functions';
 import 'firebase/remote-config';
-import FirebaseFirestoreTypes from '@firebase/firestore-types';
+// import FirebaseFirestoreTypes from '@firebase/firestore-types';
 
 const firebase = firebasePkg.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_KEY,

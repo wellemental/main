@@ -3,7 +3,7 @@ import TeacherCard from './TeacherCard';
 import { Box } from '../primitives';
 import { useContent, useCurrentUser } from '../hooks';
 import ListEmpty from './ListEmpty';
-import { Teacher, Teachers } from '../types';
+import { Teacher } from '../types';
 
 type Props = {
   scrollEnabled?: boolean;

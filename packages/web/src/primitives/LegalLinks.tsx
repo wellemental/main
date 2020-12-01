@@ -1,7 +1,6 @@
 import React from 'react';
 import Paragraph from './Paragraph';
 import Box from './Box';
-import { brandColors } from '../assets/styles/theme';
 import { useCurrentUser } from '../hooks';
 import Link from '@material-ui/core/Link';
 

@@ -1,4 +1,4 @@
-import { analytics } from '../base';
+import firebase from '../base';
 import { TrackingEvents, TrackingService } from '../types';
 
 export { TrackingEvents } from '../types';
@@ -21,7 +21,7 @@ class ConsoleTracker extends Tracker {
 class FirebaseTracker extends Tracker {
   // name should be type Event or EventName, was causing errors
   public track(name: any, params?: EventParams): void {
-    analytics().logEvent(name, params);
+    firebase.analytics().logEvent(name, params);
   }
 }
 

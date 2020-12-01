@@ -1,23 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {
-  AvyName,
-  Box,
-  Button,
-  Favorite,
-  Paragraph,
-  Headline,
-} from '../primitives';
-import Link from '@material-ui/core/Link';
+import { AvyName, Spinner, Box, Favorite, Paragraph } from '../primitives';
+import IconButton from '@material-ui/core/IconButton';
 import ReactPlayer from 'react-player';
-// import { tracker } from '../services';
-import { TrackingEvents } from '../types';
-import { useHistory, useRouteMatch, useLocation } from '../hooks';
+import { tracker } from '../services';
+import { TrackingEvents, Teacher, Content } from '../types';
+import { useHistory, useContent, useRouteMatch, useLocation } from '../hooks';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-
-type Props = {
-  //   route: ContentScreenRouteProp;
-  //   navigation: ContentScreenNavigationProp;
-};
+import { PlayArrow as PlayIcon } from '@material-ui/icons';
+import { slugify } from '../services/helpers';
 
 const Video = ReactPlayer;
 
@@ -35,19 +25,30 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const ContentScreen: React.FC<Props> = () => {
+const ContentScreen: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
+  const { teachers, content: allContent } = useContent();
   const match = useRouteMatch('content');
-  const { state } = useLocation();
-  const { teacher, content } = state;
 
-  //   const params = useUrlParams();
-  //   const { content, teacher } = route.params;
-  const [video, setVideo] = useState(content.video);
+  let teacher: Teacher | null = null;
+  let content: Content | null = null;
+
+  if (allContent) {
+    content = allContent.filter(
+      (content) => slugify(content.title) === match,
+    )[0];
+  }
+
+  if (content && teachers) {
+    teacher = teachers[content.teacher];
+  }
+
+  // const { state } = useLocation();
+  // const { teacher, content } = state;
+
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(content.seconds);
-  const [isBuffering, setBuffering] = useState(false);
+  const [duration, setDuration] = useState(content && content.seconds);
   const [isOver, toggleOver] = useState(false);
   const [showPoster, togglePoster] = useState(true);
   const [error, setError] = useState();
@@ -57,9 +58,9 @@ const ContentScreen: React.FC<Props> = () => {
     togglePoster(false);
   }
 
-  if (!isOver && currentTime >= duration - 1) {
-    toggleOver(true);
-  }
+  // if (!isOver && currentTime >= duration - 1) {
+  //   toggleOver(true);
+  // }
 
   useEffect(() => {
     if (isOver) {
@@ -73,89 +74,59 @@ const ContentScreen: React.FC<Props> = () => {
   //   }
   // }, [isPaused, showPoster]);
 
-  //   const service = new DownloadVideoService();
-
-  //   useEffect(() => {
-  //     const handleGetVideo = async () => {
-  //       const newVideo = await service.getVideo(video);
-  //       setVideo(newVideo);
-  //     };
-
-  //     handleGetVideo();
-  //   }, []);
-
   const handleError = (err: any) => {
     setError(err);
   };
 
   const onProgress = (data: any) => {
     if (!isOver) {
-      setCurrentTime(data.currentTime);
+      setCurrentTime(data.playedSeconds);
     }
   };
 
-  //   const onLoad = (data) => {
-  //     setDuration(data.duration);
-  //   };
-
-  const onBuffer = ({ isBuffering }: { isBuffering: boolean }) => {
-    setBuffering(isBuffering);
-  };
-
-  console.log('isPaused', !isPaused);
-
-  return (
+  return !content || !teacher ? (
+    <Spinner />
+  ) : (
     <>
       <div className={classes.playerWrapper}>
         <Video
           className={classes.reactPlayer}
           url={content.video}
-          //   source={{
-          //     uri: content.video, //content.video,
-          //   }} // Can be a URL or a local file.
-          // style={styles.nativeVideoControls}
-          // fullscreen
-          // fullscreenAutorotate={true}
-          // fullscreenOrientation={content.video_orientation}
           controls={true}
           width="100%"
           height="100%"
-          //   playInBackground={true}
-          //   ignoreSilentSwitch="ignore"
-          //   resizeMode="cover"
-          //   playing={!isPaused}
-          //   poster={content.thumbnail}
+          playIcon={
+            <IconButton
+              style={{
+                backgroundColor: 'rgba(112,113,118,.95)', //'#707176', //'rgba(0,0,0,.5)',
+                borderRadius: 40,
+                height: 60,
+                width: 60,
+                alignSelf: 'center',
+              }}
+              onClick={() => {
+                togglePaused(!isPaused);
+                tracker.track(TrackingEvents.PlayVideo);
+              }}>
+              <PlayIcon style={{ color: '#fff' }} />
+            </IconButton>
+          }
+          playing={!isPaused}
           file={{ forceVideo: true }}
           light={content.thumbnail}
-          //   posterResizeMode="cover"
-          // onBuffer={onBuffer}
           onProgress={onProgress}
-          //   onLoad={onLoad}
+          onDuration={setDuration}
           onError={handleError} // Callback when video cannot be loaded
         />
-        {/* {showPoster && isPaused && (
-            <div>
-              <NBButton
-                onPress={() => {
-                  tracker.track(TrackingEvents.PlayVideo);
-                  togglePaused(!isPaused);
-                }}
-                style={{
-                  backgroundColor: 'rgba(112,113,118,.95)', //'#707176', //'rgba(0,0,0,.5)',
-                  borderRadius: 40,
-                  height: 60,
-                  width: 60,
-                  alignSelf: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Icon name="play" style={{ fontSize: 30 }} />
-              </NBButton>
-            </div>
-          )} */}
       </div>
 
-      <Box flexDirection="row" justifyContent="space-between" mt={2} mb={1}>
-        <Paragraph variant="h2" size={28} style={{ flex: 4 }}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        mt={2}
+        mb={1}>
+        <Paragraph variant="h2" size={28} style={{ flex: 8 }}>
           {content.title}
         </Paragraph>
         <Box flexDirection="row" style={{ flex: 1 }}>
@@ -172,15 +143,13 @@ const ContentScreen: React.FC<Props> = () => {
         <Paragraph>{content.description}</Paragraph>
       </Box>
 
-      <Link
-        underline="none"
-        onClick={() =>
-          history.push('/teacher', {
-            teacher,
-          })
-        }>
-        <AvyName source={teacher.photo} name={content.teacher} onProfile />
-      </Link>
+      <AvyName
+        source={teacher.photo}
+        teacher={teacher}
+        name={content.teacher}
+        onProfile
+      />
+
       <Paragraph>{teacher.bio}</Paragraph>
     </>
   );

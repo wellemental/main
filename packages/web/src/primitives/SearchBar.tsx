@@ -1,7 +1,5 @@
 import React from 'react';
 import Input from './Input';
-import Button from './Button';
-import Icon from '@material-ui/core/Icon';
 import Box from '@material-ui/core/Box';
 import { Search as SearchIcon, Close as CloseIcon } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';

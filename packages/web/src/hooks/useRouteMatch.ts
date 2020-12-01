@@ -1,4 +1,3 @@
-import React from 'react';
 import { useRouteMatch as ogUseRouteMatch } from 'react-router-dom';
 
 export const useRouteMatch = (url: string): string => {

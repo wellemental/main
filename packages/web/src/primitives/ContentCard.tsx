@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import { slugify } from '../services/helpers';
 
 interface Props {
   content: Content;
@@ -25,7 +26,7 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
         marginBottom: '15px',
       }}>
       <CardActionArea
-        onClick={() => history.push('/content', { content, teacher })}>
+        onClick={() => history.push(`/content/${slugify(content.title)}`)}>
         <Box display="flex" flexDirection="row">
           <CardMedia
             component="img"

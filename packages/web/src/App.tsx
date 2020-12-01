@@ -11,7 +11,9 @@ import {
   HomeScreen,
   PrivateRoute,
   ContentScreen,
+  ForgotPasswordScreen,
   TeacherScreen,
+  CategoryScreen,
   FavoritesScreen,
   EditProfileScreen,
   SearchScreen,
@@ -37,10 +39,16 @@ function App() {
                 <Route path="/access-code" component={PromoCodeScreen} />
                 <Route path="/download" component={DownloadScreen} />
                 <Route path="/login" component={AuthScreen} />
+                <Route path="/friends" component={AuthScreen} />
                 <Route path="/library" component={LibraryScreen} />
                 <Route path="/language" component={EditProfileScreen} />
                 <Route path="/search" component={SearchScreen} />
                 <Route path="/favorites" component={FavoritesScreen} />
+                <Route path="/category" component={CategoryScreen} />
+                <Route
+                  path="/forgot-password"
+                  component={ForgotPasswordScreen}
+                />
                 <Route path="/settings" component={SettingsScreen} />
                 <Route path="/content" component={ContentScreen} />
                 <Route path="/teacher" component={TeacherScreen} />

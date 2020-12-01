@@ -3,7 +3,7 @@ import { Spinner } from '../primitives';
 import { TeacherService, ContentService } from '../services';
 import { AllTeachers, Content as ContentType, Features } from '../types';
 import { useConfig, useCurrentUser } from '../hooks';
-// import { logger } from 'services';
+import logger from '../services/LoggerService';
 
 interface ContentContext {
   content: ContentType[] | null;
@@ -56,7 +56,7 @@ export const ContentProvider = ({
     } catch (err) {
       console.log('ERROR', err);
       setError(`Error fetching content from database - ${err}`);
-      // logger.error(`Error getting firestore content data - ${err}`);
+      logger.error(`Error getting firestore content data - ${err}`);
     }
     setLoading(false);
   };
@@ -67,7 +67,7 @@ export const ContentProvider = ({
       try {
         await getDbContent();
       } catch (err) {
-        // logger.error('Error getting local content data');
+        logger.error('Error getting local content data');
       }
     };
 
@@ -78,20 +78,20 @@ export const ContentProvider = ({
   }, []);
 
   // Get Featured Content from Remote Config
-  // const { loading: rcLoading, data: rcData }: any = useConfig('featured');
+  const { loading: rcLoading, data: rcData }: any = useConfig('featured');
 
-  // if ((user && loading) || rcLoading) {
-  //   return <Spinner text="Loading Content..." />;
-  // }
+  if ((user && loading) || rcLoading) {
+    return <Spinner text="Loading Content..." />;
+  }
 
   return (
     <Content.Provider
       value={{
         content,
         teachers,
-        features: undefined,
+        features: rcData,
         loading: loading,
-        // rcLoading: rcLoading,
+        rcLoading: rcLoading,
         error,
         status: statuses,
         getDbContent,

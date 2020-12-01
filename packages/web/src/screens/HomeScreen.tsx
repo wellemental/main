@@ -10,16 +10,12 @@ import {
 } from '../primitives';
 import moment from 'moment';
 import { TimeOfDay, Category, Tags } from '../types';
-import {
-  useCurrentUser,
-  // useContent,
-  useConfig,
-} from '../hooks';
+import { useCurrentUser, useContent } from '../hooks';
 
 const HomeScreen: React.FC = () => {
   const today = moment();
   const { translation, activePlan } = useCurrentUser();
-  // const { features, error, updateAvailable } = useContent();
+  const { features, rcLoading } = useContent();
 
   // Determine Time of Day for header customization
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
@@ -71,7 +67,7 @@ const HomeScreen: React.FC = () => {
       />
       <ContentLoop filter={timeOfDay} />
 
-      {/* {features && features.categories ? (
+      {features && features.categories ? (
         <>
           <PageHeading title={translation.Featured} />
 
@@ -81,9 +77,9 @@ const HomeScreen: React.FC = () => {
         </>
       ) : (
         <Spinner />
-      )} */}
+      )}
 
-      {activePlan && (
+      {!activePlan && (
         <>
           <PageHeading title={`${translation['Explore by age range']}`} />
           {ageGroups.map((item, idx) => (

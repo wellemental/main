@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { ContentLoop, PageHeading, Tabs } from '../primitives';
+import React from 'react';
+import { ContentLoop, PageHeading } from '../primitives';
 import { useCurrentUser } from '../hooks';
-import { MenuItem, Tags } from '../types';
 
 const FavoritesScreen: React.FC = () => {
   const { user, translation } = useCurrentUser();

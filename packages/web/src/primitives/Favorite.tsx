@@ -34,7 +34,6 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
   const handleFavorite = () => {
     try {
       mutate();
-      // toggleFav(!isFav);
     } catch (err) {
       setError('Error');
     }
@@ -55,7 +54,7 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
       style={{
         padding: '5px',
         height: '38px',
-        marginTop: onProfile ? '-14px' : '11px',
+        marginTop: onProfile ? '-1px' : '11px',
       }}
       onClick={handleFavorite}>
       <Icon

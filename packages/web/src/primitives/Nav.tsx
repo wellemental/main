@@ -22,7 +22,7 @@ import {
   ExitToApp as LogoutIcon,
 } from '@material-ui/icons';
 import ListItemLink from './ListItemLink';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Logo } from './';
 import app from '../base';
 import { useCurrentUser } from '../hooks';
@@ -56,7 +56,6 @@ const Nav: React.FC<Props> = (props) => {
   const classes = useStyles();
   const { user, auth } = useCurrentUser();
   const history = useHistory();
-  const { pathname } = useLocation();
   // const trigger = useScrollTrigger();
   const [state, setState] = useState({
     top: false,
@@ -90,7 +89,7 @@ const Nav: React.FC<Props> = (props) => {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}>
       <List>
-        {!!user ? (
+        {!!user && !!auth ? (
           <>
             <ListItem
               button

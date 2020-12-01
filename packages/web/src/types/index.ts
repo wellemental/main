@@ -171,7 +171,7 @@ export interface Content {
 
 export interface Teacher {
   id: string;
-  name: string; //Teachers;
+  name: Teachers;
   bio: string;
   photo: string;
   language: Languages;

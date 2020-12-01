@@ -7,7 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-
+import { slugify } from '../services/helpers';
 interface Props {
   teacher: Teacher;
 }
@@ -25,7 +25,8 @@ const TeacherCard: React.FC<Props> = ({ teacher }) => {
         width: '50%',
         display: 'inline-block',
       }}>
-      <CardActionArea onClick={() => history.push('/teacher', { teacher })}>
+      <CardActionArea
+        onClick={() => history.push(`/teacher/${slugify(teacher.name)}`)}>
         <Box>
           <CardMedia
             component="img"

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Tabs as MtTabs, Tab } from '@material-ui/core';
-import { MenuItem } from '../types';
 import AppBar from '@material-ui/core/AppBar';
 
 interface TabPanelProps {
@@ -10,11 +9,8 @@ interface TabPanelProps {
 }
 
 type Props = {
-  //   panels: any;
   centered?: boolean;
   tabs: { [key: string]: JSX.Element };
-  //   active: MenuItem;
-  //   setTab: React.Dispatch<MenuItem>;
 };
 
 const TabPanel = (props: TabPanelProps) => {

@@ -1,9 +1,15 @@
 import React from 'react';
-// import { Card, CardItem, Right, Body, H3 } from 'native-base';
-import Image from './Image';
 import { useHistory } from '../hooks';
 import Paragraph from './Paragraph';
 import { Category } from '../types';
+import {
+  Card,
+  Box,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+} from '@material-ui/core';
+import { slugify } from '../services/helpers';
 
 type Props = {
   category: Category;
@@ -13,42 +19,36 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
   const history = useHistory();
 
   return (
-    <Paragraph>Card will go here</Paragraph>
-    // <Card>
-    //   <CardItem
-    //     cardBody
-    //     button
-    //     onPress={() => navigation.navigate('Category', { category: category })}>
-    //     <Body
-    //       style={{
-    //         flex: 2,
-    //         justifyContent: 'space-around',
-    //         padding: 15,
-    //         paddingBottom: 15,
-    //       }}>
-    //       <H3>{category.title}</H3>
-    //       {category.description && (
-    //         <Paragraph>{category.description}</Paragraph>
-    //       )}
-    //     </Body>
-    //     <Right style={{ flex: 1, marginLeft: 10 }}>
-    //       <Image
-    //         source={
-    //           typeof category.image === 'string'
-    //             ? {
-    //                 uri: category.image,
-    //               }
-    //             : category.image
-    //         }
-    //         style={{
-    //           height: 120,
-    //           width: 120,
-    //           borderRadius: 20,
-    //         }}
-    //       />
-    //     </Right>
-    //   </CardItem>
-    // </Card>
+    <Card
+      style={{
+        padding: '0px',
+        borderRadius: '20px',
+        marginBottom: '15px',
+      }}>
+      <CardActionArea
+        onClick={() => history.push(`/category/${slugify(category.title)}`)}>
+        <Box display="flex" flexDirection="row">
+          <CardContent style={{ flex: 1, padding: '20px 20px 5px' }}>
+            <Paragraph variant="subtitle2" noWrap>
+              {category.title}
+            </Paragraph>
+
+            {category.description && (
+              <Paragraph>{category.description}</Paragraph>
+            )}
+          </CardContent>
+
+          <CardMedia
+            component="img"
+            alt={category.title}
+            height="125px"
+            image={category.image}
+            title={category.title}
+            style={{ width: '125px', borderRadius: '20px' }}
+          />
+        </Box>
+      </CardActionArea>
+    </Card>
   );
 };
 

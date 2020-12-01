@@ -130,4 +130,8 @@ export const Español = {
   'An inclusive space for kids to breathe.': 'Subscribe',
   'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.':
     'Recibe accesso ilimitado a nuestro contenido con una subscripcion annual o mensual.',
+  'Friends & Family': 'Amigos y Familia',
+  'Check your email for a reset password link.':
+    'Revise su correo electrónico para obtener un enlace para restablecer la contraseña.',
+  'See all languages': 'Ver todos los idiomas',
 };
