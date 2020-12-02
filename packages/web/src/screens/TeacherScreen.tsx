@@ -6,13 +6,11 @@ import { Teacher } from '../types';
 
 const TeacherScreen: React.FC = () => {
   const { teachers } = useContent();
-  const match = useRouteMatch('teacher');
+  const match = useRouteMatch();
 
   let teacher: Teacher | null = null;
-  if (!teacher) {
-    if (teachers) {
-      teacher = teachers[capitalize(match)];
-    }
+  if (teachers) {
+    teacher = teachers[capitalize(match)];
   }
 
   return !teacher ? (

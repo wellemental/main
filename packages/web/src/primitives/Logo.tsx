@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Logo: React.FC<Props> = ({ width, ...props }) => {
-  const classes = useStyles(props);
+  const classes = useStyles({ width });
   const history = useHistory();
 
   return (

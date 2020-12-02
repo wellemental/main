@@ -3,6 +3,7 @@ export * from './useQuery';
 export * from './useMutation';
 export * from './useRouteMatch';
 export * from './useCache';
+export * from './useLead';
 export * from './useContent';
 export * from './useLocation';
 export * from './useDepends';

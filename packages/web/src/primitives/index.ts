@@ -10,6 +10,7 @@ export { default as ContentCard } from './ContentCard';
 export { default as ToggleButtons } from './ToggleButtons';
 export { default as CategoryCard } from './CategoryCard';
 export { default as Spinner } from './Spinner';
+export { default as SupportEmail } from './SupportEmail';
 export { default as Nav } from './Nav';
 export { default as Favorite } from './Favorite';
 export { default as AvyName } from './AvyName';

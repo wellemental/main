@@ -1,13 +1,5 @@
 import React from 'react';
-// import { TouchableOpacity, Linking } from 'react-native';
-import {
-  PageHeading,
-  // Container,
-  ContentLoop,
-  CategoryCard,
-  Spinner,
-  Paragraph,
-} from '../primitives';
+import { PageHeading, ContentLoop, CategoryCard, Spinner } from '../primitives';
 import moment from 'moment';
 import { TimeOfDay, Category, Tags } from '../types';
 import { useCurrentUser, useContent } from '../hooks';

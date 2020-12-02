@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ReactPlayer from 'react-player';
 import { tracker } from '../services';
 import { TrackingEvents, Teacher, Content } from '../types';
-import { useHistory, useContent, useRouteMatch, useLocation } from '../hooks';
+import { useHistory, useContent, useRouteMatch } from '../hooks';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { PlayArrow as PlayIcon } from '@material-ui/icons';
 import { slugify } from '../services/helpers';
@@ -29,7 +29,7 @@ const ContentScreen: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
   const { teachers, content: allContent } = useContent();
-  const match = useRouteMatch('content');
+  const match = useRouteMatch();
 
   let teacher: Teacher | null = null;
   let content: Content | null = null;

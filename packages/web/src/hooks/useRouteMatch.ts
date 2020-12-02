@@ -1,8 +1,8 @@
 import { useRouteMatch as ogUseRouteMatch } from 'react-router-dom';
 
-export const useRouteMatch = (url: string): string => {
+export const useRouteMatch = (): string => {
   const match: { params: { route: string } } | null = ogUseRouteMatch(
-    `/${url}/:route`,
+    `/:base/:route`,
   );
   let route: string = '';
 
