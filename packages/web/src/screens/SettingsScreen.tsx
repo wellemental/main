@@ -7,6 +7,7 @@ import {
   Person as UserIcon,
   ExitToApp as LogoutIcon,
   ChevronRight,
+  CreditCard as CreditCardIcon,
 } from '@material-ui/icons';
 
 type SettingsLink = {
@@ -49,6 +50,11 @@ const SettingsScreen: React.FC = () => {
       label: translation['Select language'],
       onPress: () => handleNavigate('/language'),
       icon: <UserIcon />,
+    },
+    {
+      label: translation['Subscription'],
+      onPress: () => handleNavigate('/account'),
+      icon: <CreditCardIcon />,
     },
     // {
     //   label: translation.Subscription,

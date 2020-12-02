@@ -143,6 +143,7 @@ export interface User {
   // name: string;
   // birthday: string;
   language: Languages;
+  stripeId?: string;
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;

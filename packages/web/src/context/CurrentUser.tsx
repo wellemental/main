@@ -73,6 +73,7 @@ export const CurrentUserProvider = ({ children }: any) => {
             language: userData.language,
             // birthday: userData.birthday,
             favorites: userData.favorites,
+            stripeId: userData.stripeId,
             plan: userData.plan,
           };
 

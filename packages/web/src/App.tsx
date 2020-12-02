@@ -19,6 +19,7 @@ import {
   EditProfileScreen,
   SearchScreen,
   LibraryScreen,
+  AccountScreen,
   SettingsScreen,
 } from './screens';
 import Nav from './primitives/Nav';
@@ -52,6 +53,7 @@ function App() {
                     <Route path="/login" component={AuthScreen} />
                     <Route path="/friends" component={AuthScreen} />
                     <PrivateRoute path="/checkout" component={CheckoutScreen} />
+                    <PrivateRoute path="/account" component={AccountScreen} />
                     <Route path="/library" component={LibraryScreen} />
                     <Route path="/language" component={EditProfileScreen} />
                     <Route path="/search" component={SearchScreen} />

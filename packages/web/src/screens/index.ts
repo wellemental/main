@@ -6,6 +6,7 @@ export { default as FavoritesScreen } from './FavoritesScreen';
 export { default as LibraryScreen } from './LibraryScreen';
 export { default as PlansScreen } from './PlansScreen';
 export { default as SettingsScreen } from './SettingsScreen';
+export { default as AccountScreen } from './AccountScreen';
 export { default as EditProfileScreen } from './EditProfileScreen';
 export { default as SearchScreen } from './SearchScreen';
 export { default as TeacherScreen } from './TeacherScreen';
