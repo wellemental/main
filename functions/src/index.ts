@@ -1,39 +1,37 @@
-import * as functions from 'firebase-functions';
-// import { webhookListen, StripeEvent } from './stripe';
-import { validateIap, renewOrCancelSubscriptions } from './iap';
 import * as firebase from 'firebase-admin';
+import * as functions from 'firebase-functions';
+import {
+  webhookListen,
+  startSubscription,
+  cancelSubscription,
+  getBillingPortal,
+} from './stripe';
+import { updateUserPlan } from './user';
+import { validateIap, renewOrCancelSubscriptions } from './iap';
+import { StripeEvent } from './types';
 
 // Initialize Firebase
 firebase.initializeApp();
 
-// const onWebhookListen = webhookListen;
+const onWebhookListen = webhookListen;
+const onStartSubscription = functions.https.onCall(startSubscription);
+const onGetBillingPortal = functions.https.onCall(getBillingPortal);
+const onCancelSubscription = functions.https.onCall(cancelSubscription);
 
-// export const updatePlayerSubscription = (
-//   eventId: string,
-//   eventData: StripeEvent,
-// ): string => {
-//   // const user = firebase.firestore().collection('users').doc(user.uid);
+const onAddStripeEvent = functions.firestore
+  .document('stripe-events/{eventId}')
+  .onWrite((change, context) => {
+    const {
+      params: { eventId },
+    } = context;
+    let eventData = eventId;
+    if (change.after.exists) {
+      eventData = change.after.data() as StripeEvent;
+      return updateUserPlan(eventId, eventData);
+    }
 
-//   return eventId;
-// };
-
-// const onAddStripeEvent = functions.firestore
-//   .document('events/{eventId}')
-//   .onWrite((change, context) => {
-//     const {
-//       params: { eventId },
-//     } = context;
-//     let eventData = eventId;
-//     if (change.after.exists) {
-//       eventData = change.after.data() as StripeEvent;
-//       // return updatePlayerSubscription(eventId, eventData);
-//     }
-
-//     // if (eventData.cancel_at_period_end) {
-//     // }
-
-//     return Promise.resolve(eventData);
-//   });
+    return Promise.resolve(eventData);
+  });
 
 const onValidateIap = functions.https.onCall(validateIap);
 
@@ -43,8 +41,11 @@ const runRenewOrCancelSubs = functions.pubsub
   .onRun(renewOrCancelSubscriptions);
 
 export {
-  // onWebhookListen,
-  // onAddStripeEvent,
+  onWebhookListen,
+  onAddStripeEvent,
   onValidateIap,
   runRenewOrCancelSubs,
+  onStartSubscription,
+  onCancelSubscription,
+  onGetBillingPortal,
 };
