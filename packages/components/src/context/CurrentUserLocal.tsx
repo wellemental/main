@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 // import { auth, firestore } from 'services';
 import { Languages, UpdateUserService, User, UserProfile } from 'services';
-import firestore from '@react-native-firebase/firestore';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+// import firestore from '@react-native-firebase/firestore';
+// import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { firestore, auth, FbUser } from 'services';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { LocalStateService } from 'services';
@@ -28,7 +29,7 @@ export const CurrentUser = React.createContext<any>({
 });
 
 export const CurrentUserProvider = ({ children }: any) => {
-  const [currentAuth, setCurrentAuth] = useState<FirebaseAuthTypes.User | null>(
+  const [currentAuth, setCurrentAuth] = useState<FbUser | null>(
     auth().currentUser,
   );
   const [currentUser, setCurrentUser] = useState<User | null>(null);

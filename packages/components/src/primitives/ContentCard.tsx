@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { Content } from 'services';
 import AvyName from './AvyName';
 import Image from './Image';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '../hooks';
 import { Teacher } from 'services';
 import Paragraph from './Paragraph';
 
@@ -36,7 +36,7 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
             source={{
               uri: content.thumbnail,
             }}
-            style={{ height: 125, width: 125, flex: 1, borderRadius: 20 }}
+            style={{ height: 125, flex: 1, borderRadius: 20 }}
           />
         </Left>
         <Body

@@ -98,13 +98,13 @@ export const Español = {
   'Subscribe for $55 / yr': 'Suscribete por $55 / anu',
   'Tap the heart icon to favorite content':
     'Toca el icono de corazon para seleccionar contenido favorito ',
-  'Save your favorite videos': 'Save your favorite videos',
+  'Save your favorite videos': 'Guarda tus videos favoritos',
   Monthly: 'Mensual',
   Annual: 'Anual',
   'Content refreshed': 'Contenido actualizado',
   'One moment...': 'Un momento...',
   'Ask your parents': '¡Pregunta a tus padres!',
-  'What is 6 x 7?': 'Lo que es 6 x 7?',
+  'What is 9 x 11?': 'Lo que es 9 x 11?',
   'Please ask your parents to proceed': 'Pide a tus padres que continúen.',
   Answer: 'Tu respuesta',
   'You did it!': '¡Lo hiciste!',
@@ -121,4 +121,16 @@ export const Español = {
   '14–18 year olds': '14-18 años',
   'Resources for mindful development':
     'Recursos para el crecimiento consciente',
+  'Recurring billing. Cancel anytime for any reason.':
+    'La facturación es recurrente. Cancelar en cualquier momento.',
+  'By joining Wellemental you agree to our ': 'Al unirse Wellemental, acepta ',
+  'terms of use': 'los términos y condiciones',
+  'privacy policy': 'la política de privacidad',
+  and: 'y',
+  'An inclusive space for kids to breathe.': 'Subscribe',
+  'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.':
+    'Recibe accesso ilimitado a nuestro contenido con una subscripcion annual o mensual.',
+  'Check your email for a reset password link.':
+    'Revise su correo electrónico para obtener un enlace para restablecer la contraseña.',
+  'See all languages': 'Ver todos los idiomas',
 };

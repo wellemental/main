@@ -11,14 +11,12 @@ import {
 import moment from 'moment';
 import { TimeOfDay, Version } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
-import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 const HomeScreen: React.FC = () => {
-  const navigation = useNavigation();
   const today = moment();
-  const { translation, user } = useCurrentUser();
+  const { translation, activePlan } = useCurrentUser();
   const { features, error, updateAvailable } = useContent();
 
   // Determine Time of Day for header customization
@@ -66,7 +64,7 @@ const HomeScreen: React.FC = () => {
       title: translation['4–9 year olds'],
       description: translation['Elementary mindful practices'],
       image: require('../assets/images/age_4_9.png'),
-      tag: 'K-5',
+      tag: 'PreK-5',
     },
     {
       title: translation['10–14 year olds'],
@@ -118,10 +116,14 @@ const HomeScreen: React.FC = () => {
         <Spinner />
       )}
 
-      <PageHeading title={`${translation['Explore by age range']}`} />
-      {ageGroups.map((item, idx) => (
-        <CategoryCard key={idx} category={item} />
-      ))}
+      {activePlan && (
+        <>
+          <PageHeading title={`${translation['Explore by age range']}`} />
+          {ageGroups.map((item, idx) => (
+            <CategoryCard key={idx} category={item} />
+          ))}
+        </>
+      )}
     </Container>
   );
 };

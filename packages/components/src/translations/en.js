@@ -81,10 +81,10 @@ export const English = {
   'Get unlimited access to our content with an annual or monthly subscription.':
     'Get unlimited access to our content with an annual or monthly subscription.',
   'Or enter your access code': 'Or enter your access code',
-  '100+ meditation and yoga videos': '100+ meditation and yoga videos',
-  'Available in English and Spanish': 'Available in English and Spanish',
-  'Led by diverse teachers': 'Led by diverse teachers',
-  'Online or offline use': 'Online or offline use',
+  '100+ meditation and yoga videos': 'Explore 100+ mindful practices',
+  'Available in English and Spanish': 'Practice in English and Spanish',
+  'Led by diverse teachers': 'Learn from diverse teachers',
+  'Online or offline use': 'Breathe and move – online or offline',
   'Save for offline use': 'Save for offline use',
   mo: 'mo',
   yr: 'yr',
@@ -100,7 +100,7 @@ export const English = {
   'Content refreshed': 'Content refreshed',
   'One moment...': 'One moment...',
   'Ask your parents': 'Ask your parents!',
-  'What is 6 x 7?': 'What is 6 x 7?',
+  'What is 9 x 11?': 'What is 9 x 11?',
   'Please ask your parents to proceed': 'Please ask your parents to proceed.',
   Answer: 'Answer',
   'You did it!': 'You did it!',
@@ -115,4 +115,18 @@ export const English = {
     'Practices designed for middle-school learning',
   '14–18 year olds': '14–18 year olds',
   'Resources for mindful development': 'Resources for mindful development',
+  'Recurring billing. Cancel anytime for any reason.':
+    'Recurring billing. Cancel anytime for any reason.',
+  'By joining Wellemental you agree to our ':
+    'By joining Wellemental you agree to our ',
+  'terms of use': 'terms of use',
+  'privacy policy': 'privacy policy',
+  and: 'and',
+  'An inclusive space for kids to breathe.':
+    'An inclusive space for kids to breathe.',
+  'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.':
+    'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.',
+  'Check your email for a reset password link.':
+    'Check your email for a reset password link.',
+  'See all languages': 'See all languages',
 };

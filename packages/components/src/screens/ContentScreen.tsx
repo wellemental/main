@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
   Dimensions,
   ImageBackground,
   Image,
-  Animated,
 } from 'react-native';
 import { H1, Button as NBButton, Icon } from 'native-base';
 import {
@@ -21,6 +20,7 @@ import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { DownloadVideoService } from 'services';
 import FadeIn from 'react-native-fade-in-image';
+import { tracker, TrackingEvents } from 'services';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -28,24 +28,25 @@ type Props = {
 };
 
 const deviceWidth = Dimensions.get('window').width - 30;
-const deviceHeight = deviceWidth * 0.56;
+const videoHeight = deviceWidth * 0.56;
 
 const styles = StyleSheet.create({
   backgroundVideo: {
-    // position: 'absolute',
-    height: deviceHeight,
+    position: 'absolute',
+    top: 0,
+    height: videoHeight,
     width: deviceWidth,
   },
   nativeVideoControls: {
     top: 0,
-    height: '100%',
+    // height: '100%',
+    height: videoHeight,
     width: deviceWidth,
   },
   videoPoster: {
-    height: deviceHeight,
+    height: videoHeight,
     width: deviceWidth,
     justifyContent: 'center',
-    flex: 1,
     top: 0,
     position: 'absolute',
     backgroundColor: 'white',
@@ -61,8 +62,9 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const [isOver, toggleOver] = useState(false);
   const [showPoster, togglePoster] = useState(true);
   const [error, setError] = useState();
+  const [isPaused, togglePaused] = useState(true);
 
-  if (showPoster && currentTime > 0) {
+  if (showPoster && (currentTime > 0 || !isPaused)) {
     togglePoster(false);
   }
 
@@ -75,6 +77,12 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
       navigation.navigate('Celebration');
     }
   }, [isOver]);
+
+  // useEffect(() => {
+  //   if (showPoster && (currentTime > 0 || !isPaused)) {
+  //     togglePoster(false);
+  //   }
+  // }, [isPaused, showPoster]);
 
   const service = new DownloadVideoService();
 
@@ -108,23 +116,24 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   return (
     <Container>
       {content.video_orientation === 'portrait' ? (
-        <View style={{ width: deviceWidth, height: deviceHeight }}>
+        <View style={{ width: deviceWidth, height: videoHeight }}>
           <ImageBackground
             source={{ uri: content.thumbnail }}
             style={{
-              height: deviceHeight,
+              height: videoHeight,
               width: deviceWidth,
               justifyContent: 'center',
               flex: 1,
             }}>
             <NBButton
-              onPress={() =>
+              onPress={() => {
+                tracker.track(TrackingEvents.PlayVideo);
                 navigation.navigate('Video', {
                   content,
                   teacher,
                   savedVideoPath: video,
-                })
-              }
+                });
+              }}
               style={{
                 backgroundColor: 'rgba(112,113,118,.95)', //'#707176', //'rgba(0,0,0,.5)',
                 borderRadius: 40,
@@ -137,7 +146,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           </ImageBackground>
         </View>
       ) : (
-        <View style={{ width: deviceWidth, height: deviceHeight }}>
+        <View style={{ width: deviceWidth, height: videoHeight }}>
           <Video
             source={{
               uri: content.video, //content.video,
@@ -150,7 +159,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             playInBackground={true}
             ignoreSilentSwitch="ignore"
             resizeMode="cover"
-            paused={true}
+            paused={isPaused}
             poster={content.thumbnail}
             posterResizeMode="cover"
             onBuffer={onBuffer}
@@ -158,21 +167,34 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             onLoad={onLoad}
             onError={handleError} // Callback when video cannot be loaded
           />
-          {showPoster && (
-            <FadeIn style={styles.videoPoster}>
-              <Image
-                source={{ uri: content.thumbnail }}
-                style={styles.videoPoster}
-              />
-            </FadeIn>
+          {showPoster && isPaused && (
+            <View style={styles.videoPoster}>
+              <FadeIn style={styles.videoPoster}>
+                <Image
+                  source={{ uri: content.thumbnail }}
+                  style={styles.videoPoster}
+                />
+              </FadeIn>
+              <NBButton
+                onPress={() => {
+                  tracker.track(TrackingEvents.PlayVideo);
+                  togglePaused(!isPaused);
+                }}
+                style={{
+                  backgroundColor: 'rgba(112,113,118,.95)', //'#707176', //'rgba(0,0,0,.5)',
+                  borderRadius: 40,
+                  height: 60,
+                  width: 60,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="play" style={{ fontSize: 30 }} />
+              </NBButton>
+            </View>
           )}
         </View>
       )}
 
-      {/* <Image
-        source={{ uri: content.thumbnail }}
-        style={{ height: 200, width: null, flex: 1 }}
-      /> */}
       <Box row justifyContent="space-between" gt={2} gb={1}>
         <H1 style={{ flex: 4 }}>{content.title}</H1>
         <Box row style={{ flex: 1 }}>

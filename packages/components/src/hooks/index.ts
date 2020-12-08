@@ -7,4 +7,4 @@ export * from './useContent';
 export * from './useDepends';
 export * from './useIap';
 export * from './useConfig';
-export * from './useNavigation';
+export { useNavigation } from './useNavigation';

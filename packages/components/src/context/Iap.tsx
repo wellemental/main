@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Platform, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Platform } from 'react-native';
 import RNIap, {
   InAppPurchase,
   PurchaseError,
@@ -10,8 +10,8 @@ import RNIap, {
   purchaseUpdatedListener,
 } from 'react-native-iap';
 // import { setActivePlan } from '../actions';
-import functions from '@react-native-firebase/functions';
-import { LocalStateService, logger } from 'services';
+// import functions from '@react-native-firebase/functions';
+import { LocalStateService, logger, functions } from 'services';
 import { useCurrentUser } from '../hooks';
 
 export const IAPContext: React.Context<any> = React.createContext({

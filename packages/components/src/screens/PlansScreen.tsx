@@ -73,6 +73,7 @@ const PlansScreen: React.FC = () => {
     translation['Online or offline use'],
   ];
 
+  // Sync products from IAP, required for usage
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -144,10 +145,10 @@ const PlansScreen: React.FC = () => {
         }}>
         <Container scrollEnabled color="rgba(0,0,0,0)">
           <PageHeading
-            title={translation.Subscribe}
+            title={translation['An inclusive space for kids to breathe.']}
             subtitle={
               translation[
-                'Get unlimited access to our content with an annual or monthly subscription.'
+                'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.'
               ]
             }
           />
@@ -289,10 +290,11 @@ const PlansScreen: React.FC = () => {
         source={require('../assets/images/grass.png')}
         style={{
           position: 'absolute',
-          left: 0,
+          left: -3,
           right: 0,
-          bottom: -10,
-          width: deviceWidth,
+          bottom: 0,
+          width: deviceWidth + 3,
+          height: deviceWidth * 0.16,
         }}
       />
     </View>

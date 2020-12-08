@@ -6,17 +6,20 @@ import {
   User,
   UserProfile,
   LocalStateService,
-  logger,
 } from 'services';
-import firestore from '@react-native-firebase/firestore';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import {
+  firestore,
+  DocumentSnapshot,
+  auth,
+  // FbUser,
+} from 'services';
+import { Unsubscriber } from '../types';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { Spinner } from '../primitives';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 const localStateService = new LocalStateService();
-const profileService = new UpdateUserService();
 
 export const CurrentUser = React.createContext<any>({
   currentUser: {
@@ -34,7 +37,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [creatingUser, setCreatingUser] = useState(false);
-  const [error, setError] = useState('');
 
   // const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
   //   null,
@@ -132,7 +134,7 @@ export const CurrentUserProvider = ({ children }: any) => {
     userDocUnsubscriber.current = firestore()
       .collection('users')
       .doc(user.uid)
-      .onSnapshot((snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
+      .onSnapshot((snapshot: DocumentSnapshot) => {
         // If user just signed up, save their user data to database
         // if (!snapshot.exists) {
         //   setCreatingUser(true);

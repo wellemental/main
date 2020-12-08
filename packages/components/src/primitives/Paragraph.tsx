@@ -7,7 +7,7 @@ import {
   RegisteredStyle,
   Text,
 } from 'react-native';
-import variables from '../assets/native-base-theme/variables/wellemental';
+import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 
 export interface ParagraphProps {
   style?: RecursiveArray<false | TextStyle | RegisteredStyle<TextStyle>>;
@@ -34,7 +34,7 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
       lineHeight: 22,
       paddingTop: gv ? spacing * gv : gt ? spacing * gt : 0,
       paddingBottom: gv ? spacing * gv : gb ? spacing * gb : 0,
-      color: variables.textColor,
+      color: brandColors.textColor,
       textAlign: center ? 'center' : 'left',
     },
     style,

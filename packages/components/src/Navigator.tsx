@@ -39,8 +39,19 @@ const AuthStackScreen: React.FC = () => {
   );
 };
 
+const linking = {
+  prefixes: ['https://wellemental.com', 'wellemental://'],
+  config: {
+    screens: {
+      Home: '',
+      Profile: ':id/profile',
+      Settings: ':id/blog',
+    },
+  },
+};
+
 const Navigator: React.FC = () => {
-  const { auth, user } = useCurrentUser();
+  const { user } = useCurrentUser();
 
   return (
     <NavigationContainer>
@@ -72,14 +83,6 @@ const Navigator: React.FC = () => {
               component={CelebrationScreen}
               options={{
                 headerShown: false,
-                // headerStyle: {
-                //   backgroundColor: '#000',
-                //   shadowOpacity: 0,
-                // },
-                // headerTintColor: '#fff',
-                // cardStyle: {
-                //   backgroundColor: '#000',
-                // },
               }}
             />
             <Stack.Screen name="Plans" component={PlansScreen} />

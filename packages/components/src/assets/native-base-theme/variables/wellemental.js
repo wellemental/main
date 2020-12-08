@@ -70,7 +70,7 @@ export default {
 
   // Button
   buttonFontFamily: platform === PLATFORM.IOS ? 'Inter' : 'Inter',
-  buttonDisabledBg: this.textColor,
+  buttonDisabledBg: brandColors.textColor,
   buttonPadding: 6,
   get buttonPrimaryBg() {
     return this.brandPrimary;

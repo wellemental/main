@@ -10,7 +10,7 @@ const TeacherScreen: React.FC<Props> = ({ route }) => {
   const { teacher } = route.params;
 
   return (
-    <Container>
+    <Container scrollEnabled>
       {/* <SearchBar value={searchTerm} setState={setSearchTerm} /> */}
       <PageHeading
         title={`I'm ${teacher.name}!`}

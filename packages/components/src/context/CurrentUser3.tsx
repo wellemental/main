@@ -1,18 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
-// import { auth, firestore } from 'services';
 import { User } from 'services';
 import { Unsubscriber } from '../types';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+// import firestore, {
+//   FirebaseFirestoreTypes,
+// } from '@react-native-firebase/firestore';
+// import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { firestore, DocumentSnapshot, auth, FbUser } from 'services';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 
 export const CurrentUser = React.createContext<any>({ currentUser: null });
 
 export const CurrentUserProvider = ({ children }: any) => {
-  const [currentAuth, setCurrentAuth] = useState<FirebaseAuthTypes.User | null>(
+  const [currentAuth, setCurrentAuth] = useState<FbUser | null>(
     auth().currentUser,
   );
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -51,11 +51,11 @@ export const CurrentUserProvider = ({ children }: any) => {
     };
   }, []);
 
-  const subscribeToUserDoc = async (user: FirebaseAuthTypes.User) => {
+  const subscribeToUserDoc = async (user: FbUser) => {
     userDocUnsubscriber.current = firestore()
       .collection('users')
       .doc(user.uid)
-      .onSnapshot(async (snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
+      .onSnapshot(async (snapshot: DocumentSnapshot) => {
         const userData = snapshot.data();
 
         // If user isn't logged in or doc doesn't exist

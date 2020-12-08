@@ -9,7 +9,6 @@ import {
   Box,
   LegalLinks,
 } from '../primitives';
-import moment from 'moment';
 import { AuthScreenRouteProp, Translations } from '../types';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
@@ -30,7 +29,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   const [auths, setAuths] = useState<null | string[]>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [name, setName] = useState<string>('');
+  // const [name, setName] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
   // const minBirthday = moment().subtract(13, 'years').toDate();
@@ -67,7 +66,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
       password,
       // birthday: moment(birthday).format('YYYY-MM-DD'),
       language,
-      name,
+      // name,
     };
 
     if (password.length < 7) {

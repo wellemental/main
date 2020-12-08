@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardItem, Right, Body, H3 } from 'native-base';
 import Image from './Image';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '../hooks';
 import Paragraph from './Paragraph';
 import { Category } from 'services';
 

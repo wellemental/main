@@ -13,11 +13,16 @@ type Props = {
 };
 const PageHeading: React.FC<Props> = ({ title, subtitle, avatar, center }) => {
   const insets = useSafeAreaInsets();
+  let pt = 35;
+
+  if (insets.top === 0) {
+    pt = 25;
+  }
 
   return (
     <View
       style={{
-        paddingTop: insets.top === 0 ? 25 : 35,
+        paddingTop: pt,
         paddingHorizontal: 5,
         paddingBottom: 25,
         alignItems: center ? 'center' : 'flex-start',

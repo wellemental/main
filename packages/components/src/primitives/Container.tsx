@@ -1,16 +1,17 @@
 import { NativeBase } from 'native-base';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 type ContainerProps = {
+  style: CSSProperties;
   noPadding?: 'vertical' | 'horizontal' | 'none';
   color?: string;
   center?: boolean;
   scrollEnabled?: boolean;
 };
 
-const Container: React.FC<ContainerProps & NativeBase.Content> = ({
+const Container: React.FC<ContainerProps> = ({
   style,
   scrollEnabled = false,
   children,

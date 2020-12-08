@@ -1,16 +1,8 @@
-import {
-  Form,
-  Label,
-  Toast,
-  Text,
-  Button as NBButton,
-  Segment,
-} from 'native-base';
+import { Form, Toast, Text, Button as NBButton, Segment } from 'native-base';
 import React, { useState } from 'react';
 import {
   Container,
   Error,
-  Input,
   Box,
   PageHeading,
   Button,
@@ -23,16 +15,11 @@ import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width - 30;
 
-type Props = {
-  requiredPrompt: boolean;
-};
-
-const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
+const EditProfileScreen: React.FC = () => {
   const { auth, user, translation } = useCurrentUser();
   // const [name, setName] = useState(user.name);
   const [language, setLanguage] = useState(user.language);
   // const [birthday, setBirthday] = useState(user.birthday);
-  const [error, setError] = useState('');
 
   // Only submit what's changed upon saving
   const newProfile: UserProfile = {};
@@ -111,11 +98,11 @@ const EditProfileScreen: React.FC<Props> = ({ requiredPrompt }) => {
             onPress={handleUpdate}
             loading={loading}
             disabled={!language}
-            danger
+            warning
             text={translation['Save Changes']}
           />
         </Box>
-        <Error error={error || mutateError} />
+        <Error error={mutateError} />
       </Form>
     </Container>
   );

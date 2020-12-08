@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Dimensions, Image } from 'react-native';
 import { H1 } from 'native-base';
-import { Button } from '../primitives';
+import { Button } from '.';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
-import Video from 'react-native-video';
+import RnVideo from 'react-native-video';
 import FadeIn from 'react-native-fade-in-image';
 
 type Props = {
@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
 });
 
 const Video: React.FC<Props> = ({ navigation, route }) => {
-  const { content, teacher } = route.params;
-  const [video, setVideo] = useState(content.video);
+  const { content } = route.params;
+  // const [video, setVideo] = useState(content.video);
   const [videoRef, setVideoRef] = useState();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(content.seconds);

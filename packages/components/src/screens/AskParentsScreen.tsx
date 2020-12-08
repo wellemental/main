@@ -1,39 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, ImageBackground, View } from 'react-native';
-import { H2, H1, Card, CardItem, Body, Input, Item } from 'native-base';
-import {
-  Box,
-  Container,
-  Button,
-  Paragraph,
-  Error,
-  Spinner,
-  PageHeading,
-} from '../primitives';
-import { useCurrentUser, useIap } from '../hooks';
-import RNIap, { requestSubscription } from 'react-native-iap';
-import { Platform } from 'react-native';
-import { PromoCodeService, logger } from 'services';
-import styled from 'styled-components';
-import variables from '../assets/native-base-theme/variables/wellemental';
+import React, { useState } from 'react';
+import { ImageBackground, View } from 'react-native';
+import { H1, Card, CardItem, Body, Input, Item } from 'native-base';
+import { Container, Button, Error } from '../primitives';
+import { useCurrentUser } from '../hooks';
 import { deviceHeight, deviceWidth } from 'services';
 import { brandColors } from '../assets/native-base-theme/variables/wellemental';
+import { tracker, TrackingEvents } from 'services';
 
 type Props = {
   setLock: React.Dispatch<boolean>;
 };
 
 const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
-  const { auth, user, translation } = useCurrentUser();
+  const { translation } = useCurrentUser();
   const [error, setError] = useState('');
 
   const [answer, setAnswer] = useState<number>();
 
   const handleAnswer = () => {
     setError('');
-    if (+answer === 42) {
+    if (+answer === 99) {
+      tracker.track(TrackingEvents.AskParentsSucceed);
       setLock(false);
     } else {
+      tracker.track(TrackingEvents.AskParentsFail);
       setError(translation['Please ask your parents to proceed']);
     }
   };
@@ -68,12 +58,11 @@ const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
             <CardItem>
               <Body style={{ paddingVertical: 20, paddingHorizontal: 10 }}>
                 <H1 style={{ alignSelf: 'center' }}>
-                  {translation['What is 6 x 7?']}
+                  {translation['What is 9 x 11?']}
                 </H1>
 
                 <Item inlineLabel style={{ marginVertical: 25 }}>
                   <Input
-                    // label={translation.Answer}
                     value={answer}
                     autoFocus
                     type="number"
@@ -95,11 +84,10 @@ const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
                   text={translation.Submit}
                   onPress={handleAnswer}
                 />
+                <Error center error={error} />
               </Body>
             </CardItem>
           </Card>
-
-          <Error error={error} center />
         </Container>
       </ImageBackground>
     </View>
