@@ -1,7 +1,7 @@
-// import { firestore } from '../base';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
+// import { firestore, FirebaseFirestoreTypes } from '../base';
 import { Content, ContentServiceType } from '../types';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';

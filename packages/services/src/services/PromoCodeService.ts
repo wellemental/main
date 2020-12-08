@@ -1,3 +1,4 @@
+// import { firestore } from '../base';
 import firestore from '@react-native-firebase/firestore';
 import { ApplicationError, InvalidPromoCodeError } from '../models/Errors';
 import { UserProfile, PromoCodeServiceType, PromoCode } from '../types';

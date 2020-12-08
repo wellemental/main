@@ -1,3 +1,4 @@
+// import { FirebaseFirestoreTypes } from '../base';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Logger } from './LoggerService';
 import { Tracker } from './TrackerService';

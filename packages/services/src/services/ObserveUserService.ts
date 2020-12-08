@@ -1,4 +1,5 @@
 // import { firestore } from '../base';
+// import { firestore, auth, FbUser, DocumentSnapshot } from '../base';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { User as FBUser } from 'firebase/app';
 import firestore, {
@@ -18,10 +19,10 @@ export interface ObserveUserServiceType {
 // NOT CURRENTLY USING, KEPT IT ALL IN CURRENT USER CONTEXT
 
 class ObserveUserService implements ObserveUserServiceType {
-  private language: FirebaseAuthTypes.User | null = null;
+  private language: FbUser | null = null;
   private setLanguage: React.SetStateAction<Languages>;
   private languageUnsubscriber?: () => void;
-  private auth: FirebaseAuthTypes.User | null = null;
+  private auth: FbUser | null = null;
   private authUnsubscriber?: () => void;
   private user?: User;
   private userUnsubscriber?: () => void;
@@ -44,9 +45,7 @@ class ObserveUserService implements ObserveUserServiceType {
     if (this.userUnsubscriber) this.userUnsubscriber();
   }
 
-  private authStateChanged = async (
-    newAuth: FirebaseAuthTypes.User | null,
-  ): Promise<void> => {
+  private authStateChanged = async (newAuth: FbUser | null): Promise<void> => {
     if (!auth) {
       this.user = undefined;
       this.auth = null;
@@ -66,7 +65,7 @@ class ObserveUserService implements ObserveUserServiceType {
     }
   };
 
-  private observeUser = (user: FirebaseAuthTypes.User): void => {
+  private observeUser = (user: FbUser): void => {
     if (this.userUnsubscriber) this.userUnsubscriber();
 
     this.userUnsubscriber = collection
@@ -75,7 +74,7 @@ class ObserveUserService implements ObserveUserServiceType {
   };
 
   private userStateChanged = async (
-    snapshot: FirebaseFirestoreTypes.DocumentSnapshot,
+    snapshot: DocumentSnapshot,
   ): Promise<void> => {
     const userData = snapshot.data() as User;
 
@@ -102,7 +101,7 @@ class ObserveUserService implements ObserveUserServiceType {
     };
   };
 
-  private authChanged = (newAuth: FirebaseAuthTypes.User): boolean => {
+  private authChanged = (newAuth: FbUser): boolean => {
     if (!this.auth) return true;
 
     if (

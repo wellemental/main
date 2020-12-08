@@ -1,5 +1,6 @@
-import defaultValues from '../services/RemoteConfigDefaults';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+// import defaultValues from '../services/RemoteConfigDefaults';
+// import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { firestore, FirebaseFirestoreTypes } from '../base';
 
 export type Translations = { [key: string]: string };
 
@@ -158,8 +159,8 @@ export interface Content {
   length: string;
   language: Languages;
   status: ContentStatus;
-  updated_at: FirebaseFirestoreTypes.Timestamp;
-  created_at: FirebaseFirestoreTypes.Timestamp; //typeof firestore.Timestamp;
+  updated_at: firestore.Timestamp;
+  created_at: firestore.Timestamp; //typeof firestore.Timestamp;
 }
 
 export interface Teacher {
@@ -168,7 +169,7 @@ export interface Teacher {
   bio: string;
   photo: string;
   language: Languages;
-  updated_at: FirebaseFirestoreTypes.Timestamp;
+  updated_at: firestore.Timestamp;
 }
 
 export interface AllTeachers {
@@ -179,7 +180,7 @@ export interface UserProfile {
   // name?: string;
   // birthday?: string;
   language?: Languages;
-  updated_at?: FirebaseFirestoreTypes.Timestamp;
+  updated_at?: firestore.Timestamp;
 }
 
 export interface NewAccount {
@@ -216,7 +217,7 @@ export interface ContentServiceType {
   getLatestUpdate(): Promise<Date>;
 }
 
-type PromoCode = {
+export type PromoCode = {
   id: string;
   code: string;
   limit: number;
@@ -259,6 +260,10 @@ export enum TrackingEvents {
   PlayVideo = 'play_video',
   Favorite = 'favorite',
   Unfavorite = 'unfavorite',
+  DownloadVideo = 'download_video',
+  UndownloadVideo = 'undownload_video',
+  AskParentsFail = 'ask_parents_fail',
+  AskParentsSucceed = 'ask_parents_succeed',
 }
 
 export interface TrackingService {

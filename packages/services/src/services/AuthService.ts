@@ -1,8 +1,7 @@
-import React from 'react';
 // import { auth } from '../base';
-import { AuthenticationError } from '../models/Errors';
 import auth from '@react-native-firebase/auth';
-import { NewAccount, LocalUser } from '../types';
+import { AuthenticationError } from '../models/Errors';
+import { NewAccount } from '../types';
 import LocalStateService from './LocalStateService';
 import UpdateUserService from './UpdateUserService';
 import logger from './LoggerService';

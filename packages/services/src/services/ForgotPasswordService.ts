@@ -1,5 +1,5 @@
 import auth from '@react-native-firebase/auth';
-
+// import { auth } from '../base';
 import { AuthenticationError } from '../models/Errors';
 import tracker, { TrackingEvents } from './TrackerService';
 

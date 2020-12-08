@@ -1,3 +1,6 @@
+// import remoteConfig, {
+//   FirebaseRemoteConfigTypes,
+// } from '../base';
 import remoteConfig, {
   FirebaseRemoteConfigTypes,
 } from '@react-native-firebase/remote-config';

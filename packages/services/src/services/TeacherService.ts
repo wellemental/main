@@ -1,4 +1,4 @@
-// import { firestore } from '../base';
+// import { firestore, FirebaseFirestoreTypes } from '../base';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';

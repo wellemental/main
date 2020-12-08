@@ -1,4 +1,3 @@
-import Config from 'react-native-config';
 import analytics from '@react-native-firebase/analytics';
 import { TrackingEvents, TrackingService } from '../types';
 

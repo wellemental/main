@@ -1,11 +1,7 @@
-import React from 'react';
-import {
-  DownloadVideoServiceType,
-  DownloadProgressCallbackResult,
-} from '../types';
-import { ApplicationError } from '../models/Errors';
+import { DownloadVideoServiceType } from '../types';
 import logger from '../services/LoggerService';
 import RNFS, { DownloadResult } from 'react-native-fs';
+import tracker, { TrackingEvents } from './TrackerService';
 
 class DownloadVideoService implements DownloadVideoServiceType {
   private convertUrlToFileName = (videoUrl: string): string => {
@@ -45,10 +41,11 @@ class DownloadVideoService implements DownloadVideoServiceType {
       background: true,
     })
       .promise.then((res) => {
-        console.log('File Downloaded', res);
+        tracker.track(TrackingEvents.DownloadVideo);
+        logger.info(`File Downloaded: ${res}`);
       })
       .catch((err) => {
-        console.log('err downloadFile', err);
+        logger.error(`Err downloadFile: ${err}`);
       });
   }
 
@@ -75,6 +72,7 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
     try {
       const res = await RNFS.unlink(path_name);
+      tracker.track(TrackingEvents.UndownloadVideo);
       logger.info(`File Deleted - ${res}`);
       return Promise.resolve();
     } catch (err) {

@@ -3,6 +3,7 @@ import { ApplicationError } from '../models/Errors';
 import { LocalUser, LocalContent, UserProfile } from '../types';
 import logger from './LoggerService';
 import firestore from '@react-native-firebase/firestore';
+// import { firestore } from '../base';
 
 class LocalStateService {
   public async resetStorage(): Promise<void> {

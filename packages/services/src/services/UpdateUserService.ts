@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+// import { firestore } from '../base';
 import { ApplicationError } from '../models/Errors';
 import { UserProfile, UpdateUserServiceType, InitialUserDoc } from '../types';
 import logger from './LoggerService';
@@ -40,12 +41,10 @@ class UpdateUserService implements UpdateUserServiceType {
           tracker.track(TrackingEvents.Unfavorite);
         }
       } catch (error) {
-        console.log('FAV ERROR', error);
         logger.error('Failed to favorite content');
         throw new ApplicationError('Unable to fav content');
       }
     } catch (err) {}
-    console.log('FAV ERROR 2', err);
     return Promise.resolve();
   }
 

@@ -1,5 +1,6 @@
 import Config from 'react-native-config';
 import analytics from '@react-native-firebase/analytics';
+// import { analytics } from '../base';
 
 export interface Logger {
   error(msg: string): void;
