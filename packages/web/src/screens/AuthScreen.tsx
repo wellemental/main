@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Box, Card, CardContent, Collapse } from '@material-ui/core';
-import { Button, Input, Paragraph, Headline, Error, Page } from '../primitives';
+import {
+  Button,
+  Input,
+  Paragraph,
+  Headline,
+  Error,
+  Page,
+  Spinner,
+} from '../primitives';
 import AuthService from '../services/AuthService';
 import { Languages, Translations } from '../types';
-import { useLocation } from '../hooks';
+import { useLocation, useCurrentUser } from '../hooks';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
-// import moment from 'moment';
-// import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
-// import MomentUtils from '@date-io/moment';
-// import logger from '../services/LoggerService';
-// import { fireFbEvent, fireGaEvent } from '../services/AnalyticsService';
 
 type Props = {
   redirect?: string | null | undefined;
@@ -22,6 +25,7 @@ const service = new AuthService();
 
 const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   const history = useHistory();
+  const { user, loading: userLoading } = useCurrentUser();
   const [auths, setAuths] = useState<null | string[]>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -31,7 +35,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   const { state, location } = useLocation();
   const language = state && state.language;
 
-  const isFriends = location.pathname === '/friends' ? true : false;
+  const isFriends = location.pathname === '/friends';
 
   const translation: Translations =
     language && language === Languages.Es ? Español : English;
@@ -82,32 +86,12 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
     try {
       await service.signup(newAccount);
       setError('Success');
-      history.push(redirect ? redirect : '/access-code');
+      history.push(isFriends ? '/access-code' : redirect ? redirect : '/');
     } catch (err) {
       setError(err);
     }
     setLoading(false);
   };
-
-  // const handleSignup = useCallback(async () => {
-  //   setLoading(true);
-
-  //   if (password.length < 7) {
-  //     setError('Password must be at least 7 characters long.');
-  //     setLoading(false);
-  //     return;
-  //   }
-
-  //   try {
-  //     await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-  //     history.push(redirect ? redirect : '/access-code');
-  //   } catch (err) {
-  //     //   logger.error(`Unable to Signup from website – ${err}`);
-  //     setError(err);
-  //     setLoading(false);
-  //   }
-  // }, [history, email, password, redirect]);
 
   let handleStep: any = handleCheckEmail;
   let headline: string = 'Enter email...';
@@ -123,8 +107,15 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
     headline = 'Login';
   }
 
-  return (
-    <Page>
+  // If user is logged in & isn't currently logging in, then redirect to homepage
+  if (user && !loading) {
+    history.push('/');
+  }
+
+  return userLoading ? (
+    <Spinner />
+  ) : (
+    <Page noNav>
       <Card elevation={0}>
         <CardContent>
           {isFriends && (

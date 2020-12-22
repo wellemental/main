@@ -74,7 +74,7 @@ const CheckoutScreen: React.FC = () => {
 
             // fireGaEvent('User', 'Start Trial');
 
-            history.push(`/download?trial=${plan.trialLength}`);
+            history.push(`/download`);
           })
           .catch((err) => {
             logger.error(`Error starting subscription - ${err}`);
@@ -131,14 +131,7 @@ const CheckoutScreen: React.FC = () => {
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
-                Amount Paid Now
-              </TableCell>
-              <TableCell align="right">$0</TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell component="th" scope="row">
-                Monthly cost after trial
+                Payment
               </TableCell>
               <TableCell align="right">${plan.price}</TableCell>
             </TableRow>

@@ -54,7 +54,7 @@ type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const Nav: React.FC<Props> = (props) => {
   const classes = useStyles();
-  const { user, auth } = useCurrentUser();
+  const { user, auth, activePlan, translation } = useCurrentUser();
   const history = useHistory();
   // const trigger = useScrollTrigger();
   const [state, setState] = useState({
@@ -106,7 +106,7 @@ const Nav: React.FC<Props> = (props) => {
                     component="span"
                     variant="body2"
                     color="textSecondary">
-                    View Account
+                    {translation['Account']}
                   </Typography>
                 }
               />
@@ -117,19 +117,26 @@ const Nav: React.FC<Props> = (props) => {
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
-              <ListItemText primary="Sign Out" />
+              <ListItemText primary={translation.Logout} />
             </ListItem>
           </>
         ) : (
-          <ListItemLink to="/login" primary="Login" icon={<LogoutIcon />} />
+          <ListItemLink
+            to="/login"
+            primary={translation.Login}
+            icon={<LogoutIcon />}
+          />
         )}
 
         <Divider />
-        <ListItemLink to="/" primary="Home" />
-        <ListItemLink to="/library" primary="Library" />
-        <ListItemLink to="/favorites" primary="Favorites" />
-        <ListItemLink to="/search" primary="Search" />
-        <ListItemLink to="/about" primary="About" />
+        <ListItemLink to="/" primary={translation.Home} />
+        <ListItemLink to="/library" primary={translation.Library} />
+        {activePlan && (
+          <>
+            <ListItemLink to="/favorites" primary={translation.Favorites} />
+            <ListItemLink to="/search" primary={translation.Search} />
+          </>
+        )}
         <Divider />
         <ListItem
           button
@@ -141,7 +148,7 @@ const Nav: React.FC<Props> = (props) => {
           </ListItemIcon> */}
 
           <ListItemText
-            primary="Contact Us"
+            primary={translation['Contact Us']}
             secondary={
               <Typography
                 component="span"
@@ -156,7 +163,7 @@ const Nav: React.FC<Props> = (props) => {
     </div>
   );
 
-  return (
+  return user ? (
     <>
       <AppBar color="transparent" position="relative" className={classes.root}>
         <Toolbar className={classes.toolbar}>
@@ -189,7 +196,7 @@ const Nav: React.FC<Props> = (props) => {
         {list(anchor)}
       </Drawer>
     </>
-  );
+  ) : null;
 };
 
 export default Nav;

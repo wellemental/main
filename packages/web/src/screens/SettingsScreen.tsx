@@ -34,17 +34,6 @@ const SettingsScreen: React.FC = () => {
     }
   };
 
-  //   const confirmLogout = (): void => {
-  //     Alert.alert('Logout', 'Are you sure you want to logout?', [
-  //       {
-  //         text: translation['Yes, Logout'],
-  //         style: 'destructive',
-  //         onPress: handleLogout,
-  //       },
-  //       { text: translation.Cancel, style: 'cancel' },
-  //     ]);
-  //   };
-
   const list: SettingsLink[] = [
     {
       label: translation['Select language'],
@@ -56,12 +45,6 @@ const SettingsScreen: React.FC = () => {
       onPress: () => handleNavigate('/account'),
       icon: <CreditCardIcon />,
     },
-    // {
-    //   label: translation.Subscription,
-    //   onPress: () => handleNavigate('Plans'),
-    //   iconName: 'cart',
-    // },
-    // { label: 'Refresh User', onPress: getDbUser, iconName: 'refresh' },
     { label: translation.Logout, onPress: handleLogout, icon: <LogoutIcon /> },
   ];
 

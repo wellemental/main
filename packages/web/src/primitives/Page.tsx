@@ -25,12 +25,14 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   children: ReactNode | HTMLCollection;
   fullPage?: boolean;
+  noNav?: boolean;
   disableGutters?: boolean;
 }
 
 const Page: React.FC<Props & ContainerProps> = ({
   children,
   fullPage,
+  noNav,
   disableGutters,
 }) => {
   const classes = useStyles();
@@ -42,7 +44,10 @@ const Page: React.FC<Props & ContainerProps> = ({
         maxWidth="xs"
         component="main"
         disableGutters={disableGutters ? disableGutters : false}>
-        <Grid container className={`${fullPage ? '' : classes.center}`}>
+        <Grid
+          container
+          className={`${fullPage ? '' : classes.center}`}
+          style={{ height: noNav ? '100vh' : 'inherit' }}>
           <Grid xs={12} item>
             {children}
           </Grid>

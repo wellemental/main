@@ -12,7 +12,7 @@ interface Props {
 }
 
 const AccountScreen: React.FC<Props> = ({ history }) => {
-  const { user } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const [error, setError] = useState('');
   const [redirecting, setRedirecting] = useState(true);
 
@@ -38,7 +38,7 @@ const AccountScreen: React.FC<Props> = ({ history }) => {
   }, []);
 
   return redirecting ? (
-    <Spinner />
+    <Spinner text={translation['One moment...']} />
   ) : error ? (
     <Page>
       <Card>

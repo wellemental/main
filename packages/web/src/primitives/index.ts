@@ -7,6 +7,7 @@ export { default as Page } from './Page';
 export { default as Logo } from './Logo';
 export { default as PageHeading } from './PageHeading';
 export { default as ContentCard } from './ContentCard';
+export { default as ContentCardWide } from './ContentCardWide';
 export { default as ToggleButtons } from './ToggleButtons';
 export { default as CategoryCard } from './CategoryCard';
 export { default as Spinner } from './Spinner';

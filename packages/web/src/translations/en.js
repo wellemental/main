@@ -46,6 +46,8 @@ export const English = {
   'Your Favorites': 'Your Favorites',
   Signup: 'Signup',
   Login: 'Login',
+  'What is your email?': 'What is your email?',
+  'Create Account': 'Create Account',
   'Creating account...': 'Creating account...',
   'Error. Please try again.': 'Error. Please try again.',
   'Password must be at least 7 characters long.':
@@ -73,7 +75,7 @@ export const English = {
   Subscription: 'Subscription',
   'Promo code': 'Promo code',
   'Promo code?': 'Promo code?',
-  'Access code?': 'Access code?',
+  'Access code?': 'Have an access code?',
   'Access code': 'Access code',
   'No results': 'No results',
   'New account?': 'New account?',
@@ -130,4 +132,9 @@ export const English = {
   'Check your email for a reset password link.':
     'Check your email for a reset password link.',
   'See all languages': 'See all languages',
+  'Click below to get started.': 'Click below to get started.',
+  'Download iOS': 'Download iOS',
+  'Go To Homepage': 'Go To Homepage',
+  'One moment...': 'One moment...',
+  'Contact Us': 'Contact Us',
 };

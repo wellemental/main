@@ -59,6 +59,7 @@ const EditProfileScreen: React.FC = () => {
 
         <Box mt={2}>
           <Button
+            fullWidth
             onClick={handleUpdate}
             loading={loading}
             disabled={!language}

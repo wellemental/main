@@ -4,6 +4,7 @@ import { Unsubscriber, Languages, User } from '../types';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { Spinner } from '../primitives';
+import moment from 'moment';
 
 export const CurrentUser = React.createContext<any>({
   currentUser: {
@@ -38,9 +39,11 @@ export const CurrentUserProvider = ({ children }: any) => {
 
       // If user logged in, get CurrentUser
       if (user) {
+        setLoading(true);
         subscribeToUserDoc(user);
       } else {
         setCurrentUser(null);
+        setLoading(false);
       }
 
       // If app.tsx unmounts, cleanup all subscriptions
@@ -68,13 +71,15 @@ export const CurrentUserProvider = ({ children }: any) => {
         if (snapshot) {
           const userData = snapshot.data();
 
+          console.log('userData', userData);
+
           const userDoc: User = {
-            // name: userData.name,
-            language: userData.language,
-            // birthday: userData.birthday,
-            favorites: userData.favorites,
-            stripeId: userData.stripeId,
-            plan: userData.plan,
+            language:
+              userData && userData.language ? userData.language : Languages.En,
+            favorites: userData && userData.favorites ? userData.favorites : {},
+            stripeId:
+              userData && userData.stripeId ? userData.stripeId : undefined,
+            plan: userData && userData.plan ? userData.plan : undefined,
           };
 
           setCurrentUser(userDoc);
@@ -103,7 +108,8 @@ export const CurrentUserProvider = ({ children }: any) => {
             ? false
             : currentUser &&
               currentUser.plan &&
-              currentUser.plan.status === 'active',
+              (currentUser.plan.nextRenewalUnix > moment().unix() ||
+                currentUser.plan.type === 'promoCode'),
       }}>
       {children}
     </CurrentUser.Provider>

@@ -1,54 +1,262 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, MouseEvent, useEffect } from 'react';
 import {
   Box,
   Button,
   Paragraph,
+  Headline,
   Error,
   Input,
   Spinner,
   LegalLinks,
   PageHeading,
 } from '../primitives';
+import { useLead, useHistory } from '../hooks';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Link from '@material-ui/core/Link';
+import MuiButton from '@material-ui/core/Button';
+import { Check as CheckIcon } from '@material-ui/icons';
 import { useCurrentUser } from '../hooks';
-import RNIap, { requestSubscription } from 'react-native-iap';
-import { Platform } from 'react-native';
-import { PromoCodeService, logger } from 'services';
+// import RNIap, { requestSubscription } from 'react-native-iap';
+// import { Platform } from 'react-native';
+import { PromoCodeService } from '../services';
+import logger from '../services/LoggerService';
 // import styled from 'styled-components';
 // import AskParentsScreen from './AskParentsScreen';
-import { deviceWidth, deviceHeight } from 'services';
+// import { deviceWidth, deviceHeight } from 'services';
 import { brandColors } from '../assets/styles/theme';
+import { makeStyles } from '@material-ui/core/styles';
+import { plans, PlanPrice } from '../context/Lead';
 
-// const PlanSelect = styled(TouchableOpacity)`
-//   flex: 1;
-//   border-color: #999;
-//   border-width: 3px;
-//   border-radius: 8px;
-//   align-items: center;
-//   color: #999;
-//   padding: 20px 5px;
-//   margin-bottom: 20px;
-//   background-color: white;
-// `;
-
-// const Header2 = styled(H2)`
-//   color: ${brandColors.brandPrimary};
-// `;
-
-// // defining IAP SKUs by platform in `constants.ts`
-// export const IAP_SKUS = Platform.select({
-//   ios: ['wellemental_pro', 'wellemental_pro_year'],
-// });
-
-// export enum PlanId {
-//   Monthly = 'wellemental_pro',
-//   Yearly = 'wellemental_pro_year',
-//   Free = 'free',
-//   Group = 'group',
-// }
+export enum PlanId {
+  Monthly = 'wellemental_pro',
+  Yearly = 'wellemental_pro_year',
+  Free = 'free',
+  Group = 'group',
+}
 
 const PlansScreen: React.FC = () => {
+  const { auth, user, translation, activePlan } = useCurrentUser();
+  const [error, setError] = useState('');
+  const [products, setProducts] = useState([]);
+  const [selectedPlan, setSelectedPlan] = useState();
+
+  // Plan Selection
+  const { plan, setPlan } = useLead();
+  const history = useHistory();
+  const availPlans = ['monthly', 'yearly'];
+  const [pickedPlan, pickPlan] = useState<string>(
+    plan ? plan.id : availPlans[0],
+  );
+
+  if (activePlan) {
+    history.push('/library');
+  }
+
+  const selectPlan = (event: MouseEvent<HTMLElement>, newPlan: string) => {
+    pickPlan(newPlan);
+  };
+
+  useEffect(() => {
+    if (pickedPlan) {
+      setPlan(pickedPlan);
+    }
+  }, [pickedPlan]);
+
+  const bullets = [
+    translation['100+ meditation and yoga videos'],
+    translation['Available in English and Spanish'],
+    translation['Led by diverse teachers'],
+    translation['Save your favorite videos'],
+    translation['Online or offline use'],
+  ];
+
+  // Handle new subscription request
+  // const handleSubscription = async (plan: PlanId) => {
+  //   setSelectedPlan(plan);
+  //   try {
+  //     setError('');
+  //   } catch (err) {
+  //     setError(err);
+  //   }
+  // };
+
+  // Input Promo Code
+  const [promoCode, setPromoCode] = useState('');
+  const [showAccessDisplay, toggleDisplay] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
+
+  const handlePromoCode = async () => {
+    const service = new PromoCodeService();
+    try {
+      await service.validateAndUpgrade(auth.uid, promoCode);
+      setUpgrading(true);
+    } catch (err) {
+      setError(err);
+    }
+  };
   //
-  return <Paragraph>Plans Screen will go here</Paragraph>;
+  return upgrading ? (
+    <Spinner text={translation['One moment...']} />
+  ) : (
+    <Box
+      style={{
+        flex: 1,
+
+        // backgroundColor: brandColors.skyBlue,
+      }}>
+      <Box>
+        <Button
+          // disabled={processing}
+          // loading={processing}
+          fullWidth
+          style={{
+            marginBottom: '-30px',
+          }}
+          color="secondary"
+          variant="text"
+          text={
+            showAccessDisplay
+              ? translation['New account?']
+              : translation['Access code?']
+          }
+          onClick={() => toggleDisplay(!showAccessDisplay)}
+        />
+        <PageHeading
+          title={translation['An inclusive space for kids to breathe.']}
+          subtitle={
+            translation[
+              'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.'
+            ]
+          }
+        />
+
+        <Box mb={2}>
+          {bullets.map((bullet) => (
+            <Box display="flex" flexDirection="row" key={bullet} mb={0.5}>
+              <CheckIcon
+                style={{ color: brandColors.brandWarning, marginRight: '5px' }}
+              />
+
+              <Paragraph key={bullet}>{bullet}</Paragraph>
+            </Box>
+          ))}
+        </Box>
+
+        {!showAccessDisplay ? (
+          <>
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              mb={2}>
+              <Link
+                underline="none"
+                onClick={(e: MouseEvent<HTMLElement>) =>
+                  selectPlan(e, 'monthly')
+                }
+                style={{
+                  marginRight: 5,
+                  borderColor:
+                    pickedPlan === 'monthly'
+                      ? brandColors.brandWarning
+                      : brandColors.lightTextColor,
+                  borderWidth: '3px',
+                  borderStyle: 'solid',
+                  borderRadius: '6px',
+                  width: '48%',
+                  padding: '15px',
+                }}>
+                <Headline center variant="h5">
+                  {translation.Monthly}
+                </Headline>
+                <Paragraph center color="primary">
+                  $6.99 / {translation.mo}
+                </Paragraph>
+                <Paragraph
+                  center
+                  style={{
+                    color: 'white',
+                  }}>
+                  ***
+                </Paragraph>
+              </Link>
+
+              <Link
+                underline="none"
+                onClick={(e: MouseEvent<HTMLElement>) =>
+                  selectPlan(e, 'yearly')
+                }
+                style={{
+                  borderColor:
+                    pickedPlan === 'yearly'
+                      ? brandColors.brandWarning
+                      : brandColors.lightTextColor,
+                  borderWidth: '3px',
+                  borderStyle: 'solid',
+                  borderRadius: '6px',
+                  width: '48%',
+                  padding: '15px',
+                }}>
+                <Headline center variant="h5">
+                  {translation.Annual}
+                </Headline>
+                <Paragraph center color="primary">
+                  $59.99 / {translation.yr}
+                </Paragraph>
+                <Paragraph fine center>
+                  $4.58 / {translation.mo}
+                </Paragraph>
+              </Link>
+            </Box>
+            <Button
+              fullWidth
+              onClick={() => history.push('/checkout')}
+              text={translation.Subscribe}
+            />
+            <Box mt={3}>
+              <LegalLinks subs />
+            </Box>
+          </>
+        ) : (
+          <>
+            <Input
+              label={translation['Access code']}
+              value={promoCode}
+              autoFocus
+              // onChange={setPromoCode}
+              changeState={setPromoCode}
+              onKeyPress={() => handlePromoCode()}
+              autoCapitalize="none"
+              // autoCorrect={false}
+            />
+            <Box mt={2}>
+              <Button
+                fullWidth
+                // disabled={processing}
+                text={translation.Submit}
+                onClick={() => handlePromoCode()}
+              />
+            </Box>
+          </>
+        )}
+
+        <Error error={error} />
+
+        {/* </ImageBackground> */}
+        {/* <Image
+        source={require('../assets/images/grass.png')}
+        style={{
+          position: 'absolute',
+          left: -3,
+          right: 0,
+          bottom: 0,
+          width: deviceWidth + 3,
+          height: deviceWidth * 0.16,
+        }}
+      /> */}
+      </Box>
+    </Box>
+  );
 };
 
 export default PlansScreen;

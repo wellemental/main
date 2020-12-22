@@ -10,6 +10,7 @@ import {
   PromoCodeScreen,
   HomeScreen,
   PrivateRoute,
+  PlansScreen,
   CheckoutScreen,
   ContentScreen,
   ForgotPasswordScreen,
@@ -48,25 +49,36 @@ function App() {
                 <Nav />
                 <Page fullPage>
                   <Switch>
-                    <Route path="/access-code" component={PromoCodeScreen} />
-                    <Route path="/download" component={DownloadScreen} />
+                    <PrivateRoute
+                      path="/access-code"
+                      component={PromoCodeScreen}
+                    />
+                    <PrivateRoute path="/download" component={DownloadScreen} />
                     <Route path="/login" component={AuthScreen} />
                     <Route path="/friends" component={AuthScreen} />
                     <PrivateRoute path="/checkout" component={CheckoutScreen} />
+                    <PrivateRoute path="/plans" component={PlansScreen} />
                     <PrivateRoute path="/account" component={AccountScreen} />
-                    <Route path="/library" component={LibraryScreen} />
-                    <Route path="/language" component={EditProfileScreen} />
-                    <Route path="/search" component={SearchScreen} />
-                    <Route path="/favorites" component={FavoritesScreen} />
-                    <Route path="/category" component={CategoryScreen} />
-                    <Route
+                    <PrivateRoute path="/library" component={LibraryScreen} />
+                    <PrivateRoute
+                      path="/language"
+                      component={EditProfileScreen}
+                    />
+                    <PrivateRoute pro path="/search" component={SearchScreen} />
+                    <PrivateRoute
+                      pro
+                      path="/favorites"
+                      component={FavoritesScreen}
+                    />
+                    <PrivateRoute path="/category" component={CategoryScreen} />
+                    <PrivateRoute
                       path="/forgot-password"
                       component={ForgotPasswordScreen}
                     />
-                    <Route path="/settings" component={SettingsScreen} />
-                    <Route path="/content" component={ContentScreen} />
-                    <Route path="/teacher" component={TeacherScreen} />
-                    <Route path="/" component={HomeScreen} />
+                    <PrivateRoute path="/settings" component={SettingsScreen} />
+                    <PrivateRoute path="/content" component={ContentScreen} />
+                    <PrivateRoute path="/teacher" component={TeacherScreen} />
+                    <PrivateRoute path="/" component={HomeScreen} />
                   </Switch>
                 </Page>
               </Router>

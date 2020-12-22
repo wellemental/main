@@ -40,6 +40,7 @@ export const ContentProvider = ({
     // !auth ? false : !content || !teachers ? true : false,
     !content || !teachers ? true : false,
   );
+
   const localUpdatedAt = useRef<Date | undefined>();
 
   const getDbContent = async () => {
@@ -62,19 +63,20 @@ export const ContentProvider = ({
   };
 
   useEffect(() => {
-    // if (user) {
-    const fetchContent = async (): Promise<void> => {
-      try {
-        await getDbContent();
-      } catch (err) {
-        logger.error('Error getting local content data');
-      }
-    };
+    if (user) {
+      const fetchContent = async (): Promise<void> => {
+        try {
+          await getDbContent();
+        } catch (err) {
+          logger.error('Error getting local content data');
+        }
+        setLoading(false);
+      };
 
-    if (!teachers || !content) {
+      if (!teachers || !content) {
+      }
+      fetchContent();
     }
-    fetchContent();
-    // }
   }, []);
 
   // Get Featured Content from Remote Config

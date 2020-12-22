@@ -1,12 +1,13 @@
 import React from 'react';
 import { Card } from '@material-ui/core';
-import { Button, Page, Headline, Paragraph } from '../primitives';
+import { Button, Page, Headline, Paragraph, Box } from '../primitives';
 import { Apple as AppleIcon } from '@material-ui/icons';
 import { Redirect } from 'react-router-dom';
-import { useCurrentUser } from '../hooks';
+import { useCurrentUser, useHistory } from '../hooks';
 
 const DownloadScreen: React.FC = () => {
-  const { auth } = useCurrentUser();
+  const { auth, translation } = useCurrentUser();
+  const history = useHistory();
 
   return !auth ? (
     <Redirect
@@ -18,12 +19,18 @@ const DownloadScreen: React.FC = () => {
     <Page>
       <Card elevation={0}>
         <Headline center gutterBottom>
-          Account upgraded!
+          You're In!
         </Headline>
         <Paragraph center gutterBottom>
-          Your account has received a complimentary upgrade giving you complete
-          access to Wellemental. Click below to download Wellemental on iOS.
+          {translation['Click below to get started.']}
         </Paragraph>
+        <Box mb={2}>
+          <Button
+            fullWidth
+            onClick={() => history.push('/home')}
+            text={translation['Go To Homepage']}
+          />
+        </Box>
         <Button
           fullWidth
           onClick={() => {

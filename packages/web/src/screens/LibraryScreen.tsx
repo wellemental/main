@@ -23,24 +23,13 @@ const LibraryScreen: React.FC = () => {
     [translation.Teachers]: <TeacherLoop />,
   };
 
-  // const [tab, setTab] = useState(tabs[0]);
-
-  return !activePlan ? (
+  return activePlan ? (
     <>
       <Box my={1}>
         <PageHeading title={translation["Let's Practice."]} />
       </Box>
 
       <Tabs tabs={tabs} />
-
-      {/* {tab.label === translation.Teachers ? (
-        <TeacherLoop scrollEnabled />
-      ) : (
-        <ContentLoop
-          hasPadding
-          filter={tab.filter === 'All' ? undefined : tab.filter}
-        />
-      )} */}
     </>
   ) : (
     <PlansScreen />
