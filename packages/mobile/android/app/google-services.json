@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "424491558890",
+    "firebase_url": "https://prod-wellemental.firebaseio.com",
+    "project_id": "prod-wellemental",
+    "storage_bucket": "prod-wellemental.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424491558890:android:20fae535eb91c034523493",
+        "android_client_info": {
+          "package_name": "com.wellemental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424491558890-8sj8qfu1cumded6goqjusbpai14nm8jq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJRt8WOSvoN96AKegABQ66r-wSblXEfjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424491558890-8sj8qfu1cumded6goqjusbpai14nm8jq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "424491558890-5eibqukou77crilb2q49lvfpkvt8qh8s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wellemental",
+                "app_store_id": "1531397725"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

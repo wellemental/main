@@ -1,4 +1,4 @@
-package com.wellemental.wellemental;
+package com.wellemental;
 
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
