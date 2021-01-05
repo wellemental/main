@@ -139,6 +139,7 @@ export const Español = {
   'Click below to get started.': 'Haga clic a continuación para comenzar.',
   'Download iOS': 'Descargar iOS',
   'Go To Homepage': 'Ir a la página de inicio',
-  'One moment...': 'Un momento...',
   'Contact Us': 'Contact Us',
+  'Enter email...': 'Entra tu correo electrónico...',
+  'Back to Login': 'Regresar',
 };

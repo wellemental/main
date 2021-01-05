@@ -47,7 +47,7 @@ function App() {
             <Elements stripe={stripePromise}>
               <Router history={history}>
                 <Nav />
-                <Page fullPage>
+                <Page fullPage background="general">
                   <Switch>
                     <PrivateRoute
                       path="/access-code"
@@ -71,7 +71,7 @@ function App() {
                       component={FavoritesScreen}
                     />
                     <PrivateRoute path="/category" component={CategoryScreen} />
-                    <PrivateRoute
+                    <Route
                       path="/forgot-password"
                       component={ForgotPasswordScreen}
                     />

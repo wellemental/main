@@ -27,9 +27,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   useEffect(() => {
     // On mount, subscribe to auth and playerDoc listeners
     const authUnsubscriber = firebase.auth().onAuthStateChanged((user) => {
-      // if (!localState) {
-      //   setLoading(true);
-      // }
       setCurrentAuth(user);
 
       // Unsubscribe from previous userDoc listener if exists
@@ -70,8 +67,6 @@ export const CurrentUserProvider = ({ children }: any) => {
         // Build user doc
         if (snapshot) {
           const userData = snapshot.data();
-
-          console.log('userData', userData);
 
           const userDoc: User = {
             language:

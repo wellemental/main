@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spinner } from '../primitives';
 import { TeacherService, ContentService } from '../services';
 import { AllTeachers, Content as ContentType, Features } from '../types';
@@ -12,7 +12,6 @@ interface ContentContext {
   loading: boolean;
   rcLoading?: boolean;
   features: Features | undefined;
-  status: string[];
   getDbContent?: () => void;
 }
 
@@ -23,7 +22,6 @@ export const Content = React.createContext<ContentContext>({
   loading: false,
   rcLoading: false,
   features: undefined,
-  status: [],
 });
 
 export const ContentProvider = ({
@@ -34,14 +32,11 @@ export const ContentProvider = ({
   const [content, setContent] = useState<ContentType[] | null>(null);
   const [teachers, setTeachers] = useState<AllTeachers | null>(null);
   const [error, setError] = useState('');
-  const [statuses, setStatus] = useState([]);
   const { user } = useCurrentUser();
   const [loading, setLoading] = useState(
     // !auth ? false : !content || !teachers ? true : false,
     !content || !teachers ? true : false,
   );
-
-  const localUpdatedAt = useRef<Date | undefined>();
 
   const getDbContent = async () => {
     // Get teachers and content from firestore
@@ -95,7 +90,6 @@ export const ContentProvider = ({
         loading: loading,
         rcLoading: rcLoading,
         error,
-        status: statuses,
         getDbContent,
       }}>
       {children}

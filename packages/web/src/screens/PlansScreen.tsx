@@ -11,21 +11,11 @@ import {
   PageHeading,
 } from '../primitives';
 import { useLead, useHistory } from '../hooks';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Link from '@material-ui/core/Link';
-import MuiButton from '@material-ui/core/Button';
 import { Check as CheckIcon } from '@material-ui/icons';
 import { useCurrentUser } from '../hooks';
-// import RNIap, { requestSubscription } from 'react-native-iap';
-// import { Platform } from 'react-native';
 import { PromoCodeService } from '../services';
-import logger from '../services/LoggerService';
-// import styled from 'styled-components';
-// import AskParentsScreen from './AskParentsScreen';
-// import { deviceWidth, deviceHeight } from 'services';
 import { brandColors } from '../assets/styles/theme';
-import { makeStyles } from '@material-ui/core/styles';
-import { plans, PlanPrice } from '../context/Lead';
 
 export enum PlanId {
   Monthly = 'wellemental_pro',
@@ -35,10 +25,8 @@ export enum PlanId {
 }
 
 const PlansScreen: React.FC = () => {
-  const { auth, user, translation, activePlan } = useCurrentUser();
+  const { auth, translation, activePlan } = useCurrentUser();
   const [error, setError] = useState('');
-  const [products, setProducts] = useState([]);
-  const [selectedPlan, setSelectedPlan] = useState();
 
   // Plan Selection
   const { plan, setPlan } = useLead();
@@ -101,26 +89,25 @@ const PlansScreen: React.FC = () => {
     <Box
       style={{
         flex: 1,
-
-        // backgroundColor: brandColors.skyBlue,
       }}>
       <Box>
-        <Button
-          // disabled={processing}
-          // loading={processing}
-          fullWidth
-          style={{
-            marginBottom: '-30px',
-          }}
-          color="secondary"
-          variant="text"
-          text={
-            showAccessDisplay
-              ? translation['New account?']
-              : translation['Access code?']
-          }
-          onClick={() => toggleDisplay(!showAccessDisplay)}
-        />
+        <Box mt={2}>
+          <Button
+            fullWidth
+            style={{
+              marginBottom: '-30px',
+            }}
+            color="secondary"
+            variant="text"
+            text={
+              showAccessDisplay
+                ? translation['New account?']
+                : translation['Access code?']
+            }
+            onClick={() => toggleDisplay(!showAccessDisplay)}
+          />
+        </Box>
+
         <PageHeading
           title={translation['An inclusive space for kids to breathe.']}
           subtitle={

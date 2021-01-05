@@ -6,6 +6,7 @@ import {
   ContainerProps,
 } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { imageDir } from '../models/Image';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,6 +28,7 @@ interface Props {
   fullPage?: boolean;
   noNav?: boolean;
   disableGutters?: boolean;
+  background?: 'general' | 'grass';
 }
 
 const Page: React.FC<Props & ContainerProps> = ({
@@ -34,16 +36,32 @@ const Page: React.FC<Props & ContainerProps> = ({
   fullPage,
   noNav,
   disableGutters,
+  background,
+  ...props
 }) => {
   const classes = useStyles();
 
+  const bgStyle = background
+    ? {
+        backgroundImage:
+          background === 'general'
+            ? `url(${imageDir.bgGeneral.source.safari})`
+            : `url(${imageDir.bgGrass.source.safari})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        minHeight: '100vh',
+      }
+    : {};
+
   return (
-    <>
+    <div style={bgStyle}>
       <CssBaseline />
       <Container
         maxWidth="xs"
         component="main"
-        disableGutters={disableGutters ? disableGutters : false}>
+        disableGutters={disableGutters ? disableGutters : false}
+        {...props}>
         <Grid
           container
           className={`${fullPage ? '' : classes.center}`}
@@ -53,7 +71,7 @@ const Page: React.FC<Props & ContainerProps> = ({
           </Grid>
         </Grid>
       </Container>
-    </>
+    </div>
   );
 };
 

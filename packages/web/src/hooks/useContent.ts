@@ -11,7 +11,6 @@ export const useContent = () => {
     rcLoading: contentContext.rcLoading,
     features: contentContext.features,
     error: contentContext.error,
-    status: contentContext.status,
     getDbContent: contentContext.getDbContent,
   };
 };

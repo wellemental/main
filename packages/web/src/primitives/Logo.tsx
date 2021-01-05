@@ -12,6 +12,7 @@ type Props = {
 const useStyles = makeStyles((theme: Theme) => ({
   logo: (props: Props) => ({
     width: props.width ? props.width : 200,
+    paddingTop: '5px',
     [theme.breakpoints.up('md')]: {
       width: 150,
     },

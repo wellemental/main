@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Tabs,
   //   Container,
@@ -8,7 +8,7 @@ import {
   TeacherLoop,
 } from '../primitives';
 import { PlansScreen } from '../screens';
-import { Tags, MenuItem } from '../types';
+import { Tags } from '../types';
 import { useCurrentUser } from '../hooks';
 
 const LibraryScreen: React.FC = () => {

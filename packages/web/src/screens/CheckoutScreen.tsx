@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { StripeCardElement, StripeCardElementOptions } from '@stripe/stripe-js';
-import { Page, Input, Button, SupportEmail, Avatar } from '../primitives';
+import { Page, Input, Button, SupportEmail } from '../primitives';
 import { useCurrentUser, useHistory, useLead } from '../hooks';
 import app from '../base';
 import logger from '../services/LoggerService';
@@ -109,7 +109,7 @@ const CheckoutScreen: React.FC = () => {
 
   return (
     <Page fullPage disableGutters>
-      <Box mb={3} mx={2}>
+      <Box mb={3} mx={2} mt={4}>
         <Typography align="center" variant="h4">
           Checkout
         </Typography>

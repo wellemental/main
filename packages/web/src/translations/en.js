@@ -135,6 +135,7 @@ export const English = {
   'Click below to get started.': 'Click below to get started.',
   'Download iOS': 'Download iOS',
   'Go To Homepage': 'Go To Homepage',
-  'One moment...': 'One moment...',
   'Contact Us': 'Contact Us',
+  'Enter email...': 'Enter email...',
+  'Back to Login': 'Back to Login',
 };

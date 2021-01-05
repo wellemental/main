@@ -1,13 +1,4 @@
-// import { firestore } from '../base';
-// import firestore, {
-//   FirebaseFirestoreTypes,
-// } from '@react-native-firebase/firestore';
-import firebase, {
-  QueryDocumentSnapshot,
-  DocumentSnapshot,
-  Query,
-  DocumentData,
-} from '../base';
+import firebase, { QueryDocumentSnapshot } from '../base';
 import { Content, ContentServiceType } from '../types';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';

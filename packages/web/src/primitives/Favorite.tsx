@@ -8,6 +8,7 @@ import {
   FavoriteBorder as FavBorder,
 } from '@material-ui/icons';
 import { brandColors } from '../assets/styles/theme';
+import logger from '../services/LoggerService';
 
 interface Props {
   contentId: string;
@@ -24,7 +25,7 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
   );
   const Icon = isFav ? FavIcon : FavBorder;
 
-  const [error, setError] = useState('');
+  // const [error, setError] = useState('');
 
   const service = new UpdateUserService();
   const { loading, mutate } = useMutation(() =>
@@ -35,7 +36,8 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
     try {
       mutate();
     } catch (err) {
-      setError('Error');
+      // setError('Error');
+      logger.error('Error favoriting item');
     }
   };
 

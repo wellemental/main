@@ -7,7 +7,7 @@ import { useCurrentUser, useContent } from '../hooks';
 const HomeScreen: React.FC = () => {
   const today = moment();
   const { translation, activePlan } = useCurrentUser();
-  const { features, rcLoading } = useContent();
+  const { features } = useContent();
 
   // Determine Time of Day for header customization
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;

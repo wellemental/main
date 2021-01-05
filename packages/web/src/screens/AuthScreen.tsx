@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Box, Card, CardContent, Collapse } from '@material-ui/core';
 import {
@@ -94,17 +94,20 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   };
 
   let handleStep: any = handleCheckEmail;
-  let headline: string = 'Enter email...';
-  // let step: string = 'verifyEmail';
+  const [headline, setHeadline] = useState('Enter email...');
+
+  useEffect(() => {
+    if (auths && auths.length === 0) {
+      setHeadline('Create Account');
+    } else if (auths && auths.length > 0) {
+      setHeadline('Login');
+    }
+  }, [auths]);
 
   if (auths && auths.length === 0) {
-    // step = 'signup';
     handleStep = handleSignup;
-    headline = 'Create Account';
   } else if (auths && auths.length > 0 && password) {
-    // step = 'login';
     handleStep = handleLogin;
-    headline = 'Login';
   }
 
   // If user is logged in & isn't currently logging in, then redirect to homepage
@@ -115,7 +118,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   return userLoading ? (
     <Spinner />
   ) : (
-    <Page noNav>
+    <Page noNav disableGutters>
       <Card elevation={0}>
         <CardContent>
           {isFriends && (
@@ -129,6 +132,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
           <Input
             id="email-input"
             autoFocus
+            InputProps={{ style: { fontSize: '17px' } }}
             label={translation.Email}
             type="email"
             value={email}

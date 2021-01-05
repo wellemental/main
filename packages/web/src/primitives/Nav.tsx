@@ -8,7 +8,7 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemIcon,
+  // ListItemIcon,
   ListItemText,
   Slide,
   Box,
@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 import {
   Menu as MenuIcon,
-  AccountCircle as UserIcon,
+  // AccountCircle as UserIcon,
   ExitToApp as LogoutIcon,
 } from '@material-ui/icons';
 import ListItemLink from './ListItemLink';
@@ -89,38 +89,7 @@ const Nav: React.FC<Props> = (props) => {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}>
       <List>
-        {!!user && !!auth ? (
-          <>
-            <ListItem
-              button
-              onClick={() => history.push('/settings')}
-              alignItems="flex-start">
-              <ListItemIcon>
-                <UserIcon />
-              </ListItemIcon>
-
-              <ListItemText
-                primary={auth.email}
-                secondary={
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    color="textSecondary">
-                    {translation['Account']}
-                  </Typography>
-                }
-              />
-            </ListItem>
-            {/* <Divider /> */}
-
-            <ListItem button onClick={() => app.auth().signOut()}>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary={translation.Logout} />
-            </ListItem>
-          </>
-        ) : (
+        {!user && !!auth && (
           <ListItemLink
             to="/login"
             primary={translation.Login}
@@ -128,7 +97,6 @@ const Nav: React.FC<Props> = (props) => {
           />
         )}
 
-        <Divider />
         <ListItemLink to="/" primary={translation.Home} />
         <ListItemLink to="/library" primary={translation.Library} />
         {activePlan && (
@@ -137,16 +105,36 @@ const Nav: React.FC<Props> = (props) => {
             <ListItemLink to="/search" primary={translation.Search} />
           </>
         )}
+        {!!user && !!auth && (
+          <>
+            <ListItem
+              button
+              onClick={() => history.push('/settings')}
+              alignItems="flex-start">
+              <ListItemText
+                primary={translation['Account']}
+                // secondary={
+                //   <Typography
+                //     component="span"
+                //     variant="body2"
+                //     color="textSecondary">
+                //     {auth.email}
+                //   </Typography>
+                // }
+              />
+            </ListItem>
+
+            <ListItem button onClick={() => app.auth().signOut()}>
+              <ListItemText primary={translation.Logout} />
+            </ListItem>
+          </>
+        )}
         <Divider />
         <ListItem
           button
           onClick={() => {
             window.location.href = 'mailto:hello@wellemental.co';
           }}>
-          {/* <ListItemIcon>
-            <MailIcon />
-          </ListItemIcon> */}
-
           <ListItemText
             primary={translation['Contact Us']}
             secondary={
