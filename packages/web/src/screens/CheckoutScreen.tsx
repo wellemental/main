@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { StripeCardElement, StripeCardElementOptions } from '@stripe/stripe-js';
-import { Page, Input, Button, SupportEmail } from '../primitives';
+import { Input, Button, SupportEmail } from '../primitives';
 import { useCurrentUser, useHistory, useLead } from '../hooks';
 import app from '../base';
 import logger from '../services/LoggerService';
@@ -53,7 +53,7 @@ const CheckoutScreen: React.FC = () => {
 
       if (error) {
         setError(
-          'Error occurred. Please try again. If problem persists, email hello@mentalhealthleague.com',
+          'Error occurred. Please try again. If problem persists, email hello@wellemental.co',
         );
         setLoading(false);
       }
@@ -79,7 +79,7 @@ const CheckoutScreen: React.FC = () => {
           .catch((err) => {
             logger.error(`Error starting subscription - ${err}`);
             setError(
-              'There was an error creating your subscription. Please try again. If problem persists, email hello@mentalhealthleague.com.',
+              'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.',
             );
             setLoading(false);
           });
@@ -108,7 +108,7 @@ const CheckoutScreen: React.FC = () => {
   const [stripeLoading, setStripeLoading] = useState(true);
 
   return (
-    <Page fullPage disableGutters>
+    <Box>
       <Box mb={3} mx={2} mt={4}>
         <Typography align="center" variant="h4">
           Checkout
@@ -187,7 +187,7 @@ const CheckoutScreen: React.FC = () => {
               variant="contained"
               color="secondary"
               fullWidth
-              text="Start Trial"
+              text="Submit Payment"
             />
           </Box>
         </form>
@@ -208,7 +208,7 @@ const CheckoutScreen: React.FC = () => {
       <Box mx={2}>
         <SupportEmail />
       </Box>
-    </Page>
+    </Box>
   );
 };
 

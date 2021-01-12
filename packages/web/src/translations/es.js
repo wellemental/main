@@ -142,4 +142,12 @@ export const Español = {
   'Contact Us': 'Contact Us',
   'Enter email...': 'Entra tu correo electrónico...',
   'Back to Login': 'Regresar',
+  'Open the Settings app.': 'Abre la app Configuración.',
+  'Tap your name.': 'Toca tu nombre.',
+  'Tap Subscriptions.': 'Toca Suscripciones.',
+  'Tap the subscription that you want to manage.':
+    'Toca la suscripción que quieres administrar.',
+  'Tap Cancel Subscription.': 'Toca Cancelar suscripción.',
+  'View Plans': 'Ver planes',
+  'Manage Subscription': 'Administrar Suscripción',
 };

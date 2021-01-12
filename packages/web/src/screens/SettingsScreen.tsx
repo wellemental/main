@@ -42,7 +42,7 @@ const SettingsScreen: React.FC = () => {
     },
     {
       label: translation['Subscription'],
-      onPress: () => handleNavigate('/account'),
+      onPress: () => handleNavigate('/subscription'),
       icon: <CreditCardIcon />,
     },
     { label: translation.Logout, onPress: handleLogout, icon: <LogoutIcon /> },

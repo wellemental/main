@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@material-ui/core';
-import { Button, Page, Headline, Paragraph, Box } from '../primitives';
+import { Button, Headline, Paragraph, Box } from '../primitives';
 import { Apple as AppleIcon } from '@material-ui/icons';
 import { Redirect } from 'react-router-dom';
 import { useCurrentUser, useHistory } from '../hooks';
@@ -16,7 +16,7 @@ const DownloadScreen: React.FC = () => {
       }}
     />
   ) : (
-    <Page>
+    <Box center>
       <Card elevation={0}>
         <Headline center gutterBottom>
           You're In!
@@ -41,7 +41,7 @@ const DownloadScreen: React.FC = () => {
           text="Download iOS"
         />
       </Card>
-    </Page>
+    </Box>
   );
 };
 

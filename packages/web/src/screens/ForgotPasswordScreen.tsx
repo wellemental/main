@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Error,
-  Headline,
-  Input,
-  Page,
-  Box,
-  Paragraph,
-} from '../primitives';
+import { Button, Error, Headline, Input, Box, Paragraph } from '../primitives';
 import { ForgotPasswordService } from '../services';
 import { useCurrentUser, useHistory } from '../hooks';
 import { Card, CardContent } from '@material-ui/core';
@@ -39,7 +31,7 @@ const ForgotPasswordScreen: React.FC = () => {
   };
 
   return (
-    <Page disableGutters noNav>
+    <Box>
       <Card elevation={0}>
         <CardContent>
           <Headline align="center" variant="h5" gutterBottom>
@@ -81,7 +73,7 @@ const ForgotPasswordScreen: React.FC = () => {
           )}
         </CardContent>
       </Card>
-    </Page>
+    </Box>
   );
 };
 

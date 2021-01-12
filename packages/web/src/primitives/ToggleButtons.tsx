@@ -21,8 +21,6 @@ const ToggleButtons: React.FC<Props> = ({
 
   const width = `${100 / buttons.length}%`;
 
-  console.log('STATE', state);
-
   return (
     <ToggleButtonGroup
       value={state}

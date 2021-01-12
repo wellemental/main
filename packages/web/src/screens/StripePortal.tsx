@@ -11,7 +11,7 @@ interface Props {
   history: History;
 }
 
-const AccountScreen: React.FC<Props> = ({ history }) => {
+const StripePortal: React.FC<Props> = ({ history }) => {
   const { user, translation } = useCurrentUser();
   const [error, setError] = useState('');
   const [redirecting, setRedirecting] = useState(true);
@@ -29,7 +29,7 @@ const AccountScreen: React.FC<Props> = ({ history }) => {
           logger.error(`Error getting billing portal`);
 
           setError(
-            'There was an error retrieving your subscription portal. Please try again. If problem persists, email hello@mentalhealthleague.com.',
+            'There was an error retrieving your subscription portal. Please try again. If problem persists, email hello@wellemental.co.',
           );
           setRedirecting(false);
         });
@@ -77,4 +77,4 @@ const AccountScreen: React.FC<Props> = ({ history }) => {
   );
 };
 
-export default AccountScreen;
+export default StripePortal;

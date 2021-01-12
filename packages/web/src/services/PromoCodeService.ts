@@ -31,7 +31,6 @@ class PromoCodeService implements PromoCodeServiceType {
     const query = promoCodeColl.where('code', '==', code).limit(1);
 
     try {
-      console.log('VALIDATING CODE', code);
       const snapshots = await query.get();
       const doc = snapshots.docs[0];
 

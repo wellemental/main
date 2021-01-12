@@ -138,4 +138,12 @@ export const English = {
   'Contact Us': 'Contact Us',
   'Enter email...': 'Enter email...',
   'Back to Login': 'Back to Login',
+  'Open the Settings app.': 'Open the Settings app.',
+  'Tap your name.': 'Tap your name.',
+  'Tap Subscriptions.': 'Tap Subscriptions.',
+  'Tap the subscription that you want to manage.':
+    'Tap the subscription that you want to manage.',
+  'Tap Cancel Subscription.': 'Tap Cancel Subscription.',
+  'View Plans': 'View Plans',
+  'Manage Subscription': 'Manage Subscription',
 };

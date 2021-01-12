@@ -118,7 +118,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   return userLoading ? (
     <Spinner />
   ) : (
-    <Page noNav disableGutters>
+    <Box>
       <Card elevation={0}>
         <CardContent>
           {isFriends && (
@@ -177,7 +177,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
           </Box>
         </CardContent>
       </Card>
-    </Page>
+    </Box>
   );
 };
 

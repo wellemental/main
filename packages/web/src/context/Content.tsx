@@ -50,7 +50,6 @@ export const ContentProvider = ({
       setContent(dbContent);
       setTeachers(dbTeachers);
     } catch (err) {
-      console.log('ERROR', err);
       setError(`Error fetching content from database - ${err}`);
       logger.error(`Error getting firestore content data - ${err}`);
     }

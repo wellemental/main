@@ -14,13 +14,14 @@ import {
   CheckoutScreen,
   ContentScreen,
   ForgotPasswordScreen,
+  SubscriptionScreen,
+  StripePortal,
   TeacherScreen,
   CategoryScreen,
   FavoritesScreen,
   EditProfileScreen,
   SearchScreen,
   LibraryScreen,
-  AccountScreen,
   SettingsScreen,
 } from './screens';
 import Nav from './primitives/Nav';
@@ -58,7 +59,11 @@ function App() {
                     <Route path="/friends" component={AuthScreen} />
                     <PrivateRoute path="/checkout" component={CheckoutScreen} />
                     <PrivateRoute path="/plans" component={PlansScreen} />
-                    <PrivateRoute path="/account" component={AccountScreen} />
+                    <PrivateRoute
+                      path="/subscription"
+                      component={SubscriptionScreen}
+                    />
+                    <PrivateRoute path="/stripe" component={StripePortal} />
                     <PrivateRoute path="/library" component={LibraryScreen} />
                     <PrivateRoute
                       path="/language"

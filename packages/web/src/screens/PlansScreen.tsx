@@ -162,7 +162,7 @@ const PlansScreen: React.FC = () => {
                 <Paragraph
                   center
                   style={{
-                    color: 'white',
+                    color: 'rgba(0,0,0,0)',
                   }}>
                   ***
                 </Paragraph>
@@ -216,7 +216,7 @@ const PlansScreen: React.FC = () => {
               autoCapitalize="none"
               // autoCorrect={false}
             />
-            <Box mt={2}>
+            <Box my={2}>
               <Button
                 fullWidth
                 // disabled={processing}
