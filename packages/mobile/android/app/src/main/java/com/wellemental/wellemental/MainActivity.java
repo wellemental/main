@@ -1,7 +1,8 @@
-package com.wellemental;
+package com.wellemental.wellemental;
 
 import android.os.Bundle; // added to resolve build issue
 import com.facebook.react.ReactActivity;
+// react-native-splash-screen >= 0.3.1 
 import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
@@ -9,7 +10,7 @@ public class MainActivity extends ReactActivity {
   /** Added for react-native-splash-screen configuration */
   @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);
+        // SplashScreen.show(this);
         super.onCreate(savedInstanceState);
     }
 

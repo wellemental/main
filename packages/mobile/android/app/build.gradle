@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services'
+// apply from: project(':react-native-config').projectDir.getPath() + "../../dotenv.gradle" // Added
 
 import com.android.build.OutputFile
 
@@ -140,11 +141,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.wellemental"
+        applicationId "com.wellemental.wellemental"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true // Added
     }
     splits {
         abi {
@@ -195,9 +197,14 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    // implementation "com.facebook.react:react-native:16.13.1" 
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation "androidx.multidex:multidex:2.0.1" // Added for multidex
+    implementation platform('com.google.firebase:firebase-bom:26.2.0') // Added for Firebase
+    implementation 'com.google.firebase:firebase-analytics' // Added for Firebase Analytics
+    compile project(':react-native-splash-screen') // Added for React Native splash screen
+    implementation project(':react-native-config') // Added for RN Config
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
