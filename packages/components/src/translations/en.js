@@ -46,6 +46,8 @@ export const English = {
   'Your Favorites': 'Your Favorites',
   Signup: 'Signup',
   Login: 'Login',
+  'What is your email?': 'What is your email?',
+  'Create Account': 'Create Account',
   'Creating account...': 'Creating account...',
   'Error. Please try again.': 'Error. Please try again.',
   'Password must be at least 7 characters long.':
@@ -129,4 +131,5 @@ export const English = {
   'Check your email for a reset password link.':
     'Check your email for a reset password link.',
   'See all languages': 'See all languages',
+  'Enter email...': 'Enter email...',
 };

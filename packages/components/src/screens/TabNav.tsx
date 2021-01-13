@@ -44,7 +44,7 @@ const TabNav: React.FC = () => {
           backgroundColor: variables.brandPrimary,
           height: 60 + insets.bottom,
           paddingTop: 10,
-          paddingBottom: 0 + insets.bottom,
+          paddingBottom: 5 + insets.bottom,
           borderTopWidth: 1,
           borderTopColor: variables.brandPrimary,
         },

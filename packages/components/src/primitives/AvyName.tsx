@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-// import { H3 } from 'native-base';
+import { H3 } from 'native-base';
 import Paragraph from './Paragraph';
 import Favorite from './Favorite';
 import Avatar from './Avatar';

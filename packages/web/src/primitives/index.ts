@@ -14,6 +14,7 @@ export { default as Spinner } from './Spinner';
 export { default as SupportEmail } from './SupportEmail';
 export { default as Nav } from './Nav';
 export { default as Favorite } from './Favorite';
+export { default as LibraryIcon } from './LibraryIcon';
 export { default as AvyName } from './AvyName';
 export { default as SearchBar } from './SearchBar';
 export { default as LegalLinks } from './LegalLinks';

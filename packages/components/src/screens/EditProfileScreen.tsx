@@ -1,35 +1,20 @@
 import { Form, Toast, Text, Button as NBButton, Segment } from 'native-base';
 import React, { useState } from 'react';
-import {
-  Container,
-  Error,
-  Box,
-  PageHeading,
-  Button,
-  // DatePicker,
-} from '../primitives';
+import { Container, Error, Box, PageHeading, Button } from '../primitives';
 import { useCurrentUser, useMutation } from '../hooks';
 import { UserProfile, UpdateUserService, Languages } from 'services';
-// import moment from 'moment';
+
 import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width - 30;
 
 const EditProfileScreen: React.FC = () => {
   const { auth, user, translation } = useCurrentUser();
-  // const [name, setName] = useState(user.name);
+
   const [language, setLanguage] = useState(user.language);
-  // const [birthday, setBirthday] = useState(user.birthday);
 
   // Only submit what's changed upon saving
   const newProfile: UserProfile = {};
-  // if (name !== user.name) {
-  //   newProfile.name = name;
-  // }
-
-  // if (birthday !== user.birthday) {
-  //   newProfile.birthday = moment(birthday).format('YYYY-MM-DD');
-  // }
 
   if (language !== user.language) {
     newProfile.language = language;
@@ -60,21 +45,6 @@ const EditProfileScreen: React.FC = () => {
     <Container scrollEnabled>
       <PageHeading title={translation['Select language']} />
       <Form style={{ marginTop: 4 }}>
-        {/* <Input
-          label={translation.Username}
-          value={name}
-          onChangeText={setName}
-          disabled={loading}
-        /> */}
-
-        {/* <DatePicker
-          date={birthday ? moment(birthday).toDate() : new Date()}
-          translation={translation}
-          onDateChange={setBirthday}
-          locale={user.language === Languages.Es ? 'es' : 'en'}
-        /> */}
-
-        {/* <Label>{translation.Language}</Label> */}
         <Segment style={{ marginTop: 15 }}>
           <NBButton
             first

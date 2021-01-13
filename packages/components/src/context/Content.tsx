@@ -192,6 +192,9 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         } catch (err) {
           setStatus((status) => [...status, 'Error fetching content']);
           logger.error('Error getting local content data');
+
+          // In case there's an error getting localStorage, then pull from database as backup
+          await getDbContent();
         }
       };
 

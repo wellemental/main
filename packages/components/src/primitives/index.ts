@@ -13,7 +13,6 @@ export { default as Download } from './Download';
 export { default as Spinner } from './Spinner';
 export { default as Image } from './Image';
 export { default as Tabs } from './Tabs';
-export { default as DatePicker } from './DatePicker';
 export { default as Box } from './Box';
 export { default as TeacherCard } from './TeacherCard';
 export { default as CategoryCard } from './CategoryCard';

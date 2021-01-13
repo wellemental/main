@@ -10,8 +10,8 @@ import RNIap, {
   purchaseUpdatedListener,
 } from 'react-native-iap';
 // import { setActivePlan } from '../actions';
-// import functions from '@react-native-firebase/functions';
-import { LocalStateService, logger, functions } from 'services';
+import functions from '@react-native-firebase/functions';
+import { LocalStateService, logger } from 'services';
 import { useCurrentUser } from '../hooks';
 
 export const IAPContext: React.Context<any> = React.createContext({
@@ -41,7 +41,10 @@ export const IAPProvider = ({ children }: any) => {
   // const purchaseErrorSubscription = useRef(null);
 
   const processNewPurchase = async (purchase: any) => {
-    const { productId, transactionReceipt } = purchase;
+    const {
+      productId,
+      transactionReceipt,
+    }: { productId: string; transactionReceipt: any } = purchase;
 
     setStatus((status) => [...status, '^^^Processing New Purcahase^^^']);
     setStatus((status) => [
@@ -118,6 +121,10 @@ export const IAPProvider = ({ children }: any) => {
         await RNIap.flushFailedPurchasesCachedAsPendingAndroid();
         setStatus((status) => [...status, `Starting Android Flush`]);
       } catch (err) {
+        setStatus((status) => [
+          ...status,
+          `Error in initConnection - ${err && err.message ? err.message : err}`,
+        ]);
         console.warn(err.code, err.message);
       }
     };

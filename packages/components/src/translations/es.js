@@ -47,6 +47,8 @@ export const Español = {
   'Your Favorites': 'Tus favoritos',
   Signup: 'Registrate',
   Login: 'Iniciar Sesión',
+  'What is your email?': '¿Cuál es tu correo electrónico?',
+  'Create Account': 'Crea Tu Cuenta',
   'Creating account...': 'Creando tu cuenta...',
   'Error. Please try again.': 'Error. Porfavor intentar otra vez.',
   'Password must be at least 7 characters long.':
@@ -58,7 +60,7 @@ export const Español = {
   'Your profile is missing required information. Please update it below.':
     'A tu perfil le falta informacion requerida. Hacia abajo porfavor pone tu perfil al dia.',
   'Practice with': 'Practica con',
-  Submit: 'Submit',
+  Submit: 'Entregar',
   'Forgot password?': '¿Se te olvidó tu contraseña?',
   'Reset Password': 'Restablecer la contraseña',
   'Upgrade App': 'Actualizar aplicación',
@@ -133,4 +135,5 @@ export const Español = {
   'Check your email for a reset password link.':
     'Revise su correo electrónico para obtener un enlace para restablecer la contraseña.',
   'See all languages': 'Ver todos los idiomas',
+  'Enter email...': 'Entra tu correo electrónico...',
 };

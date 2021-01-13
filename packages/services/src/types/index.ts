@@ -107,7 +107,7 @@ export enum PlanId {
 export type UserPlan = {
   type: 'iosIap' | 'promoCode';
   auto_renew_status: boolean;
-  nextRenewelDate: Date;
+  nextRenewalDate: string; // Just storing so humans can easily read it in database
   nextRenewalUnix: number; // unix timestamp
   canceledAtUnix?: number;
   planId: string;

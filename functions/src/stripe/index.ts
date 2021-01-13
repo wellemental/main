@@ -3,7 +3,7 @@ import * as functions from 'firebase-functions';
 import * as moment from 'moment';
 import { mcTagUser } from '../mailchimp';
 import { StripeEvent } from '../types';
-
+//
 const stripe = require('stripe')(functions.config().stripe.sk);
 const endpointSecret = functions.config().stripe.webhooksecret;
 
@@ -90,17 +90,19 @@ export const startSubscription = async (
       plan: {
         type: 'stripe',
         auto_renew_status: true,
-        nextRenewelDate: moment
-          .unix(sub.current_period_end)
-          .format('YYYY-MM-DD'),
-        nextRenewalUnix: moment.unix(sub.current_period_end),
-        planId: sub.id,
+        nextRenewalDate:
+          sub.current_period_end &&
+          moment.unix(sub.current_period_end).format('YYYY-MM-DD'),
+        nextRenewalUnix:
+          sub.current_period_end && moment.unix(sub.current_period_end),
+        planId: data.plan,
+        subId: sub.id,
         custId: stripeId,
         status: sub.status,
         createdAt: new Date(),
-        trial_period_ends: moment
-          .unix(sub.current_period_end)
-          .format('YYYY-MM-DD'),
+        trial_period_ends:
+          sub.current_period_end &&
+          moment.unix(sub.current_period_end).format('YYYY-MM-DD'),
       },
     });
   } catch (err) {
@@ -218,7 +220,7 @@ export const getBillingPortal = async (
 
   return await stripe.billingPortal.sessions.create({
     customer: user.stripeId,
-    return_url: 'https://wellemental.co',
+    return_url: 'https://app.wellemental.co',
   });
 };
 

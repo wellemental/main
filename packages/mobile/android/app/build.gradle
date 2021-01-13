@@ -78,10 +78,18 @@ import com.android.build.OutputFile
  * ]
  */
 
+/**
+ * // Only non-monorepo code
+ *project.ext.react = [
+ *    entryFile: "packages/mobile/index.js",
+ *    root: "../../../../",
+ *    enableHermes: true,  // clean and rebuild if changing
+ *]
+ */
+
 project.ext.react = [
     entryFile: "packages/mobile/index.js",
-    root: "../../../../",
-    enableHermes: true,  // clean and rebuild if changing
+    root: "../../../../"
 ]
 
 apply from: "../../../../node_modules/react-native/react.gradle"
@@ -187,6 +195,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    // implementation "com.facebook.react:react-native:16.13.1" 
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 

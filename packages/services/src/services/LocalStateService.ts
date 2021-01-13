@@ -1,4 +1,5 @@
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApplicationError } from '../models/Errors';
 import { LocalUser, LocalContent, UserProfile } from '../types';
 import logger from './LoggerService';
@@ -55,8 +56,8 @@ class LocalStateService {
       // Create Firestore Timestamp from object
       if (obj && obj.updated_at) {
         obj.updated_at = new firestore.Timestamp(
-          obj.updated_at._seconds,
-          obj.updated_at._nanoseconds,
+          obj.updated_at.seconds,
+          obj.updated_at.nanoseconds,
         ).toDate();
       }
       return obj;

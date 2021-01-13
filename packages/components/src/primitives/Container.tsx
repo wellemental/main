@@ -1,10 +1,9 @@
-import { NativeBase } from 'native-base';
 import React, { CSSProperties } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 type ContainerProps = {
-  style: CSSProperties;
+  style?: CSSProperties;
   noPadding?: 'vertical' | 'horizontal' | 'none';
   color?: string;
   center?: boolean;

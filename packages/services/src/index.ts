@@ -13,6 +13,6 @@ export { buildDependencies, Dependency } from './services/DependencyService';
 export { default as LocalStateService } from './services/LocalStateService';
 export { default as logger } from './services/LoggerService';
 export * from './services/DimensionsService';
-export { firestore, auth, functions, FbUser, DocumentSnapshot } from './base';
+export { firestore, auth } from './base';
 export { ApplicationError, ModelError } from './models/Errors';
 export * from './types';

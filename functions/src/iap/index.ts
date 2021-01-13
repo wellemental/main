@@ -16,6 +16,8 @@ export const validateIap = async (
   context: functions.https.CallableContext,
 ): Promise<string> => {
   console.log('Starting Validation', functions.config().apple.env);
+  console.log('DATA', data);
+  console.log('CONTEXT', context);
   if (!context.auth) {
     console.error('No auth context');
     return Promise.reject('User not logged in');
@@ -42,15 +44,12 @@ export const validateIap = async (
       excludeOldTransactions: true,
       receipt: receipt,
     });
-    console.log('Got Products', products);
     // check if products exist
     if (Array.isArray(products) && products.length > 0) {
-      console.log('Got products array', products[0]);
       // get the latest purchased product (subscription tier)
       const { expirationDate } = products[0];
       // convert ms to secs
       const expirationUnix = Math.round(expirationDate / 1000);
-      console.log('Got expirationDate', expirationDate, expirationDate);
       // persist in database
       // add to user doc in db
       try {
@@ -58,7 +57,7 @@ export const validateIap = async (
           plan: {
             type: 'iosIap',
             auto_renew_status: true,
-            nextRenewelDate: expirationDate,
+            nextRenewalDate: moment.unix(expirationUnix).format('YYYY-MM-DD'),
             nextRenewalUnix: expirationUnix,
             planId: productId,
             status: 'active',
@@ -168,7 +167,6 @@ export const renewOrCancelSubscriptions = async (): Promise<void> => {
 
         // updating database with latest expiryTimestamp of renewed subscription
         if (purchases.length !== 0) {
-          console.log('Renewing user plan', account.id);
           // get the latest purchase from receipt verification
           const latestPurchase = purchases[0];
           // reformat the expiration date as a unix timestamp
@@ -184,8 +182,10 @@ export const renewOrCancelSubscriptions = async (): Promise<void> => {
               .update({
                 plan: {
                   planId: productId,
-                  nextRenewelUnix: latestExpiryTimestamp,
-                  nextRenewelDate: latestPurchase.expirationDate,
+                  nextRenewalUnix: latestExpiryTimestamp,
+                  nextRenewalDate: moment
+                    .unix(latestPurchase.expirationDate)
+                    .format('YYYY-MM-DD'),
                 },
               });
           }

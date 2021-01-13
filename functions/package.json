@@ -17,7 +17,8 @@
     "setActive:staging": "firebase use staging",
     "runMigration:staging": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=staging.json node lib/migrations/command.js",
     "runMigration:production": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=production.json node lib/migrations/command.js",
-    "importMailchimp:production": "yarn run build && FIREBASE=prod node lib/scripts/importMailchimp.js"
+    "importMailchimp:production": "yarn run build && FIREBASE=prod node lib/scripts/importMailchimp.js",
+    "getIapReceipts:production": "yarn run build && FIREBASE=prod node lib/scripts/iapReceiptUsers.js"
   },
   "engines": {
     "node": "10"
@@ -36,7 +37,7 @@
   "devDependencies": {
     "firebase-functions-test": "^0.2.0",
     "tslint": "^5.12.0",
-    "typescript": "^3.8.0"
+    "typescript": "^3.9.7"
   },
   "private": true
 }

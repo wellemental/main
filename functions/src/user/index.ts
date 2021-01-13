@@ -26,10 +26,6 @@ export const updateUserPlan = async (
   }
   const userData = userSnapshot.data();
 
-  // Get document ref from snapshot
-  //   const user = userSnapshot.ref.path;
-  //   console.log('USER PATH!!!', user);
-
   const stripeEvents =
     userData && userData.plan && userData.plan.stripeEvents
       ? [...userData.plan.stripeEvents, eventId]
@@ -39,7 +35,7 @@ export const updateUserPlan = async (
     await admin.firestore().collection('users').doc(userSnapshot.id).update({
       'plan.status': eventData.status,
       'plan.stripeEvents': stripeEvents,
-      'plan.nextRenewelDate': eventData.current_period_end,
+      'plan.nextRenewalDate': eventData.current_period_end,
       'plan.nextRenewalUnix': eventData.current_period_end_unix,
     });
   } catch (err) {

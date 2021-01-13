@@ -100,7 +100,16 @@ const PlansScreen: React.FC = () => {
       await requestSubscription(plan);
       setProcessing(false);
     } catch (err) {
-      setError(err);
+      logger.error(
+        `Error requesting Iap Subscription - ${
+          err && err.message ? err.message : err
+        }`,
+      );
+      setError(
+        `Error requesting Iap Subscription - ${
+          err && err.message ? err.message : err
+        }`,
+      );
       setProcessing(false);
     }
     setProcessing(false);
@@ -251,39 +260,57 @@ const PlansScreen: React.FC = () => {
 
           <Error error={error} center />
 
-          {auth && auth.email === 'mike.r.vosters@gmail.com' && status && (
-            <Box gt={2}>
-              <Paragraph>IAP Error Msg:</Paragraph>
-              <Error error={iapError} center />
-              <Paragraph>******</Paragraph>
-              <Paragraph>SELECTED PLAN</Paragraph>
-              <Paragraph>{selectedPlan}</Paragraph>
-              <Paragraph>******</Paragraph>
-              <Paragraph>IAP ACTIVE PLAN</Paragraph>
-              <Paragraph>{activePlan}</Paragraph>
-              <Paragraph>******</Paragraph>
-              <Paragraph>USER PLAN</Paragraph>
-              {user && !user.plan ? (
-                <Paragraph>No Plan</Paragraph>
-              ) : user && user.plan ? (
-                <Paragraph>
-                  {user.plan.staatus} - {user.plan.planId}
-                </Paragraph>
-              ) : (
-                <Paragraph>No user</Paragraph>
-              )}
-
-              <Box gt={1}>
+          {auth &&
+            (auth.email === 'mike.r.vosters@gmail.com' ||
+              auth.email === 'denise@test.com') &&
+            status && (
+              <Box gt={2} gb={10}>
+                <Paragraph>IAP Error Msg:</Paragraph>
+                <Error error={iapError} center />
                 <Paragraph>******</Paragraph>
-                <Paragraph>DEBUGGING</Paragraph>
-                {status.map((item, idx) => (
-                  <Paragraph note key={idx + item}>
-                    *{item}
+                <Paragraph>AVAIL PRODUCTS</Paragraph>
+
+                {products &&
+                  products.map((product, idx) => (
+                    <Paragraph>
+                      {idx}:
+                      {typeof product === 'object'
+                        ? JSON.stringify(product)
+                        : typeof product === 'string'
+                        ? product
+                        : typeof product}
+                    </Paragraph>
+                  ))}
+
+                <Paragraph>******</Paragraph>
+                <Paragraph>SELECTED PLAN</Paragraph>
+                <Paragraph>{selectedPlan}</Paragraph>
+                <Paragraph>******</Paragraph>
+                <Paragraph>IAP ACTIVE PLAN</Paragraph>
+                <Paragraph>{activePlan}</Paragraph>
+                <Paragraph>******</Paragraph>
+                <Paragraph>USER PLAN</Paragraph>
+                {user && !user.plan ? (
+                  <Paragraph>No Plan</Paragraph>
+                ) : user && user.plan ? (
+                  <Paragraph>
+                    {user.plan.status} - {user.plan.planId}
                   </Paragraph>
-                ))}
+                ) : (
+                  <Paragraph>No user</Paragraph>
+                )}
+
+                <Box gt={1}>
+                  <Paragraph>******</Paragraph>
+                  <Paragraph>DEBUGGING</Paragraph>
+                  {status.map((item, idx) => (
+                    <Paragraph note key={idx + item}>
+                      *{item}
+                    </Paragraph>
+                  ))}
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
         </Container>
       </ImageBackground>
       <Image

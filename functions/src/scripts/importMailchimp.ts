@@ -84,8 +84,8 @@ run().catch((err) => {
 //           MMERGE8: data.plan && data.plan.status ? data.plan.status : 'free',
 //         };
 
-//         if (data.plan && data.plan.nextRenewelDate) {
-//           updates.MMERGE6 = data.plan.nextRenewelDate;
+//         if (data.plan && data.plan.nextRenewalDate) {
+//           updates.MMERGE6 = data.plan.nextRenewalDate;
 //         }
 
 //         arr.push({

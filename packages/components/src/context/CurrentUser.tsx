@@ -1,23 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import { auth, firestore } from 'services';
-import {
-  Languages,
-  UpdateUserService,
-  User,
-  UserProfile,
-  LocalStateService,
-} from 'services';
+import { Languages, User, UserProfile, LocalStateService } from 'services';
 import {
   firestore,
-  DocumentSnapshot,
   auth,
   // FbUser,
 } from 'services';
 import { Unsubscriber } from '../types';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { Spinner } from '../primitives';
+import moment from 'moment';
 
 const localStateService = new LocalStateService();
 
@@ -113,12 +107,12 @@ export const CurrentUserProvider = ({ children }: any) => {
 
       // If user logged in, get CurrentUser
       if (user) {
+        setLoading(true);
         subscribeToUserDoc(user);
       } else {
         setCurrentUser(null);
+        setLoading(false);
       }
-
-      setLoading(false);
     });
 
     // If app.tsx unmounts, cleanup all subscriptions
@@ -134,7 +128,7 @@ export const CurrentUserProvider = ({ children }: any) => {
     userDocUnsubscriber.current = firestore()
       .collection('users')
       .doc(user.uid)
-      .onSnapshot((snapshot: DocumentSnapshot) => {
+      .onSnapshot((snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
         // If user just signed up, save their user data to database
         // if (!snapshot.exists) {
         //   setCreatingUser(true);
@@ -188,6 +182,7 @@ export const CurrentUserProvider = ({ children }: any) => {
 
           setCurrentUser(userDoc);
         }
+        setLoading(false);
       });
   };
 
@@ -222,6 +217,21 @@ export const CurrentUserProvider = ({ children }: any) => {
     return <Spinner text="Creating account..." />;
   }
 
+  // console.log(
+  //   'NEXT YEAR',
+  //   moment('2022-01-11').unix(),
+  //   'FUNC',
+  //   1612376714 < moment().unix(),
+  //   'RENEW UNIX',
+  //   moment.unix(1641880800).format('YYYY-MM-DD'),
+  //   // moment.unix(1612376714).format('YYYY-MM-DD'),
+  //   'NOW UNIX',
+  //   //moment().unix.format('YYYY-MM-DD'),
+  //   new Date(moment().unix() * 1000),
+  //   'COMPARE',
+  //   1612376714 >= moment().unix(),
+  // );
+
   return (
     <CurrentUser.Provider
       value={{
@@ -238,7 +248,8 @@ export const CurrentUserProvider = ({ children }: any) => {
             ? false
             : currentUser &&
               currentUser.plan &&
-              currentUser.plan.status === 'active',
+              (currentUser.plan.nextRenewalUnix > moment().unix() ||
+                currentUser.plan.type === 'promoCode'),
       }}>
       {children}
     </CurrentUser.Provider>

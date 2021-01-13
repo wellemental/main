@@ -61,7 +61,6 @@ const SettingsScreen: React.FC = () => {
         style: { marginBottom: 20 },
       });
     } catch (err) {
-      console.log('ERRO', err);
       Toast.show({
         text: translation['Error. Please try again.'],
         style: { marginBottom: 20 },

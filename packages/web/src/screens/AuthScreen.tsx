@@ -7,7 +7,6 @@ import {
   Paragraph,
   Headline,
   Error,
-  Page,
   Spinner,
 } from '../primitives';
 import AuthService from '../services/AuthService';

@@ -33,7 +33,17 @@ const onAddStripeEvent = functions.firestore
     return Promise.resolve(eventData);
   });
 
-const onValidateIap = functions.https.onCall(validateIap);
+// const onValidateIap = functions.https.onCall(validateIap);
+
+const onValidateIap = functions.https.onCall(async (data, context) => {
+  try {
+    await validateIap(data, context);
+    return { status: 'OK' };
+  } catch (err) {
+    console.error(err);
+    return { status: 'Server error' };
+  }
+});
 
 const EVERY_HOUR_CRON = '0 * * * *';
 const runRenewOrCancelSubs = functions.pubsub

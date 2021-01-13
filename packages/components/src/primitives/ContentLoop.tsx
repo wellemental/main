@@ -7,6 +7,7 @@ import ListEmpty from './ListEmpty';
 import { Teachers } from 'services';
 import Error from './Error';
 import Paragraph from './Paragraph';
+import Spinner from './Spinner';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 
 interface Props {
@@ -27,7 +28,7 @@ const ContentLoop: React.FC<Props> = ({
   hasPadding,
 }) => {
   const { user, translation } = useCurrentUser();
-  const { content, teachers, error } = useContent();
+  const { content, teachers, error, loading } = useContent();
 
   let filteredContent: Content[] = content;
 
@@ -72,7 +73,9 @@ const ContentLoop: React.FC<Props> = ({
     <View style={{ marginHorizontal: hasPadding ? 15 : 0 }}>
       <Error error={error} />
 
-      {content && teachers && scrollEnabled && hasFilteredContent ? (
+      {loading ? (
+        <Spinner />
+      ) : content && teachers && scrollEnabled && hasFilteredContent ? (
         // If tabs and header need to be able to scroll up with the list
         <ScrollView showsVerticalScrollIndicator={false}>
           {filteredContent.map((item, idx) => (
