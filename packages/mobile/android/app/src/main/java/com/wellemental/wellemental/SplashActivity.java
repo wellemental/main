@@ -1,4 +1,4 @@
-package com.wellemental; // Change this to your package name.
+package com.wellemental.wellemental; // Change this to your package name.
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -62,6 +62,7 @@ class FirebaseLogger implements Logger {
 }
 
 const logger = new FirebaseLogger();
+// Could not get RN Config working, need to come back to
 // const logger =
 //   Config.ENABLE_FIREBASE_LOGGING === 'true'
 //     ? new FirebaseLogger()

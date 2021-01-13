@@ -1,4 +1,4 @@
-package com.wellemental;
+package com.wellemental.wellemental;
 
 import android.app.Application;
 import android.content.Context;
@@ -10,8 +10,14 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+// Imports below were added
+import androidx.multidex.MultiDexApplication;
+// react-native-splash-screen >= 0.3.1 
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 
-public class MainApplication extends Application implements ReactApplication {
+// public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication { // Added
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -26,6 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new ReactNativeConfigPackage());
+          packages.add(new SplashScreenReactPackage()); // Added for RN Splash Screen
           return packages;
         }
 

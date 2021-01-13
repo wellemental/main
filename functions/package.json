@@ -18,7 +18,7 @@
     "runMigration:staging": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=staging.json node lib/migrations/command.js",
     "runMigration:production": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=production.json node lib/migrations/command.js",
     "importMailchimp:production": "yarn run build && FIREBASE=prod node lib/scripts/importMailchimp.js",
-    "getIapReceipts:production": "yarn run build && FIREBASE=prod node lib/scripts/iapReceiptUsers.js"
+    "getIapReceipts:production": "yarn run build && FIREBASE=prod node lib/scripts/iapUsersSignup.js"
   },
   "engines": {
     "node": "10"

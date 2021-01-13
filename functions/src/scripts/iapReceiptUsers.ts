@@ -66,42 +66,42 @@ run().catch((err) => {
 
 // FETCHED
 
-const fetched = {
-  GK3PJhj0grdzdpn21XPUVyOCfFa2: {
-    userId: 'GK3PJhj0grdzdpn21XPUVyOCfFa2',
-    timestamp: 1609553278,
-    timestampDate: null,
-    email: 'williams.sara@gmail.com',
-    plan: {
-      auto_renew_status: true,
-      planId: 'wellemental_pro',
-      nextRenewalUnix: 1612216771,
-      type: 'iosIap',
-      createdAt: [Timestamp],
-      nextRenewalDate: '2021-02-01',
-      status: 'active',
-    },
-  },
-  QcD2ETRUyAVb3wH44wgdNkzvhOv1: {
-    userId: 'QcD2ETRUyAVb3wH44wgdNkzvhOv1',
-    timestamp: 1609709559,
-    timestampDate: null,
-    email: 'nicole@reclamationventures.co',
-    plan: {
-      type: 'iosIap',
-      auto_renew_status: true,
-      planId: 'wellemental_pro',
-      nextRenewalUnix: 1612376714,
-      status: 'active',
-      createdAt: null,
-      nextRenewalDate: '2021-02-03',
-    },
-  },
-  wOxZCNE76UfFIEqOgJcsO0Dr0nM2: {
-    userId: 'wOxZCNE76UfFIEqOgJcsO0Dr0nM2',
-    timestamp: 1610495292,
-    timestampDate: null,
-    email: 'mike.r.vosters@gmail.com',
-    plan: { canceledAtUnix: 1610499610, status: 'canceled' },
-  },
-};
+// const fetched = {
+//   GK3PJhj0grdzdpn21XPUVyOCfFa2: {
+//     userId: 'GK3PJhj0grdzdpn21XPUVyOCfFa2',
+//     timestamp: 1609553278,
+//     timestampDate: null,
+//     email: 'williams.sara@gmail.com',
+//     plan: {
+//       auto_renew_status: true,
+//       planId: 'wellemental_pro',
+//       nextRenewalUnix: 1612216771,
+//       type: 'iosIap',
+//       createdAt: [Timestamp],
+//       nextRenewalDate: '2021-02-01',
+//       status: 'active',
+//     },
+//   },
+//   QcD2ETRUyAVb3wH44wgdNkzvhOv1: {
+//     userId: 'QcD2ETRUyAVb3wH44wgdNkzvhOv1',
+//     timestamp: 1609709559,
+//     timestampDate: null,
+//     email: 'nicole@reclamationventures.co',
+//     plan: {
+//       type: 'iosIap',
+//       auto_renew_status: true,
+//       planId: 'wellemental_pro',
+//       nextRenewalUnix: 1612376714,
+//       status: 'active',
+//       createdAt: null,
+//       nextRenewalDate: '2021-02-03',
+//     },
+//   },
+//   wOxZCNE76UfFIEqOgJcsO0Dr0nM2: {
+//     userId: 'wOxZCNE76UfFIEqOgJcsO0Dr0nM2',
+//     timestamp: 1610495292,
+//     timestampDate: null,
+//     email: 'mike.r.vosters@gmail.com',
+//     plan: { canceledAtUnix: 1610499610, status: 'canceled' },
+//   },
+// };
