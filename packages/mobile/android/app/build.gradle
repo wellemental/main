@@ -203,8 +203,11 @@ dependencies {
     implementation "androidx.multidex:multidex:2.0.1" // Added for multidex
     implementation platform('com.google.firebase:firebase-bom:26.2.0') // Added for Firebase
     implementation 'com.google.firebase:firebase-analytics' // Added for Firebase Analytics
-    compile project(':react-native-splash-screen') // Added for React Native splash screen
-    implementation project(':react-native-config') // Added for RN Config
+    implementation project(':react-native-splash-screen') // Added for RN Splash Screen
+    implementation project(':react-native-iap')
+    // compile project(':react-native-iap') // Added for RN IAP
+    // compile project(':react-native-splash-screen') // Added for React Native splash screen
+    // implementation project(':react-native-config') // Added for RN Config
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
@@ -236,3 +239,9 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
+]
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

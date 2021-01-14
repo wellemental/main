@@ -1,4 +1,4 @@
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
 import analytics from '@react-native-firebase/analytics';
 // import { analytics } from '../base';
 

@@ -41,6 +41,7 @@ const Header2 = styled(H2)`
 // defining IAP SKUs by platform in `constants.ts`
 export const IAP_SKUS = Platform.select({
   ios: ['wellemental_pro', 'wellemental_pro_year'],
+  android: ['wellemental_pro', 'wellemental_pro_year'],
 });
 
 export enum PlanId {

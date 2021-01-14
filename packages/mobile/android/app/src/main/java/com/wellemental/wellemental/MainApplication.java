@@ -12,9 +12,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 // Imports below were added
 import androidx.multidex.MultiDexApplication;
-// react-native-splash-screen >= 0.3.1 
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage; // react-native-splash-screen >= 0.3.1 
+// import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import com.dooboolab.RNIap.RNIapPackage;
 
 // public class MainApplication extends Application implements ReactApplication {
 public class MainApplication extends MultiDexApplication implements ReactApplication { // Added
@@ -32,8 +32,9 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new ReactNativeConfigPackage());
-          packages.add(new SplashScreenReactPackage()); // Added for RN Splash Screen
+          // packages.add(new ReactNativeConfigPackage());
+          // packages.add(new RNIapPackage());
+          //packages.add(new SplashScreenReactPackage()); // Added for RN Splash Screen
           return packages;
         }
 
