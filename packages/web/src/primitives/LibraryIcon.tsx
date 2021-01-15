@@ -17,7 +17,8 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
         viewBox="0 0 480 448">
         <rect
           // class="cls-1"
-          fill={brandColors.brandPrimary}
+          // fill={brandColors.brandPrimary}
+          fill="#666"
           x="16"
           y="64"
           width="64"
@@ -29,7 +30,8 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
           transform="translate(-16 -32)"
           //   fill={brandColors.brandPrimary}
           fill="rgba(0,0,0,0)"
-          stroke={brandColors.brandPrimary}
+          // stroke={brandColors.brandPrimary}
+          stroke="#666"
           stroke-linejoin="round"
           stroke-width="32px"
         />
@@ -42,7 +44,8 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
           rx="16"
           //   fill={brandColors.brandPrimary}
           fill="rgba(0,0,0,0)"
-          stroke={brandColors.brandPrimary}
+          // stroke={brandColors.brandPrimary}
+          stroke="#666"
           stroke-linejoin="round"
           stroke-width="32px"
         />
@@ -55,7 +58,8 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
           rx="16"
           //   fill={brandColors.brandPrimary}
           fill="rgba(0,0,0,0)"
-          stroke={brandColors.brandPrimary}
+          // stroke={brandColors.brandPrimary}
+          stroke="#666"
           stroke-linejoin="round"
           stroke-width="32px"
         />
@@ -65,7 +69,8 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
           transform="translate(-16 -32)"
           //   fill={brandColors.brandPrimary}
           fill="rgba(0,0,0,0)"
-          stroke={brandColors.brandPrimary}
+          // stroke={brandColors.brandPrimary}
+          stroke="#666"
           stroke-linejoin="round"
           stroke-width="32px"
         />

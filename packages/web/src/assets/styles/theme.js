@@ -1,4 +1,34 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import RecoletaAltTtf from '../fonts/RecoletaAlt-Medium.ttf';
+import InterTtf from '../fonts/Inter.ttf';
+
+const recoleta = {
+  fontFamily: 'RecoletaAlt',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `
+    local('RecoletaAlt-Medium'),
+    local('RecoletaAlt-Medium'),
+    url(${RecoletaAltTtf}) format('ttf')
+  `,
+  unicodeRange:
+    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
+};
+
+const inter = {
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `
+    local('Inter'),
+    local('Inter'),
+    url(${InterTtf}) format('ttf')
+  `,
+  unicodeRange:
+    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
+};
 
 export const brandColors = {
   brandPrimary: '#214f4b',
@@ -42,6 +72,7 @@ export const theme = createMuiTheme({
   typography: {
     fontSize: 18,
     fontFamily: [
+      'Inter',
       'apple-system',
       'BlinkMacSystemFont',
       'Roboto',
@@ -65,32 +96,44 @@ export const theme = createMuiTheme({
       fontWeight: '900',
     },
     h1: {
+      fontFamily: 'RecoletaAlt',
       fontWeight: '700',
       color: brandColors.brandPrimary,
     },
     h2: {
+      fontFamily: 'RecoletaAlt',
       fontWeight: '700',
       color: brandColors.brandPrimary,
     },
     h3: {
+      fontFamily: 'RecoletaAlt',
       fontWeight: '700',
       color: brandColors.brandPrimary,
     },
     h4: {
+      fontFamily: 'RecoletaAlt',
       fontWeight: '700',
       color: brandColors.brandPrimary,
     },
     h5: {
+      fontFamily: 'RecoletaAlt',
       fontWeight: '700',
       color: brandColors.brandPrimary,
     },
     h6: {
+      fontFamily: 'RecoletaAlt',
       fontWeight: '900',
       color: brandColors.brandPrimary,
     },
   },
   overrides: {
     // Style sheet name ⚛️
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': [recoleta],
+        '@font-face': [inter],
+      },
+    },
     MuiContainer: {
       root: {
         position: 'relative',

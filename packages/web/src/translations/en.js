@@ -24,6 +24,7 @@ export const English = {
   Settings: 'Settings',
   Loading: 'Loading',
   Account: 'Your Account',
+  'Your Account': 'Your Account',
   Logout: 'Logout',
   'Yes, Logout': 'Yes, Logout',
   'Are you sure you want to logout?': 'Are you sure you want to logout?',

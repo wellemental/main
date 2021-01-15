@@ -24,6 +24,7 @@ export const Español = {
   Settings: 'Configuración',
   Loading: 'Descargando',
   Account: 'Tu Cuenta',
+  'Your Account': 'Tu Cuenta',
   Logout: 'Cerrar Sesión',
   'Yes, Logout': 'Si, cerrar sesión',
   'Are you sure you want to logout?':

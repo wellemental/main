@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: 'RecoletaAlt';
+  src: local('RecoletaAlt'),
+    url(./assets/fonts/RecoletaAlt-Medium.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter'), url(./assets/fonts/Inter.ttf) format('ttf');
+}

@@ -28,7 +28,6 @@ const CheckoutScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { plan } = useLead();
-  // const [planId] = useState<string | undefined>(plan.stripeId);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -67,13 +66,6 @@ const CheckoutScreen: React.FC = () => {
             trial_period_days: plan.trialLength,
           })
           .then((res) => {
-            // fireFbEvent('StartTrial', {
-            //   value: plan.price,
-            //   currency: 'USD',
-            // });
-
-            // fireGaEvent('User', 'Start Trial');
-
             history.push(`/download`);
           })
           .catch((err) => {
@@ -92,7 +84,6 @@ const CheckoutScreen: React.FC = () => {
       base: {
         iconColor: theme.palette.secondary.main,
         fontWeight: '500',
-        // fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
         fontSize: '16px',
         fontSmoothing: 'antialiased',
         ':-webkit-autofill': { color: '#999' },
