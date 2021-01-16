@@ -36,7 +36,8 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
             title={content.title}
             style={{ width: '125px', borderRadius: '20px' }}
           />
-          <CardContent style={{ flex: 1, padding: '10px 10px 5px' }}>
+          <CardContent
+            style={{ width: 'calc(100% - 125px)', padding: '10px 10px 5px' }}>
             <>
               <Paragraph size={14}>{content.length}</Paragraph>
               <Paragraph variant="subtitle2" noWrap>

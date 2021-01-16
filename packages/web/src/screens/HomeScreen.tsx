@@ -3,6 +3,7 @@ import { PageHeading, ContentLoop, CategoryCard, Spinner } from '../primitives';
 import moment from 'moment';
 import { TimeOfDay, Category, Tags } from '../types';
 import { useCurrentUser, useContent } from '../hooks';
+import { ageGroups } from '../constants';
 
 const HomeScreen: React.FC = () => {
   const today = moment();
@@ -23,33 +24,6 @@ const HomeScreen: React.FC = () => {
     timeOfDay = TimeOfDay.Afternoon;
     tagline = translation['Shake out the day with some fun movement.'];
   }
-
-  const ageGroups: Category[] = [
-    {
-      title: translation['Under 4 years'],
-      description: translation['Simple practices for early learners'],
-      image: require('../assets/images/age_under_4.png'),
-      tag: Tags.Toddler,
-    },
-    {
-      title: translation['4–9 year olds'],
-      description: translation['Elementary mindful practices'],
-      image: require('../assets/images/age_4_9.png'),
-      tag: Tags.PreK,
-    },
-    {
-      title: translation['10–14 year olds'],
-      description: translation['Practices designed for middle-school learning'],
-      image: require('../assets/images/age_10_14.png'),
-      tag: Tags['6-8'],
-    },
-    {
-      title: translation['14–18 year olds'],
-      description: translation['Resources for mindful development'],
-      image: require('../assets/images/age_14_18.png'),
-      tag: Tags['9-12'],
-    },
-  ];
 
   return (
     <>
@@ -74,7 +48,7 @@ const HomeScreen: React.FC = () => {
       {!activePlan && (
         <>
           <PageHeading title={`${translation['Explore by age range']}`} />
-          {ageGroups.map((item, idx) => (
+          {ageGroups.map((item: Category, idx: number) => (
             <CategoryCard key={idx} category={item} />
           ))}
         </>

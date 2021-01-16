@@ -60,6 +60,7 @@ export type Category = {
   description: string;
   tag: Tags | TimeOfDay | Category;
   image: string;
+  slug?: string;
 };
 
 export enum Categories {

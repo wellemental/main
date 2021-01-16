@@ -7,6 +7,7 @@ import Error from './Error';
 import Paragraph from './Paragraph';
 import Button from './Button';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import Link from '@material-ui/core/Link';
 
 interface Props {
   filter?: Tags | TimeOfDay | Categories | string;
@@ -90,7 +91,6 @@ const ContentLoop: React.FC<Props> = ({
         <>
           {filteredContent.map((item, idx) => (
             <>
-              <Paragraph>First one</Paragraph>
               <ContentCard
                 key={idx}
                 content={item}
@@ -113,13 +113,12 @@ const ContentLoop: React.FC<Props> = ({
         </ListEmpty>
       ) : (
         <>
-          <ListEmpty center />
-          <Button
-            onClick={() => setLangFilter(false)}
-            text={translation['See all languages']}
-            size="small"
-            variant="text"
-          />
+          <ListEmpty />
+          {isLangFilter && (
+            <Link color="secondary" onClick={() => setLangFilter(false)}>
+              {translation['See all languages']} ›
+            </Link>
+          )}
         </>
       )}
     </>

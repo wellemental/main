@@ -73,7 +73,7 @@ const AvyName: React.FC<Props> = ({
         </Box>
       </LinkContainer>
 
-      {favoriteId && <Favorite contentId={favoriteId} />}
+      {onProfile && favoriteId && <Favorite contentId={favoriteId} />}
     </Box>
   );
 };

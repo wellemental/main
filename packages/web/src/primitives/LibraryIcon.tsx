@@ -10,9 +10,9 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
   return (
     <Box>
       <svg
-        id="Layer_1"
+        id="Library_Icon"
         width="30px"
-        data-name="Layer 1"
+        data-name="Library_Icon"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 480 448">
         <rect
@@ -32,8 +32,8 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
           fill="rgba(0,0,0,0)"
           // stroke={brandColors.brandPrimary}
           stroke="#666"
-          stroke-linejoin="round"
-          stroke-width="32px"
+          strokeLinejoin="round"
+          strokeWidth="32px"
         />
         <rect
           //   class="cls-1"
@@ -46,8 +46,8 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
           fill="rgba(0,0,0,0)"
           // stroke={brandColors.brandPrimary}
           stroke="#666"
-          stroke-linejoin="round"
-          stroke-width="32px"
+          strokeLinejoin="round"
+          strokeWidth="32px"
         />
         <rect
           //   class="cls-1"
@@ -60,7 +60,7 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
           fill="rgba(0,0,0,0)"
           // stroke={brandColors.brandPrimary}
           stroke="#666"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
           stroke-width="32px"
         />
         <path
@@ -71,8 +71,8 @@ const LibraryIcon: React.FC<Props> = ({ width = '30px' }) => {
           fill="rgba(0,0,0,0)"
           // stroke={brandColors.brandPrimary}
           stroke="#666"
-          stroke-linejoin="round"
-          stroke-width="32px"
+          strokeLinejoin="round"
+          strokeWidth="32px"
         />
       </svg>
     </Box>
