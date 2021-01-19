@@ -33,7 +33,6 @@ interface Props {
 const Page: React.FC<Props & ContainerProps> = ({
   children,
   fullPage,
-
   background,
   ...props
 }) => {
@@ -41,9 +40,7 @@ const Page: React.FC<Props & ContainerProps> = ({
   const { location } = useLocation();
 
   const noNav =
-    location.pathname === '/forgot-password' ||
-    location.pathname === '/login' ||
-    location.pathname === '/access';
+    location.pathname === '/forgot-password' || location.pathname === '/login';
 
   const bgStyle = background
     ? {

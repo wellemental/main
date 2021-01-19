@@ -164,4 +164,5 @@ export const Español = {
   'Invalid promo code': 'Código de promoción no válido',
   'Questions?': '¿Preguntas?',
   "You're In!": '¡Bienvenidos!',
+  'Live Event': 'Live Event',
 };

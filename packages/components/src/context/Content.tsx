@@ -210,7 +210,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   // If updateAvailable, refetch content from database automatically
   useEffect(() => {
     if (updateAvailable) {
-      const autoFetchDb = async () => {
+      const autoFetchDb = async (): void => {
         setStatus((status) => [
           ...status,
           'Auto-fetching content from database',
@@ -224,7 +224,9 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   }, [updateAvailable]);
 
   // Get Featured Content from Remote Config
-  const { loading: rcLoading, data: rcData } = useConfig('featured');
+  const { loading: rcLoading, data: rcData } = useConfig<Features>('featured');
+
+  console.log('FEATURES', rcData);
 
   if ((user && loading) || (user && rcLoading)) {
     // return <Spinner text="Loading Content..." />;

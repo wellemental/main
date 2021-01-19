@@ -9,7 +9,7 @@ import {
   Paragraph,
 } from '../primitives';
 import moment from 'moment';
-import { TimeOfDay, Version } from 'services';
+import { TimeOfDay, VersionConfig } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { getVersion } from 'react-native-device-info';
 import variables from '../assets/native-base-theme/variables/wellemental';
@@ -35,16 +35,12 @@ const HomeScreen: React.FC = () => {
   }
 
   // Upgrade Screen prompt
-  const { data } = useConfig<Version>('version');
+  const { data } = useConfig<VersionConfig>('version');
   const currVersion = getVersion();
   let canUpgrade = false;
   // if there's a newer version available, display upgrade modal
   if (data) {
     canUpgrade = currVersion < data.version;
-
-    // if (canUpgrade) {
-    //   navigation.navigate('Upgrade', { version: data });
-    // }
   }
 
   const upgradeOnPress = (): void => {

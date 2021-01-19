@@ -163,4 +163,5 @@ export const English = {
   'Please login or signup before entering your access code.':
     'Please login or signup before entering your access code.',
   'Enter Access Code': 'Enter Access Code',
+  'Live Event': 'Live Event',
 };

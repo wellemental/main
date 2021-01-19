@@ -11,13 +11,13 @@ import {
   Text,
   Toast,
 } from 'native-base';
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
 
 type SettingsLink = {
   label: string;
-  onPress: () => void;
+  onPress: () => void | Promise<any>;
   iconName: string;
 };
 const service = new AuthService();
@@ -25,7 +25,7 @@ const localStateService = new LocalStateService();
 
 const SettingsScreen: React.FC = () => {
   const { auth, translation } = useCurrentUser();
-  const { getDbContent } = useContent();
+  const { getDbContent, features } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
 
@@ -68,6 +68,19 @@ const SettingsScreen: React.FC = () => {
     }
   };
 
+  // Link to event link from remote config if available
+  // If not, go to default web link
+  const linkExternally = (): void => {
+    const liveLink =
+      features && features.event && features.event.url
+        ? features.event.url
+        : 'https://wellemental.co/live';
+
+    Linking.openURL(liveLink).catch((err) =>
+      console.error('An error occurred', err),
+    );
+  };
+
   const list: SettingsLink[] = [
     {
       label: translation['Select language'],
@@ -80,7 +93,7 @@ const SettingsScreen: React.FC = () => {
     //   iconName: 'cart',
     // },
     { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
-    // { label: 'Refresh User', onPress: getDbUser, iconName: 'refresh' },
+    { label: 'Live Event', onPress: linkExternally, iconName: 'calendar' },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
   ];
 

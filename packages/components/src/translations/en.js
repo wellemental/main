@@ -132,4 +132,5 @@ export const English = {
     'Check your email for a reset password link.',
   'See all languages': 'See all languages',
   'Enter email...': 'Enter email...',
+  'Live Event': 'Live Event',
 };

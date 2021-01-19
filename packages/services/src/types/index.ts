@@ -54,7 +54,7 @@ export enum Tags {
 export type Category = {
   title: string;
   description: string;
-  tag: Tags | TimeOfDay | Category;
+  tag: Tags | TimeOfDay | Category | string;
   image: string;
 };
 
@@ -280,24 +280,35 @@ export interface RemoteConfigService {
   getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }
 
+export type EventConfig = {
+  enabled: boolean;
+  headline: string;
+  dayOfWeek: number;
+  hour: number;
+  minute: number;
+  title: string;
+  articleId: string;
+  url: string;
+};
+
 export type Features = {
   title: string;
+  'title-es': string;
   categories: Feature[];
+  event: EventConfig;
+};
+
+export type VersionConfig = {
   version: string;
   build: number;
   forceUpgrade: boolean;
   iosUrl: string;
-  upgradeText: string;
+  androidUrl: string;
   upgradeForceTitle: string;
   upgradeForceBody: string;
 };
 
-export type Version = {
-  version: string;
-  build: number;
-  forceUpgrade: boolean;
-  iosUrl: string;
-  upgradeText: string;
-  upgradeForceTitle: string;
-  upgradeForceBody: string;
-};
+export interface ConfigDefaults {
+  featured: Features;
+  version: VersionConfig;
+}

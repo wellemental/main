@@ -9,6 +9,7 @@ import {
   ChevronRight,
   CreditCard as CreditCardIcon,
 } from '@material-ui/icons';
+import CalendarIcon from '@material-ui/icons/DateRange';
 
 type SettingsLink = {
   label: string;
@@ -44,6 +45,11 @@ const SettingsScreen: React.FC = () => {
       label: translation['Subscription'],
       onPress: () => handleNavigate('/subscription'),
       icon: <CreditCardIcon />,
+    },
+    {
+      label: translation['Live Event'],
+      onPress: () => handleNavigate('/live'),
+      icon: <CalendarIcon />,
     },
     { label: translation.Logout, onPress: handleLogout, icon: <LogoutIcon /> },
   ];
