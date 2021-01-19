@@ -7,6 +7,7 @@ import {
   Paragraph,
   Headline,
   Error,
+  Logo,
   Spinner,
 } from '../primitives';
 import AuthService from '../services/AuthService';
@@ -118,6 +119,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
     <Spinner />
   ) : (
     <Box>
+      <Logo linked={false} center mb={1} />
       <Card elevation={0}>
         <CardContent>
           {isFriends && (
@@ -125,7 +127,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
               {translation['Friends & Family']}
             </Paragraph>
           )}
-          <Headline align="center" variant="h5" gutterBottom>
+          <Headline center variant="h5" gutterBottom>
             {headline}
           </Headline>
           <Input

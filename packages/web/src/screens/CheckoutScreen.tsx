@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { StripeCardElement, StripeCardElementOptions } from '@stripe/stripe-js';
-import { Input, Button, SupportEmail } from '../primitives';
+import {
+  Input,
+  Button,
+  SupportEmail,
+  Icon,
+  Headline,
+  Paragraph,
+  Error,
+} from '../primitives';
+import { scrollToTop } from '../services/helpers';
 import { useCurrentUser, useHistory, useLead } from '../hooks';
 import app from '../base';
 import logger from '../services/LoggerService';
@@ -12,6 +21,9 @@ import {
   Card,
   InputAdornment,
   Typography,
+  IconButton,
+  TextField,
+  Collapse,
   CircularProgress,
 } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
@@ -24,7 +36,7 @@ import { Lock as LockIcon } from '@material-ui/icons';
 
 const CheckoutScreen: React.FC = () => {
   const history = useHistory();
-  const { auth } = useCurrentUser();
+  const { auth, translation } = useCurrentUser();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { plan } = useLead();
@@ -97,32 +109,73 @@ const CheckoutScreen: React.FC = () => {
   };
 
   const [stripeLoading, setStripeLoading] = useState(true);
+  const [promoCode, setPromoCode] = useState('');
+  const [activePromoCode, setActivePromoCode] = useState<null | string>(null);
+  const [showPromoCode, setShowPromoCode] = useState(false);
+  const [promoReject, setPromoReject] = useState('');
+  const [trialLength, setTrialLength] = useState(plan.trialLength);
+
+  const validatePromoCode = () => {
+    if (promoCode === 'MMOVE') {
+      setActivePromoCode('MMOVE');
+      setTrialLength(30);
+      setShowPromoCode(false);
+      scrollToTop();
+    } else {
+      setPromoReject(translation['Invalid promo code']);
+    }
+  };
 
   return (
     <Box>
       <Box mb={3} mx={2} mt={4}>
-        <Typography align="center" variant="h4">
-          Checkout
-        </Typography>
-        <Typography align="center" color="textSecondary" component="p">
-          100% Satisfaction Guarantee. Cancel anytime.
-        </Typography>
+        <Headline center>{translation.Checkout}</Headline>
+        <Paragraph small center color="textSecondary">
+          {translation['100% Satisfaction Guarantee. Cancel anytime.']}
+        </Paragraph>
         {auth && auth.email && (
-          <Typography
-            align="center"
-            variant="caption"
-            color="textSecondary"
-            component="p">
+          <Paragraph fine center color="textSecondary">
             {auth.email}
-          </Typography>
+          </Paragraph>
         )}
       </Box>
+      {activePromoCode === 'MMOVE' && (
+        <Box mb={1}>
+          <Error center error="MMOVE applied. 30 day free trial added." />
+        </Box>
+      )}
+      <Collapse in={!!activePromoCode} timeout="auto">
+        <TableContainer component={Paper} square elevation={0}>
+          <Table aria-label="simple table">
+            <TableRow>
+              <TableCell>
+                <Typography variant="subtitle2" component="span">
+                  {translation['Amount Paid Now']}
+                </Typography>
+              </TableCell>
+              <TableCell align="right">$0</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography variant="subtitle2" component="span">
+                  {translation['Free Trial Length']}
+                </Typography>
+              </TableCell>
+              <TableCell align="right">{trialLength}</TableCell>
+            </TableRow>
+          </Table>
+        </TableContainer>
+      </Collapse>
       <TableContainer component={Paper} square>
         <Table aria-label="simple table">
           <TableBody>
             <TableRow>
-              <TableCell component="th" scope="row">
-                Payment
+              <TableCell>
+                <Typography variant="subtitle2" component="span">
+                  {plan.id === 'yearly'
+                    ? translation['Annual Payment']
+                    : translation['Monthly Payment']}
+                </Typography>
               </TableCell>
               <TableCell align="right">${plan.price}</TableCell>
             </TableRow>
@@ -130,33 +183,13 @@ const CheckoutScreen: React.FC = () => {
         </Table>
       </TableContainer>
       <Card square>
-        {error && <Typography color="secondary">{error}</Typography>}
+        {error && <Error error={error} />}
 
         <form onSubmit={handleSubmit}>
-          {auth && !auth.email && (
-            <Box mb={4} mt={2}>
-              <Input
-                id="email-input"
-                label="Email"
-                type="email"
-                variant="outlined"
-                box={'mt={5}'}
-                value={auth ? auth.email : ''}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <LockIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Box>
-          )}
-
-          <Box mb={1} mt={2}>
-            <Box mb={2}>
+          <Box mb={1}>
+            <Box mb={1}>
               <Typography variant="subtitle2" component="span">
-                Enter payment info...
+                {translation['Enter payment info']}...
               </Typography>
               {stripeLoading && <CircularProgress size={18} />}
             </Box>
@@ -178,25 +211,57 @@ const CheckoutScreen: React.FC = () => {
               variant="contained"
               color="secondary"
               fullWidth
-              text="Submit Payment"
+              text={translation.Subscribe}
             />
           </Box>
-        </form>
-        {/* <Box mt={2}>
           <Button
-            onClick={handleCancel}
-            type="submit"
-            disabled={loading}
-            variant="contained"
-            color="secondary"
+            onClick={() => setShowPromoCode(!showPromoCode)}
+            text={translation['Promo code?']}
+            size="small"
             fullWidth
-            size="large">
-            Cancel Subscription
-          </Button>
-        </Box> */}
+            variant="text"
+          />
+        </form>
       </Card>
 
-      <Box mx={2}>
+      <Collapse in={showPromoCode} timeout="auto">
+        <Box mt={2}>
+          <Card square>
+            <Typography variant="subtitle2" component="span">
+              {translation['Enter promo code']}...
+            </Typography>
+            <Error error={promoReject} />
+            <Input
+              id="promo-code"
+              autoFocus
+              InputLabelProps={{
+                style: { fontSize: '12px' },
+              }}
+              mt={1}
+              InputProps={{
+                style: { fontSize: '15px' },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="submit promo code"
+                      onClick={validatePromoCode}
+                      onMouseDown={validatePromoCode}>
+                      <Icon name="chevron-right" />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              label={translation['Promo code']}
+              value={promoCode}
+              onKeyPress={validatePromoCode}
+              changeState={setPromoCode}
+              variant="filled"
+            />
+          </Card>
+        </Box>
+      </Collapse>
+
+      <Box mx={2} mb={3}>
         <SupportEmail />
       </Box>
     </Box>

@@ -37,6 +37,14 @@
   }
 }
 
+.StripeElement {
+  width: 100%;
+  padding: 20px 12px 20px 12px;
+  background-color: #e0e0e0;
+  border-radius: 4px 4px 0px 0px;
+  border-bottom: 1px solid #333;
+}
+
 @font-face {
   font-family: 'RecoletaAlt';
   src: local('RecoletaAlt'),

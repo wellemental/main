@@ -50,10 +50,7 @@ function App() {
                 <Nav />
                 <Page fullPage background="general">
                   <Switch>
-                    <PrivateRoute
-                      path="/access-code"
-                      component={PromoCodeScreen}
-                    />
+                    <PrivateRoute path="/access" component={PromoCodeScreen} />
                     <PrivateRoute path="/download" component={DownloadScreen} />
                     <Route path="/login" component={AuthScreen} />
                     <Route path="/friends" component={AuthScreen} />

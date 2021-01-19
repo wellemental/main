@@ -1,12 +1,17 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+// import { Typography } from '@material-ui/core';
+import Paragraph from './Paragraph';
 import { ApplicationError, ModelError } from '../models/Errors';
 
 interface Props {
   error?: Error | string;
+  center?: boolean;
 }
 
-const Error: React.FC<Props> = ({ error }): React.ReactElement | null => {
+const Error: React.FC<Props> = ({
+  error,
+  center,
+}): React.ReactElement | null => {
   const text =
     undefined || error === null
       ? null
@@ -22,7 +27,11 @@ const Error: React.FC<Props> = ({ error }): React.ReactElement | null => {
       ? null
       : 'An unknown error occurred';
 
-  return error ? <Typography color="secondary">{text}</Typography> : null;
+  return error ? (
+    <Paragraph center={center ? center : false} fine color="secondary">
+      {text}
+    </Paragraph>
+  ) : null;
 };
 
 export default Error;

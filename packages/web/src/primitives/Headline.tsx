@@ -22,7 +22,7 @@ const Headline: React.FC<Headline & TypographyProps> = ({
   return (
     <Typography
       component="h2"
-      align={center ? 'center' : 'inherit'}
+      align={center || props.align === 'center' ? 'center' : 'inherit'}
       variant={props.variant ? props.variant : 'h4'}
       gutterBottom={props.gutterBottom ? props.gutterBottom : false}>
       {children}

@@ -1,5 +1,9 @@
 import { Feature, Category } from '../types';
 
+export const scrollToTop = (): void => {
+  window.scrollTo(0, 0);
+};
+
 export const slugify = (str: string) => {
   const a =
     'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';

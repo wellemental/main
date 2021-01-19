@@ -151,4 +151,16 @@ export const Español = {
   'Tap Cancel Subscription.': 'Toca Cancelar suscripción.',
   'View Plans': 'Ver planes',
   'Manage Subscription': 'Administrar Suscripción',
+  Checkout: 'Revisa',
+  '100% Satisfaction Guarantee. Cancel anytime.':
+    'Satisfacción garantizada. Cancelar en cualquier momento.',
+  Payment: 'Payment',
+  'Monthly Payment': 'Pago Mensual',
+  'Annual Payment': 'Pago Anual',
+  'Enter payment info': 'Entra la información de pago',
+  'Free Trial Length': 'Free Trial Length',
+  'Amount Paid Now': 'Amount Paid Now',
+  'Enter promo code': 'Entra código promocional',
+  'Invalid promo code': 'Código de promoción no válido',
+  'Questions?': '¿Preguntas?',
 };

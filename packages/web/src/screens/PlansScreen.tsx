@@ -91,7 +91,7 @@ const PlansScreen: React.FC = () => {
         flex: 1,
       }}>
       <Box>
-        <Box mt={2}>
+        {/* <Box mt={2}>
           <Button
             fullWidth
             style={{
@@ -106,7 +106,7 @@ const PlansScreen: React.FC = () => {
             }
             onClick={() => toggleDisplay(!showAccessDisplay)}
           />
-        </Box>
+        </Box> */}
 
         <PageHeading
           title={translation['An inclusive space for kids to breathe.']}

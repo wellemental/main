@@ -10,6 +10,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import LogoutIcon from '@material-ui/icons/ExitToAppOutlined';
 import EmailOutlined from '@material-ui/icons/EmailOutlined';
 import EmailIcon from '@material-ui/icons/Email';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 
 type Props = {
   name: string;
@@ -45,6 +46,8 @@ const Icon: React.FC<Props> = ({ name, active }) => {
     <SearchIcon />
   ) : name === 'logout' ? (
     <LogoutIcon />
+  ) : name === 'chevron-right' ? (
+    <ChevronRight />
   ) : name === 'contact' ? (
     active ? (
       <EmailIcon />
