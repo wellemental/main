@@ -4,8 +4,6 @@ import { useContent } from '../hooks';
 import { Content, Tags, Categories, TimeOfDay, Teachers } from '../types';
 import ListEmpty from './ListEmpty';
 import Error from './Error';
-import Paragraph from './Paragraph';
-import Button from './Button';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import Link from '@material-ui/core/Link';
 

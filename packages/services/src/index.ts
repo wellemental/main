@@ -16,3 +16,4 @@ export * from './services/DimensionsService';
 export { firestore, auth } from './base';
 export { ApplicationError, ModelError } from './models/Errors';
 export * from './types';
+export * from './services/helpers';

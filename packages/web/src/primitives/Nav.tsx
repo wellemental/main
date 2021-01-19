@@ -8,7 +8,6 @@ import {
   IconButton,
   List,
   ListItem,
-  // ListItemIcon,
   ListItemText,
   Slide,
   Box,
@@ -16,22 +15,14 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import {
-  Menu as MenuIcon,
-  // AccountCircle as UserIcon,
-  ExitToApp as LogoutIcon,
-} from '@material-ui/icons';
+import { Menu as MenuIcon, ExitToApp as LogoutIcon } from '@material-ui/icons';
 import ListItemLink from './ListItemLink';
 import { useHistory } from 'react-router-dom';
 import { Logo } from './';
 import app from '../base';
 import { useCurrentUser } from '../hooks';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Icon from './Icon';
-
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -97,7 +88,7 @@ const Nav: React.FC<Props> = (props) => {
   const links: Link[] = [
     { label: 'Home', slug: '/', icon: 'home', pro: false },
     { label: 'Library', slug: '/library', icon: 'library', pro: false },
-    { label: 'Favs', slug: '/favorites', icon: 'favorite', pro: true },
+    { label: 'Favorites', slug: '/favorites', icon: 'favorite', pro: true },
     { label: 'Search', slug: '/search', icon: 'search', pro: true },
     { label: 'Your Account', slug: '/settings', icon: 'user', pro: false },
     { label: 'Logout', slug: 'logout', icon: 'logout', pro: false },

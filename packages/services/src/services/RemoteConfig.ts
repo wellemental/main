@@ -20,20 +20,28 @@ class RemoteConfig implements RemoteConfigService {
 
   private init = async (): Promise<void> => {
     try {
-      return await remoteConfig()
-        .setDefaults(defaultValues)
-        .then(() => remoteConfig().fetchAndActivate())
-        .then((fetchedRemotely) => {
-          if (fetchedRemotely) {
-            logger.info(
-              'Remote configs were retrieved from the backend and activated.',
-            );
-          } else {
-            logger.error(
-              'No remote configs were fetched from the backend, and the local configs were already activated',
-            );
-          }
-        });
+      const config = this.remoteConfig;
+
+      // Set minimum fetch internal - setting to 1 hour
+      config.settings.minimumFetchIntervalMillis = 0; //3600000;
+
+      // Load default config values in case of error fetching
+      config.setDefaults(defaultValues);
+
+      // Activate Remote Config
+      const fetchedRemotely = await config.fetchAndActivate();
+
+      if (fetchedRemotely) {
+        logger.info(
+          'Remote configs were retrieved from the backend and activated.',
+        );
+      } else {
+        logger.error(
+          'No remote configs were fetched from the backend, and the local configs were already activated',
+        );
+      }
+
+      return;
     } catch (err) {
       logger.error(`Error initiating remote config: ${err}`);
       return Promise.reject(new ApplicationError(err));

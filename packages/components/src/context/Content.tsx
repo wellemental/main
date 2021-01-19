@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Spinner } from '../primitives';
 import {
   TeacherService,
   ContentService,

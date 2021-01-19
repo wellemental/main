@@ -18,8 +18,13 @@ class RemoteConfig implements RemoteConfigService {
     try {
       const config = await firebase.remoteConfig();
 
+      // Set minimum fetch internal - setting to 1 hour
+      config.settings.minimumFetchIntervalMillis = 3600000;
+
+      // Load default config values in case of error fetching
       config.defaultConfig = defaultValues;
 
+      // Activate Remote Config
       const fetchedRemotely = await config.fetchAndActivate();
 
       if (fetchedRemotely) {

@@ -63,6 +63,11 @@ export type Category = {
   slug?: string;
 };
 
+export interface Feature extends Category {
+  'title-es': string;
+  'description-es': string;
+}
+
 export enum Categories {
   Meditate = 'Meditate',
   Move = 'Move',
@@ -285,7 +290,7 @@ export interface RemoteConfigService {
 
 export type Features = {
   title: string;
-  categories: Category[];
+  categories: Feature[];
   version: string;
   build: number;
   forceUpgrade: boolean;

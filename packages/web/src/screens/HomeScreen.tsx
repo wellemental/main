@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageHeading, ContentLoop, CategoryCard, Spinner } from '../primitives';
 import moment from 'moment';
-import { TimeOfDay, Category, Tags } from '../types';
+import { TimeOfDay, Category } from '../types';
 import { useCurrentUser, useContent } from '../hooks';
 import { ageGroups } from '../constants';
 
@@ -45,7 +45,7 @@ const HomeScreen: React.FC = () => {
         <Spinner />
       )}
 
-      {!activePlan && (
+      {activePlan && (
         <>
           <PageHeading title={`${translation['Explore by age range']}`} />
           {ageGroups.map((item: Category, idx: number) => (

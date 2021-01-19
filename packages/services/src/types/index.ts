@@ -1,6 +1,6 @@
-// import defaultValues from '../services/RemoteConfigDefaults';
+import defaultValues from '../services/RemoteConfigDefaults';
 // import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { firestore, FirebaseFirestoreTypes } from '../base';
+import { firestore } from '../base';
 
 export type Translations = { [key: string]: string };
 
@@ -57,6 +57,11 @@ export type Category = {
   tag: Tags | TimeOfDay | Category;
   image: string;
 };
+
+export interface Feature extends Category {
+  'title-es': string;
+  'description-es': string;
+}
 
 export enum Categories {
   Meditate = 'Meditate',
@@ -277,7 +282,7 @@ export interface RemoteConfigService {
 
 export type Features = {
   title: string;
-  categories: Category[];
+  categories: Feature[];
   version: string;
   build: number;
   forceUpgrade: boolean;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useCurrentUser } from '../hooks';
 import Paragraph from './Paragraph';
-import { Category } from '../types';
+import { Category, Languages, Feature } from '../types';
 import {
   Card,
   Box,
@@ -9,15 +9,31 @@ import {
   CardContent,
   CardMedia,
 } from '@material-ui/core';
-import { slugify } from '../services/helpers';
+import { slugify, isFeature } from '../services/helpers';
 
 type Props = {
-  category: Category;
+  category: Category | Feature;
 };
 
 const CategoryCard: React.FC<Props> = ({ category }) => {
   const history = useHistory();
-  const { translation } = useCurrentUser();
+  const { translation, user } = useCurrentUser();
+
+  // If it's a feature, get the translation from the features object
+  // Then if translation is possible - age groups have them, features don't currently
+  const title: string =
+    isFeature(category) && user.language === Languages.Es
+      ? category['title-es']
+      : translation[category.title]
+      ? translation[category.title]
+      : category.title;
+
+  const description: string =
+    isFeature(category) && user.language === Languages.Es
+      ? category['description-es']
+      : translation[category.description]
+      ? translation[category.description]
+      : category.description;
 
   return (
     <Card
@@ -37,19 +53,10 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
         <Box display="flex" flexDirection="row">
           <CardContent style={{ flex: 1, padding: '20px 20px 5px' }}>
             <Paragraph variant="subtitle2" noWrap>
-              {/* Translate if possible - age groups have them, features don't currently */}
-              {translation[category.title]
-                ? translation[category.title]
-                : category.title}
+              {title}
             </Paragraph>
 
-            {category.description && (
-              <Paragraph small>
-                {translation[category.description]
-                  ? translation[category.description]
-                  : category.description}
-              </Paragraph>
-            )}
+            {description && <Paragraph small>{description}</Paragraph>}
           </CardContent>
 
           <CardMedia
