@@ -32,7 +32,7 @@ const Paragraph: React.FC<ParagraphProps & TypographyProps> = ({
     <Typography
       align={center ? 'center' : 'inherit'}
       style={{
-        fontSize: fine ? 12 : small ? 15 : size ? size : 18,
+        fontSize: fine ? 12 : small ? 15 : size ? size : '16px',
         lineHeight: small ? '20px' : 1.625,
         ...style,
       }}

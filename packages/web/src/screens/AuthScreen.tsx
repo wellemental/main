@@ -35,7 +35,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   const { state, location } = useLocation();
   const language = state && state.language;
 
-  const isFriends = location.pathname === '/friends';
+  const isFriends = location.state.from.pathname === '/access';
 
   const translation: Translations =
     language && language === Languages.Es ? Español : English;
@@ -60,7 +60,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
         history.push(redirect);
       } else {
         // Show regular user UI.
-        history.push(isFriends ? '/access-code' : '/');
+        history.push(isFriends ? '/access' : '/');
       }
     } catch (err) {
       setError(err);
@@ -86,7 +86,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
     try {
       await service.signup(newAccount);
       setError('Success');
-      history.push(isFriends ? '/access-code' : redirect ? redirect : '/');
+      history.push(isFriends ? '/access' : redirect ? redirect : '/');
     } catch (err) {
       setError(err);
     }
@@ -120,16 +120,21 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   ) : (
     <Box>
       <Logo linked={false} center mb={1} />
-      <Card elevation={0}>
+      <Card>
         <CardContent>
-          {isFriends && (
-            <Paragraph align="center" color="textSecondary">
-              {translation['Friends & Family']}
-            </Paragraph>
-          )}
-          <Headline center variant="h5" gutterBottom>
+          <Headline center variant="h5" gutterBottom={!isFriends}>
             {headline}
           </Headline>
+          {isFriends && (
+            <Paragraph align="center" color="textSecondary">
+              {
+                translation[
+                  'Please login or signup before entering your access code.'
+                ]
+              }
+            </Paragraph>
+          )}
+          <Error center error={error} />
           <Input
             id="email-input"
             autoFocus
@@ -170,12 +175,9 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
             variant="text"
             size="small"
             style={{ color: '#999' }}
+            fullWidth
             text={translation['Forgot password?']}
           />
-
-          <Box mt={2}>
-            <Error error={error} />
-          </Box>
         </CardContent>
       </Card>
     </Box>

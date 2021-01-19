@@ -19,7 +19,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: props.center ? 'auto' : undefined,
     paddingTop: '5px',
     [theme.breakpoints.up('md')]: {
-      width: 150,
+      width: 200,
+    },
+  }),
+  img: (props: Props) => ({
+    width: props.width ? props.width : 200,
+    [theme.breakpoints.up('md')]: {
+      width: 200,
     },
   }),
 }));
@@ -40,7 +46,7 @@ const Logo: React.FC<Props & BoxProps> = ({
         wrapper={(children: React.ReactChildren) => (
           <Link onClick={() => history.push('/')}>{children}</Link>
         )}>
-        <Image src="logo" width={width ? width : 200} />
+        <Image src="logo" className={classes.img} />
       </ConditionalWrapper>
     </Box>
   );

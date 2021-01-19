@@ -41,7 +41,9 @@ const Page: React.FC<Props & ContainerProps> = ({
   const { location } = useLocation();
 
   const noNav =
-    location.pathname === '/forgot-password' || location.pathname === '/login';
+    location.pathname === '/forgot-password' ||
+    location.pathname === '/login' ||
+    location.pathname === '/access';
 
   const bgStyle = background
     ? {

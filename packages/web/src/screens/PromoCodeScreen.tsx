@@ -5,38 +5,35 @@ import PromoCodeService from '../services/PromoCodeService';
 import { Redirect } from 'react-router-dom';
 import { useHistory, useCurrentUser } from '../hooks';
 
-const DownloadScreen: React.FC = () => {
+const PromoCodeScreen: React.FC = () => {
   const [error, setError] = useState('');
   const [promoCode, setPromoCode] = useState('');
   const [upgrading, setUpgrading] = useState(false);
-  const { auth } = useCurrentUser();
+  const { auth, translation } = useCurrentUser();
   const history = useHistory();
 
   const handlePromoCode = async () => {
     const service = new PromoCodeService();
 
-    if (auth && auth.uid) {
-      try {
-        setUpgrading(true);
-        await service.validateAndUpgrade(auth.uid, promoCode);
-        history.push('/download');
-      } catch (err) {
-        setError(err);
-      }
-    } else {
-      setError('Please login first');
+    try {
+      setUpgrading(true);
+      await service.validateAndUpgrade(auth.uid, promoCode);
+      history.push('/download');
+    } catch (err) {
+      setError(err);
+      setUpgrading(false);
     }
   };
 
   return !auth ? (
     <Redirect
       to={{
-        pathname: '/',
+        pathname: '/login',
       }}
     />
   ) : (
     <Page>
-      <Card elevation={0}>
+      <Card>
         <CardContent>
           {auth && (
             <Paragraph align="center" color="textSecondary">
@@ -44,7 +41,7 @@ const DownloadScreen: React.FC = () => {
             </Paragraph>
           )}
           <Headline align="center" variant="h5" gutterBottom>
-            Enter Access Code
+            {translation['Enter Access Code']}
           </Headline>
 
           <Error error={error} />
@@ -53,14 +50,15 @@ const DownloadScreen: React.FC = () => {
             mb={3}
             id="access-code"
             autoFocus
-            label="Access Code"
+            label={translation['Access code']}
+            onKeyPress={handlePromoCode}
             value={promoCode}
             onChange={(e) => setPromoCode(e.target.value && e.target.value)}
           />
 
           <Button
             disabled={upgrading}
-            text="Submit"
+            text={translation['Submit']}
             fullWidth
             onClick={handlePromoCode}
           />
@@ -70,4 +68,4 @@ const DownloadScreen: React.FC = () => {
   );
 };
 
-export default DownloadScreen;
+export default PromoCodeScreen;

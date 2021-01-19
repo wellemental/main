@@ -18,27 +18,27 @@ const DownloadScreen: React.FC = () => {
   ) : (
     <Box center>
       <Card elevation={0}>
-        <Headline center gutterBottom>
-          You're In!
-        </Headline>
+        <Headline center>{translation["You're In!"]}</Headline>
         <Paragraph center gutterBottom>
           {translation['Click below to get started.']}
         </Paragraph>
         <Box mb={2}>
           <Button
             fullWidth
+            color="secondary"
             onClick={() => history.push('/home')}
             text={translation['Go To Homepage']}
           />
         </Box>
         <Button
           fullWidth
+          color="secondary"
           onClick={() => {
             window.location.href =
               'https://apps.apple.com/us/app/wellemental-kids-mindfulness/id1531397725';
           }}
           startIcon={<AppleIcon />}
-          text="Download iOS"
+          text={translation['Download iOS']}
         />
       </Card>
     </Box>

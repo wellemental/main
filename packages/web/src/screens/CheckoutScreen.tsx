@@ -22,7 +22,6 @@ import {
   InputAdornment,
   Typography,
   IconButton,
-  TextField,
   Collapse,
   CircularProgress,
 } from '@material-ui/core';
@@ -32,7 +31,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Lock as LockIcon } from '@material-ui/icons';
 
 const CheckoutScreen: React.FC = () => {
   const history = useHistory();
@@ -43,6 +41,24 @@ const CheckoutScreen: React.FC = () => {
 
   const stripe = useStripe();
   const elements = useElements();
+
+  // Handle promo code functionality
+  const [promoCode, setPromoCode] = useState('');
+  const [activePromoCode, setActivePromoCode] = useState<null | string>(null);
+  const [showPromoCode, setShowPromoCode] = useState(false);
+  const [promoReject, setPromoReject] = useState('');
+  const [trialLength, setTrialLength] = useState(plan.trialLength);
+
+  const validatePromoCode = () => {
+    if (promoCode === 'MMOVE') {
+      setActivePromoCode('MMOVE');
+      setTrialLength(30);
+      setShowPromoCode(false);
+      scrollToTop();
+    } else {
+      setPromoReject(translation['Invalid promo code']);
+    }
+  };
 
   const handleSubmit = async (event: any) => {
     // Block native form submission.
@@ -75,7 +91,7 @@ const CheckoutScreen: React.FC = () => {
           .httpsCallable('onStartSubscription')({
             source: token.id,
             plan: plan.stripeId,
-            trial_period_days: plan.trialLength,
+            trial_period_days: trialLength,
           })
           .then((res) => {
             history.push(`/download`);
@@ -109,22 +125,6 @@ const CheckoutScreen: React.FC = () => {
   };
 
   const [stripeLoading, setStripeLoading] = useState(true);
-  const [promoCode, setPromoCode] = useState('');
-  const [activePromoCode, setActivePromoCode] = useState<null | string>(null);
-  const [showPromoCode, setShowPromoCode] = useState(false);
-  const [promoReject, setPromoReject] = useState('');
-  const [trialLength, setTrialLength] = useState(plan.trialLength);
-
-  const validatePromoCode = () => {
-    if (promoCode === 'MMOVE') {
-      setActivePromoCode('MMOVE');
-      setTrialLength(30);
-      setShowPromoCode(false);
-      scrollToTop();
-    } else {
-      setPromoReject(translation['Invalid promo code']);
-    }
-  };
 
   return (
     <Box>

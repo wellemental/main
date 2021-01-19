@@ -70,7 +70,7 @@ export const theme = createMuiTheme({
     },
   },
   typography: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: [
       'Inter',
       'apple-system',
@@ -98,27 +98,28 @@ export const theme = createMuiTheme({
     },
     h1: {
       fontFamily: 'RecoletaAlt',
-      fontWeight: '700',
+      fontWeight: '500',
       color: brandColors.brandPrimary,
     },
     h2: {
       fontFamily: 'RecoletaAlt',
-      fontWeight: '700',
+      fontWeight: '500',
+      lineHeight: 1.425,
       color: brandColors.brandPrimary,
     },
     h3: {
       fontFamily: 'RecoletaAlt',
-      fontWeight: '700',
+      fontWeight: '500',
       color: brandColors.brandPrimary,
     },
     h4: {
       fontFamily: 'RecoletaAlt',
-      fontWeight: '700',
+      fontWeight: '500',
       color: brandColors.brandPrimary,
     },
     h5: {
       fontFamily: 'RecoletaAlt',
-      fontWeight: '700',
+      fontWeight: '500',
       color: brandColors.brandPrimary,
     },
     h6: {
@@ -132,7 +133,7 @@ export const theme = createMuiTheme({
     MuiCssBaseline: {
       '@global': {
         '@font-face': [recoleta],
-        '@font-face': [inter],
+        // '@font-face': [inter],
       },
     },
     MuiContainer: {
@@ -156,7 +157,7 @@ export const theme = createMuiTheme({
     },
     MuiCardHeader: {
       title: {
-        fontWeight: '700',
+        fontWeight: '500',
         fontSize: 24,
         color: brandColors.brandPrimary,
       },

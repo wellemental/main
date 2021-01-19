@@ -7,6 +7,7 @@ import {
   Paragraph,
   Button,
   Error,
+  Headline,
 } from '../primitives';
 import IconButton from '@material-ui/core/IconButton';
 import ReactPlayer from 'react-player';
@@ -117,9 +118,9 @@ const ContentScreen: React.FC = () => {
             justifyContent="space-between"
             mt={2}
             mb={1}>
-            <Paragraph variant="h2" size={28} style={{ flex: 8 }}>
+            <Headline variant="h5" style={{ flex: 8 }}>
               {content.title}
-            </Paragraph>
+            </Headline>
             <Box flexDirection="row" style={{ flex: 1 }}>
               <Favorite onProfile contentId={content.id} />
               {/* <Download videoUrl={content.video} /> */}

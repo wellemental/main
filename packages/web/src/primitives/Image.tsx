@@ -17,7 +17,7 @@ const Image: React.FC<ImageProps & BoxProps> = ({
   center,
   ...props
 }) => {
-  const style: CSSProperties = imageStyle ? imageStyle : {};
+  const style: CSSProperties = imageStyle ? imageStyle : { maxWidth: '100%' };
 
   if (center) {
     style.display = 'block';

@@ -138,7 +138,7 @@ export const Español = {
     'Revise su correo electrónico para obtener un enlace para restablecer la contraseña.',
   'See all languages': 'Ver todos los idiomas',
   'Click below to get started.': 'Haga clic a continuación para comenzar.',
-  'Download iOS': 'Descargar iOS',
+  'Download iOS': 'Descarga iOS',
   'Go To Homepage': 'Ir a la página de inicio',
   'Contact Us': 'Contact Us',
   'Enter email...': 'Entra tu correo electrónico...',
@@ -163,4 +163,5 @@ export const Español = {
   'Enter promo code': 'Entra código promocional',
   'Invalid promo code': 'Código de promoción no válido',
   'Questions?': '¿Preguntas?',
+  "You're In!": '¡Bienvenidos!',
 };

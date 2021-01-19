@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Error, Headline, Input, Box, Paragraph } from '../primitives';
+import {
+  Button,
+  Error,
+  Headline,
+  Input,
+  Box,
+  Paragraph,
+  Logo,
+} from '../primitives';
 import { ForgotPasswordService } from '../services';
 import { useCurrentUser, useHistory } from '../hooks';
 import { Card, CardContent } from '@material-ui/core';
@@ -32,12 +40,13 @@ const ForgotPasswordScreen: React.FC = () => {
 
   return (
     <Box>
-      <Card elevation={0}>
+      <Logo linked={false} center mb={1} />
+      <Card>
         <CardContent>
           <Headline align="center" variant="h5" gutterBottom>
             {translation['Forgot password?']}
           </Headline>
-          <Error error={error} />
+          <Error center error={error} />
           {isReset ? (
             <Paragraph>
               {translation['Check your email for a reset password link.']}
@@ -60,12 +69,14 @@ const ForgotPasswordScreen: React.FC = () => {
                   loading={loading}
                   onClick={handlePressForgotPassword}
                   text={translation['Reset Password']}
+                  fullWidth
                 />
               </Box>
               <Button
                 onClick={() => history.push('/login', { translation })}
                 variant="text"
                 size="small"
+                fullWidth
                 style={{ color: '#999' }}
                 text={translation['Back to Login']}
               />

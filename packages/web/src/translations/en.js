@@ -159,4 +159,8 @@ export const English = {
   'Enter promo code': 'Enter promo code',
   'Invalid promo code': 'Invalid promo code',
   'Questions?': 'Questions?',
+  "You're In!": "You're In!",
+  'Please login or signup before entering your access code.':
+    'Please login or signup before entering your access code.',
+  'Enter Access Code': 'Enter Access Code',
 };

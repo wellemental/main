@@ -136,4 +136,7 @@ export const Español = {
     'Revise su correo electrónico para obtener un enlace para restablecer la contraseña.',
   'See all languages': 'Ver todos los idiomas',
   'Enter email...': 'Entra tu correo electrónico...',
+  'Please login or signup before entering your access code.':
+    'Please login or signup before entering your access code.',
+  'Enter Access Code': 'Entra tu código de accesso',
 };

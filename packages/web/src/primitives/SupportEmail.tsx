@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import Box from './Box';
 import Paragraph from './Paragraph';
 import MailIcon from '@material-ui/icons/MailOutline';
 import { useCurrentUser } from '../hooks';
