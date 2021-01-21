@@ -46,11 +46,11 @@ const SettingsScreen: React.FC = () => {
       onPress: () => handleNavigate('/subscription'),
       icon: <CreditCardIcon />,
     },
-    {
-      label: translation['Live Event'],
-      onPress: () => handleNavigate('/live'),
-      icon: <CalendarIcon />,
-    },
+    // {
+    //   label: translation['Live Event'],
+    //   onPress: () => handleNavigate('/live'),
+    //   icon: <CalendarIcon />,
+    // },
     { label: translation.Logout, onPress: handleLogout, icon: <LogoutIcon /> },
   ];
 

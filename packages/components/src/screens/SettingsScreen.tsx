@@ -93,7 +93,7 @@ const SettingsScreen: React.FC = () => {
     //   iconName: 'cart',
     // },
     { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
-    { label: 'Live Event', onPress: linkExternally, iconName: 'calendar' },
+    // { label: 'Live Event', onPress: linkExternally, iconName: 'calendar' },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
   ];
 

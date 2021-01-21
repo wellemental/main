@@ -18,9 +18,10 @@ import {
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
-import { DownloadVideoService } from 'services';
+import { DownloadVideoService, PlaysServiceType } from 'services';
 import FadeIn from 'react-native-fade-in-image';
 import { tracker, TrackingEvents } from 'services';
+import { useContainer, useMutation } from '../hooks';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -113,6 +114,12 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     setBuffering(isBuffering);
   };
 
+  const container = useContainer();
+  const playsService = container.getInstance<PlaysServiceType>('playsService');
+  const { mutate: addPlayCount, loading: adding } = useMutation(() =>
+    playsService.add(content.id),
+  );
+
   return (
     <Container>
       {content.video_orientation === 'portrait' ? (
@@ -128,6 +135,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             <NBButton
               onPress={() => {
                 tracker.track(TrackingEvents.PlayVideo);
+                addPlayCount();
                 navigation.navigate('Video', {
                   content,
                   teacher,
@@ -176,8 +184,9 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
                 />
               </FadeIn>
               <NBButton
-                onPress={() => {
+                onPress={(): void => {
                   tracker.track(TrackingEvents.PlayVideo);
+                  addPlayCount();
                   togglePaused(!isPaused);
                 }}
                 style={{

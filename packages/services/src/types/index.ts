@@ -1,5 +1,5 @@
 import defaultValues from '../services/RemoteConfigDefaults';
-// import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { firestore } from '../base';
 
 export type Translations = { [key: string]: string };
@@ -216,6 +216,25 @@ export type DownloadProgressCallbackResult = {
   bytesWritten: number; // The number of bytes written to the file so far
 };
 
+export type PlayEvent = {
+  contentId: string;
+  created_at: FirebaseFirestoreTypes.Timestamp;
+};
+
+export interface PlaysObj {
+  [id: string]: PlayEvent;
+}
+
+export interface PlaysServiceType {
+  query: FirebaseFirestoreTypes.Query;
+  add(id: string): Promise<void>;
+  get(): Promise<PlaysObj | PlayEvent[]>;
+}
+
+export interface FirestoreServiceType {
+  add(code: string): Promise<PromoCode>;
+  getAll(): Promise<PlaysObj>;
+}
 export interface ContentServiceType {
   buildContent(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Content;
   getContent(): Promise<Content[]>;
