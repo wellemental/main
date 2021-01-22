@@ -5,13 +5,14 @@ import {
   AllTeachers,
   LocalStateService,
   Content as ContentType,
+  ContentObj,
   Features,
 } from 'services';
 import { useConfig, useCurrentUser } from '../hooks';
 import { logger } from 'services';
 
 interface ContentContext {
-  content: ContentType[];
+  content: ContentObj;
   teachers: AllTeachers;
   error: Error | string;
   loading: boolean;
@@ -44,7 +45,7 @@ const setLocalContent = async (content, teachers) => {
 };
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
-  const [content, setContent] = useState<ContentType[] | null>(null);
+  const [content, setContent] = useState<ContentObj | null>(null);
   const [teachers, setTeachers] = useState<AllTeachers | null>(null);
   const [error, setError] = useState('');
   const [statuses, setStatus] = useState([]);
@@ -56,7 +57,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   );
   const localUpdatedAt = useRef<Date | undefined>();
 
-  const getDbContent = async () => {
+  const getDbContent = async (): void => {
     // Get teachers and content from firestore
     try {
       const teacherService = new TeacherService();
@@ -65,25 +66,9 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       const dbContent = await contentService.getContent();
 
       // Update AsyncStorage with firestore data
-      if (dbTeachers) {
-        setStatus((status) => [...status, 'Successly got Teachers']);
-      }
-      if (dbContent) {
-        setStatus((status) => [...status, 'Successly got content']);
-      }
-
       if (dbTeachers && dbContent) {
-        setStatus((status) => [
-          ...status,
-          'Successly got Teach & content from db, storing locally',
-        ]);
-        logger.info('Successly got Teach & content from db, storing locally');
         await setLocalContent(dbContent, dbTeachers);
       } else {
-        setStatus((status) => [
-          ...status,
-          'No results from fb for teachers or content. Not setting locally.',
-        ]);
         logger.info(
           `No results from fb for teachers or content. Not setting locally.`,
         );
@@ -93,10 +78,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       setContent(dbContent);
       setTeachers(dbTeachers);
     } catch (err) {
-      setStatus((status) => [
-        ...status,
-        `Error fetching content from database - ${err}`,
-      ]);
       setError(`Error fetching content from database - ${err}`);
       logger.error('Error getting firestore content data');
       logger.error(`Error getting firestore content data - ${err}`);
@@ -120,31 +101,11 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
 
         // Set updateAvailable to true if either database updated_at is more recent
         if (dbContentLatest || dbTeacherLatest) {
-          logger.info('Calculating update available');
-          setStatus((status) => [...status, 'Successfully got latest from db']);
-
-          setStatus((status) => [
-            ...status,
-            `Local - ${localUpdatedAt.current} - Content - ${dbContentLatest} - Teacher - ${dbTeacherLatest}`,
-            `isContentNewer? - ${dbContentLatest > localUpdatedAt.current}`,
-            `isTEacherNewer? - ${dbTeacherLatest > localUpdatedAt.current}`,
-          ]);
-
-          logger.info(
-            `Local - ${localUpdatedAt.current} - Content - ${dbContentLatest} - Teacher - ${dbTeacherLatest}`,
-          );
-          logger.info(
-            `isContentNewer? - ${dbContentLatest > localUpdatedAt.current}`,
-          );
-          logger.info(
-            `isTEacherNewer? - ${dbTeacherLatest > localUpdatedAt.current}`,
-          );
           setUpdateAvailable(
             dbContentLatest > localUpdatedAt.current ||
               dbTeacherLatest > localUpdatedAt.current,
           );
         } else {
-          logger.info('Failed to get latest from db');
           setStatus((status) => [...status, 'Failed to get latest from db']);
         }
       };
@@ -157,39 +118,23 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
           const localData = await localStateService.getContent();
 
           if (localData) {
-            setStatus((status) => [...status, 'Got local data']);
-            logger.info('Got local data');
             if (localData.content) {
-              logger.info('Got local content');
-              setStatus((status) => [...status, 'Got local content']);
               setContent(localData.content);
             }
             if (localData.teachers) {
-              logger.info('Got local teachers');
-              setStatus((status) => [...status, 'Got local teachers']);
               setTeachers(localData.teachers);
             }
             if (localData.updated_at) {
-              setStatus((status) => [
-                ...status,
-                `Got local updated_at - ${localData.updated_at}`,
-              ]);
-              setStatus((status) => [...status, 'Got local updated_at']);
               localUpdatedAt.current = localData.updated_at;
             }
             setLoading(false);
           } else {
-            setStatus((status) => [
-              ...status,
-              'No local data, fetching from database',
-            ]);
             logger.info('No local data, fetching from database');
             // If nothing in AsyncStorage, pull from Database
             await getDbContent();
           }
           await calcUpdateAvailable();
         } catch (err) {
-          setStatus((status) => [...status, 'Error fetching content']);
           logger.error('Error getting local content data');
 
           // In case there's an error getting localStorage, then pull from database as backup
@@ -198,10 +143,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       };
 
       if (!teachers || !content) {
-        setStatus((status) => [
-          ...status,
-          'No content or teachers. Fetching local data',
-        ]);
         fetchContent();
       }
     }
@@ -211,11 +152,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   useEffect(() => {
     if (updateAvailable) {
       const autoFetchDb = async (): void => {
-        setStatus((status) => [
-          ...status,
-          'Auto-fetching content from database',
-        ]);
-        logger.info('Auto-fetching content from database');
         await getDbContent();
       };
 

@@ -48,7 +48,7 @@ const dependenciesDescriptors = {
   },
   playsService: {
     class: PlaysService,
-    dependencies: ['firestore', 'currentUser', 'logger'],
+    dependencies: ['firestore', 'currentUser', 'logger', 'tracker'],
   },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;

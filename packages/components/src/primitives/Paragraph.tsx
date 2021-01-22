@@ -16,6 +16,7 @@ export interface ParagraphProps {
   gv?: number;
   size?: number;
   center?: boolean;
+  fine?: boolean;
 }
 
 const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
@@ -26,6 +27,7 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
   gb,
   gv,
   center,
+  fine,
 }) => {
   const spacing = 15;
   const styles2 = StyleSheet.flatten([
@@ -34,7 +36,7 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
       lineHeight: 22,
       paddingTop: gv ? spacing * gv : gt ? spacing * gt : 0,
       paddingBottom: gv ? spacing * gv : gb ? spacing * gb : 0,
-      color: brandColors.textColor,
+      color: fine ? brandColors.lightTextColor : brandColors.textColor,
       textAlign: center ? 'center' : 'left',
     },
     style,

@@ -30,7 +30,7 @@ const ContentLoop: React.FC<Props> = ({
   const { user, translation } = useCurrentUser();
   const { content, teachers, error, loading } = useContent();
 
-  let filteredContent: Content[] = content;
+  let filteredContent: Content[] = content ? Object.values(content) : [];
 
   // Filter by language
   if (user && user.language && filteredContent && favorites === undefined) {

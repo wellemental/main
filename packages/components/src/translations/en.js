@@ -133,4 +133,7 @@ export const English = {
   'See all languages': 'See all languages',
   'Enter email...': 'Enter email...',
   'Live Event': 'Live Event',
+  Stats: 'Stats',
+  Journey: 'Journey',
+  'Load More': 'Load More',
 };

@@ -1,6 +1,8 @@
 import defaultValues from '../services/RemoteConfigDefaults';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { firestore } from '../base';
+// import { firestore } from '../base';
+
+export type Timestamp = FirebaseFirestoreTypes.Timestamp;
 
 export type Translations = { [key: string]: string };
 
@@ -93,7 +95,7 @@ export interface LocalUser {
 }
 
 export interface LocalContent {
-  content: Content[];
+  content: ContentObj;
   teachers: AllTeachers;
   updated_at?: Date;
 }
@@ -142,6 +144,9 @@ export interface User {
   // name: string;
   // birthday: string;
   language: Languages;
+  totalPlays: number;
+  totalCompleted: number;
+  totalMinutes: number;
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;
@@ -164,8 +169,12 @@ export interface Content {
   length: string;
   language: Languages;
   status: ContentStatus;
-  updated_at: firestore.Timestamp;
-  created_at: firestore.Timestamp; //typeof firestore.Timestamp;
+  updated_at: Timestamp;
+  created_at: Timestamp; //typeof Timestamp;
+}
+
+export interface ContentObj {
+  [key: string]: Content;
 }
 
 export interface Teacher {
@@ -174,7 +183,7 @@ export interface Teacher {
   bio: string;
   photo: string;
   language: Languages;
-  updated_at: firestore.Timestamp;
+  updated_at: Timestamp;
 }
 
 export interface AllTeachers {
@@ -185,7 +194,7 @@ export interface UserProfile {
   // name?: string;
   // birthday?: string;
   language?: Languages;
-  updated_at?: firestore.Timestamp;
+  updated_at?: Timestamp;
 }
 
 export interface NewAccount {
@@ -218,7 +227,7 @@ export type DownloadProgressCallbackResult = {
 
 export type PlayEvent = {
   contentId: string;
-  created_at: FirebaseFirestoreTypes.Timestamp;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
 };
 
 export interface PlaysObj {
@@ -237,7 +246,7 @@ export interface FirestoreServiceType {
 }
 export interface ContentServiceType {
   buildContent(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Content;
-  getContent(): Promise<Content[]>;
+  getContent(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
 }
 

@@ -18,7 +18,7 @@ const LandingScreen: React.FC = () => {
 
   return (
     <Container center>
-      <Box gb={4}>
+      <Box mb={4}>
         <Image
           source={require('../assets/images/icon.png')}
           style={{
@@ -30,7 +30,7 @@ const LandingScreen: React.FC = () => {
       </Box>
 
       <View style={{ position: 'absolute', bottom: 20, left: 15, right: 15 }}>
-        <Box gv={1}>
+        <Box my={1}>
           <Button
             text="English"
             loading={loading}

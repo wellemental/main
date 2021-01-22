@@ -22,10 +22,10 @@ const UpgradeScreen: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <Container center>
-      <Box gb={0.5}>
+      <Box mb={0.5}>
         <H1>{`${translation['Upgrade App']} ${translation.Required}!`}</H1>
       </Box>
-      <Box gb={1.5}>
+      <Box mb={1.5}>
         <Paragraph>
           {translation['Tap below to download the latest Wellemental update.']}
         </Paragraph>
@@ -36,11 +36,11 @@ const UpgradeScreen: React.FC<Props> = ({ route, navigation }) => {
         onPress={upgradeOnPress}
       />
       {!version.forceUpgrade && (
-        <Box gt={1}>
+        <Box mt={1}>
           <Button
             text={translation['No Thanks']}
             transparent
-            onPress={() => navigation.goBack()}
+            onPress={(): void => navigation.goBack()}
           />
         </Box>
       )}

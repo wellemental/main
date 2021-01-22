@@ -140,4 +140,7 @@ export const Español = {
     'Please login or signup before entering your access code.',
   'Enter Access Code': 'Entra tu código de accesso',
   'Live Event': 'Live Event',
+  Stats: 'Stats',
+  Journey: 'Journey',
+  'Load More': 'Load More',
 };

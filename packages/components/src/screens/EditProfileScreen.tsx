@@ -63,7 +63,7 @@ const EditProfileScreen: React.FC = () => {
           </NBButton>
         </Segment>
 
-        <Box gt={2}>
+        <Box mt={2}>
           <Button
             onPress={handleUpdate}
             loading={loading}

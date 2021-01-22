@@ -164,4 +164,7 @@ export const English = {
     'Please login or signup before entering your access code.',
   'Enter Access Code': 'Enter Access Code',
   'Live Event': 'Live Event',
+  Stats: 'Stats',
+  Journey: 'Journey',
+  'Load More': 'Load More',
 };

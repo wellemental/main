@@ -165,4 +165,7 @@ export const Español = {
   'Questions?': '¿Preguntas?',
   "You're In!": '¡Bienvenidos!',
   'Live Event': 'Live Event',
+  Stats: 'Stats',
+  Journey: 'Journey',
+  'Load More': 'Load More',
 };

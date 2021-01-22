@@ -20,7 +20,6 @@ import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { DownloadVideoService, PlaysServiceType } from 'services';
 import FadeIn from 'react-native-fade-in-image';
-import { tracker, TrackingEvents } from 'services';
 import { useContainer, useMutation } from '../hooks';
 
 type Props = {
@@ -116,7 +115,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const container = useContainer();
   const playsService = container.getInstance<PlaysServiceType>('playsService');
-  const { mutate: addPlayCount, loading: adding } = useMutation(() =>
+  const { mutate: addPlayCount } = useMutation(() =>
     playsService.add(content.id),
   );
 
@@ -134,7 +133,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             }}>
             <NBButton
               onPress={() => {
-                tracker.track(TrackingEvents.PlayVideo);
                 addPlayCount();
                 navigation.navigate('Video', {
                   content,
@@ -185,7 +183,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
               </FadeIn>
               <NBButton
                 onPress={(): void => {
-                  tracker.track(TrackingEvents.PlayVideo);
                   addPlayCount();
                   togglePaused(!isPaused);
                 }}
@@ -220,7 +217,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
       <Button
         transparent
-        onPress={() =>
+        onPress={(): void =>
           navigation.navigate('Teacher', {
             teacher,
           })

@@ -10,6 +10,7 @@ import { TabParamList } from '../types';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import { useCurrentUser } from '../hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import ProfileScreen from './ProfileScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -76,7 +77,8 @@ const TabNav: React.FC = () => {
       )}
       <Tab.Screen
         name="Settings"
-        component={SettingsScreen}
+        // component={SettingsScreen}
+        component={ProfileScreen}
         options={{ title: translation.Settings }}
       />
     </Tab.Navigator>

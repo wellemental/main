@@ -31,7 +31,7 @@ const LibraryScreen: React.FC = () => {
 
   return activePlan ? (
     <Container scrollEnabled noPadding="horizontal">
-      <Box gh={1}>
+      <Box mx={1}>
         <PageHeading title={translation["Let's Practice."]} />
       </Box>
       <Tabs tabs={tabs} active={tab} setTab={setTab} />

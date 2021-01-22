@@ -163,9 +163,9 @@ const PlansScreen: React.FC = () => {
             }
           />
 
-          <Box gb={2}>
+          <Box mb={2}>
             {bullets.map((bullet) => (
-              <Box row key={bullet} gb={0.5}>
+              <Box row key={bullet} mb={0.5}>
                 <Icon
                   name="ios-checkmark-sharp"
                   style={{ fontSize: 22, color: brandColors.brandWarning }}
@@ -223,7 +223,7 @@ const PlansScreen: React.FC = () => {
                 text={translation.Subscribe}
                 onPress={() => handleSubscription(PlanId.Monthly)}
               />
-              <Box gt={1.5}>
+              <Box mt={1.5}>
                 <LegalLinks subs />
               </Box>
             </>
@@ -265,7 +265,7 @@ const PlansScreen: React.FC = () => {
             (auth.email === 'mike.r.vosters@gmail.com' ||
               auth.email === 'denise@test.com') &&
             status && (
-              <Box gt={2} gb={10}>
+              <Box mt={2} mb={10}>
                 <Paragraph>IAP Error Msg:</Paragraph>
                 <Error error={iapError} center />
                 <Paragraph>******</Paragraph>
@@ -301,7 +301,7 @@ const PlansScreen: React.FC = () => {
                   <Paragraph>No user</Paragraph>
                 )}
 
-                <Box gt={1}>
+                <Box mt={1}>
                   <Paragraph>******</Paragraph>
                   <Paragraph>DEBUGGING</Paragraph>
                   {status.map((item, idx) => (

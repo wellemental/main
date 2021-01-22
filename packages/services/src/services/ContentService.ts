@@ -2,7 +2,7 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 // import { firestore, FirebaseFirestoreTypes } from '../base';
-import { Content, ContentServiceType } from '../types';
+import { Content, ContentObj, ContentServiceType } from '../types';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
 import logger from './LoggerService';
@@ -41,7 +41,7 @@ class ContentService implements ContentServiceType {
     };
   };
 
-  public getContent = async (): Promise<Content[]> => {
+  public getContent = async (): Promise<ContentObj> => {
     // With no tags passed, get all Content
     const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection.orderBy(
       'updated_at',
@@ -53,9 +53,17 @@ class ContentService implements ContentServiceType {
     // }
 
     try {
-      return await query
+      const content: ContentObj = {};
+
+      await query
         .get()
-        .then((snapshot) => snapshot.docs.map((doc) => this.buildContent(doc)));
+        .then((snapshot) =>
+          snapshot.docs.forEach(
+            (doc) => (content[doc.id] = this.buildContent(doc)),
+          ),
+        );
+
+      return content;
     } catch (err) {
       logger.error(`Unable to get all content - ${err}`);
       return Promise.reject(new ApplicationError(err));
