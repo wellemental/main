@@ -35,7 +35,10 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   const { state, location } = useLocation();
   const language = state && state.language;
 
-  const isFriends = location.state.from.pathname === '/access';
+  const isFriends =
+    location.state && location.state.from
+      ? location.state.from.pathname === '/access'
+      : false;
 
   const translation: Translations =
     language && language === Languages.Es ? Español : English;

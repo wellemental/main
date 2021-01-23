@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@material-ui/core';
-import { Button, Page, Headline, Paragraph, Error, Input } from '../primitives';
+import { Button, Box, Headline, Paragraph, Error, Input } from '../primitives';
 import PromoCodeService from '../services/PromoCodeService';
 import { Redirect } from 'react-router-dom';
 import { useHistory, useCurrentUser } from '../hooks';
@@ -32,7 +32,7 @@ const PromoCodeScreen: React.FC = () => {
       }}
     />
   ) : (
-    <Page>
+    <Box>
       <Card>
         <CardContent>
           {auth && (
@@ -64,7 +64,7 @@ const PromoCodeScreen: React.FC = () => {
           />
         </CardContent>
       </Card>
-    </Page>
+    </Box>
   );
 };
 
