@@ -12,6 +12,7 @@ import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { Spinner } from '../primitives';
 import moment from 'moment';
+import { convertTimestamp } from 'services';
 
 const localStateService = new LocalStateService();
 
@@ -173,11 +174,19 @@ export const CurrentUserProvider = ({ children }: any) => {
           const userData = snapshot.data();
 
           const userDoc: User = {
-            // name: userData.name,
             language: userData.language,
-            // birthday: userData.birthday,
             favorites: userData.favorites,
             plan: userData.plan,
+            totalCompleted: userData.totalCompleted,
+            totalPlays: userData.totalPlays,
+            totalMinutes: userData.totalMinutes,
+            streak: userData.streak,
+            firstPlay: userData.firstPlay
+              ? convertTimestamp(userData.firstPlay).toDate()
+              : undefined,
+            lastPlay: userData.lastPlay
+              ? convertTimestamp(userData.lastPlay).toDate()
+              : undefined,
           };
 
           setCurrentUser(userDoc);
@@ -216,21 +225,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   if (creatingUser) {
     return <Spinner text="Creating account..." />;
   }
-
-  // console.log(
-  //   'NEXT YEAR',
-  //   moment('2022-01-11').unix(),
-  //   'FUNC',
-  //   1612376714 < moment().unix(),
-  //   'RENEW UNIX',
-  //   moment.unix(1641880800).format('YYYY-MM-DD'),
-  //   // moment.unix(1612376714).format('YYYY-MM-DD'),
-  //   'NOW UNIX',
-  //   //moment().unix.format('YYYY-MM-DD'),
-  //   new Date(moment().unix() * 1000),
-  //   'COMPARE',
-  //   1612376714 >= moment().unix(),
-  // );
 
   return (
     <CurrentUser.Provider

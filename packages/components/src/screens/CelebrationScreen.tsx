@@ -36,20 +36,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// const styles = StyleSheet.create({
-//   backgroundVideo: {
-//     // position: 'absolute',
-//     height: deviceHeight,
-//     width: deviceWidth,
-//   },
-//   nativeVideoControls: {
-//     top: 0,
-//     height: '100%',
-//     width: deviceWidth,
-//   },
-
-// });
-
 const CelebrationScreen: React.FC<Props> = () => {
   const navigation = useNavigation();
   const { translation } = useCurrentUser();

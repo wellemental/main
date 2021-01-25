@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
 });
 
 const VideoScreen: React.FC<Props> = ({ route }) => {
-  const navigation = useNavigation();
-  const { content, savedVideoPath } = route.params;
+  const { content, savedVideoPath, handleComplete } = route.params;
   const [error, setError] = useState();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(content.seconds);
@@ -37,7 +36,7 @@ const VideoScreen: React.FC<Props> = ({ route }) => {
 
   useEffect(() => {
     if (isOver) {
-      navigation.navigate('Celebration');
+      handleComplete();
     }
   }, [isOver]);
 

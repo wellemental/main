@@ -1,5 +1,6 @@
-import { Feature, Category, Timestamp } from '../types';
+import { Feature, Category, Timestamp, FieldValue } from '../types';
 import moment from 'moment';
+import firebase from '@react-native-firebase/app';
 
 export const capitalize = (s: any) => {
   if (typeof s !== 'string') return '';
@@ -12,4 +13,8 @@ export const isFeature = (obj: Feature | Category): obj is Feature => {
 
 export const convertTimestamp = (timestamp: Timestamp): moment.Moment => {
   return moment(timestamp.toDate());
+};
+
+export const increment = (amount?: number): FieldValue => {
+  return firebase.firestore.FieldValue.increment(amount ? amount : 1);
 };

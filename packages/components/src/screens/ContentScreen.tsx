@@ -63,31 +63,73 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const [showPoster, togglePoster] = useState(true);
   const [error, setError] = useState();
   const [isPaused, togglePaused] = useState(true);
+  const [hasPlayed, toggleHasPlayed] = useState(false);
 
+  // Hide poster when video has started
   if (showPoster && (currentTime > 0 || !isPaused)) {
     togglePoster(false);
   }
 
+  // Get PlaysService
+  const container = useContainer();
+  const playsService = container.getInstance<PlaysServiceType>('playsService');
+
+  // Reset Has Played when it's a new content page
+  useEffect(() => {
+    toggleHasPlayed(false);
+  }, [content]);
+
+  // Determine when video is over to trigger transition to celebration page
   if (!isOver && currentTime >= duration - 1) {
     toggleOver(true);
   }
 
+  // Increment totalComplete and totalMinutes stats
+  const { mutate: markComplete } = useMutation(() =>
+    playsService.complete(content.id, duration),
+  );
+
+  const handleComplete = (): void => {
+    markComplete();
+    navigation.navigate('Celebration');
+  };
+
+  // Trigger handleComplete function once isOver state updates to true
   useEffect(() => {
     if (isOver) {
-      navigation.navigate('Celebration');
+      handleComplete();
     }
   }, [isOver]);
 
-  // useEffect(() => {
-  //   if (showPoster && (currentTime > 0 || !isPaused)) {
-  //     togglePoster(false);
-  //   }
-  // }, [isPaused, showPoster]);
+  // Add to user's recently played when they tap the play button
+  const { mutate: addPlayCount } = useMutation(() =>
+    playsService.add(content.id),
+  );
+
+  const handlePlay = (): void => {
+    // Only count if it hasn't been logged already
+    if (!hasPlayed) {
+      addPlayCount();
+      toggleHasPlayed(true);
+    }
+
+    // If vertical video, trigger to VideoScreen, if not just play the video
+    if (content.video_orientation === 'portrait') {
+      navigation.navigate('Video', {
+        content,
+        teacher,
+        savedVideoPath: video,
+        handleComplete: handleComplete,
+      });
+    } else {
+      togglePaused(!isPaused);
+    }
+  };
 
   const service = new DownloadVideoService();
 
   useEffect(() => {
-    const handleGetVideo = async () => {
+    const handleGetVideo = async (): Promise<void> => {
       const newVideo = await service.getVideo(video);
       setVideo(newVideo);
     };
@@ -95,29 +137,23 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     handleGetVideo();
   }, []);
 
-  const handleError = (err: any) => {
+  const handleError = (err: any): void => {
     setError(err);
   };
 
-  const onProgress = (data) => {
+  const onProgress = (data): void => {
     if (!isOver) {
       setCurrentTime(data.currentTime);
     }
   };
 
-  const onLoad = (data) => {
+  const onLoad = (data): void => {
     setDuration(data.duration);
   };
 
-  const onBuffer = ({ isBuffering }: { isBuffering: boolean }) => {
+  const onBuffer = ({ isBuffering }: { isBuffering: boolean }): void => {
     setBuffering(isBuffering);
   };
-
-  const container = useContainer();
-  const playsService = container.getInstance<PlaysServiceType>('playsService');
-  const { mutate: addPlayCount } = useMutation(() =>
-    playsService.add(content.id),
-  );
 
   return (
     <Container>
@@ -132,14 +168,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
               flex: 1,
             }}>
             <NBButton
-              onPress={() => {
-                addPlayCount();
-                navigation.navigate('Video', {
-                  content,
-                  teacher,
-                  savedVideoPath: video,
-                });
-              }}
+              onPress={handlePlay}
               style={{
                 backgroundColor: 'rgba(112,113,118,.95)', //'#707176', //'rgba(0,0,0,.5)',
                 borderRadius: 40,
@@ -182,10 +211,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
                 />
               </FadeIn>
               <NBButton
-                onPress={(): void => {
-                  addPlayCount();
-                  togglePaused(!isPaused);
-                }}
+                onPress={handlePlay}
                 style={{
                   backgroundColor: 'rgba(112,113,118,.95)', //'#707176', //'rgba(0,0,0,.5)',
                   borderRadius: 40,
@@ -201,7 +227,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
       )}
 
-      <Box row justifyContent="space-between" gt={2} gb={1}>
+      <Box row justifyContent="space-between" mt={2} mb={1}>
         <H1 style={{ flex: 4 }}>{content.title}</H1>
         <Box row style={{ flex: 1 }}>
           <Favorite onProfile contentId={content.id} />

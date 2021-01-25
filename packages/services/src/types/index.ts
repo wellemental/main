@@ -3,6 +3,7 @@ import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 // import { firestore } from '../base';
 
 export type Timestamp = FirebaseFirestoreTypes.Timestamp;
+export type FieldValue = FirebaseFirestoreTypes.FieldValue;
 
 export type Translations = { [key: string]: string };
 
@@ -141,12 +142,13 @@ type ReceiptIap = {
 export interface User {
   email?: string;
   id?: string;
-  // name: string;
-  // birthday: string;
   language: Languages;
   totalPlays: number;
-  totalCompleted: number;
-  totalMinutes: number;
+  totalCompleted: number | FieldValue;
+  totalMinutes: number | FieldValue;
+  streak: number | FieldValue;
+  firstPlay: Date;
+  lastPlay: Date;
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;
@@ -227,6 +229,7 @@ export type DownloadProgressCallbackResult = {
 
 export type PlayEvent = {
   contentId: string;
+  completed?: boolean;
   createdAt: FirebaseFirestoreTypes.Timestamp;
 };
 
@@ -237,6 +240,7 @@ export interface PlaysObj {
 export interface PlaysServiceType {
   query: FirebaseFirestoreTypes.Query;
   add(id: string): Promise<void>;
+  complete(id: string, duration: number): Promise<void>;
   get(): Promise<PlaysObj | PlayEvent[]>;
 }
 
