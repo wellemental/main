@@ -25,6 +25,7 @@ export const English = {
   Loading: 'Loading',
   Account: 'Your Account',
   'Your Account': 'Your Account',
+  Profile: 'Profile',
   Logout: 'Logout',
   'Yes, Logout': 'Yes, Logout',
   'Are you sure you want to logout?': 'Are you sure you want to logout?',
@@ -167,4 +168,7 @@ export const English = {
   Stats: 'Stats',
   Journey: 'Journey',
   'Load More': 'Load More',
+  'Total Hours': 'Total Hours',
+  Streak: 'Streak',
+  'Sessions Completed': 'Sessions Completed',
 };

@@ -5,6 +5,7 @@ import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { Spinner } from '../primitives';
 import moment from 'moment';
+import { convertTimestamp } from '../services/helpers';
 
 export const CurrentUser = React.createContext<any>({
   currentUser: {
@@ -75,6 +76,28 @@ export const CurrentUserProvider = ({ children }: any) => {
             stripeId:
               userData && userData.stripeId ? userData.stripeId : undefined,
             plan: userData && userData.plan ? userData.plan : undefined,
+            totalCompleted: userData.totalCompleted
+              ? userData.totalCompleted
+              : 0,
+            totalPlays: userData.totalPlays ? userData.totalPlays : 0,
+            totalSeconds: userData.totalSeconds
+              ? Math.floor(userData.totalSeconds / 3600)
+              : 0,
+            // If lastPlay isn't yesterday or today, streak should be 0
+            streak:
+              userData.lastPlay &&
+              convertTimestamp(userData.lastPlay).isSameOrAfter(
+                moment().subtract(1, 'day'),
+                'day',
+              )
+                ? userData.streak
+                : 0,
+            firstPlay: userData.firstPlay
+              ? convertTimestamp(userData.firstPlay).toDate()
+              : undefined,
+            lastPlay: userData.lastPlay
+              ? convertTimestamp(userData.lastPlay).toDate()
+              : undefined,
           };
 
           setCurrentUser(userDoc);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AuthService, LocalStateService } from 'services';
-import { Error, PageHeading, Container } from '../primitives';
+import { Error, PageHeading, Box, Container, Paragraph } from '../primitives';
 import {
   Body,
   Left,
@@ -14,6 +14,7 @@ import {
 import { Alert, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
+import { getReadableVersion } from 'react-native-device-info';
 
 type SettingsLink = {
   label: string;
@@ -28,6 +29,7 @@ const SettingsScreen: React.FC = () => {
   const { getDbContent, features } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
+  const version = getReadableVersion();
 
   const handleNavigate = (screen: string): void => {
     navigation.navigate(screen);
@@ -99,12 +101,13 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <Container>
-      <PageHeading
+      {/* <PageHeading
         title={translation.Account}
         subtitle={auth ? auth.email : undefined}
-      />
+      /> */}
       <Error error={error} />
-      <List>
+
+      <List style={{ marginTop: -15 }}>
         {list.map((item: SettingsLink, idx: number) => {
           return (
             <ListItem
@@ -126,6 +129,22 @@ const SettingsScreen: React.FC = () => {
           );
         })}
       </List>
+      <Box mt={2}>
+        <Body>
+          <Paragraph fine>{version}</Paragraph>
+        </Body>
+      </Box>
+      <Body>
+        <Paragraph center fine>
+          {auth.email}
+        </Paragraph>
+      </Body>
+
+      {auth && auth.email === 'mike.r.vosters@gmail.com' && (
+        <Body>
+          <Paragraph fine>{auth.uid}</Paragraph>
+        </Body>
+      )}
     </Container>
   );
 };

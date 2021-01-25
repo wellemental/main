@@ -41,6 +41,7 @@ const Box: React.FC<Props> = ({
   alignItems,
   row,
   children,
+  style,
 }) => {
   const spacing = 8;
 
@@ -68,7 +69,9 @@ const Box: React.FC<Props> = ({
     },
   });
 
-  return <View style={styles.view}>{children}</View>;
+  const flattenStyle = StyleSheet.flatten([styles.view, style]);
+
+  return <View style={flattenStyle}>{children}</View>;
 };
 
 export default Box;

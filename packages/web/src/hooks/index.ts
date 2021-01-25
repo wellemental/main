@@ -6,6 +6,7 @@ export * from './useCache';
 export * from './useLead';
 export * from './useContent';
 export * from './useLocation';
+export * from './useContainer';
 export * from './useDepends';
 export * from './useUrlParams';
 export * from './useConfig';

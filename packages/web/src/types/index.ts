@@ -1,8 +1,14 @@
 import defaultValues from '../services/RemoteConfigDefaults';
 // import { firestore } from '@react-native-firebase/firestore';
 import { firestore } from 'firebase/app';
+import FirebaseFirestoreTypes from '@firebase/firestore-types';
 
 export type Translations = { [key: string]: string };
+export type Query = firestore.Query;
+export type Timestamp = firestore.Timestamp;
+export type FieldValue = firestore.FieldValue;
+export type QueryDocumentSnapshot = firestore.QueryDocumentSnapshot;
+export type FirestoreModule = FirebaseFirestoreTypes.FirebaseFirestore;
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -146,11 +152,15 @@ type ReceiptIap = {
 export interface User {
   email?: string;
   id?: string;
-  // name: string;
-  // birthday: string;
   language: Languages;
   stripeId?: string;
   subStatus?: SubStatus;
+  totalPlays: number | FieldValue;
+  totalCompleted: number | FieldValue;
+  totalSeconds: number | FieldValue;
+  streak: number | FieldValue;
+  firstPlay?: Date;
+  lastPlay?: Date;
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;
   updated_at?: Date;
@@ -223,6 +233,23 @@ export type DownloadProgressCallbackResult = {
   contentLength: number; // The total size in bytes of the download resource
   bytesWritten: number; // The number of bytes written to the file so far
 };
+
+export type PlayEvent = {
+  contentId: string;
+  completed?: boolean;
+  createdAt: Timestamp;
+};
+
+export interface PlaysObj {
+  [id: string]: PlayEvent;
+}
+
+export interface PlaysServiceType {
+  query: Query;
+  add(id: string): Promise<void>;
+  complete(id: string, duration: number): Promise<void>;
+  get(): Promise<PlaysObj | PlayEvent[]>;
+}
 
 export interface ContentServiceType {
   buildContent(doc: firestore.QueryDocumentSnapshot): Content;

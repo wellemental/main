@@ -24,6 +24,7 @@ export const ServicesProvider: React.FC = ({ children }) => {
       );
     }
   }, [user]);
+
   return (
     <ServicesContext.Provider value={container}>
       {children}

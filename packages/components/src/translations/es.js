@@ -24,6 +24,7 @@ export const Español = {
   Settings: 'Configuración',
   Loading: 'Descargando',
   Account: 'Tu Cuenta',
+  Profile: 'Perfíl',
   Logout: 'Cerrar Sesión',
   'Yes, Logout': 'Si, cerrar sesión',
   'Are you sure you want to logout?':
@@ -141,6 +142,9 @@ export const Español = {
   'Enter Access Code': 'Entra tu código de accesso',
   'Live Event': 'Live Event',
   Stats: 'Stats',
-  Journey: 'Journey',
+  Journey: 'Actividades',
   'Load More': 'Load More',
+  'Total Hours': 'Total Hours',
+  Streak: 'Streak',
+  'Sessions Completed': 'Sessions Completed',
 };

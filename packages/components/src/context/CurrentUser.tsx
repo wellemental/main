@@ -19,8 +19,6 @@ const localStateService = new LocalStateService();
 export const CurrentUser = React.createContext<any>({
   currentUser: {
     language: Languages.En,
-    // birthday: '',
-    // name: '',
     plan: {},
   },
 });
@@ -177,10 +175,22 @@ export const CurrentUserProvider = ({ children }: any) => {
             language: userData.language,
             favorites: userData.favorites,
             plan: userData.plan,
-            totalCompleted: userData.totalCompleted,
-            totalPlays: userData.totalPlays,
-            totalMinutes: userData.totalMinutes,
-            streak: userData.streak,
+            totalCompleted: userData.totalCompleted
+              ? userData.totalCompleted
+              : 0,
+            totalPlays: userData.totalPlays ? userData.totalPlays : 0,
+            totalSeconds: userData.totalSeconds
+              ? Math.floor(userData.totalSeconds / 3600)
+              : 0,
+            // If lastPlay isn't yesterday or today, streak should be 0
+            streak:
+              userData.lastPlay &&
+              convertTimestamp(userData.lastPlay).isSameOrAfter(
+                moment().subtract(1, 'day'),
+                'day',
+              )
+                ? userData.streak
+                : 0,
             firstPlay: userData.firstPlay
               ? convertTimestamp(userData.firstPlay).toDate()
               : undefined,

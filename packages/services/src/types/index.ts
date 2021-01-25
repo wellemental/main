@@ -4,7 +4,8 @@ import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 export type Timestamp = FirebaseFirestoreTypes.Timestamp;
 export type FieldValue = FirebaseFirestoreTypes.FieldValue;
-
+export type Query = FirebaseFirestoreTypes.Query;
+export type QueryDocumentSnapshot = FirebaseFirestoreTypes.QueryDocumentSnapshot;
 export type Translations = { [key: string]: string };
 
 enum SubStatus {
@@ -143,12 +144,13 @@ export interface User {
   email?: string;
   id?: string;
   language: Languages;
-  totalPlays: number;
+  totalPlays: number | FieldValue;
   totalCompleted: number | FieldValue;
-  totalMinutes: number | FieldValue;
+  totalSeconds: number | FieldValue;
   streak: number | FieldValue;
-  firstPlay: Date;
-  lastPlay: Date;
+  firstPlay?: Date;
+  lastPlay?: Date;
+  stripeId?: string;
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;
@@ -230,7 +232,7 @@ export type DownloadProgressCallbackResult = {
 export type PlayEvent = {
   contentId: string;
   completed?: boolean;
-  createdAt: FirebaseFirestoreTypes.Timestamp;
+  createdAt: Timestamp;
 };
 
 export interface PlaysObj {
@@ -238,18 +240,14 @@ export interface PlaysObj {
 }
 
 export interface PlaysServiceType {
-  query: FirebaseFirestoreTypes.Query;
+  query: Query;
   add(id: string): Promise<void>;
   complete(id: string, duration: number): Promise<void>;
   get(): Promise<PlaysObj | PlayEvent[]>;
 }
 
-export interface FirestoreServiceType {
-  add(code: string): Promise<PromoCode>;
-  getAll(): Promise<PlaysObj>;
-}
 export interface ContentServiceType {
-  buildContent(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Content;
+  buildContent(doc: QueryDocumentSnapshot): Content;
   getContent(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
 }
@@ -283,7 +281,7 @@ export interface UpdateUserServiceType {
 }
 
 export interface TeacherServiceType {
-  buildTeacher(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Teacher;
+  buildTeacher(doc: QueryDocumentSnapshot): Teacher;
   findTeacherByName(name: string): Promise<Teacher | void>;
   getAllTeachers(): Promise<AllTeachers>;
   getLatestUpdate(): Promise<Date>;

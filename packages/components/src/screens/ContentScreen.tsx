@@ -6,7 +6,7 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
-import { H1, Button as NBButton, Icon } from 'native-base';
+import { Button as NBButton, Icon } from 'native-base';
 import {
   AvyName,
   Box,
@@ -14,6 +14,7 @@ import {
   Container,
   Download,
   Favorite,
+  Headline,
   Paragraph,
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
@@ -228,8 +229,8 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
       )}
 
       <Box row justifyContent="space-between" mt={2} mb={1}>
-        <H1 style={{ flex: 4 }}>{content.title}</H1>
-        <Box row style={{ flex: 1 }}>
+        <Headline style={{ flex: 4 }}>{content.title}</Headline>
+        <Box row>
           <Favorite onProfile contentId={content.id} />
           <Download videoUrl={content.video} />
         </Box>

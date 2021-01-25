@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AvyName,
   Spinner,
@@ -12,10 +12,12 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import ReactPlayer from 'react-player';
 import { tracker } from '../services';
-import { TrackingEvents, Teacher, Content } from '../types';
+import { TrackingEvents, Teacher, Content, PlaysServiceType } from '../types';
 import {
   useHistory,
   useContent,
+  useContainer,
+  useMutation,
   useRouteMatch,
   useCurrentUser,
 } from '../hooks';
@@ -47,26 +49,104 @@ const ContentScreen: React.FC = () => {
   const history = useHistory();
   const { teachers, content: allContent } = useContent();
   const match = useRouteMatch();
+  const [error, setError] = useState();
+  const [isPaused, togglePaused] = useState(true);
+  const [hasPlayed, toggleHasPlayed] = useState(false);
+  const [isOver, toggleOver] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   let teacher: Teacher | null = null;
   let content: Content | null = null;
 
+  // Match content based on url - doing this instead of prop passing so you can land directly on content screen
   if (allContent) {
     content = allContent.filter(
       (content) => slugify(content.title) === match,
     )[0];
   }
 
+  // Match teacher based on matched content
   if (content && teachers) {
     teacher = teachers[content.teacher];
   }
 
-  const [error, setError] = useState();
-  const [isPaused, togglePaused] = useState(true);
+  // Set content duration after match
+  useEffect(() => {
+    if (content) {
+      setDuration(content.seconds);
+    }
+  }, [content]);
 
   const handleError = (err: any) => {
     setError(err);
     logger.error('Error loading video');
+  };
+
+  const onProgress = (data: any): void => {
+    if (!isOver) {
+      setCurrentTime(data.currentTime);
+    }
+  };
+
+  // Get PlaysService
+  const container = useContainer();
+  const playsService = container.getInstance<PlaysServiceType>('playsService');
+
+  // Reset Has Played when it's a new content page
+  useEffect(() => {
+    toggleHasPlayed(false);
+  }, [content]);
+
+  // Determine when video is over to trigger transition to celebration page
+  if (!isOver && currentTime >= duration - 1) {
+    toggleOver(true);
+  }
+
+  // Increment totalComplete and totalMinutes stats
+  const { mutate: markComplete } = useMutation(() =>
+    playsService.complete(content ? content.id : '', duration),
+  );
+
+  const handleComplete = (): void => {
+    if (content) {
+      markComplete();
+    }
+    // navigation.navigate('Celebration');
+  };
+
+  // Trigger handleComplete function once isOver state updates to true
+  useEffect(() => {
+    if (isOver) {
+      handleComplete();
+    }
+  }, [isOver]);
+
+  // Add to user's recently played when they tap the play button
+  const { mutate: addPlayCount } = useMutation(() =>
+    playsService.add(content ? content.id : ''),
+  );
+
+  const handlePlay = (): void => {
+    // Only count if it hasn't been logged already
+    if (!hasPlayed) {
+      if (content && content.id) {
+        addPlayCount();
+      }
+      toggleHasPlayed(true);
+    }
+
+    // If vertical video, trigger to VideoScreen, if not just play the video
+    // if (content.video_orientation === 'portrait') {
+    //   navigation.navigate('Video', {
+    //     content,
+    //     teacher,
+    //     savedVideoPath: video,
+    //     handleComplete: handleComplete,
+    //   });
+    // } else {
+    togglePaused(!isPaused);
+    // }
   };
 
   return !content || !teacher ? (
@@ -98,10 +178,7 @@ const ContentScreen: React.FC = () => {
                     width: 60,
                     alignSelf: 'center',
                   }}
-                  onClick={() => {
-                    togglePaused(!isPaused);
-                    tracker.track(TrackingEvents.PlayVideo);
-                  }}>
+                  onClick={handlePlay}>
                   <PlayIcon style={{ color: '#fff' }} />
                 </IconButton>
               }
@@ -109,6 +186,7 @@ const ContentScreen: React.FC = () => {
               file={{ forceVideo: true }}
               light={content.thumbnail}
               onError={handleError} // Callback when video cannot be loaded
+              onProgress={onProgress}
             />
           </div>
 

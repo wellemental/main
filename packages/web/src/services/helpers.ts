@@ -1,4 +1,6 @@
-import { Feature, Category } from '../types';
+import { Feature, Category, Timestamp, FieldValue } from '../types';
+import moment from 'moment';
+import { firestore } from 'firebase/app';
 
 export const scrollToTop = (): void => {
   window.scrollTo(0, 0);
@@ -51,4 +53,12 @@ export const capitalize = (s: any) => {
 
 export const isFeature = (obj: Feature | Category): obj is Feature => {
   return (<Feature>obj)['title-es'] !== undefined;
+};
+
+export const convertTimestamp = (timestamp: Timestamp): moment.Moment => {
+  return moment(timestamp.toDate());
+};
+
+export const increment = (amount?: number): FieldValue => {
+  return firestore.FieldValue.increment(amount ? amount : 1);
 };

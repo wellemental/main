@@ -1,6 +1,6 @@
 import React from 'react';
-import { H1 } from 'native-base';
 import Paragraph from './Paragraph';
+import Headline from './Headline';
 import Avatar from './Avatar';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -28,7 +28,7 @@ const PageHeading: React.FC<Props> = ({ title, subtitle, avatar, center }) => {
         alignItems: center ? 'center' : 'flex-start',
       }}>
       {avatar && <Avatar source={avatar} size={200} mb={30} />}
-      <H1>{title}</H1>
+      <Headline>{title}</Headline>
       {subtitle && <Paragraph style={{ paddingTop: 5 }}>{subtitle}</Paragraph>}
     </View>
   );
