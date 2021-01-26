@@ -108,6 +108,7 @@ export interface Dependency {
 export function buildDependencies({ currentUser }: Params): Dependency {
   dependenciesInstances = {};
   dependenciesInstances.currentUser = currentUser;
+
   return {
     getInstance<T>(name: DependencyName): T {
       return getOrCreateDependency(name);

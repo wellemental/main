@@ -11,8 +11,7 @@ import {
 } from '../primitives';
 import IconButton from '@material-ui/core/IconButton';
 import ReactPlayer from 'react-player';
-import { tracker } from '../services';
-import { TrackingEvents, Teacher, Content, PlaysServiceType } from '../types';
+import { Teacher, Content, PlaysServiceType } from '../types';
 import {
   useHistory,
   useContent,
@@ -54,14 +53,14 @@ const ContentScreen: React.FC = () => {
   const [hasPlayed, toggleHasPlayed] = useState(false);
   const [isOver, toggleOver] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState<number | null>(null);
 
   let teacher: Teacher | null = null;
   let content: Content | null = null;
 
   // Match content based on url - doing this instead of prop passing so you can land directly on content screen
   if (allContent) {
-    content = allContent.filter(
+    content = Object.values(allContent).filter(
       (content) => slugify(content.title) === match,
     )[0];
   }
@@ -85,7 +84,7 @@ const ContentScreen: React.FC = () => {
 
   const onProgress = (data: any): void => {
     if (!isOver) {
-      setCurrentTime(data.currentTime);
+      setCurrentTime(data.playedSeconds);
     }
   };
 
@@ -99,13 +98,13 @@ const ContentScreen: React.FC = () => {
   }, [content]);
 
   // Determine when video is over to trigger transition to celebration page
-  if (!isOver && currentTime >= duration - 1) {
+  if (!isOver && duration && currentTime >= duration - 1) {
     toggleOver(true);
   }
 
   // Increment totalComplete and totalMinutes stats
   const { mutate: markComplete } = useMutation(() =>
-    playsService.complete(content ? content.id : '', duration),
+    playsService.complete(content ? content.id : '', duration ? duration : 0),
   );
 
   const handleComplete = (): void => {
@@ -136,17 +135,7 @@ const ContentScreen: React.FC = () => {
       toggleHasPlayed(true);
     }
 
-    // If vertical video, trigger to VideoScreen, if not just play the video
-    // if (content.video_orientation === 'portrait') {
-    //   navigation.navigate('Video', {
-    //     content,
-    //     teacher,
-    //     savedVideoPath: video,
-    //     handleComplete: handleComplete,
-    //   });
-    // } else {
     togglePaused(!isPaused);
-    // }
   };
 
   return !content || !teacher ? (
@@ -199,7 +188,7 @@ const ContentScreen: React.FC = () => {
             <Headline variant="h5" style={{ flex: 8 }}>
               {content.title}
             </Headline>
-            <Box flexDirection="row" style={{ flex: 1 }}>
+            <Box display="flex" flexDirection="row">
               <Favorite onProfile contentId={content.id} />
               {/* <Download videoUrl={content.video} /> */}
             </Box>

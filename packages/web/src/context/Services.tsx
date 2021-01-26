@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { buildDependencies } from '../services/DependencyService';
 import { useCurrentUser } from '../hooks';
-import { Spinner } from '../primitives';
 
 const initialContainer = buildDependencies({});
 export const ServicesContext = createContext(initialContainer);
@@ -17,8 +16,6 @@ export const ServicesProvider: React.FC = ({ children }) => {
       if (!currentUser.id) {
         currentUser.id = auth.uid;
       }
-
-      console.log('USER CONTEXT', currentUser);
 
       setContainer(
         buildDependencies({

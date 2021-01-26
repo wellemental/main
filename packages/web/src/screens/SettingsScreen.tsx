@@ -9,7 +9,7 @@ import {
   ChevronRight,
   CreditCard as CreditCardIcon,
 } from '@material-ui/icons';
-import CalendarIcon from '@material-ui/icons/DateRange';
+// import CalendarIcon from '@material-ui/icons/DateRange';
 
 type SettingsLink = {
   label: string;

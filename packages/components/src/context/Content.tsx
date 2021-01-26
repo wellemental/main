@@ -4,7 +4,6 @@ import {
   ContentService,
   AllTeachers,
   LocalStateService,
-  Content as ContentType,
   ContentObj,
   Features,
 } from 'services';

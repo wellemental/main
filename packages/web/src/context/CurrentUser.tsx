@@ -110,22 +110,6 @@ export const CurrentUserProvider = ({ children }: any) => {
     return <Spinner />;
   }
 
-  // if (currentUser && currentUser.plan) {
-  //   console.log(
-  //     'FUNC',
-  //     1612629894 < moment().unix(),
-  //     'RENEW UNIX',
-  //     // moment.unix(currentUser.plan.nextRenewalUnix).format('YYYY-MM-DD'),
-  //     moment.unix(1641942169).format('YYYY-MM-DD'),
-  //     'NOW UNIX',
-  //     1641942169 > moment().unix(),
-  //     //moment().unix.format('YYYY-MM-DD'),
-  //     new Date(moment().unix() * 1000),
-  //     'COMPARE',
-  //     // moment.unix(1612629894) >= moment().unix(1602607470),
-  //   );
-  // }
-
   return (
     <CurrentUser.Provider
       value={{

@@ -1,6 +1,5 @@
 import React from 'react';
 import Box from './Box';
-import { brandColors } from '../assets/styles/colors';
 
 type Props = {
   width?: number;

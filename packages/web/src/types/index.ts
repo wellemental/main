@@ -104,7 +104,7 @@ export interface LocalUser {
 }
 
 export interface LocalContent {
-  content: Content[];
+  content: ContentObj;
   teachers: AllTeachers;
   updated_at?: Date;
 }
@@ -186,6 +186,10 @@ export interface Content {
   created_at: firestore.Timestamp; //typeof firestore.Timestamp;
 }
 
+export interface ContentObj {
+  [key: string]: Content;
+}
+
 export interface Teacher {
   id: string;
   name: Teachers;
@@ -253,7 +257,7 @@ export interface PlaysServiceType {
 
 export interface ContentServiceType {
   buildContent(doc: firestore.QueryDocumentSnapshot): Content;
-  getContent(): Promise<Content[]>;
+  getContent(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
 }
 

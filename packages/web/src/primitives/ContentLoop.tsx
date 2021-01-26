@@ -26,7 +26,7 @@ const ContentLoop: React.FC<Props> = ({
 }) => {
   const { user, translation } = useCurrentUser();
   const { content, teachers, error } = useContent();
-  let filteredContent: Content[] | null = content;
+  let filteredContent: Content[] = content ? Object.values(content) : [];
 
   const [isLangFilter, setLangFilter] = useState(true);
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from '../primitives';
 import { TeacherService, ContentService } from '../services';
-import { AllTeachers, Content as ContentType, Features } from '../types';
+import { AllTeachers, ContentObj, Features } from '../types';
 import { useConfig, useCurrentUser } from '../hooks';
 import logger from '../services/LoggerService';
 
 interface ContentContext {
-  content: ContentType[] | null;
+  content: ContentObj | null;
   teachers: AllTeachers | null;
   error: Error | string;
   loading: boolean;
@@ -16,7 +16,7 @@ interface ContentContext {
 }
 
 export const Content = React.createContext<ContentContext>({
-  content: [],
+  content: {},
   teachers: {},
   error: '',
   loading: false,
@@ -29,7 +29,7 @@ export const ContentProvider = ({
 }: {
   children: any;
 }): JSX.Element => {
-  const [content, setContent] = useState<ContentType[] | null>(null);
+  const [content, setContent] = useState<ContentObj | null>(null);
   const [teachers, setTeachers] = useState<AllTeachers | null>(null);
   const [error, setError] = useState('');
   const { user } = useCurrentUser();
