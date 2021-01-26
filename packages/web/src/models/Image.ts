@@ -14,8 +14,8 @@ export const imageDir: ImageDirectory = {
   logo: {
     alt: 'Wellemental Logo',
     source: {
-      webp: require('../assets/images/logo.webp'),
-      safari: require('../assets/images/logo.png'),
+      webp: require('../assets/images/wellemental-logo-full.webp'),
+      safari: require('../assets/images/wellemental-logo-full.png'),
     },
   },
   icon: {

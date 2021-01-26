@@ -11,13 +11,15 @@ import LogoutIcon from '@material-ui/icons/ExitToAppOutlined';
 import EmailOutlined from '@material-ui/icons/EmailOutlined';
 import EmailIcon from '@material-ui/icons/Email';
 import ChevronRight from '@material-ui/icons/ChevronRight';
+import SettingsIcon from '@material-ui/icons/Settings';
+import { IconProps } from '@material-ui/core/Icon';
 
 type Props = {
   name: string;
   active?: boolean;
 };
 
-const Icon: React.FC<Props> = ({ name, active }) => {
+const Icon: React.FC<Props & IconProps> = ({ name, active }) => {
   return name === 'library' ? (
     active ? (
       <LibraryIcon />
@@ -44,6 +46,8 @@ const Icon: React.FC<Props> = ({ name, active }) => {
     )
   ) : name === 'search' ? (
     <SearchIcon />
+  ) : name === 'settings' ? (
+    <SettingsIcon />
   ) : name === 'logout' ? (
     <LogoutIcon />
   ) : name === 'chevron-right' ? (
