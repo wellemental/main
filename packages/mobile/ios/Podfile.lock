@@ -584,10 +584,6 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-config (1.4.1):
-    - react-native-config/App (= 1.4.1)
-  - react-native-config/App (1.4.1):
-    - React-Core
   - react-native-safe-area-context (3.1.9):
     - React-Core
   - react-native-splash-screen (3.2.0):
@@ -694,8 +690,10 @@ PODS:
     - React
   - RNGestureHandler (1.9.0):
     - React-Core
-  - RNIap (4.6.3):
+  - RNIap (5.2.3):
     - React-Core
+  - RNRate (1.2.4):
+    - React
   - RNReanimated (1.13.2):
     - React-Core
   - RNScreens (2.16.1):
@@ -743,7 +741,6 @@ DEPENDENCIES:
   - React-jsi (from `../../../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../../../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../../../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-config (from `../../../node_modules/react-native-config`)
   - react-native-safe-area-context (from `../../../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../../../node_modules/react-native-splash-screen`)
   - react-native-video (from `../../../node_modules/react-native-video`)
@@ -770,6 +767,7 @@ DEPENDENCIES:
   - RNFS (from `../../../node_modules/react-native-fs`)
   - RNGestureHandler (from `../../../node_modules/react-native-gesture-handler`)
   - RNIap (from `../../../node_modules/react-native-iap`)
+  - RNRate (from `../../../node_modules/react-native-rate`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
   - RNSVG (from `../../../node_modules/react-native-svg`)
@@ -842,8 +840,6 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../../../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-config:
-    :path: "../../../node_modules/react-native-config"
   react-native-safe-area-context:
     :path: "../../../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -896,6 +892,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-gesture-handler"
   RNIap:
     :path: "../../../node_modules/react-native-iap"
+  RNRate:
+    :path: "../../../node_modules/react-native-rate"
   RNReanimated:
     :path: "../../../node_modules/react-native-reanimated"
   RNScreens:
@@ -953,7 +951,6 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-config: d8b45133fd13d4f23bd2064b72f6e2c08b2763ed
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
@@ -979,7 +976,8 @@ SPEC CHECKSUMS:
   RNFBRemoteConfig: 14246d18d86f069c567cb710e15616885b962326
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
-  RNIap: 66b83af54a855b6314a243a200081a64d7f64c2e
+  RNIap: ff51c3dd160cd2e40f7f905ebc1bcfb7d34c7d15
+  RNRate: 15b861025a7821730761fce7f44561ce7e0b2de0
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   RNSVG: 8ba35cbeb385a52fd960fd28db9d7d18b4c2974f

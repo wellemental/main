@@ -140,4 +140,5 @@ export const English = {
   'Total Hours': 'Total Hours',
   Streak: 'Streak',
   'Sessions Completed': 'Sessions Completed',
+  'Rate App': 'Rate App',
 };

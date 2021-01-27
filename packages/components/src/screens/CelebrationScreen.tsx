@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions, Image } from 'react-native';
-import { H1 } from 'native-base';
-import { Button, Box, Container } from '../primitives';
+import { Button, Box, Container, Headline } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { useNavigation, useCurrentUser } from '../hooks';
 import { brandColors } from '../assets/native-base-theme/variables/wellemental';
-import { deviceWidth } from 'services';
+import { deviceWidth, rateApp } from 'services';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -38,13 +37,23 @@ const styles = StyleSheet.create({
 
 const CelebrationScreen: React.FC<Props> = () => {
   const navigation = useNavigation();
-  const { translation } = useCurrentUser();
+  const { translation, user } = useCurrentUser();
   const [showPoster, togglePoster] = useState(true);
   const localVideo = require('../assets/images/celebration_screen.mp4');
 
   const onLoad = (data) => {
     togglePoster(false);
   };
+
+  useEffect(() => {
+    if (
+      user.totalCompleted === 5 ||
+      user.totalCompleted === 10 ||
+      user.totalCompleted === 15
+    ) {
+      rateApp();
+    }
+  }, [showPoster]);
 
   return (
     <View
@@ -70,7 +79,8 @@ const CelebrationScreen: React.FC<Props> = () => {
         />
       )}
       <Box center>
-        <H1
+        <Headline
+          center
           style={{
             color: brandColors.brandSecondary,
             fontSize: 60,
@@ -79,7 +89,7 @@ const CelebrationScreen: React.FC<Props> = () => {
             marginBottom: 30,
           }}>
           {translation['You did it!']}
-        </H1>
+        </Headline>
 
         <Button
           text={translation['Keep going']}

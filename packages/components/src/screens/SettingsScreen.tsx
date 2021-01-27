@@ -11,10 +11,11 @@ import {
   Text,
   Toast,
 } from 'native-base';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
 import { getReadableVersion } from 'react-native-device-info';
+import { rateApp } from 'services';
 
 type SettingsLink = {
   label: string;
@@ -94,6 +95,7 @@ const SettingsScreen: React.FC = () => {
     //   onPress: () => handleNavigate('Plans'),
     //   iconName: 'cart',
     // },
+    { label: 'Rate App', onPress: rateApp, iconName: 'star' },
     { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
     // { label: 'Live Event', onPress: linkExternally, iconName: 'calendar' },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
