@@ -173,6 +173,9 @@ export interface Content {
   length: string;
   language: Languages;
   status: ContentStatus;
+  totalPlays?: number | FieldValue;
+  totalCompleted?: number | FieldValue;
+  totalFavorites?: number | FieldValue;
   updated_at: Timestamp;
   created_at: Timestamp; //typeof Timestamp;
 }

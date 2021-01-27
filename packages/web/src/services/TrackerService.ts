@@ -1,8 +1,27 @@
 import firebase from '../base';
 import { TrackingEvents, TrackingService } from '../types';
+import logger from './LoggerService';
 
 export { TrackingEvents } from '../types';
 
+// Segment Tracking Helper
+export const setUserProperties = async (
+  userId: string | undefined,
+  properties: {
+    [key: string]: any;
+  },
+): Promise<void> => {
+  try {
+    if (userId) {
+      firebase.analytics().setUserId(userId);
+    }
+    firebase.analytics().setUserProperties(properties);
+  } catch (err) {
+    logger.error(`GA Set Properties Error - ${err}`);
+  }
+};
+
+// Fire tracking events to Firebase or console
 // TODO: Limit EventParams to specific types as we add them
 type EventParams = {};
 

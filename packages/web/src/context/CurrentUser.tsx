@@ -6,6 +6,7 @@ import { Español } from '../translations/es.js';
 import { Spinner } from '../primitives';
 import moment from 'moment';
 import { convertTimestamp } from '../services/helpers';
+import { setUserProperties } from '../services/TrackerService';
 
 export const CurrentUser = React.createContext<any>({
   currentUser: {
@@ -102,6 +103,13 @@ export const CurrentUserProvider = ({ children }: any) => {
 
           setCurrentUser(userDoc);
           setLoading(false);
+
+          // Set GA Firebase User Properties
+          setUserProperties(userDoc.id ? userDoc.id : undefined, {
+            Payment: userDoc.plan ? userDoc.plan.type : 'Free',
+            Type: userDoc.plan ? userDoc.plan.planId : 'Free',
+            PlanStatus: userDoc.plan ? userDoc.plan.planId : 'Free',
+          });
         }
       });
   };

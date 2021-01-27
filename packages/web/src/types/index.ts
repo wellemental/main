@@ -1,5 +1,4 @@
 import defaultValues from '../services/RemoteConfigDefaults';
-// import { firestore } from '@react-native-firebase/firestore';
 import { firestore } from 'firebase/app';
 import FirebaseFirestoreTypes from '@firebase/firestore-types';
 
@@ -182,8 +181,11 @@ export interface Content {
   length?: string;
   language: Languages;
   status: ContentStatus;
-  updated_at: firestore.Timestamp;
-  created_at: firestore.Timestamp; //typeof firestore.Timestamp;
+  totalPlays?: number | FieldValue;
+  totalCompleted?: number | FieldValue;
+  totalFavorites?: number | FieldValue;
+  updated_at: Timestamp;
+  created_at: Timestamp;
 }
 
 export interface ContentObj {

@@ -8,7 +8,7 @@ import {
 } from './stripe';
 import { updateUserPlan } from './user';
 import { validateIap, renewOrCancelSubscriptions } from './iap';
-import { StripeEvent } from './types';
+import { StripeEvent, PlayEvent, FieldValue } from './types';
 
 // Initialize Firebase
 firebase.initializeApp();
@@ -33,8 +33,6 @@ const onAddStripeEvent = functions.firestore
     return Promise.resolve(eventData);
   });
 
-// const onValidateIap = functions.https.onCall(validateIap);
-
 const onValidateIap = functions.https.onCall(async (data, context) => {
   try {
     await validateIap(data, context);
@@ -44,6 +42,50 @@ const onValidateIap = functions.https.onCall(async (data, context) => {
     return { status: 'Server error' };
   }
 });
+
+export const increment = (amount?: number): FieldValue => {
+  return firebase.firestore.FieldValue.increment(amount ? amount : 1);
+};
+
+// Increment content stat for totalPlays when created
+const onPlayAdd = functions.firestore
+  .document('users/{userId}/plays/{playId}')
+  .onCreate(async (doc) => {
+    // Pull contentId from the new play document
+    const playData = doc.data() as PlayEvent;
+    const contentId = playData.contentId;
+
+    // Find the document in /content by the contentId
+    const contentDoc = await firebase
+      .firestore()
+      .collection('content')
+      .doc(contentId);
+
+    // Increment the totalPlays stat on the doc
+    await contentDoc.update({ totalPlays: increment() });
+  });
+
+// Update content stat for totalCompleted when play is updated
+const onPlayUpdate = functions.firestore
+  .document('users/{userId}/plays/{playId}')
+  .onUpdate(async (change) => {
+    if (change.after.exists && change.before.exists) {
+      const playBefore = change.before.data() as PlayEvent;
+      const playAfter = change.after.data() as PlayEvent;
+
+      if (playAfter.completed && !playBefore.completed) {
+        // Find the document in /content by the contentId
+        const contentDoc = await firebase
+          .firestore()
+          .collection('content')
+          .doc(playAfter.contentId);
+
+        // Increment the totalPlays stat on the doc
+        await contentDoc.update({ totalCompleted: increment() });
+      }
+    }
+    return Promise.resolve();
+  });
 
 const EVERY_HOUR_CRON = '0 * * * *';
 const runRenewOrCancelSubs = functions.pubsub
@@ -58,4 +100,6 @@ export {
   onStartSubscription,
   onCancelSubscription,
   onGetBillingPortal,
+  onPlayAdd,
+  onPlayUpdate,
 };
