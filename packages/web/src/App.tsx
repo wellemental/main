@@ -26,6 +26,7 @@ import {
 } from './screens';
 import Nav from './primitives/Nav';
 import Page from './primitives/Page';
+import Footer from './primitives/Footer';
 import { CurrentUserProvider } from './context/CurrentUser';
 import { LeadProvider } from './context/Lead';
 import { ServicesProvider } from './context/Services';
@@ -103,6 +104,7 @@ function App() {
                       <PrivateRoute path="/teacher" component={TeacherScreen} />
                       <PrivateRoute path="/" component={HomeScreen} />
                     </Switch>
+                    <Footer />
                   </Page>
                 </Router>
               </Elements>

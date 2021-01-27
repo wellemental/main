@@ -9,6 +9,7 @@ import {
   CardContent,
   CardMedia,
 } from '@material-ui/core';
+import CardTitle from './CardTitle';
 import { slugify, isFeature } from '../services/helpers';
 
 type Props = {
@@ -52,9 +53,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
         }>
         <Box display="flex" flexDirection="row">
           <CardContent style={{ flex: 1, padding: '20px 20px 5px' }}>
-            <Paragraph variant="subtitle2" noWrap>
-              {title}
-            </Paragraph>
+            <CardTitle text={title} />
 
             {description && <Paragraph small>{description}</Paragraph>}
           </CardContent>

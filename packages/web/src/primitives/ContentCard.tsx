@@ -3,6 +3,8 @@ import { Content, Teacher } from '../types';
 import AvyName from './AvyName';
 import { useHistory } from '../hooks';
 import Paragraph from './Paragraph';
+import Headline from './Headline';
+import CardTitle from './CardTitle';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -38,12 +40,9 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
           />
           <CardContent
             style={{ width: 'calc(100% - 125px)', padding: '10px 10px 5px' }}>
-            <>
-              <Paragraph size={14}>{content.length}</Paragraph>
-              <Paragraph variant="subtitle2" noWrap>
-                {content.title}
-              </Paragraph>
-            </>
+            <Paragraph size={14}>{content.length}</Paragraph>
+            <CardTitle text={content.title} />
+
             <AvyName
               source={teacher.photo}
               name={content.teacher}

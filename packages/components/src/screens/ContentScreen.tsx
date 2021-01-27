@@ -185,12 +185,9 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         <View style={{ width: deviceWidth, height: videoHeight }}>
           <Video
             source={{
-              uri: content.video, //content.video,
+              uri: content.video,
             }} // Can be a URL or a local file.
             style={styles.nativeVideoControls}
-            // fullscreen
-            // fullscreenAutorotate={true}
-            // fullscreenOrientation={content.video_orientation}
             controls={true}
             playInBackground={true}
             ignoreSilentSwitch="ignore"
@@ -201,7 +198,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             onBuffer={onBuffer}
             onProgress={onProgress}
             onLoad={onLoad}
-            onError={handleError} // Callback when video cannot be loaded
+            onError={handleError}
           />
           {showPoster && isPaused && (
             <View style={styles.videoPoster}>
@@ -214,7 +211,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
               <NBButton
                 onPress={handlePlay}
                 style={{
-                  backgroundColor: 'rgba(112,113,118,.95)', //'#707176', //'rgba(0,0,0,.5)',
+                  backgroundColor: 'rgba(112,113,118,.95)',
                   borderRadius: 40,
                   height: 60,
                   width: 60,

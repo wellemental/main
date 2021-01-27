@@ -11,6 +11,8 @@ export { default as ContentCardWide } from './ContentCardWide';
 export { default as ToggleButtons } from './ToggleButtons';
 export { default as CategoryCard } from './CategoryCard';
 export { default as Spinner } from './Spinner';
+export { default as Footer } from './Footer';
+export { default as CardTitle } from './CardTitle';
 export { default as SupportEmail } from './SupportEmail';
 export { default as Nav } from './Nav';
 export { default as Favorite } from './Favorite';

@@ -11,6 +11,7 @@ export interface ParagraphProps {
   center?: boolean;
   slim?: boolean;
   small?: boolean;
+  bold?: boolean;
   // fine?: boolean;
 }
 
@@ -25,6 +26,7 @@ const Paragraph: React.FC<ParagraphProps & TypographyProps> = ({
   center,
   small,
   slim,
+  bold,
   // fine,
   ...props
 }) => {
@@ -34,6 +36,7 @@ const Paragraph: React.FC<ParagraphProps & TypographyProps> = ({
       style={{
         fontSize: fine ? 12 : small ? 15 : size ? size : '16px',
         lineHeight: small ? '20px' : 1.625,
+        fontWeight: bold ? 'bold' : 'normal',
         ...style,
       }}
       {...props}>
