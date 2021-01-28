@@ -9,6 +9,7 @@ type StateType = {
   after: FirebaseFirestoreTypes.QueryDocumentSnapshot | null;
   lastLoaded: FirebaseFirestoreTypes.QueryDocumentSnapshot | null;
   loadingMore: boolean;
+  loadMore: () => any; // Added this
   limit: number;
   loadingMoreError: null | Error;
   loading: boolean;
@@ -124,7 +125,7 @@ interface PaginationOptions {
 
 const useLoadMore = (
   query: FirebaseFirestoreTypes.Query,
-  { limit = 25 }: PaginationOptions = {},
+  { limit = 10 }: PaginationOptions = {},
 ): StateType => {
   const [state, dispatch] = useReducer(reducer, initialState);
 

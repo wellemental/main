@@ -2,7 +2,14 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { Content, Teacher, Languages, Category, Version } from 'services';
+import {
+  Content,
+  Teacher,
+  Languages,
+  Category,
+  Tags,
+  VersionConfig,
+} from 'services';
 import { ReactElement } from 'react';
 
 export type TabParamList = {
@@ -35,9 +42,10 @@ export type RootStackParamList = {
   'Save User': undefined;
   'Forgot Password': { translation: Translations };
   AuthStack: undefined;
-  Upgrade: { version: Version };
+  Upgrade: { version: VersionConfig };
   Plans: undefined;
   Celebration: undefined;
+  Notifications: undefined;
 };
 
 export type AuthStackParamList = {

@@ -6,6 +6,7 @@ import wellemental from './assets/native-base-theme/variables/wellemental';
 import {
   CurrentUserProvider,
   ContentProvider,
+  NotificationProvider,
   ServicesProvider,
   IAPProvider,
 } from './context';
@@ -24,14 +25,16 @@ const App: React.FC = () => {
         <ContentProvider>
           <IAPProvider>
             <ServicesProvider>
-              <Root>
-                <SafeAreaProvider>
-                  {Platform.OS === 'ios' && (
-                    <StatusBar barStyle="dark-content" />
-                  )}
-                  <Navigator />
-                </SafeAreaProvider>
-              </Root>
+              <NotificationProvider>
+                <Root>
+                  <SafeAreaProvider>
+                    {Platform.OS === 'ios' && (
+                      <StatusBar barStyle="dark-content" />
+                    )}
+                    <Navigator />
+                  </SafeAreaProvider>
+                </Root>
+              </NotificationProvider>
             </ServicesProvider>
           </IAPProvider>
         </ContentProvider>

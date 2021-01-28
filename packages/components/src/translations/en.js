@@ -141,4 +141,11 @@ export const English = {
   Streak: 'Streak',
   'Sessions Completed': 'Sessions Completed',
   'Rate App': 'Rate App',
+  History: 'History',
+  'Notifications are already enabled!': 'Notifications are already enabled!',
+  'Receive push notifications about app updates and new content?':
+    'Receive push notifications about app updates and new content?',
+  'Enable Notifications': 'Enable Notifications',
+  'Notifications are already enabled!': 'Notifications are already enabled!',
+  Notifications: 'Notifications',
 };

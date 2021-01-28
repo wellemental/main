@@ -10,6 +10,7 @@ import {
   CategoryScreen,
   EditProfileScreen,
   ForgotPasswordScreen,
+  NotificationsScreen,
   UpgradeScreen,
   CelebrationScreen,
   PlansScreen,
@@ -110,6 +111,10 @@ const Navigator: React.FC = () => {
             />
             <Stack.Screen name="Teacher" component={TeacherScreen} />
             <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+            <Stack.Screen
+              name="Notifications"
+              component={NotificationsScreen}
+            />
           </>
         ) : (
           <>

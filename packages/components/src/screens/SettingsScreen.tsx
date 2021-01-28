@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AuthService, LocalStateService } from 'services';
-import { Error, PageHeading, Box, Container, Paragraph } from '../primitives';
+import { Error, Box, Container, Paragraph } from '../primitives';
 import {
   Body,
   Left,
@@ -11,7 +11,7 @@ import {
   Text,
   Toast,
 } from 'native-base';
-import { Alert, Linking, Platform } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
 import { getReadableVersion } from 'react-native-device-info';
@@ -95,7 +95,16 @@ const SettingsScreen: React.FC = () => {
     //   onPress: () => handleNavigate('Plans'),
     //   iconName: 'cart',
     // },
-    { label: 'Rate App', onPress: rateApp, iconName: 'star' },
+    {
+      label: 'Notifications',
+      onPress: () => handleNavigate('Notifications'),
+      iconName: 'star',
+    },
+    {
+      label: 'Rate App',
+      onPress: rateApp,
+      iconName: 'notifications',
+    },
     { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
     // { label: 'Live Event', onPress: linkExternally, iconName: 'calendar' },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },

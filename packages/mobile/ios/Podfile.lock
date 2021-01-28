@@ -246,6 +246,9 @@ PODS:
   - Firebase/Functions (6.34.0):
     - Firebase/CoreOnly
     - FirebaseFunctions (~> 2.9.0)
+  - Firebase/Messaging (6.34.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 4.7.1)
   - Firebase/RemoteConfig (6.34.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 4.9.1)
@@ -294,6 +297,19 @@ PODS:
     - GoogleUtilities/Environment (~> 6.7)
     - GoogleUtilities/UserDefaults (~> 6.7)
     - PromisesObjC (~> 1.2)
+  - FirebaseInstanceID (4.8.0):
+    - FirebaseCore (~> 6.10)
+    - FirebaseInstallations (~> 1.6)
+    - GoogleUtilities/Environment (~> 6.7)
+    - GoogleUtilities/UserDefaults (~> 6.7)
+  - FirebaseMessaging (4.7.1):
+    - FirebaseCore (~> 6.10)
+    - FirebaseInstanceID (~> 4.7)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
+    - GoogleUtilities/Environment (~> 6.7)
+    - GoogleUtilities/Reachability (~> 6.7)
+    - GoogleUtilities/UserDefaults (~> 6.7)
+    - Protobuf (>= 3.9.2, ~> 3.9)
   - FirebaseRemoteConfig (4.9.1):
     - FirebaseABTesting (~> 4.2)
     - FirebaseCore (~> 6.10)
@@ -418,6 +434,7 @@ PODS:
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
   - PromisesObjC (1.2.11)
+  - Protobuf (3.14.0)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -657,6 +674,8 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
+  - RNCPushNotificationIOS (1.8.0):
+    - React-Core
   - RNDeviceInfo (6.2.1):
     - React-Core
   - RNDevMenu (4.0.2):
@@ -680,6 +699,10 @@ PODS:
     - RNFBApp
   - RNFBFunctions (7.4.12):
     - Firebase/Functions (~> 6.34.0)
+    - React-Core
+    - RNFBApp
+  - RNFBMessaging (10.5.1):
+    - Firebase/Messaging (~> 6.34.0)
     - React-Core
     - RNFBApp
   - RNFBRemoteConfig (8.2.1):
@@ -756,6 +779,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../../../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../../../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../../../node_modules/@react-native-community/masked-view`)"
+  - "RNCPushNotificationIOS (from `../../../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../../../node_modules/react-native-device-info`)
   - RNDevMenu (from `../../../node_modules/react-native-dev-menu`)
   - "RNFBAnalytics (from `../../../node_modules/@react-native-firebase/analytics`)"
@@ -763,6 +787,7 @@ DEPENDENCIES:
   - "RNFBAuth (from `../../../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../../../node_modules/@react-native-firebase/firestore`)"
   - "RNFBFunctions (from `../../../node_modules/@react-native-firebase/functions`)"
+  - "RNFBMessaging (from `../../../node_modules/@react-native-firebase/messaging`)"
   - "RNFBRemoteConfig (from `../../../node_modules/@react-native-firebase/remote-config`)"
   - RNFS (from `../../../node_modules/react-native-fs`)
   - RNGestureHandler (from `../../../node_modules/react-native-gesture-handler`)
@@ -789,6 +814,8 @@ SPEC REPOS:
     - FirebaseFirestore
     - FirebaseFunctions
     - FirebaseInstallations
+    - FirebaseInstanceID
+    - FirebaseMessaging
     - FirebaseRemoteConfig
     - Flipper
     - Flipper-DoubleConversion
@@ -807,6 +834,7 @@ SPEC REPOS:
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
+    - Protobuf
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -870,6 +898,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
     :path: "../../../node_modules/@react-native-community/masked-view"
+  RNCPushNotificationIOS:
+    :path: "../../../node_modules/@react-native-community/push-notification-ios"
   RNDeviceInfo:
     :path: "../../../node_modules/react-native-device-info"
   RNDevMenu:
@@ -884,6 +914,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/@react-native-firebase/firestore"
   RNFBFunctions:
     :path: "../../../node_modules/@react-native-firebase/functions"
+  RNFBMessaging:
+    :path: "../../../node_modules/@react-native-firebase/messaging"
   RNFBRemoteConfig:
     :path: "../../../node_modules/@react-native-firebase/remote-config"
   RNFS:
@@ -921,6 +953,8 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 9b2f1b9b9a6f2f0b6fb7484b9e32ab7e39243554
   FirebaseFunctions: 27518fdd14d8b3a849e2443f921cd1b471ab7acd
   FirebaseInstallations: 466c7b4d1f58fe16707693091da253726a731ed2
+  FirebaseInstanceID: bd3ffc24367f901a43c063b36c640b345a4a5dd1
+  FirebaseMessaging: 5eca4ef173de76253352511aafef774caa1cba2a
   FirebaseRemoteConfig: 35a729305f254fb15a2e541d4b36f3a379da7fdc
   Flipper: be611d4b742d8c87fbae2ca5f44603a02539e365
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
@@ -941,6 +975,7 @@ SPEC CHECKSUMS:
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
+  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -966,6 +1001,7 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDeviceInfo: 9b6aba9ffaed69ecb72bd13c7bcb0debf277bc9f
   RNDevMenu: fd325b5554b61fe7f48d9205a3877cf5ee88cd7c
   RNFBAnalytics: 6414e9fe1f36c3074f39cd6265b3def777dbfbdb
@@ -973,6 +1009,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 8c4de7a59b563bd399993855aa61183e1f1be4bf
   RNFBFirestore: e21f4bcd634430775adca413a93ab995a34f743e
   RNFBFunctions: 71cfc9b5178dd0bb1f75c07e16c1417a1ef1a463
+  RNFBMessaging: 73e180c523d005ea98d7c70d0f7ff66785549111
   RNFBRemoteConfig: 14246d18d86f069c567cb710e15616885b962326
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b

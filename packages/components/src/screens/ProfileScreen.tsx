@@ -21,7 +21,7 @@ import useLoadMore from '../hooks/useLoadMore';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const ProfileScreen: React.FC = () => {
-  const { auth, translation, user } = useCurrentUser();
+  const { translation, user } = useCurrentUser();
   const { content, teachers } = useContent();
   const [error, setError] = useState();
 
@@ -36,9 +36,13 @@ const ProfileScreen: React.FC = () => {
   const container = useContainer();
   const service = container.getInstance<PlaysServiceType>('playsService');
 
-  const { items, loading, loadMore, loadingMore, hasMore } = useLoadMore(
-    service.query,
-  );
+  const {
+    items,
+    loading,
+    loadMore,
+    loadingMore,
+    hasMore,
+  } = useLoadMore(service.query, { limit: 7 });
 
   return (
     <Container scrollEnabled noPadding="horizontal">

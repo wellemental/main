@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Languages, User, UserProfile, LocalStateService } from 'services';
-import { firestore, auth, analytics } from 'services';
+import { firestore, auth } from 'services';
 import { Unsubscriber } from '../types';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';

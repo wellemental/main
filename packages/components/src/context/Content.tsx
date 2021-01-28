@@ -56,7 +56,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   );
   const localUpdatedAt = useRef<Date | undefined>();
 
-  const getDbContent = async (): void => {
+  const getDbContent = async (): Promise<void> => {
     // Get teachers and content from firestore
     try {
       const teacherService = new TeacherService();
@@ -118,7 +118,13 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
 
           if (localData) {
             if (localData.content) {
-              setContent(localData.content);
+              // Protection for old users. Content state was previously an array, now an object.
+              // So if their localStarage content is an array, repull from db to make it an object.
+              if (Array.isArray(localData.content)) {
+                await getDbContent();
+              } else {
+                setContent(localData.content);
+              }
             }
             if (localData.teachers) {
               setTeachers(localData.teachers);
@@ -150,7 +156,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   // If updateAvailable, refetch content from database automatically
   useEffect(() => {
     if (updateAvailable) {
-      const autoFetchDb = async (): void => {
+      const autoFetchDb = async (): Promise<void> => {
         await getDbContent();
       };
 
