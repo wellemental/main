@@ -8,6 +8,12 @@ export type IapValidate = {
   productId: string;
 };
 
+export type AndroidValidate = {
+  sku_id: string;
+  purchase_token: string;
+  package_name: 'com.wellemental.wellemental';
+};
+
 export enum PlanId {
   Monthly = 'wellemental_pro',
   Yearly = 'wellemental_pro_year',
@@ -24,6 +30,7 @@ export type UserPlan = {
   status: 'canceled' | 'active' | 'trialing' | 'pending';
   createdAt: Date;
   stripeEvents?: string[];
+  orderId?: string;
 };
 
 export interface User {

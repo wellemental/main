@@ -15,9 +15,7 @@ export const validateIap = async (
   data: IapValidate,
   context: functions.https.CallableContext,
 ): Promise<string> => {
-  console.log('Starting Validation', functions.config().apple.env);
-  console.log('DATA', data);
-  console.log('CONTEXT', context);
+  console.log('Starting IAP Validation', functions.config().apple.env);
   if (!context.auth) {
     console.error('No auth context');
     return Promise.reject('User not logged in');
@@ -26,19 +24,10 @@ export const validateIap = async (
   const { receipt, productId } = data;
   const { auto_renew_status, nextRenewal } = receipt;
 
-  console.log(
-    'AUTO RENEW TESTS',
-    receipt.autoRenewingAndroid,
-    'BOOL',
-    receipt.auto_renew_status,
-  );
-
-  console.log('RECEIPT', receipt);
   console.log('Uid', userId, 'ProductId', productId);
   console.log('autoRenew', auto_renew_status, 'nextRenewal', nextRenewal);
 
   try {
-    console.log('Attempt to verify receipt');
     // attempt to verify receipt
     const products = await appleReceiptVerify.validate({
       excludeOldTransactions: true,

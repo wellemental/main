@@ -28,6 +28,7 @@
     "firebase-admin": "^9.1.1",
     "firebase-functions": "^3.6.1",
     "glob": "^7.1.6",
+    "googleapis": "^67.0.0",
     "mailchimp-api-v3": "^1.14.0",
     "md5": "^2.3.0",
     "moment": "^2.27.0",

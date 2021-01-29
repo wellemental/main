@@ -7,6 +7,7 @@ import { buildFirestore } from './FirebaseService';
 // import { Navigator } from './interfaces';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
+import ObserveNotifications from './ObserveNotifications';
 // import UpdateProfileService from './UpdateProfileService';
 
 interface DependencyDescriptor {
@@ -49,6 +50,10 @@ const dependenciesDescriptors = {
   playsService: {
     class: PlaysService,
     dependencies: ['firestore', 'currentUser', 'logger', 'tracker'],
+  },
+  observeNotifications: {
+    class: ObserveNotifications,
+    dependencies: ['currentUser', 'firestore', 'logger'],
   },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;

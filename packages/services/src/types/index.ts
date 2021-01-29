@@ -1,5 +1,6 @@
 import defaultValues from '../services/RemoteConfigDefaults';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 // import { firestore } from '../base';
 
 export type Timestamp = FirebaseFirestoreTypes.Timestamp;
@@ -7,6 +8,7 @@ export type FieldValue = FirebaseFirestoreTypes.FieldValue;
 export type Query = FirebaseFirestoreTypes.Query;
 export type QueryDocumentSnapshot = FirebaseFirestoreTypes.QueryDocumentSnapshot;
 export type Translations = { [key: string]: string };
+export type AuthorizationStatus = FirebaseMessagingTypes.AuthorizationStatus;
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -240,6 +242,13 @@ export type PlayEvent = {
 
 export interface PlaysObj {
   [id: string]: PlayEvent;
+}
+
+export interface ObserveNotificationsType {
+  requestPermissions(): Promise<void>;
+  saveTokenToDatabase(token: string): Promise<void>;
+  subscribe(): Promise<void>;
+  unsubscribe(): void;
 }
 
 export interface PlaysServiceType {

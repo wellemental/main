@@ -98,12 +98,12 @@ const SettingsScreen: React.FC = () => {
     {
       label: 'Notifications',
       onPress: () => handleNavigate('Notifications'),
-      iconName: 'star',
+      iconName: 'notifications',
     },
     {
       label: 'Rate App',
       onPress: rateApp,
-      iconName: 'notifications',
+      iconName: 'star',
     },
     { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
     // { label: 'Live Event', onPress: linkExternally, iconName: 'calendar' },

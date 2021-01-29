@@ -8,6 +8,7 @@ import {
 } from './stripe';
 import { updateUserPlan } from './user';
 import { validateIap, renewOrCancelSubscriptions } from './iap';
+import { validateAndroidSubscription } from './android';
 import { StripeEvent, PlayEvent, FieldValue } from './types';
 
 // Initialize Firebase
@@ -40,6 +41,22 @@ const onValidateIap = functions.https.onCall(async (data, context) => {
   } catch (err) {
     console.error(err);
     return { status: 'Server error' };
+  }
+});
+
+const onValidateAndroid = functions.https.onCall(async (data, context) => {
+  try {
+    await validateAndroidSubscription(data, context);
+    return {
+      status: 200,
+      message: 'Purchase Complete!',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      status: 500,
+      message: 'Failed to verify subscription, Try again!',
+    };
   }
 });
 
@@ -99,6 +116,7 @@ export {
   runRenewOrCancelSubs,
   onStartSubscription,
   onCancelSubscription,
+  onValidateAndroid,
   onGetBillingPortal,
   onPlayAdd,
   onPlayUpdate,

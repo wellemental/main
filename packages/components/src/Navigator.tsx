@@ -29,7 +29,10 @@ const AuthStackScreen: React.FC = () => {
     <AuthStack.Navigator
       screenOptions={{
         headerBackTitleVisible: false,
-        headerStyle: { shadowOpacity: 0 },
+        headerStyle: {
+          elevation: 0, // remove shadow on Android
+          shadowOpacity: 0, // remove shadow on iOS,
+        },
         headerTitle: '',
         headerTintColor: variables.brandPrimary,
         headerLeftContainerStyle: { paddingLeft: 10, paddingTop: 10 },
@@ -60,7 +63,10 @@ const Navigator: React.FC = () => {
         mode="modal"
         screenOptions={{
           headerBackTitleVisible: false,
-          headerStyle: { shadowOpacity: 0 },
+          headerStyle: {
+            elevation: 0, // remove shadow on Android
+            shadowOpacity: 0, // remove shadow on iOS,
+          },
           headerTitle: '',
           headerTintColor: variables.brandPrimary,
           headerLeftContainerStyle: {

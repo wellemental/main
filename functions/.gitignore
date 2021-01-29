@@ -19,3 +19,7 @@ staging.json
 .env*
 .stripe*
 **/.stripe*
+*.json
+
+# Google service key files
+**/*.json
