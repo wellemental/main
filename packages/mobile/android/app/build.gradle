@@ -234,6 +234,7 @@ dependencies {
     compile project(':react-native-iap') // Added for RN IAP
     // compile project(':react-native-splash-screen') // Added for React Native splash screen
     // implementation project(':react-native-config') // Added for RN Config
+    compile project(':react-native-vector-icons')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
@@ -268,6 +269,10 @@ apply from: file("../../../../node_modules/@react-native-community/cli-platform-
 
 project.ext.vectoricons = [
     iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
+]
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Name of the font files you want to copy
 ]
 
 apply from: "../../../../node_modules/react-native-vector-icons/fonts.gradle"

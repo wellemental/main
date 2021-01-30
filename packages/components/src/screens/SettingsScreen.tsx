@@ -146,9 +146,11 @@ const SettingsScreen: React.FC = () => {
         </Body>
       </Box>
       <Body>
-        <Paragraph center fine>
-          {auth.email}
-        </Paragraph>
+        {auth && (
+          <Paragraph center fine>
+            {auth.email}
+          </Paragraph>
+        )}
       </Body>
 
       {auth && auth.email === 'mike.r.vosters@gmail.com' && (

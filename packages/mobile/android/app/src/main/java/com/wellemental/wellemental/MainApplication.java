@@ -15,6 +15,7 @@ import androidx.multidex.MultiDexApplication;
 import org.devio.rn.splashscreen.SplashScreenReactPackage; // react-native-splash-screen >= 0.3.1 
 // import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.dooboolab.RNIap.RNIapPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 
 // public class MainApplication extends Application implements ReactApplication {
 public class MainApplication extends MultiDexApplication implements ReactApplication { // Added
