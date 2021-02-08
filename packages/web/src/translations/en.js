@@ -189,4 +189,10 @@ export const English = {
     'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.',
   'Need help?': 'Need help?',
   'applied. 30 day free trial added.': 'applied. 30 day free trial added.',
+  'To cancel your Android subscription': 'To cancel your Android subscription',
+  'Click here to learn how to cancel your subscription on Android.':
+    'Click here to learn how to cancel your subscription on Android.',
+  ' to learn how to cancel your subscription on Android.':
+    ' to learn how to cancel your subscription on Android.',
+  'Click here': 'Click here',
 };
