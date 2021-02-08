@@ -188,4 +188,5 @@ export const English = {
   'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.':
     'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.',
   'Need help?': 'Need help?',
+  'applied. 30 day free trial added.': 'applied. 30 day free trial added.',
 };

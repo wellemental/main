@@ -32,6 +32,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+const promoCodes = ['MMOVE', 'ZIA', 'BRANDON', 'YAHEL', 'FLOR', 'NICOLE'];
+
 const CheckoutScreen: React.FC = () => {
   const history = useHistory();
   const { auth, translation } = useCurrentUser();
@@ -50,8 +52,8 @@ const CheckoutScreen: React.FC = () => {
   const [trialLength, setTrialLength] = useState(plan.trialLength);
 
   const validatePromoCode = () => {
-    if (promoCode === 'MMOVE') {
-      setActivePromoCode('MMOVE');
+    if (promoCodes.includes(promoCode)) {
+      setActivePromoCode(promoCode);
       setTrialLength(30);
       setShowPromoCode(false);
       scrollToTop();
@@ -141,9 +143,12 @@ const CheckoutScreen: React.FC = () => {
           </Paragraph>
         )}
       </Box>
-      {activePromoCode === 'MMOVE' && (
+      {activePromoCode && (
         <Box mb={1}>
-          <Error center error="MMOVE applied. 30 day free trial added." />
+          <Error
+            center
+            error={`${activePromoCode} ${translation['applied. 30 day free trial added.']}`}
+          />
         </Box>
       )}
       <Collapse in={!!activePromoCode} timeout="auto">
