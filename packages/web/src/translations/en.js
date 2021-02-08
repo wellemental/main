@@ -172,4 +172,20 @@ export const English = {
   Streak: 'Streak',
   'Sessions Completed': 'Sessions Completed',
   History: 'History',
+  Help: 'Help',
+  'Pay Now': 'Pay Now',
+  'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.':
+    'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.',
+  'Submit Payment': 'Submit Payment',
+  'To manage your subscription, please click the button below.':
+    'To manage your subscription, please click the button below.',
+  "You don't have an active Wellemental subscription. Subscribe now!":
+    "You don't have an active Wellemental subscription. Subscribe now!",
+  "You don't have an active Wellemental subscription. Subscribe below! If you have any issues, email us at hello@wellemental.co":
+    "You don't have an active Wellemental subscription. Subscribe below! If you have any issues, email us at hello@wellemental.co",
+  'Payment Type': 'Payment Type',
+  Website: 'Website',
+  'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.':
+    'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.',
+  'Need help?': 'Need help?',
 };

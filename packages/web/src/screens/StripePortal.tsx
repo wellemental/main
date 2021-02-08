@@ -56,7 +56,11 @@ const StripePortal: React.FC<Props> = ({ history }) => {
         </Typography>
 
         <Typography gutterBottom>
-          You don't have an active Wellemental subscription. Subscribe now!
+          {
+            translation[
+              "You don't have an active Wellemental subscription. Subscribe now!"
+            ]
+          }
         </Typography>
         <Button
           variant="contained"

@@ -25,7 +25,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Icon from './Icon';
-import { brandColors } from '../assets/styles/colors';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -87,12 +86,18 @@ const links: { [key: string]: Link } = {
     icon: 'favorite',
     pro: true,
   },
-  Profile: { label: 'Profile', slug: '/profile', icon: 'user', pro: true },
+  // Profile: { label: 'Profile', slug: '/profile', icon: 'user', pro: true },
   Search: { label: 'Search', slug: '/search', icon: 'search', pro: true },
   Settings: {
     label: 'Your Account',
     slug: '/settings',
-    icon: 'settings',
+    icon: 'user', //'settings',
+    pro: false,
+  },
+  Help: {
+    label: 'Help',
+    slug: 'support', // '/settings',
+    icon: 'support',
     pro: false,
   },
   Logout: { label: 'Logout', slug: 'logout', icon: 'logout', pro: false },
@@ -104,10 +109,10 @@ const desktopMainMenu = [
   links.Home,
   links.Library,
   links.Favorites,
-  links.Profile,
+  // links.Profile,
   links.Search,
 ];
-const desktopRightMenu = [links.Settings, links.Logout];
+const desktopRightMenu = [links.Settings, links.Help, links.Logout];
 
 type Props = {
   title?: string;
@@ -156,6 +161,8 @@ const Nav: React.FC<Props> = (props) => {
   const handleClick = (slug: string, closeSideMenu?: boolean) => {
     if (slug === 'logout') {
       app.auth().signOut();
+    } else if (slug === 'support') {
+      window.open('https://wellemental.zendesk.com/', '_blank');
     } else {
       history.push(slug);
     }
@@ -181,7 +188,7 @@ const Nav: React.FC<Props> = (props) => {
           />
         )}
 
-        {mobileMainMenu.map((link, index) =>
+        {mobileMainMenu.map((link) =>
           link.pro && !activePlan ? null : (
             <ListItem
               button
@@ -272,7 +279,8 @@ const Nav: React.FC<Props> = (props) => {
             aria-controls="desktop-menu"
             aria-haspopup="true"
             onClick={toggleDesktopMenu}>
-            <Icon name="settings" />
+            {/* <Icon name="settings" /> */}
+            <Icon name="user" />
           </IconButton>
           <Menu
             id="desktop-menu"
@@ -281,7 +289,9 @@ const Nav: React.FC<Props> = (props) => {
             open={Boolean(anchorEl)}
             onClose={closeDesktopMenu}>
             {desktopRightMenu.map((link) => (
-              <MenuItem onClick={() => handleClick(link.slug, true)}>
+              <MenuItem
+                onClick={() => handleClick(link.slug, true)}
+                key={link.label}>
                 <ListItemIcon className={classes.icon}>
                   <Icon name={link.icon} />
                 </ListItemIcon>

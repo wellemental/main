@@ -94,7 +94,7 @@ export const theme = createMuiTheme({
     subtitle2: {
       fontFamily: 'RecoletaAlt',
       color: brandColors.brandPrimary,
-      fontWeight: '500',
+      fontWeight: '700',
       fontSize: '1.2rem',
     },
     h1: {

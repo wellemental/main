@@ -27,8 +27,11 @@ const SubscriptionScreen: React.FC = () => {
         {!user.plan ? (
           <>
             <Typography gutterBottom>
-              You don't have an active Wellemental subscription. Subscribe
-              below! If you have any issues, email us at hello@wellemental.co
+              {
+                translation[
+                  "You don't have an active Wellemental subscription. Subscribe below! If you have any issues, email us at hello@wellemental.co"
+                ]
+              }
             </Typography>
             <Button
               variant="contained"
@@ -45,11 +48,11 @@ const SubscriptionScreen: React.FC = () => {
               <b>Email:</b> {auth.email}
             </Paragraph>
             <Paragraph>
-              <b>Payment Type:</b>{' '}
+              <b>{translation['Payment Type']}:</b>{' '}
               {user.plan.type === 'iosIap'
                 ? 'Apple iOS'
                 : user.plan.type === 'stripe'
-                ? 'Website (Stripe)'
+                ? `${translation.Website} (Stripe)`
                 : user.plan.type === 'promoCode'
                 ? 'Promo Code'
                 : 'N/A'}
@@ -79,7 +82,11 @@ const SubscriptionScreen: React.FC = () => {
         {user.plan.type === 'stripe' ? (
           <>
             <Paragraph gutterBottom>
-              To manage your subscription, please click the button below.
+              {
+                translation[
+                  'To manage your subscription, please click the button below.'
+                ]
+              }
             </Paragraph>
             <Button
               onClick={() => history.push('/stripe')}
@@ -89,8 +96,11 @@ const SubscriptionScreen: React.FC = () => {
         ) : user.plan.type === 'iosIap' ? (
           <>
             <Paragraph gutterBottom>
-              To manage your subscription, you need to use your Apple iOS device
-              and follow the instructions below.
+              {
+                translation[
+                  'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.'
+                ]
+              }
             </Paragraph>
             <ol>
               <li>{translation['Open the Settings app.']}</li>
@@ -117,7 +127,7 @@ const SubscriptionScreen: React.FC = () => {
 
       <Box mt={2}>
         <Paragraph center color="textSecondary">
-          <b>Need help?</b> Email hello@wellemental.co
+          <b>{translation['Need help?']}</b> Email hello@wellemental.co
         </Paragraph>
       </Box>
     </Box>

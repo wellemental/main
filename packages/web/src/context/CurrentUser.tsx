@@ -118,6 +118,25 @@ export const CurrentUserProvider = ({ children }: any) => {
     return <Spinner />;
   }
 
+  console.log('CURRENT AUTH', currentAuth && currentAuth.uid);
+  console.log('CURRENT USER', currentUser);
+  if (currentUser && currentUser.plan) {
+    console.log(
+      'NOW',
+      moment().unix(),
+      'NOW DATE',
+      moment().toDate(),
+      'RENEWAL',
+      1613120646, //currentUser.plan.nextRenewalUnix,
+      'RENEW DATE',
+      moment.unix(1613120646 * 1000).toDate(),
+      // moment.unix(currentUser.plan.nextRenewalUnix).toDate(),
+      'ACTIVE?',
+      1613120646 > moment().unix(),
+      // currentUser.plan.nextRenewalUnix > moment().unix(),
+    );
+  }
+
   return (
     <CurrentUser.Provider
       value={{

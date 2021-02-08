@@ -99,7 +99,9 @@ const CheckoutScreen: React.FC = () => {
           .catch((err) => {
             logger.error(`Error starting subscription - ${err}`);
             setError(
-              'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.',
+              translation[
+                'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.'
+              ],
             );
             setLoading(false);
           });
