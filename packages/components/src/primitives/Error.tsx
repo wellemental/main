@@ -31,6 +31,7 @@ const ErrorComponent: React.FC<Props> = ({ error, center }) => {
         color: variables.brandDanger,
         paddingHorizontal: 5,
         alignSelf: center ? 'center' : 'flex-start',
+        textAlign: center ? 'center' : 'left',
       }}>
       {text}
     </Paragraph>

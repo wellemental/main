@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
-  Dimensions,
+  StatusBar,
+  Platform,
   ImageBackground,
   Image,
 } from 'react-native';
@@ -13,6 +14,7 @@ import {
   Button,
   Container,
   Download,
+  VideoAndroid,
   Favorite,
   Headline,
   Paragraph,
@@ -21,14 +23,15 @@ import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { DownloadVideoService, PlaysServiceType } from 'services';
 import FadeIn from 'react-native-fade-in-image';
-import { useContainer, useMutation } from '../hooks';
+import { useContainer, useMutation, useCurrentUser } from '../hooks';
+import { deviceWidth, deviceHeight } from 'services';
 
 type Props = {
   route: ContentScreenRouteProp;
   navigation: ContentScreenNavigationProp;
 };
 
-const deviceWidth = Dimensions.get('window').width - 30;
+// const deviceWidth = deviceWidthOg - 30;
 const videoHeight = deviceWidth * 0.56;
 
 const styles = StyleSheet.create({
@@ -40,7 +43,6 @@ const styles = StyleSheet.create({
   },
   nativeVideoControls: {
     top: 0,
-    // height: '100%',
     height: videoHeight,
     width: deviceWidth,
   },
@@ -51,7 +53,10 @@ const styles = StyleSheet.create({
     top: 0,
     position: 'absolute',
     backgroundColor: 'white',
-    zIndex: 100,
+  },
+  fullscreen: {
+    height: deviceHeight,
+    width: deviceWidth,
   },
 });
 
@@ -65,7 +70,9 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const [showPoster, togglePoster] = useState(true);
   const [error, setError] = useState();
   const [isPaused, togglePaused] = useState(true);
+  const [showControls, toggleControls] = useState(false);
   const [hasPlayed, toggleHasPlayed] = useState(false);
+  const { auth } = useCurrentUser();
 
   // Hide poster when video has started
   if (showPoster && (currentTime > 0 || !isPaused)) {
@@ -124,6 +131,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         handleComplete: handleComplete,
       });
     } else {
+      toggleControls(!showControls);
       togglePaused(!isPaused);
     }
   };
@@ -158,7 +166,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   };
 
   return (
-    <Container>
+    <>
       {content.video_orientation === 'portrait' ? (
         <View style={{ width: deviceWidth, height: videoHeight }}>
           <ImageBackground
@@ -184,73 +192,96 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
       ) : (
         <View style={{ width: deviceWidth, height: videoHeight }}>
-          <Video
-            source={{
-              uri: content.video,
-            }} // Can be a URL or a local file.
-            style={styles.nativeVideoControls}
-            controls={true}
-            playInBackground={true}
-            ignoreSilentSwitch="ignore"
-            resizeMode="cover"
-            paused={isPaused}
-            poster={content.thumbnail}
-            posterResizeMode="cover"
-            onBuffer={onBuffer}
-            onProgress={onProgress}
-            onLoad={onLoad}
-            onError={handleError}
-          />
+          {Platform.OS === 'android' ? (
+            <VideoAndroid
+              source={{
+                uri: content.video,
+              }}
+              paused={isPaused}
+              poster={content.thumbnail}
+            />
+          ) : (
+            <Video
+              source={{
+                uri: content.video,
+              }} // Can be a URL or a local file.
+              style={styles.nativeVideoControls}
+              controls={true}
+              playInBackground={true}
+              ignoreSilentSwitch="ignore"
+              resizeMode="cover"
+              paused={isPaused}
+              poster={content.thumbnail}
+              posterResizeMode="cover"
+              onBuffer={onBuffer}
+              onLoad={onLoad}
+              onError={handleError}
+              onProgress={onProgress}
+            />
+          )}
           {showPoster && isPaused && (
             <View style={styles.videoPoster}>
-              <FadeIn style={styles.videoPoster}>
-                <Image
-                  source={{ uri: content.thumbnail }}
-                  style={styles.videoPoster}
-                />
-              </FadeIn>
               <NBButton
                 onPress={handlePlay}
                 style={{
                   backgroundColor: 'rgba(112,113,118,.95)',
                   borderRadius: 40,
                   height: 60,
+                  zIndex: 100,
                   width: 60,
                   alignSelf: 'center',
                   justifyContent: 'center',
                 }}>
                 <Icon name="play" style={{ fontSize: 30 }} />
               </NBButton>
+              <FadeIn style={styles.videoPoster}>
+                <Image
+                  source={{ uri: content.thumbnail }}
+                  style={styles.videoPoster}
+                />
+              </FadeIn>
             </View>
           )}
         </View>
       )}
+      <Container scrollEnabled>
+        {auth &&
+          (auth.email === 'test@test.com' ||
+            auth.email === 'mike.r.vosters@gmail.com') && (
+            <>
+              <Paragraph>Current Time: {currentTime}</Paragraph>
+              <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
+              <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
+              <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
+            </>
+          )}
 
-      <Box row justifyContent="space-between" mt={2} mb={1}>
-        <Headline style={{ flex: 4 }}>{content.title}</Headline>
-        <Box row>
-          <Favorite onProfile contentId={content.id} />
-          <Download videoUrl={content.video} />
+        <Box row justifyContent="space-between" mt={2} mb={1}>
+          <Headline style={{ flex: 4 }}>{content.title}</Headline>
+          <Box row>
+            <Favorite onProfile contentId={content.id} />
+            <Download videoUrl={content.video} />
+          </Box>
         </Box>
-      </Box>
 
-      <Paragraph gb={1}>
-        {content.type.toUpperCase()} | {content.length}
-      </Paragraph>
+        <Paragraph gb={1}>
+          {content.type.toUpperCase()} | {content.length}
+        </Paragraph>
 
-      <Paragraph gb={2}>{content.description}</Paragraph>
+        <Paragraph gb={2}>{content.description}</Paragraph>
 
-      <Button
-        transparent
-        onPress={(): void =>
-          navigation.navigate('Teacher', {
-            teacher,
-          })
-        }>
-        <AvyName source={teacher.photo} name={content.teacher} onProfile />
-      </Button>
-      <Paragraph>{teacher.bio}</Paragraph>
-    </Container>
+        <Button
+          transparent
+          onPress={(): void =>
+            navigation.navigate('Teacher', {
+              teacher,
+            })
+          }>
+          <AvyName source={teacher.photo} name={content.teacher} onProfile />
+        </Button>
+        <Paragraph>{teacher.bio}</Paragraph>
+      </Container>
+    </>
   );
 };
 

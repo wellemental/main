@@ -1,5 +1,12 @@
 import React, { CSSProperties } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  StatusBar,
+  View,
+  Platform,
+} from 'react-native';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 type ContainerProps = {
@@ -55,6 +62,7 @@ const Container: React.FC<ContainerProps> = ({
       style={{
         backgroundColor: color ? color : variables.containerBgColor,
         flex: 1,
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
       }}>
       {container}
     </SafeAreaView>

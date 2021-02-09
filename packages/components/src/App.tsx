@@ -28,8 +28,13 @@ const App: React.FC = () => {
               <NotificationProvider>
                 <Root>
                   <SafeAreaProvider>
-                    {Platform.OS === 'ios' && (
+                    {Platform.OS === 'ios' ? (
                       <StatusBar barStyle="dark-content" />
+                    ) : (
+                      <StatusBar
+                        translucent={true}
+                        backgroundColor={'transparent'}
+                      />
                     )}
                     <Navigator />
                   </SafeAreaProvider>

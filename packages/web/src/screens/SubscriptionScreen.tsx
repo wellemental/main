@@ -37,7 +37,7 @@ const SubscriptionScreen: React.FC = () => {
         ) : (
           <>
             <Paragraph>
-              <b>Email:</b> {auth.email}
+              <b>{translation.Email}:</b> {auth.email}
             </Paragraph>
             <Paragraph>
               <b>{translation['Payment Type']}:</b>{' '}
@@ -51,13 +51,13 @@ const SubscriptionScreen: React.FC = () => {
             </Paragraph>
             {user.plan.planId && (
               <Paragraph>
-                <b>Plan</b>: {user.plan.planId}
+                <b>{translation.Plan}</b>: {user.plan.planId}
               </Paragraph>
             )}
 
             {user.plan.code && (
               <Paragraph>
-                <b>Promo Code</b>: {user.plan.code}
+                <b>{translation['Promo Code']}</b>: {user.plan.code}
               </Paragraph>
             )}
 
@@ -112,8 +112,11 @@ const SubscriptionScreen: React.FC = () => {
               </>
             ) : user.plan.type === 'promoCode' ? (
               <Typography gutterBottom>
-                You subscribed for free using an friends and family access code.
-                Enjoy!
+                {
+                  translation[
+                    'You subscribed for free using an friends and family access code. Enjoy!'
+                  ]
+                }
               </Typography>
             ) : user.plan.type === 'android' ? (
               <Typography gutterBottom>
@@ -128,8 +131,11 @@ const SubscriptionScreen: React.FC = () => {
               </Typography>
             ) : (
               <Typography gutterBottom>
-                Subscription type unknown. Please contact us at
-                hello@wellemental.co with any questions.
+                {
+                  translation[
+                    'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.'
+                  ]
+                }
               </Typography>
             )}
           </>

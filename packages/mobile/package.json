@@ -16,7 +16,8 @@
     "clear-all-cache": "clear-watchman && clear-npm && start-clear",
     "android:stop": "cd android && ./gradlew --stop && cd ..",
     "android:clean": "cd android && ./gradlew clean && cd ..",
-    "android:build": "cd android && ./gradlew assembleRelease"
+    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:server": "adb reverse tcp:8081 tcp:8081"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.2",
@@ -41,6 +42,7 @@
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-iap": "5.2.3",
+    "react-native-orientation-locker": "^1.2.0",
     "react-native-push-notification": "^7.2.0",
     "react-native-rate": "^1.2.4",
     "react-native-reanimated": "^1.13.2",
@@ -48,7 +50,8 @@
     "react-native-screens": "^2.15.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^9.12.0",
-    "react-native-video": "^5.1.0-alpha8"
+    "react-native-video": "^5.1.0-alpha8",
+    "react-native-video-controls": "^2.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

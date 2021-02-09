@@ -21,3 +21,4 @@ export { default as TeacherLoop } from './TeacherLoop';
 export { default as PageHeading } from './PageHeading';
 export { default as ContentLoop } from './ContentLoop';
 export { default as ListEmpty } from './ListEmpty';
+export { default as VideoAndroid } from './VideoAndroid';

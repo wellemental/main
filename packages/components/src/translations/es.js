@@ -10,7 +10,7 @@ export const Español = {
   Username: 'Nombre de Usuario',
   Birthday: 'Cumpleaños',
   Language: 'Idioma',
-  'Select language': 'Selecciona idioma',
+  'Select language': 'Elige el idioma',
   'Select birthday': 'Selecciona cumpleaños',
   'Changes saved': 'Changes saved',
   'Something went wrong': 'Algo salió mal',
@@ -74,6 +74,7 @@ export const Español = {
   'A critical update is required. Tap below to download the latest Wellemental update.':
     'Se requiere una actualización crítica. Toque a continuación para descargar la última actualización de Wellemental.',
   'No Thanks': 'No, gracias',
+  'Contact Us': 'Contactarnos',
   Required: 'Requerida',
   Plans: 'Planes',
   Purchase: 'Compra',
@@ -136,23 +137,40 @@ export const Español = {
   'Check your email for a reset password link.':
     'Revise su correo electrónico para obtener un enlace para restablecer la contraseña.',
   'See all languages': 'Ver todos los idiomas',
-  'Enter email...': 'Entra tu correo electrónico...',
+  'Enter email...': 'Ingrese el correo electrónico...',
   'Please login or signup before entering your access code.':
-    'Inicie sesión o regístrese antes de ingresar su código de acceso.',
-  'Enter Access Code': 'Entra tu código de accesso',
+    'Por favor inicie sesión o regístrese antes de introducir su código de acceso.',
+  'Enter Access Code': 'Ingrese el código de acceso',
   'Live Event': 'Evento en vivo',
-  Stats: 'Estadísticas',
+  Stats: 'Estadísticos',
   Journey: 'Actividades',
-  'Load More': 'Carga más',
+  'Load More': 'Cargar más',
   'Total Hours': 'Horas',
-  Streak: 'Racha',
+  Streak: 'Días consecutivos',
   'Sessions Completed': 'Sesiones',
-  'Rate App': 'Califica Aplicacion',
+  'Rate App': 'Evaluar App',
   History: 'Historia',
-  'Notifications are already enabled!': 'Notifications are already enabled!',
+  'Notifications are already enabled!':
+    '¡Las notificaciones ya están activadas!',
   'Receive push notifications about app updates and new content?':
-    'Receive push notifications about app updates and new content?',
-  'Enable Notifications': 'Enable Notifications',
-  'Notifications are already enabled!': 'Notifications are already enabled!',
-  Notifications: 'Notifications',
+    '¿Recibir notificaciones de empuje sobre actualizaciones de app y nuevo contenido?',
+  'Enable Notifications': 'Activar notificaciones',
+  'To enable push notifications, go to your iOS settings and find Wellemental within the Notifications list.':
+    'Para permitir notificaciones de empuje, ve a la configuración de iOS y busca Wellemental en la lista de notificaciones.',
+  Notifications: 'Notificacións',
+  Help: 'Centro de Ayuda',
+  'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.':
+    'Se ha producido un error al crear la suscripción. Por favor, inténtelo de nuevo. Si el problema persiste, envíe un correo electrónico hello@wellemental.co.',
+  'Submit Payment': 'Enviar Pago',
+  'To manage your subscription, please click the button below.':
+    'Para administrar su suscripción, haga clic en el botón de abajo.',
+  "You don't have an active Wellemental subscription. Subscribe now!":
+    'No tiene una suscripción de Wellemental activa. ¡Suscríbase ahora!',
+  "You don't have an active Wellemental subscription. Subscribe below! If you have any issues, email us at hello@wellemental.co":
+    'No tiene una suscripción de Wellemental activa. ¡Suscríbase abajo! Si tiene algún problema, envíenos un correo electrónico a hello@wellemental.co',
+  'Payment Type': 'Tipo de Pago',
+  Website: 'Sitio Web',
+  'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.':
+    'Para administrar su suscripción, debe utilizar su dispositivo Apple iOS y seguir las instrucciones que aparece abajo',
+  'Need help?': '¿Necesita ayuda?',
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageBackground, View } from 'react-native';
+import { ImageBackground, View, Platform } from 'react-native';
 import { H1, Card, CardItem, Body, Input, Item } from 'native-base';
 import { Container, Button, Error } from '../primitives';
 import { useCurrentUser } from '../hooks';
@@ -71,9 +71,10 @@ const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
                     autoCorrect={false}
                     style={{
                       fontSize: 32,
-                      height: 40,
+                      lineHeight: 32,
+                      height: Platform.OS === 'ios' ? 40 : 60,
                       textAlign: 'center',
-                      marginBottom: 10,
+                      marginBottom: Platform.OS === 'ios' ? 10 : 0,
                     }}
                   />
                 </Item>

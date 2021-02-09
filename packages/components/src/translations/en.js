@@ -146,6 +146,23 @@ export const English = {
   'Receive push notifications about app updates and new content?':
     'Receive push notifications about app updates and new content?',
   'Enable Notifications': 'Enable Notifications',
-  'Notifications are already enabled!': 'Notifications are already enabled!',
+  'To enable push notifications, go to your iOS settings and find Wellemental within the Notifications list.':
+    'To enable push notifications, go to your iOS settings and find Wellemental within the Notifications list.',
   Notifications: 'Notifications',
+  Help: 'Help',
+  'Pay Now': 'Pay Now',
+  'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.':
+    'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.',
+  'Submit Payment': 'Submit Payment',
+  'To manage your subscription, please click the button below.':
+    'To manage your subscription, please click the button below.',
+  "You don't have an active Wellemental subscription. Subscribe now!":
+    "You don't have an active Wellemental subscription. Subscribe now!",
+  "You don't have an active Wellemental subscription. Subscribe below! If you have any issues, email us at hello@wellemental.co":
+    "You don't have an active Wellemental subscription. Subscribe below! If you have any issues, email us at hello@wellemental.co",
+  'Payment Type': 'Payment Type',
+  Website: 'Website',
+  'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.':
+    'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.',
+  'Need help?': 'Need help?',
 };

@@ -41,7 +41,7 @@ export const CurrentUserProvider = ({ children }: any) => {
     const newUser = {
       id: userId,
       // name: userData.name,
-      language: userData.language,
+      language: userData.language ? userData.language : Languages.En,
       // birthday: userData.birthday,
       favorites: userData.favorites,
       plan: userData.plan,

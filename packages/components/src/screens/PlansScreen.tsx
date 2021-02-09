@@ -223,8 +223,9 @@ const PlansScreen: React.FC = () => {
                 text={translation.Subscribe}
                 onPress={() => handleSubscription(PlanId.Monthly)}
               />
-              <Box mt={1.5}>
+              <Box mt={2} mb={6}>
                 <LegalLinks subs />
+                <Error error={error} center />
               </Box>
             </>
           ) : (
@@ -258,8 +259,6 @@ const PlansScreen: React.FC = () => {
           onPress={() => toggleDisplay(!showAccessDisplay)}
         />
       </Box> */}
-
-          <Error error={error} center />
 
           {auth &&
             (auth.email === 'mike.r.vosters@gmail.com' ||

@@ -73,6 +73,7 @@ export const English = {
   'No Thanks': 'No Thanks',
   Required: 'Required',
   Plans: 'Plans',
+  Plan: 'Plan',
   Purchase: 'Purchase',
   Subscription: 'Subscription',
   'Promo code': 'Promo code',
@@ -195,4 +196,9 @@ export const English = {
   ' to learn how to cancel your subscription on Android.':
     ' to learn how to cancel your subscription on Android.',
   'Click here': 'Click here',
+  'You subscribed for free using an friends and family access code. Enjoy!':
+    'You subscribed for free using an friends and family access code. Enjoy!',
+  'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.':
+    'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.',
+  Email: 'Email',
 };

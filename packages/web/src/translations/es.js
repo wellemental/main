@@ -77,6 +77,7 @@ export const Español = {
   'No Thanks': 'No, gracias',
   Required: 'Requerida',
   Plans: 'Planes',
+  Plan: 'Plan',
   Purchase: 'Compra',
   Subscription: 'Subscripcion',
   'Promo code': 'Código promocional',
@@ -199,4 +200,9 @@ export const Español = {
   'To cancel your Android subscription':
     'Para cancelar su suscripción de Android',
   'Click here': 'Haga clic aquî',
+  'You subscribed for free using an friends and family access code. Enjoy!':
+    'Te suscribiste gratis con un código de acceso para amigos y familiares. ¡Disfrutar!',
+  'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.':
+    'Tipo de suscripción desconocido. Por favor contáctenos en hello@wellemental.co con cualquier pregunta',
+  Email: 'Correo electrónico',
 };
