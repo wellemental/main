@@ -15,6 +15,7 @@ import {
   Container,
   Download,
   VideoAndroid,
+  ScrollView,
   Favorite,
   Headline,
   Paragraph,
@@ -115,6 +116,9 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     playsService.add(content.id),
   );
 
+  const androidOrPortrait =
+    content.video_orientation === 'portrait' || Platform.OS === 'android';
+
   const handlePlay = (): void => {
     // Only count if it hasn't been logged already
     if (!hasPlayed) {
@@ -123,7 +127,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     }
 
     // If vertical video, trigger to VideoScreen, if not just play the video
-    if (content.video_orientation === 'portrait') {
+    if (androidOrPortrait) {
       navigation.navigate('Video', {
         content,
         teacher,
@@ -167,7 +171,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <>
-      {content.video_orientation === 'portrait' ? (
+      {androidOrPortrait ? (
         <View style={{ width: deviceWidth, height: videoHeight }}>
           <ImageBackground
             source={{ uri: content.thumbnail }}
@@ -192,33 +196,24 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
       ) : (
         <View style={{ width: deviceWidth, height: videoHeight }}>
-          {Platform.OS === 'android' ? (
-            <VideoAndroid
-              source={{
-                uri: content.video,
-              }}
-              paused={isPaused}
-              poster={content.thumbnail}
-            />
-          ) : (
-            <Video
-              source={{
-                uri: content.video,
-              }} // Can be a URL or a local file.
-              style={styles.nativeVideoControls}
-              controls={true}
-              playInBackground={true}
-              ignoreSilentSwitch="ignore"
-              resizeMode="cover"
-              paused={isPaused}
-              poster={content.thumbnail}
-              posterResizeMode="cover"
-              onBuffer={onBuffer}
-              onLoad={onLoad}
-              onError={handleError}
-              onProgress={onProgress}
-            />
-          )}
+          <Video
+            source={{
+              uri: content.video,
+            }} // Can be a URL or a local file.
+            style={styles.nativeVideoControls}
+            controls={true}
+            playInBackground={true}
+            ignoreSilentSwitch="ignore"
+            resizeMode="cover"
+            paused={isPaused}
+            poster={content.thumbnail}
+            posterResizeMode="cover"
+            onBuffer={onBuffer}
+            onLoad={onLoad}
+            onError={handleError}
+            onProgress={onProgress}
+          />
+
           {showPoster && isPaused && (
             <View style={styles.videoPoster}>
               <NBButton
@@ -244,18 +239,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           )}
         </View>
       )}
-      <Container scrollEnabled>
-        {auth &&
-          (auth.email === 'test@test.com' ||
-            auth.email === 'mike.r.vosters@gmail.com') && (
-            <>
-              <Paragraph>Current Time: {currentTime}</Paragraph>
-              <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
-              <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
-              <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
-            </>
-          )}
-
+      <ScrollView>
         <Box row justifyContent="space-between" mt={2} mb={1}>
           <Headline style={{ flex: 4 }}>{content.title}</Headline>
           <Box row>
@@ -268,7 +252,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           {content.type.toUpperCase()} | {content.length}
         </Paragraph>
 
-        <Paragraph gb={2}>{content.description}</Paragraph>
+        <Paragraph gb={1}>{content.description}</Paragraph>
 
         <Button
           transparent
@@ -280,7 +264,18 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           <AvyName source={teacher.photo} name={content.teacher} onProfile />
         </Button>
         <Paragraph>{teacher.bio}</Paragraph>
-      </Container>
+
+        {auth &&
+          (auth.email === 'test@test.com' ||
+            auth.email === 'mike.r.vosters@gmail.com') && (
+            <>
+              <Paragraph>Current Time: {currentTime}</Paragraph>
+              <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
+              <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
+              <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
+            </>
+          )}
+      </ScrollView>
     </>
   );
 };

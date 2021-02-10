@@ -1,12 +1,12 @@
 import React, { CSSProperties } from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   StatusBar,
   View,
   Platform,
 } from 'react-native';
+import ScrollView from './ScrollView';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 type ContainerProps = {
@@ -26,9 +26,11 @@ const Container: React.FC<ContainerProps> = ({
   noPadding,
   ...props
 }) => {
+  const bgColor = color ? color : variables.containerBgColor;
+
   const styles = StyleSheet.flatten([
     {
-      backgroundColor: color ? color : variables.containerBgColor,
+      backgroundColor: bgColor,
       paddingHorizontal:
         noPadding === 'horizontal' || noPadding === 'none'
           ? 0
@@ -44,16 +46,7 @@ const Container: React.FC<ContainerProps> = ({
     style,
   ]);
   const container = scrollEnabled ? (
-    <ScrollView
-      {...props}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles}
-      children={children}
-      style={{
-        backgroundColor: color ? color : variables.containerBgColor,
-        flex: 1,
-      }}
-    />
+    <ScrollView {...props} color={bgColor} children={children} />
   ) : (
     <View style={[{ flex: 1 }, styles]} children={children} />
   );

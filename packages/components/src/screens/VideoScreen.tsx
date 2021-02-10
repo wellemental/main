@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Error } from '../primitives';
+import { StyleSheet, View, Platform } from 'react-native';
+import { Error, VideoAndroid, Container } from '../primitives';
 import { VideoScreenNavigationProp, VideoScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { useNavigation } from '../hooks';
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const VideoScreen: React.FC<Props> = ({ route }) => {
+const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
   const { content, savedVideoPath, handleComplete } = route.params;
   const [error, setError] = useState();
   const [currentTime, setCurrentTime] = useState(0);
@@ -50,7 +50,18 @@ const VideoScreen: React.FC<Props> = ({ route }) => {
     setDuration(data.duration);
   };
 
-  return (
+  return Platform.OS === 'android' ? (
+    <VideoAndroid
+      source={{
+        uri: savedVideoPath ? savedVideoPath : content.video,
+      }}
+      // onProgress={onProgress}
+      // onLoad={onLoad}
+      // onError={setError}
+      onBack={navigation.goBack}
+      style={{ marginTop: 20 }}
+    />
+  ) : (
     <View style={{ backgroundColor: '#000' }}>
       <View style={{ height: deviceHeight, width: deviceWidth }}>
         <Video

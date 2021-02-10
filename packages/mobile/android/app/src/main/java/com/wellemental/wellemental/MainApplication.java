@@ -16,6 +16,8 @@ import org.devio.rn.splashscreen.SplashScreenReactPackage; // react-native-splas
 // import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import org.wonday.orientation.OrientationPackage;
+import org.wonday.orientation.OrientationActivityLifecycle;
 
 // public class MainApplication extends Application implements ReactApplication {
 public class MainApplication extends MultiDexApplication implements ReactApplication { // Added
@@ -55,6 +57,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
   }
 
   /**

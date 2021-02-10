@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   TabNav,
@@ -106,6 +107,7 @@ const Navigator: React.FC = () => {
                 cardStyle: {
                   backgroundColor: '#000',
                 },
+                headerShown: Platform.OS === 'android' ? false : true,
               }}
             />
             <Stack.Screen

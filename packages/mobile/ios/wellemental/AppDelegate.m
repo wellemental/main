@@ -54,13 +54,12 @@ static void InitializeFlipper(UIApplication *application) {
   return YES;
 }
 
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
-
 // Added for RN Orientation Locker
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
   return [Orientation getOrientation];
 }
 
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"packages/mobile/index" fallbackResource:nil];

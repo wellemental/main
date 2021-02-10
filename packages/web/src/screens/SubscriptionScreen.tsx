@@ -46,7 +46,7 @@ const SubscriptionScreen: React.FC = () => {
                 : user.plan.type === 'stripe'
                 ? `${translation.Website} (Stripe)`
                 : user.plan.type === 'promoCode'
-                ? 'Promo Code'
+                ? translation['Promo Code']
                 : 'N/A'}
             </Paragraph>
             {user.plan.planId && (
@@ -84,7 +84,7 @@ const SubscriptionScreen: React.FC = () => {
                 </Paragraph>
                 <Button
                   onClick={() => history.push('/stripe')}
-                  text="Manage Subscription"
+                  text={translation['Manage Subscription']}
                 />
               </>
             ) : user.plan.type === 'iosIap' ? (

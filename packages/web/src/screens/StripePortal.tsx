@@ -53,6 +53,7 @@ const StripePortal: React.FC<Props> = ({ history }) => {
       <Card>
         <Typography variant="h4" align="center" gutterBottom>
           Subscription
+          {translation.Subscription}
         </Typography>
 
         <Typography gutterBottom>
@@ -67,8 +68,8 @@ const StripePortal: React.FC<Props> = ({ history }) => {
           color="secondary"
           fullWidth
           size="large"
-          onClick={() => history.push('/checkout')}>
-          Checkout
+          onClick={() => history.push('/plans')}>
+          {translation['View Plans']}
         </Button>
       </Card>
     </Page>

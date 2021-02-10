@@ -239,6 +239,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RNFBMessaging.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>RNFBRemoteConfig.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -420,6 +425,11 @@
 			<false/>
 		</dict>
 		<key>nanopb.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>react-native-orientation-locker.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
