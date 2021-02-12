@@ -176,4 +176,6 @@ export const English = {
     'To manage your subscription, login to the Wellemental website and navigate to your subscription page.',
   'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.':
     'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.',
+  days: 'days',
+  'Total Time': 'Total Time',
 };

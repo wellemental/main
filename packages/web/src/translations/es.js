@@ -176,7 +176,7 @@ export const Español = {
   'Load More': 'Cargar más',
   'Total Hours': 'Horas',
   Streak: 'Días consecutivos',
-  'Sessions Completed': 'Sesiones',
+  'Sessions Completed': 'Sesiones completadas',
   'Rate App': 'Evaluar App',
   History: 'Historia',
   Help: 'Centro de Ayuda',
@@ -205,4 +205,6 @@ export const Español = {
   'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.':
     'Tipo de suscripción desconocido. Por favor contáctenos en hello@wellemental.co con cualquier pregunta',
   Email: 'Correo electrónico',
+  days: 'dias',
+  'Total Time': 'Tiempo Total',
 };

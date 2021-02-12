@@ -148,7 +148,7 @@ export const Español = {
   'Load More': 'Cargar más',
   'Total Hours': 'Horas',
   Streak: 'Días consecutivos',
-  'Sessions Completed': 'Sesiones',
+  'Sessions Completed': 'Sesiones completadas',
   'Rate App': 'Evaluar App',
   History: 'Historia',
   'Notifications are already enabled!':
@@ -185,4 +185,6 @@ export const Español = {
     'Para administrar su suscripción, inicie sesión en el sitio web de Wellemental y navegue hasta su página de suscripción.',
   'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.':
     'Tipo de suscripción desconocido. Por favor contáctenos en hello@wellemental.co con cualquier pregunta',
+  days: 'dias',
+  'Total Time': 'Tiempo Total',
 };

@@ -5,6 +5,7 @@ import {
   Error,
   PageHeading,
   Container,
+  StatDisplay,
   Button,
   ListEmpty,
   Tabs,
@@ -26,7 +27,7 @@ const ProfileScreen: React.FC = () => {
   const [error, setError] = useState();
 
   const tabs: MenuItem[] = [
-    // { label: translation.Stats },
+    { label: 'Stats' },
     { label: 'Journey' },
     { label: 'Settings' },
   ];
@@ -46,26 +47,18 @@ const ProfileScreen: React.FC = () => {
 
   return (
     <Container scrollEnabled>
-      <PageHeading noHeader title={translation.Profile} />
-
-      <Box row mb={4} mx={1} justifyContent="space-between">
-        <Box>
-          <Headline small>{user.streak}</Headline>
-          <Paragraph>{translation.Streak}</Paragraph>
-        </Box>
-        <Box>
-          <Headline small>{user.totalCompleted}</Headline>
-          <Paragraph>{translation['Sessions Completed']}</Paragraph>
-        </Box>
-        <Box>
-          <Headline small>{user.totalSeconds}</Headline>
-          <Paragraph>{translation['Total Hours']}</Paragraph>
-        </Box>
-      </Box>
+      <PageHeading noHeader withLogo center title={translation.Profile} />
 
       <Error error={error} />
 
       <Tabs tabs={tabs} active={tab} setTab={setTab} />
+      {tab.label === 'Stats' && (
+        <>
+          <StatDisplay type="streak" />
+          <StatDisplay type="completed" />
+          <StatDisplay type="time" />
+        </>
+      )}
       {tab.label === 'Journey' &&
         (loading || !content || !teachers ? (
           <Spinner />

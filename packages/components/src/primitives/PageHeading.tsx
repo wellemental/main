@@ -1,7 +1,9 @@
 import React from 'react';
 import Paragraph from './Paragraph';
+import Box from './Box';
 import Headline from './Headline';
 import Avatar from './Avatar';
+import LogoIcon from './LogoIcon';
 import { View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,7 +13,8 @@ type Props = {
   avatar?: string;
   center?: boolean;
   noHeader?: boolean;
-  subHeader?: boolean;
+  subheader?: boolean;
+  withLogo?: boolean;
 };
 const PageHeading: React.FC<Props> = ({
   title,
@@ -20,6 +23,7 @@ const PageHeading: React.FC<Props> = ({
   center,
   noHeader,
   subheader,
+  withLogo,
 }) => {
   const insets = useSafeAreaInsets();
   let pt = 35;
@@ -42,8 +46,13 @@ const PageHeading: React.FC<Props> = ({
         paddingBottom: 25,
         alignItems: center ? 'center' : 'flex-start',
       }}>
+      {withLogo && (
+        <Box mb={2}>
+          <LogoIcon />
+        </Box>
+      )}
       {avatar && <Avatar source={avatar} size={200} mb={30} />}
-      <Headline>{title}</Headline>
+      <Headline center={center ? center : false}>{title}</Headline>
       {subtitle && <Paragraph style={{ paddingTop: 5 }}>{subtitle}</Paragraph>}
     </View>
   );

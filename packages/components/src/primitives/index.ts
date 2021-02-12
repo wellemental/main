@@ -9,6 +9,8 @@ export { default as AvyName } from './AvyName';
 export { default as Favorite } from './Favorite';
 export { default as LegalLinks } from './LegalLinks';
 export { default as Error } from './Error';
+export { default as LogoIcon } from './LogoIcon';
+export { default as StatDisplay } from './StatDisplay';
 export { default as Download } from './Download';
 export { default as ScrollView } from './ScrollView';
 export { default as Headline } from './Headline';
