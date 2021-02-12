@@ -41,7 +41,7 @@ const Container: React.FC<ContainerProps> = ({
           : variables.mainContentPaddingVertical,
       justifyContent: center ? 'center' : undefined,
       alignItems: center ? 'center' : undefined,
-      alignContent: 'center',
+      alignContent: center ? 'center' : undefined,
     },
     style,
   ]);
@@ -55,7 +55,7 @@ const Container: React.FC<ContainerProps> = ({
       style={{
         backgroundColor: color ? color : variables.containerBgColor,
         flex: 1,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        paddingTop: 0,
       }}>
       {container}
     </SafeAreaView>

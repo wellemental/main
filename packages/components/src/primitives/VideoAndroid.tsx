@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  View,
-  StatusBar,
-  SafeAreaView,
-  Platform,
-  ImageBackground,
-  Image,
-} from 'react-native';
+import { StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Orientation from 'react-native-orientation-locker';
 import { deviceWidth, deviceHeight } from 'services';
@@ -44,21 +36,15 @@ const styles = StyleSheet.create({
 
 const VideoAndroid: React.FC = (props) => {
   const [isFullscreen, toggleFullscreen] = useState(false);
-  console.log('IS FULL', isFullscreen);
 
   const handleOrientation = (orientation: string) => {
     console.log('ORIANTATION', orientation);
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
-      console.log('LANDSCAPE');
-      if (!isFullscreen) {
-        toggleFullscreen(true);
-        StatusBar.setHidden(true);
-      }
+      toggleFullscreen(true);
+      StatusBar.setHidden(true);
     } else {
-      if (isFullscreen) {
-        toggleFullscreen(false);
-        StatusBar.setHidden(false);
-      }
+      toggleFullscreen(false);
+      StatusBar.setHidden(false);
     }
   };
 
@@ -66,10 +52,8 @@ const VideoAndroid: React.FC = (props) => {
     // This would be inside componentDidMount()
     Orientation.addOrientationListener(handleOrientation);
     Orientation.unlockAllOrientations();
-    console.log('LISTENING');
     return () => {
       // This would be inside componentWillUnmount()
-      console.log('REMOVE LISTENING');
       Orientation.removeOrientationListener(handleOrientation);
     };
   }, []);
@@ -83,7 +67,7 @@ const VideoAndroid: React.FC = (props) => {
       style={{
         backgroundColor: '#000',
         flex: 1,
-        paddingTop: 20,
+        paddingTop: isFullscreen ? 0 : 20,
       }}>
       <VideoPlayer
         controls={false}

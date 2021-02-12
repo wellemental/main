@@ -1,14 +1,13 @@
 import React from 'react';
 import {
   Tabs,
-  //   Container,
   ContentLoop,
   PageHeading,
   Box,
   TeacherLoop,
 } from '../primitives';
-import { PlansScreen } from '../screens';
 import { Tags } from '../types';
+import { Redirect } from 'react-router-dom';
 import { useCurrentUser } from '../hooks';
 
 const LibraryScreen: React.FC = () => {
@@ -32,7 +31,7 @@ const LibraryScreen: React.FC = () => {
       <Tabs tabs={tabs} />
     </>
   ) : (
-    <PlansScreen />
+    <Redirect to="/plans" />
   );
 };
 

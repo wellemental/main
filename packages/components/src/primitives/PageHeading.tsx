@@ -2,7 +2,7 @@ import React from 'react';
 import Paragraph from './Paragraph';
 import Headline from './Headline';
 import Avatar from './Avatar';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = {
@@ -10,10 +10,25 @@ type Props = {
   subtitle?: string;
   avatar?: string;
   center?: boolean;
+  noHeader?: boolean;
+  subHeader?: boolean;
 };
-const PageHeading: React.FC<Props> = ({ title, subtitle, avatar, center }) => {
+const PageHeading: React.FC<Props> = ({
+  title,
+  subtitle,
+  avatar,
+  center,
+  noHeader,
+  subheader,
+}) => {
   const insets = useSafeAreaInsets();
   let pt = 35;
+
+  if (Platform.OS === 'android' && noHeader) {
+    pt = 35 + insets.top;
+  } else if (Platform.OS === 'android' && !subheader) {
+    pt = 15;
+  }
 
   if (insets.top === 0) {
     pt = 25;

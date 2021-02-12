@@ -13,10 +13,9 @@ interface Props {
 const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
   const { auth, user } = useCurrentUser();
   const [isFav, toggleFav] = useState(
-    user &&
-      user.favorites &&
-      user.favorites[contentId] &&
-      user.favorites[contentId].favorited,
+    user && user.favorites && user.favorites[contentId]
+      ? user.favorites[contentId].favorited
+      : false,
   );
 
   const [error, setError] = useState();
@@ -29,7 +28,6 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
   const handleFavorite = () => {
     try {
       mutate();
-      // toggleFav(!isFav);
     } catch (err) {
       setError('Error');
     }
@@ -37,10 +35,9 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
 
   useEffect(() => {
     toggleFav(
-      user &&
-        user.favorites &&
-        user.favorites[contentId] &&
-        user.favorites[contentId].favorited,
+      user && user.favorites && user.favorites[contentId]
+        ? user.favorites[contentId].favorited
+        : false,
     );
   }, [user, contentId]);
 

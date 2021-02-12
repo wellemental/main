@@ -41,7 +41,7 @@ const FavoritesScreen: React.FC = () => {
 
   return (
     <Container scrollEnabled>
-      <PageHeading title={translation['Your Favorites']} />
+      <PageHeading noHeader title={translation['Your Favorites']} />
       {/* <Tabs tabs={tabs} active={tab} setTab={setTab} /> */}
       <ContentLoop favorites={favorites} />
     </Container>

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Linking } from 'react-native';
-import { Box, Container, Button, Paragraph } from '../primitives';
-import { H1 } from 'native-base';
+import { Linking, Platform } from 'react-native';
+import { Box, Container, Button, Paragraph, Headline } from '../primitives';
 import { useCurrentUser } from '../hooks';
 import { UpgradeScreenNavigationProp, UpgradeScreenRouteProp } from '../types';
 
@@ -15,35 +14,28 @@ const UpgradeScreen: React.FC<Props> = ({ route, navigation }) => {
   const { translation } = useCurrentUser();
 
   const upgradeOnPress = (): void => {
-    Linking.openURL(version.iosUrl).catch((err) =>
-      console.error('An error occurred', err),
-    );
+    Linking.openURL(
+      Platform.OS === 'android' ? version.androidUrl : version.iosUrl,
+    ).catch((err) => console.error('An error occurred', err));
   };
 
   return (
     <Container center>
-      <Box mb={0.5}>
-        <H1>{`${translation['Upgrade App']} ${translation.Required}!`}</H1>
+      <Box mb={1}>
+        <Headline
+          center>{`${translation['Upgrade App']} ${translation.Required}!`}</Headline>
       </Box>
-      <Box mb={1.5}>
-        <Paragraph>
+      <Box mb={2}>
+        <Paragraph center>
           {translation['Tap below to download the latest Wellemental update.']}
         </Paragraph>
       </Box>
       <Button
         text={translation.Download}
+        iconType="Ionicons"
         iconName="download"
         onPress={upgradeOnPress}
       />
-      {!version.forceUpgrade && (
-        <Box mt={1}>
-          <Button
-            text={translation['No Thanks']}
-            transparent
-            onPress={(): void => navigation.goBack()}
-          />
-        </Box>
-      )}
     </Container>
   );
 };

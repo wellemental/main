@@ -9,6 +9,7 @@ export * from './useLocation';
 export * from './useContainer';
 export * from './useDepends';
 export * from './useUrlParams';
+export * from './usePageviews';
 export * from './useConfig';
 export * from './useRouteMatch';
 export { useHistory } from './useHistory';

@@ -12,6 +12,7 @@ export { default as Error } from './Error';
 export { default as Download } from './Download';
 export { default as ScrollView } from './ScrollView';
 export { default as Headline } from './Headline';
+export { default as Link } from './Link';
 export { default as Spinner } from './Spinner';
 export { default as Image } from './Image';
 export { default as Tabs } from './Tabs';

@@ -18,7 +18,7 @@ import com.dooboolab.RNIap.RNIapPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.wonday.orientation.OrientationActivityLifecycle;
-
+import com.rnfs.RNFSPackage;
 // public class MainApplication extends Application implements ReactApplication {
 public class MainApplication extends MultiDexApplication implements ReactApplication { // Added
 
@@ -35,9 +35,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          // packages.add(new ReactNativeConfigPackage());
-          // packages.add(new RNIapPackage());
-          //packages.add(new SplashScreenReactPackage()); // Added for RN Splash Screen
           return packages;
         }
 

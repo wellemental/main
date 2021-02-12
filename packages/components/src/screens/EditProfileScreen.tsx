@@ -48,7 +48,12 @@ const EditProfileScreen: React.FC = () => {
         <Segment style={{ marginTop: 15 }}>
           <NBButton
             first
-            style={{ width: deviceWidth / 2, justifyContent: 'center' }}
+            style={{
+              width: deviceWidth / 2,
+              justifyContent: 'center',
+              borderBottomLeftRadius: 10,
+              borderTopLeftRadius: 10,
+            }}
             active={language === Languages.En}
             onPress={() => setLanguage(Languages.En)}>
             <Text>English</Text>
@@ -56,7 +61,12 @@ const EditProfileScreen: React.FC = () => {
 
           <NBButton
             last
-            style={{ width: deviceWidth / 2, justifyContent: 'center' }}
+            style={{
+              width: deviceWidth / 2,
+              justifyContent: 'center',
+              borderBottomRightRadius: 10,
+              borderTopRightRadius: 10,
+            }}
             active={language === Languages.Es}
             onPress={() => setLanguage(Languages.Es)}>
             <Text>Español</Text>

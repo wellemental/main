@@ -28,7 +28,7 @@ const TabNav: React.FC = () => {
 
           if (route.name === 'Favorites') {
             iconName = focused ? 'heart' : 'heart-outline';
-          } else if (route.name === 'Settings') {
+          } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
 
@@ -76,10 +76,10 @@ const TabNav: React.FC = () => {
         </>
       )}
       <Tab.Screen
-        name="Settings"
+        name="Profile"
         // component={SettingsScreen}
         component={ProfileScreen}
-        options={{ title: translation.Settings }}
+        options={{ title: translation.Profile }}
       />
     </Tab.Navigator>
   );

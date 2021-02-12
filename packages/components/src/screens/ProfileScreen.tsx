@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { PlaysServiceType, PlayEvent, convertTimestamp } from 'services';
 import {
   Error,
@@ -27,8 +27,8 @@ const ProfileScreen: React.FC = () => {
 
   const tabs: MenuItem[] = [
     // { label: translation.Stats },
-    { label: translation.Journey },
-    { label: translation.Settings },
+    { label: 'Journey' },
+    { label: 'Settings' },
   ];
 
   const [tab, setTab] = useState(tabs[0]);
@@ -45,11 +45,10 @@ const ProfileScreen: React.FC = () => {
   } = useLoadMore(service.query, { limit: 7 });
 
   return (
-    <Container scrollEnabled noPadding="horizontal">
-      <Box mx={2} row>
-        <PageHeading title={translation.Profile} />
-      </Box>
-      <Box row mb={4} mx={3} justifyContent="space-between">
+    <Container scrollEnabled>
+      <PageHeading noHeader title={translation.Profile} />
+
+      <Box row mb={4} mx={1} justifyContent="space-between">
         <Box>
           <Headline small>{user.streak}</Headline>
           <Paragraph>{translation.Streak}</Paragraph>
@@ -63,14 +62,17 @@ const ProfileScreen: React.FC = () => {
           <Paragraph>{translation['Total Hours']}</Paragraph>
         </Box>
       </Box>
+
       <Error error={error} />
+
       <Tabs tabs={tabs} active={tab} setTab={setTab} />
-      {tab.label === translation.Journey &&
+      {tab.label === 'Journey' &&
         (loading || !content || !teachers ? (
           <Spinner />
         ) : (
           <>
-            <List style={{ marginHorizontal: 15 }}>
+            <List
+              style={{ marginHorizontal: Platform.OS === 'android' ? 0 : 5 }}>
               {items && items.length > 0 ? (
                 items.map((item, idx: number) => {
                   const data = item.data() as PlayEvent;
@@ -79,6 +81,7 @@ const ProfileScreen: React.FC = () => {
                   const teacherMatch =
                     data &&
                     data.contentId &&
+                    content[data.contentId] &&
                     teachers[content[data.contentId].teacher];
 
                   return contentMatch && teacherMatch ? (
@@ -110,7 +113,7 @@ const ProfileScreen: React.FC = () => {
             </List>
           </>
         ))}
-      {tab.label === translation.Settings && <SettingsScreen />}
+      {tab.label === 'Settings' && <SettingsScreen />}
     </Container>
   );
 };

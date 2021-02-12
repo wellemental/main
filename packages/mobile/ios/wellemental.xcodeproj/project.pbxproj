@@ -16,6 +16,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		D360582C2510344800D69FA3 /* GoogleService-Info.Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = D360582A2510344800D69FA3 /* GoogleService-Info.Release.plist */; };
 		D360582D2510344800D69FA3 /* GoogleService-Info.Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = D360582B2510344800D69FA3 /* GoogleService-Info.Debug.plist */; };
+		D37EF64625D70CFC008C7DAC /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF64525D70CFC008C7DAC /* libswiftWebKit.tbd */; };
 		D3D56AF024EE5706005F8582 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3D56AE024EE5706005F8582 /* Entypo.ttf */; };
 		D3D56AF124EE5706005F8582 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3D56AE124EE5706005F8582 /* FontAwesome5_Brands.ttf */; };
 		D3D56AF224EE5706005F8582 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3D56AE224EE5706005F8582 /* MaterialCommunityIcons.ttf */; };
@@ -77,6 +78,8 @@
 		D351060D250BE35200BF5CFC /* 152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 152.png; sourceTree = "<group>"; };
 		D360582A2510344800D69FA3 /* GoogleService-Info.Release.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.Release.plist"; sourceTree = "<group>"; };
 		D360582B2510344800D69FA3 /* GoogleService-Info.Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.Debug.plist"; sourceTree = "<group>"; };
+		D37EF5E425D6E4C0008C7DAC /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		D37EF64525D70CFC008C7DAC /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		D3A263D025C3204F0058097F /* Wellemental.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Wellemental.entitlements; path = wellemental/Wellemental.entitlements; sourceTree = "<group>"; };
 		D3D56AE024EE5706005F8582 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
 		D3D56AE124EE5706005F8582 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D37EF64625D70CFC008C7DAC /* libswiftWebKit.tbd in Frameworks */,
 				498A1C18BD1D4E98F148F6E0 /* libPods-wellemental.a in Frameworks */,
 				D3FECA21250AEEF7001513D0 /* StoreKit.framework in Frameworks */,
 			);
@@ -152,6 +156,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D37EF64525D70CFC008C7DAC /* libswiftWebKit.tbd */,
+				D37EF5E425D6E4C0008C7DAC /* iAd.framework */,
 				D3FECA20250AEEF7001513D0 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,

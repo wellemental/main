@@ -31,18 +31,14 @@ const LibraryScreen: React.FC = () => {
 
   return activePlan ? (
     <Container scrollEnabled noPadding="horizontal">
-      <Box mx={1}>
-        <PageHeading title={translation["Let's Practice."]} />
-      </Box>
+      <PageHeading noHeader title={translation["Let's Practice."]} />
+
       <Tabs tabs={tabs} active={tab} setTab={setTab} />
 
       {tab.label === translation.Teachers ? (
         <TeacherLoop scrollEnabled />
       ) : (
-        <ContentLoop
-          hasPadding
-          filter={tab.filter === 'All' ? undefined : tab.filter}
-        />
+        <ContentLoop filter={tab.filter === 'All' ? undefined : tab.filter} />
       )}
     </Container>
   ) : (

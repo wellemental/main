@@ -77,6 +77,7 @@ export const Español = {
   'Contact Us': 'Contactarnos',
   Required: 'Requerida',
   Plans: 'Planes',
+  Plan: 'Plan',
   Purchase: 'Compra',
   Subscription: 'Subscripcion',
   'Promo code': 'Código promocional',
@@ -173,4 +174,15 @@ export const Español = {
   'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.':
     'Para administrar su suscripción, debe utilizar su dispositivo Apple iOS y seguir las instrucciones que aparece abajo',
   'Need help?': '¿Necesita ayuda?',
+  'Manage Subscription': 'Administrar suscripción',
+  'Payment Type': 'Tipo de Pago',
+  ' to learn how to cancel your subscription on Android.':
+    ' para saber cómo cancelar su suscripción en Android.',
+  Status: 'Estado',
+  'You subscribed for free using an friends and family access code. Enjoy!':
+    'Te suscribiste gratis con un código de acceso para amigos y familiares. ¡Disfrutar!',
+  'To manage your subscription, login to the Wellemental website and navigate to your subscription page.':
+    'Para administrar su suscripción, inicie sesión en el sitio web de Wellemental y navegue hasta su página de suscripción.',
+  'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.':
+    'Tipo de suscripción desconocido. Por favor contáctenos en hello@wellemental.co con cualquier pregunta',
 };

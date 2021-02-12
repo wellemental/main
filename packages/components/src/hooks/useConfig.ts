@@ -9,9 +9,9 @@ import {
 import {} from 'services';
 
 export type UseConfigResult<T> = Result<T>;
-const remoteConfigService = new RemoteConfig();
 
 export const useConfig = <T>(name: RemoteConfigValues): Result<T> => {
+  const remoteConfigService = new RemoteConfig();
   //   const container = useDepends();
   //   const remoteConfigService = container.getInstance<RemoteConfigService>(
   //     'remoteConfig',

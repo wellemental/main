@@ -17,10 +17,9 @@ import {
 import { Box } from '../primitives';
 import { Menu as MenuIcon, ExitToApp as LogoutIcon } from '@material-ui/icons';
 import ListItemLink from './ListItemLink';
-import { useHistory } from 'react-router-dom';
 import { Logo } from './';
 import app from '../base';
-import { useCurrentUser } from '../hooks';
+import { useCurrentUser, usePageviews, useHistory } from '../hooks';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -121,6 +120,7 @@ type Props = {
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const Nav: React.FC<Props> = (props) => {
+  usePageviews();
   const classes = useStyles();
   const { user, auth, activePlan, translation } = useCurrentUser();
   const history = useHistory();

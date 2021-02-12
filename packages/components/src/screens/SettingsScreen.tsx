@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AuthService, LocalStateService } from 'services';
-import { Error, Box, Container, Paragraph } from '../primitives';
+import { Error, Box, Paragraph } from '../primitives';
 import {
   Body,
   Left,
@@ -11,7 +11,7 @@ import {
   Text,
   Toast,
 } from 'native-base';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
 import { getReadableVersion } from 'react-native-device-info';
@@ -73,13 +73,16 @@ const SettingsScreen: React.FC = () => {
 
   // Link to event link from remote config if available
   // If not, go to default web link
-  const linkExternally = (): void => {
+  const linkExternally = (label: 'event' | 'help'): void => {
     const liveLink =
       features && features.event && features.event.url
         ? features.event.url
         : 'https://wellemental.co/live';
 
-    Linking.openURL(liveLink).catch((err) =>
+    const url =
+      label === 'help' ? 'https://wellemental.zendesk.com/' : liveLink;
+
+    Linking.openURL(url).catch((err) =>
       console.error('An error occurred', err),
     );
   };
@@ -90,11 +93,11 @@ const SettingsScreen: React.FC = () => {
       onPress: () => handleNavigate('Edit Profile'),
       iconName: 'ios-person',
     },
-    // {
-    //   label: translation.Subscription,
-    //   onPress: () => handleNavigate('Plans'),
-    //   iconName: 'cart',
-    // },
+    {
+      label: translation['Need help?'],
+      onPress: () => linkExternally('help'),
+      iconName: 'help-circle',
+    },
     {
       label: 'Notifications',
       onPress: () => handleNavigate('Notifications'),
@@ -106,16 +109,12 @@ const SettingsScreen: React.FC = () => {
       iconName: 'star',
     },
     { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
-    // { label: 'Live Event', onPress: linkExternally, iconName: 'calendar' },
+    // { label: 'Live Event', onPress: () => linkExternally('event'), iconName: 'calendar' },
     { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
   ];
 
   return (
-    <Container>
-      {/* <PageHeading
-        title={translation.Account}
-        subtitle={auth ? auth.email : undefined}
-      /> */}
+    <View style={{ marginTop: 10 }}>
       <Error error={error} />
 
       <List style={{ marginTop: -15 }}>
@@ -158,7 +157,7 @@ const SettingsScreen: React.FC = () => {
           <Paragraph fine>{auth.uid}</Paragraph>
         </Body>
       )}
-    </Container>
+    </View>
   );
 };
 

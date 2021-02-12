@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import Paragraph from './Paragraph';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 import { MenuItem } from '../types';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
@@ -8,20 +9,20 @@ type Props = {
   tabs: MenuItem[];
   active: MenuItem;
   setTab: React.Dispatch<MenuItem>;
-  // filters: string[];
 };
 
 const Tabs: React.FC<Props> = ({ tabs, active, setTab }) => {
+  const { translation } = useCurrentUser();
   return (
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
       data={tabs}
       keyExtractor={(item) => item.label}
-      renderItem={({ item, index }) => (
+      renderItem={({ item }) => (
         <TouchableOpacity
           style={{
-            marginLeft: index === 0 ? 15 : 0,
+            marginLeft: 0, //index === 0 ? 15 : 0,
             marginBottom: 15,
             paddingHorizontal: 15,
             minWidth: 50,
@@ -49,7 +50,7 @@ const Tabs: React.FC<Props> = ({ tabs, active, setTab }) => {
                   : variables.lightTextColor,
             }}
             key={item.label}>
-            {item.label}
+            {translation[item.label] ? translation[item.label] : item.label}
           </Paragraph>
         </TouchableOpacity>
       )}

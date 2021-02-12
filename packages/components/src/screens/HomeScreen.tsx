@@ -14,7 +14,7 @@ import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { getVersion } from 'react-native-device-info';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
-const HomeScreen: React.FC = () => {
+const HomeScreen: React.FC = ({ navigation }) => {
   const today = moment();
   const { translation, activePlan } = useCurrentUser();
   const { features, error, updateAvailable } = useContent();
@@ -41,6 +41,12 @@ const HomeScreen: React.FC = () => {
   // if there's a newer version available, display upgrade modal
   if (data) {
     canUpgrade = currVersion < data.version;
+  }
+
+  if (canUpgrade && data && data.forceUpgrade) {
+    navigation.navigate('Upgrade', {
+      version: data,
+    });
   }
 
   const upgradeOnPress = (): void => {
@@ -78,7 +84,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <Container scrollEnabled color="#fff">
-      {canUpgrade && (
+      {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}
           style={{
@@ -95,6 +101,7 @@ const HomeScreen: React.FC = () => {
       )}
 
       <PageHeading
+        noHeader
         title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}`}
         subtitle={tagline}
       />
@@ -102,7 +109,7 @@ const HomeScreen: React.FC = () => {
 
       {features && features.categories ? (
         <>
-          <PageHeading title={translation.Featured} />
+          <PageHeading subheader title={translation.Featured} />
 
           {features.categories.map((item, idx) => (
             <CategoryCard key={idx} category={item} />
@@ -114,7 +121,10 @@ const HomeScreen: React.FC = () => {
 
       {activePlan && (
         <>
-          <PageHeading title={`${translation['Explore by age range']}`} />
+          <PageHeading
+            subheader
+            title={`${translation['Explore by age range']}`}
+          />
           {ageGroups.map((item, idx) => (
             <CategoryCard key={idx} category={item} />
           ))}

@@ -195,8 +195,8 @@ export const Español = {
     'Para administrar su suscripción, debe utilizar su dispositivo Apple iOS y seguir las instrucciones que aparece abajo',
   'Need help?': '¿Necesita ayuda?',
   'applied. 30 day free trial added.': 'applied. 30 day free trial added.',
-  ' to learn how to cancel your subscription on Android.':
-    ' para saber cómo cancelar su suscripción en Android.',
+  ' to learn how to cancel your subscription on.':
+    ' para saber cómo cancelar su suscripción en.',
   'To cancel your Android subscription':
     'Para cancelar su suscripción de Android',
   'Click here': 'Haga clic aquî',

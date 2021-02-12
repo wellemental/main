@@ -8,7 +8,7 @@ import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { Spinner } from '../primitives';
 import moment from 'moment';
-import { convertTimestamp, setUserProperties } from 'services';
+import { convertTimestamp } from 'services';
 
 const localStateService = new LocalStateService();
 
@@ -196,13 +196,6 @@ export const CurrentUserProvider = ({ children }: any) => {
           };
 
           setCurrentUser(userDoc);
-
-          // Set GA Firebase User Properties
-          setUserProperties(userDoc.id ? userDoc.id : undefined, {
-            Payment: userDoc.plan ? userDoc.plan.type : 'Free',
-            Type: userDoc.plan ? userDoc.plan.planId : 'Free',
-            PlanStatus: userDoc.plan ? userDoc.plan.planId : 'Free',
-          });
         }
         setLoading(false);
       });

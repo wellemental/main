@@ -5,14 +5,15 @@ import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
 import android.content.Intent;
 import android.content.res.Configuration;
+import com.rnfs.RNFSPackage;
 
 public class MainActivity extends ReactActivity {
 
   /** Added for react-native-splash-screen configuration */
   @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);
-        super.onCreate(savedInstanceState);
+      SplashScreen.show(this, R.style.SplashTheme);
+      super.onCreate(savedInstanceState);
     }
     
   /** Added for react-native-orientation-locker configuration */

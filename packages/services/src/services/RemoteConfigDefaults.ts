@@ -39,7 +39,7 @@ const defaults: ConfigDefaults = {
     },
   },
   version: {
-    version: '0.29.1',
+    version: '0.5.2',
     build: 80,
     forceUpgrade: false,
     iosUrl:

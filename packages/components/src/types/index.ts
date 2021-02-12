@@ -17,7 +17,7 @@ export type TabParamList = {
   Home: undefined;
   Favorites: undefined;
   Search: undefined;
-  Settings: undefined;
+  Profile: undefined;
 };
 
 export type MenuItem = {

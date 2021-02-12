@@ -44,17 +44,6 @@ const AuthStackScreen: React.FC = () => {
   );
 };
 
-const linking = {
-  prefixes: ['https://wellemental.com', 'wellemental://'],
-  config: {
-    screens: {
-      Home: '',
-      Profile: ':id/profile',
-      Settings: ':id/blog',
-    },
-  },
-};
-
 const Navigator: React.FC = () => {
   const { user } = useCurrentUser();
 

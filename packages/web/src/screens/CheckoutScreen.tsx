@@ -14,6 +14,7 @@ import { scrollToTop } from '../services/helpers';
 import { useCurrentUser, useHistory, useLead } from '../hooks';
 import app from '../base';
 import logger from '../services/LoggerService';
+import { fireFbEvent, fireGaEvent } from '../services/AnalyticsService';
 import { theme } from '../assets/styles/theme';
 // import { fireFbEvent, fireGaEvent } from '../services/AnalyticsService';
 import {
@@ -96,6 +97,12 @@ const CheckoutScreen: React.FC = () => {
             trial_period_days: trialLength,
           })
           .then((res) => {
+            fireFbEvent('Purchase', {
+              value: plan.price,
+              currency: 'USD',
+            });
+
+            fireGaEvent('User', 'Purchase');
             history.push(`/download`);
           })
           .catch((err) => {

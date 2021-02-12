@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">wellemental</string>
+    <string name="facebook_app_id">1229745060754448</string>
+    <string name="fb_login_protocol_scheme">fb1229745060754448</string>
 </resources>

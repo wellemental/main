@@ -23,6 +23,9 @@
     "firebase": "^7.24.0",
     "react": "16.13.1",
     "react-dom": "^16.13.1",
+    "react-facebook-pixel": "^1.0.4",
+    "react-ga": "^3.3.0",
+    "react-hotjar": "^2.2.1",
     "react-player": "^2.7.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3"

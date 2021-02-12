@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Button,
   PageHeading,
+  Box,
   Paragraph,
   Container,
   Error,
@@ -34,7 +35,7 @@ const NotificationsScreen: React.FC = () => {
   }, []);
 
   return (
-    <Container scrollEnabled>
+    <Container>
       <PageHeading title={translation.Notifications} />
 
       <Error error={error} />
@@ -48,12 +49,14 @@ const NotificationsScreen: React.FC = () => {
               ]
             }
           </Paragraph>
-          <Button
-            primary
-            onPress={handleRequestPermissions}
-            padder="top"
-            text={translation['Enable Notifications']}
-          />
+          <Box mt={2}>
+            <Button
+              primary
+              onPress={handleRequestPermissions}
+              padder="top"
+              text={translation['Enable Notifications']}
+            />
+          </Box>
         </>
       ) : permissions === 0 ? (
         <Paragraph>

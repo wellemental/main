@@ -72,6 +72,7 @@ export const English = {
   'No Thanks': 'No Thanks',
   Required: 'Required',
   Plans: 'Plans',
+  Plan: 'Plan',
   Purchase: 'Purchase',
   Subscription: 'Subscription',
   'Promo code': 'Promo code',
@@ -165,4 +166,14 @@ export const English = {
   'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.':
     'To manage your subscription, you need to use your Apple iOS device and follow the instructions below.',
   'Need help?': 'Need help?',
+  'Manage Subscription': 'Manage Subscription',
+  ' to learn how to cancel your subscription on.':
+    ' to learn how to cancel your subscription on.',
+  Status: 'Status',
+  'You subscribed for free using an friends and family access code. Enjoy!':
+    'You subscribed for free using an friends and family access code. Enjoy!',
+  'To manage your subscription, login to the Wellemental website and navigate to your subscription page.':
+    'To manage your subscription, login to the Wellemental website and navigate to your subscription page.',
+  'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.':
+    'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.',
 };

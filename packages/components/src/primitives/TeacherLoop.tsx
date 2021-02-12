@@ -31,8 +31,6 @@ const TeacherLoop: React.FC<Props> = ({ header, scrollEnabled }) => {
     <FlatList
       ListHeaderComponent={header}
       numColumns={2}
-      style={{ paddingHorizontal: 15 }}
-      item
       data={Object.values(filteredTeachers)}
       renderItem={({ item }) => <TeacherCard teacher={item} />}
     />
