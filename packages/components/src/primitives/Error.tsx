@@ -6,9 +6,10 @@ import variables from '../assets/native-base-theme/variables/wellemental';
 interface Props {
   error?: Error | string;
   center?: boolean;
+  success?: boolean;
 }
 
-const ErrorComponent: React.FC<Props> = ({ error, center }) => {
+const ErrorComponent: React.FC<Props> = ({ error, center, success }) => {
   const text =
     undefined || error === null
       ? null
@@ -28,7 +29,7 @@ const ErrorComponent: React.FC<Props> = ({ error, center }) => {
     <Paragraph
       gt={1}
       style={{
-        color: variables.brandDanger,
+        color: success ? variables.brandInfo : variables.brandDanger,
         paddingHorizontal: 5,
         alignSelf: center ? 'center' : 'flex-start',
         textAlign: center ? 'center' : 'left',

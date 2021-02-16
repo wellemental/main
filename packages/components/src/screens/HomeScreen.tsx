@@ -5,7 +5,9 @@ import {
   Container,
   ContentLoop,
   CategoryCard,
+  AgeCards,
   Spinner,
+  TabsNB,
   Paragraph,
 } from '../primitives';
 import moment from 'moment';
@@ -17,7 +19,7 @@ import variables from '../assets/native-base-theme/variables/wellemental';
 const HomeScreen: React.FC = ({ navigation }) => {
   const today = moment();
   const { translation, activePlan } = useCurrentUser();
-  const { features, error, updateAvailable } = useContent();
+  const { features } = useContent();
 
   // Determine Time of Day for header customization
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
@@ -55,33 +57,6 @@ const HomeScreen: React.FC = ({ navigation }) => {
     );
   };
 
-  const ageGroups = [
-    {
-      title: translation['Under 4 years'],
-      description: translation['Simple practices for early learners'],
-      image: require('../assets/images/age_under_4.png'),
-      tag: 'toddler',
-    },
-    {
-      title: translation['4–9 year olds'],
-      description: translation['Elementary mindful practices'],
-      image: require('../assets/images/age_4_9.png'),
-      tag: 'PreK-5',
-    },
-    {
-      title: translation['10–14 year olds'],
-      description: translation['Practices designed for middle-school learning'],
-      image: require('../assets/images/age_10_14.png'),
-      tag: '6-8',
-    },
-    {
-      title: translation['14–18 year olds'],
-      description: translation['Resources for mindful development'],
-      image: require('../assets/images/age_14_18.png'),
-      tag: '9-12',
-    },
-  ];
-
   return (
     <Container scrollEnabled color="#fff">
       {canUpgrade && data && !data.forceUpgrade && (
@@ -107,6 +82,8 @@ const HomeScreen: React.FC = ({ navigation }) => {
       />
       <ContentLoop filter={timeOfDay} />
 
+      <TabsNB />
+
       {features && features.categories ? (
         <>
           <PageHeading subheader title={translation.Featured} />
@@ -125,9 +102,12 @@ const HomeScreen: React.FC = ({ navigation }) => {
             subheader
             title={`${translation['Explore by age range']}`}
           />
-          {ageGroups.map((item, idx) => (
+
+          <AgeCards />
+
+          {/* {ageGroups.map((item, idx) => (
             <CategoryCard key={idx} category={item} />
-          ))}
+          ))} */}
         </>
       )}
     </Container>

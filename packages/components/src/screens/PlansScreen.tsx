@@ -99,6 +99,11 @@ const PlansScreen: React.FC = () => {
       setError('');
       setProcessing(true);
       await requestSubscription(plan);
+      setError(
+        translation[
+          'If payment succeeded, please wait one minute for your account to be upgraded.'
+        ],
+      );
       setProcessing(false);
     } catch (err) {
       logger.error(
@@ -224,9 +229,15 @@ const PlansScreen: React.FC = () => {
                 text={translation.Subscribe}
                 onPress={() => handleSubscription(PlanId.Monthly)}
               />
-              <Box mt={2} mb={6}>
-                <LegalLinks subs />
-                <Error error={error} center />
+              <Box mt={1} mb={6}>
+                <Error
+                  success={error.includes('succeed')}
+                  error={error}
+                  center
+                />
+                <Box mt={2}>
+                  <LegalLinks subs />
+                </Box>
               </Box>
             </>
           ) : (

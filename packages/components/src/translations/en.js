@@ -180,4 +180,7 @@ export const English = {
   'Total Time': 'Total Time',
   'Your recently played videos will appear here. Get started!':
     'Your recently played videos will appear here. Get started!',
+  'If payment succeeded, please wait one minute for your account to be upgraded.':
+    'If payment succeeded, please wait one minute for your account to be upgraded.',
+  years: 'years',
 };

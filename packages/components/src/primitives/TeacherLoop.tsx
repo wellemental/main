@@ -5,7 +5,6 @@ import { useContent, useCurrentUser } from '../hooks';
 import ListEmpty from './ListEmpty';
 import { Teacher } from 'types';
 import { View } from 'react-native';
-import { Teachers } from 'services/src';
 
 type Props = {
   scrollEnabled?: boolean;

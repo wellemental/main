@@ -1,11 +1,5 @@
 import React, { CSSProperties } from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  View,
-  Platform,
-} from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import ScrollView from './ScrollView';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
