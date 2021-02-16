@@ -155,10 +155,11 @@ const PlansScreen: React.FC = () => {
         }}>
         <Container scrollEnabled color="rgba(0,0,0,0)">
           <PageHeading
+            noHeader
             title={translation['An inclusive space for kids to breathe.']}
             subtitle={
               translation[
-                'Spark a mindful practice with the children in your life. Learn meditation and yoga with Wellemental.'
+                'Spark a  mindful practice with the children in your life. Learn meditation and yoga with Wellemental.'
               ]
             }
           />

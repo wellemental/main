@@ -207,4 +207,6 @@ export const Español = {
   Email: 'Correo electrónico',
   days: 'dias',
   'Total Time': 'Tiempo Total',
+  'Your recently played videos will appear here. Get started!':
+    'Tus videos reproducidos recientemente aparecerán aquí. ¡Empezar!',
 };

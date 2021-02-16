@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AuthService, LocalStateService } from 'services';
-import { Error, Box, Paragraph } from '../primitives';
+import { Error, Box, Paragraph, Button, LanguageToggle } from '../primitives';
 import {
   Body,
   Left,
@@ -21,6 +21,14 @@ type SettingsLink = {
   label: string;
   onPress: () => void | Promise<any>;
   iconName: string;
+  color:
+    | 'light'
+    | 'info'
+    | 'dark'
+    | 'warning'
+    | 'primary'
+    | 'success'
+    | 'danger';
 };
 const service = new AuthService();
 const localStateService = new LocalStateService();
@@ -88,36 +96,72 @@ const SettingsScreen: React.FC = () => {
   };
 
   const list: SettingsLink[] = [
-    {
-      label: translation['Select language'],
-      onPress: () => handleNavigate('Edit Profile'),
-      iconName: 'ios-person',
-    },
+    // {
+    //   label: translation['Select language'],
+    //   onPress: () => handleNavigate('Edit Profile'),
+    //   iconName: 'ios-person',
+    //   color: 'dark',
+    // },
     {
       label: translation['Need help?'],
       onPress: () => linkExternally('help'),
       iconName: 'help-circle',
+      color: 'info',
     },
     {
       label: 'Notifications',
       onPress: () => handleNavigate('Notifications'),
       iconName: 'notifications',
+      color: 'warning',
     },
     {
       label: 'Rate App',
       onPress: rateApp,
       iconName: 'star',
+      color: 'primary',
     },
-    { label: 'Refresh Content', onPress: handleRefresh, iconName: 'refresh' },
+    {
+      label: 'Refresh Content',
+      onPress: handleRefresh,
+      iconName: 'refresh',
+      color: 'info',
+    },
     // { label: 'Live Event', onPress: () => linkExternally('event'), iconName: 'calendar' },
-    { label: translation.Logout, onPress: confirmLogout, iconName: 'md-exit' },
+    {
+      label: translation.Logout,
+      onPress: confirmLogout,
+      iconName: 'md-exit',
+      color: 'warning',
+    },
   ];
 
   return (
-    <View style={{ marginTop: 10 }}>
+    <View style={{ marginTop: -10 }}>
       <Error error={error} />
 
-      <List style={{ marginTop: -15 }}>
+      <LanguageToggle />
+
+      {list.map((item: SettingsLink, idx: number) => {
+        return (
+          <Box mt={1.5} key={idx}>
+            <Button
+              iconName={item.iconName}
+              bordered
+              light={item.color === 'light'}
+              info={item.color === 'info'}
+              warning={item.color === 'warning'}
+              dark={item.color === 'dark'}
+              primary={item.color === 'primary'}
+              danger={item.color === 'danger'}
+              success={item.color === 'success'}
+              text={item.label}
+              onPress={item.onPress}
+            />
+          </Box>
+        );
+      })}
+
+      {/* <List style={{ marginTop: -15 }}>
         {list.map((item: SettingsLink, idx: number) => {
           return (
             <ListItem
@@ -138,7 +182,7 @@ const SettingsScreen: React.FC = () => {
             </ListItem>
           );
         })}
-      </List>
+      </List> */}
       <Box mt={2}>
         <Body>
           <Paragraph fine>{version}</Paragraph>

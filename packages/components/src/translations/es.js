@@ -187,4 +187,6 @@ export const Español = {
     'Tipo de suscripción desconocido. Por favor contáctenos en hello@wellemental.co con cualquier pregunta',
   days: 'dias',
   'Total Time': 'Tiempo Total',
+  'Your recently played videos will appear here. Get started!':
+    'Tus videos reproducidos recientemente aparecerán aquí. ¡Empezar!',
 };

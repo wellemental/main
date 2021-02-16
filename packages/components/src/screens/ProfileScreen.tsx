@@ -12,7 +12,7 @@ import {
   Box,
   Headline,
   Spinner,
-  ContentCard,
+  ContentCardSmall,
   Paragraph,
 } from '../primitives';
 import { List } from 'native-base';
@@ -78,22 +78,24 @@ const ProfileScreen: React.FC = () => {
                     teachers[content[data.contentId].teacher];
 
                   return contentMatch && teacherMatch ? (
-                    <View key={idx} style={{ marginVertical: 10 }}>
-                      <Paragraph fine>
-                        {convertTimestamp(data.createdAt).format(
-                          'MMM DD, YYYY @ h:mm',
-                        )}
-                      </Paragraph>
-                      <ContentCard
-                        key={idx}
-                        content={contentMatch}
-                        teacher={teacherMatch}
-                      />
-                    </View>
+                    <ContentCardSmall
+                      key={idx}
+                      content={contentMatch}
+                      teacher={teacherMatch}
+                      recentDate={convertTimestamp(data.createdAt).format(
+                        'MMM DD, YYYY',
+                      )}
+                    />
                   ) : null;
                 })
               ) : (
-                <ListEmpty />
+                <ListEmpty>
+                  {
+                    translation[
+                      'Your recently played videos will appear here. Get started!'
+                    ]
+                  }
+                </ListEmpty>
               )}
               {hasMore && (
                 <Button

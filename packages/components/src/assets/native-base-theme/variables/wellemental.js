@@ -18,10 +18,10 @@ const isIphoneX =
 export const brandColors = {
   brandPrimary: '#214f4b',
   brandSecondary: '#2A2968',
-  brandInfo: '#9554C2',
+  brandInfo: '#272a63', //'#9554C2',
   brandSuccess: '#A3CEC9',
   brandDanger: '#d9534f',
-  brandWarning: '#CAAB29',
+  brandWarning: '#C78D36', //'#CAAB29',
   brandLight: '#dfbead',
   lightGray: '#838383',
   offWhite: '#F4E6D0',

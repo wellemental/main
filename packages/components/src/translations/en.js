@@ -178,4 +178,6 @@ export const English = {
     'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.',
   days: 'days',
   'Total Time': 'Total Time',
+  'Your recently played videos will appear here. Get started!':
+    'Your recently played videos will appear here. Get started!',
 };

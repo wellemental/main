@@ -175,9 +175,7 @@ export const CurrentUserProvider = ({ children }: any) => {
               ? userData.totalCompleted
               : 0,
             totalPlays: userData.totalPlays ? userData.totalPlays : 0,
-            totalSeconds: userData.totalSeconds
-              ? Math.floor(userData.totalSeconds / 3600)
-              : 0,
+            totalSeconds: userData.totalSeconds ? userData.totalSeconds : 0,
             // If lastPlay isn't yesterday or today, streak should be 0
             streak:
               userData.lastPlay &&
