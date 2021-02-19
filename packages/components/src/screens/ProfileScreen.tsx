@@ -17,7 +17,12 @@ import {
 } from '../primitives';
 import { List } from 'native-base';
 import { MenuItem } from '../types';
-import { useCurrentUser, useContent, useContainer } from '../hooks';
+import {
+  useCurrentUser,
+  useContent,
+  useContainer,
+  useNavigation,
+} from '../hooks';
 import useLoadMore from '../hooks/useLoadMore';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -25,11 +30,12 @@ const ProfileScreen: React.FC = () => {
   const { translation, user } = useCurrentUser();
   const { content, teachers } = useContent();
   const [error, setError] = useState();
+  const navigation = useNavigation();
 
   const tabs: MenuItem[] = [
     { label: 'Stats' },
     { label: 'Journey' },
-    { label: 'Settings' },
+    // { label: 'Settings' },
   ];
 
   const [tab, setTab] = useState(tabs[0]);
@@ -57,6 +63,13 @@ const ProfileScreen: React.FC = () => {
           <StatDisplay type="streak" />
           <StatDisplay type="completed" />
           <StatDisplay type="time" />
+          <Box mt={2}>
+            <Button
+              bordered
+              text={translation.Settings}
+              onPress={() => navigation.navigate('Settings')}
+            />
+          </Box>
         </>
       )}
       {tab.label === 'Journey' &&

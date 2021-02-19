@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { AuthService, LocalStateService } from 'services';
-import { Error, Box, Paragraph, Button, LanguageToggle } from '../primitives';
+import {
+  Error,
+  Box,
+  Paragraph,
+  Button,
+  LanguageToggle,
+  PageHeading,
+  Container,
+} from '../primitives';
 import { Body, Toast } from 'native-base';
 import { Alert, Linking, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -133,7 +141,9 @@ const SettingsScreen: React.FC = () => {
   ];
 
   return (
-    <View style={{ marginTop: -10 }}>
+    // <View style={{ marginTop: -10 }}>
+    <Container scrollEnabled>
+      <PageHeading title={translation.Settings} />
       <Error error={error} />
 
       <LanguageToggle />
@@ -198,7 +208,8 @@ const SettingsScreen: React.FC = () => {
           <Paragraph fine>{auth.uid}</Paragraph>
         </Body>
       )}
-    </View>
+      {/* </View> */}
+    </Container>
   );
 };
 

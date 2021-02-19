@@ -15,6 +15,7 @@ import {
   UpgradeScreen,
   CelebrationScreen,
   PlansScreen,
+  SettingsScreen,
 } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList, AuthStackParamList } from './types';
@@ -83,6 +84,7 @@ const Navigator: React.FC = () => {
               }}
             />
             <Stack.Screen name="Plans" component={PlansScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="Category" component={CategoryScreen} />
             <Stack.Screen
               name="Video"

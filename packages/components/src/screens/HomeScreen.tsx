@@ -82,7 +82,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
       />
       <ContentLoop filter={timeOfDay} />
 
-      {user && <TabsNB />}
+      {/* {user && <TabsNB />} */}
 
       {features && features.categories ? (
         <>

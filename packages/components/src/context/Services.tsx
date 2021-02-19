@@ -17,8 +17,6 @@ export const ServicesProvider: React.FC = ({ children }) => {
         currentUser.id = auth.uid;
       }
 
-      console.log('SERVICES USER', currentUser);
-
       setContainer(
         buildDependencies({
           currentUser,

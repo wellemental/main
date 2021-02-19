@@ -672,8 +672,8 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - RNCAsyncStorage (1.13.2):
-    - React
+  - RNCAsyncStorage (1.13.4):
+    - React-Core
   - RNCMaskedView (0.1.10):
     - React
   - RNCPushNotificationIOS (1.8.0):
@@ -684,7 +684,7 @@ PODS:
     - React-Core
     - React-Core/DevSupport
     - React-RCTNetwork
-  - RNFBAnalytics (7.6.10):
+  - RNFBAnalytics (10.8.0):
     - Firebase/Analytics (~> 6.34.0)
     - React-Core
     - RNFBApp
@@ -703,7 +703,7 @@ PODS:
     - Firebase/Functions (~> 6.34.0)
     - React-Core
     - RNFBApp
-  - RNFBMessaging (10.5.1):
+  - RNFBMessaging (10.8.0):
     - Firebase/Messaging (~> 6.34.0)
     - React-Core
     - RNFBApp
@@ -713,7 +713,7 @@ PODS:
     - RNFBApp
   - RNFS (2.16.6):
     - React
-  - RNGestureHandler (1.9.0):
+  - RNGestureHandler (1.10.1):
     - React-Core
   - RNIap (5.2.3):
     - React-Core
@@ -721,7 +721,7 @@ PODS:
     - React
   - RNReanimated (1.13.2):
     - React-Core
-  - RNScreens (2.16.1):
+  - RNScreens (2.17.1):
     - React-Core
   - RNSVG (9.13.6):
     - React
@@ -1005,24 +1005,24 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
+  RNCAsyncStorage: 44539979e1f234262d64d3ce86ec21cceb1b2c5e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDeviceInfo: 9b6aba9ffaed69ecb72bd13c7bcb0debf277bc9f
   RNDevMenu: fd325b5554b61fe7f48d9205a3877cf5ee88cd7c
-  RNFBAnalytics: 6414e9fe1f36c3074f39cd6265b3def777dbfbdb
+  RNFBAnalytics: a6b71d184a8378d0bc647a2de00aa3b4c2ac9f7d
   RNFBApp: 804b98033f45c3a3e35b56de8c894f85ef5e4388
   RNFBAuth: 8c4de7a59b563bd399993855aa61183e1f1be4bf
   RNFBFirestore: e21f4bcd634430775adca413a93ab995a34f743e
   RNFBFunctions: 71cfc9b5178dd0bb1f75c07e16c1417a1ef1a463
-  RNFBMessaging: 73e180c523d005ea98d7c70d0f7ff66785549111
+  RNFBMessaging: 944c89028cbc1e5b27f951d328fac407e297595f
   RNFBRemoteConfig: 14246d18d86f069c567cb710e15616885b962326
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
-  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
+  RNGestureHandler: 5e58135436aacc1c5d29b75547d3d2b9430d052c
   RNIap: ff51c3dd160cd2e40f7f905ebc1bcfb7d34c7d15
   RNRate: 15b861025a7821730761fce7f44561ce7e0b2de0
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
-  RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
+  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSVG: 8ba35cbeb385a52fd960fd28db9d7d18b4c2974f
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

@@ -237,7 +237,11 @@ export const CurrentUserProvider = ({ children }: any) => {
         currentUser,
         loading,
         translation:
-          currentUser && currentUser.language === 'Español' ? Español : English,
+          currentUser &&
+          currentUser.language &&
+          currentUser.language === 'Español'
+            ? Español
+            : English,
         updateUser,
         updateFavorites,
         getDbUser,

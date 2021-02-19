@@ -11,7 +11,11 @@
       "storage",
       "packages/*"
     ],
-    "nohoist": []
+    "nohoist": [
+      "**/react-facebook-pixel",
+      "**/react-ga",
+      "**/react-hotjar"
+    ]
   },
   "dependencies": {
     "react-native": "*"
