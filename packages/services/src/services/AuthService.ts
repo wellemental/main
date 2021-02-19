@@ -1,15 +1,16 @@
-// import { auth } from '../base';
 import auth from '@react-native-firebase/auth';
 import { AuthenticationError } from '../models/Errors';
-import { NewAccount } from '../types';
+import { NewAccount, AuthServiceType } from '../types';
 import LocalStateService from './LocalStateService';
 import UpdateUserService from './UpdateUserService';
-import logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
 import { FirebaseError } from 'firebase';
+import logger from './LoggerService';
 
 const profileService = new UpdateUserService();
-class AuthService {
+const localStateService = new LocalStateService();
+
+class AuthService implements AuthServiceType {
   public async checkExistingLogins(email: string): Promise<string[]> {
     try {
       return await auth().fetchSignInMethodsForEmail(email);
@@ -21,7 +22,6 @@ class AuthService {
 
   public async login(email: string, password: string): Promise<void> {
     // Reset local state before sign-in to avoid race conditions with listeners
-    const localStateService = new LocalStateService();
     try {
       localStateService.resetStorage();
     } catch (error) {
@@ -40,7 +40,6 @@ class AuthService {
   public async signup(account: NewAccount): Promise<void> {
     try {
       // Reset local state before creating the user to avoid race conditions with listeners
-      const localStateService = new LocalStateService();
       try {
         await localStateService.resetStorage();
       } catch (err) {
@@ -74,7 +73,6 @@ class AuthService {
               language: account.language,
             });
           } catch (err) {
-            console.log('Cmon NOW', err);
             logger.error(`Error creating user doc - ${err}`);
           }
         })

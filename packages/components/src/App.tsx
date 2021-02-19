@@ -22,9 +22,9 @@ const App: React.FC = () => {
   return (
     <CurrentUserProvider>
       <StyleProvider style={getTheme(wellemental)}>
-        <ContentProvider>
-          <IAPProvider>
-            <ServicesProvider>
+        <ServicesProvider>
+          <ContentProvider>
+            <IAPProvider>
               <NotificationProvider>
                 <Root>
                   <SafeAreaProvider>
@@ -40,9 +40,9 @@ const App: React.FC = () => {
                   </SafeAreaProvider>
                 </Root>
               </NotificationProvider>
-            </ServicesProvider>
-          </IAPProvider>
-        </ContentProvider>
+            </IAPProvider>
+          </ContentProvider>
+        </ServicesProvider>
       </StyleProvider>
     </CurrentUserProvider>
   );

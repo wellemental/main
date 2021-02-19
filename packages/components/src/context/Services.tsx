@@ -13,9 +13,11 @@ export const ServicesProvider: React.FC = ({ children }) => {
     if (user) {
       // Backup for admin or early users that don't have id stored on their user doc
       const currentUser = { ...user };
-      if (!currentUser.id) {
+      if (!currentUser.id && auth) {
         currentUser.id = auth.uid;
       }
+
+      console.log('SERVICES USER', currentUser);
 
       setContainer(
         buildDependencies({

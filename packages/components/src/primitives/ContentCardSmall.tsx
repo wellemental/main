@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, CardItem, Left, Body } from 'native-base';
-import { View } from 'react-native';
 import { Content } from 'services';
 import Image from './Image';
 import Headline from './Headline';

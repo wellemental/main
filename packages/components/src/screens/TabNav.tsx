@@ -15,7 +15,7 @@ import ProfileScreen from './ProfileScreen';
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabNav: React.FC = () => {
-  const { translation, activePlan } = useCurrentUser();
+  const { translation, activePlan, user } = useCurrentUser();
   const insets = useSafeAreaInsets();
 
   return (

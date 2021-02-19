@@ -4,13 +4,14 @@ import remoteConfig, {
 import defaultValues from './RemoteConfigDefaults';
 import { RemoteConfigService } from '../types';
 import { ApplicationError } from '../models/Errors';
-import logger from '../services/LoggerService';
+// import logger from '../services/LoggerService';
+import BaseService from './BaseService';
 
-class RemoteConfig implements RemoteConfigService {
+class RemoteConfig extends BaseService implements RemoteConfigService {
   private remoteConfig: FirebaseRemoteConfigTypes.Module;
   private initialization: Promise<void>;
-  constructor() {
-    // super(args);
+  constructor(args: any) {
+    super(args);
     this.remoteConfig = remoteConfig();
     this.initialization = this.init();
   }
@@ -29,27 +30,26 @@ class RemoteConfig implements RemoteConfigService {
       const fetchedRemotely = await config.fetchAndActivate();
 
       if (fetchedRemotely) {
-        logger.info(
+        this.logger.info(
           'Remote configs were retrieved from the backend and activated.',
         );
       } else {
-        logger.error(
+        this.logger.error(
           'No remote configs were fetched from the backend, and the local configs were already activated',
         );
       }
 
       return;
     } catch (err) {
-      logger.error(`Error initiating remote config: ${err}`);
+      this.logger.error(`Error initiating remote config: ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
   };
 
   public getValue = <T>(valueName: string): Promise<T> => {
     return this.initialization.then(() => {
-      const theValue = remoteConfig().getValue(valueName);
-
       try {
+        const theValue = remoteConfig().getValue(valueName);
         try {
           return JSON.parse(theValue.asString());
         } catch {

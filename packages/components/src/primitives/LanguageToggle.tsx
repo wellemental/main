@@ -51,7 +51,7 @@ const EditProfileScreen: React.FC = () => {
             borderBottomLeftRadius: 10,
             borderTopLeftRadius: 10,
           }}
-          active={user.language === Languages.En}
+          active={user && user.language === Languages.En}
           disabled={loading}
           onPress={() => handleUpdate(Languages.En)}>
           <Text>English</Text>
@@ -65,7 +65,7 @@ const EditProfileScreen: React.FC = () => {
             borderBottomRightRadius: 10,
             borderTopRightRadius: 10,
           }}
-          active={user.language === Languages.Es}
+          active={user && user.language === Languages.Es}
           disabled={loading}
           onPress={() => handleUpdate(Languages.Es)}>
           <Text>Español</Text>

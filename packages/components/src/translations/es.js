@@ -192,4 +192,5 @@ export const Español = {
   'If payment succeeded, please wait one minute for your account to be upgraded.':
     'Si el pago se realizó correctamente, espere un minuto para que se actualice su cuenta.',
   years: 'años',
+  'Error loading content': 'Error al cargar contenido',
 };

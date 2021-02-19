@@ -209,4 +209,5 @@ export const Español = {
   'Total Time': 'Tiempo Total',
   'Your recently played videos will appear here. Get started!':
     'Tus videos reproducidos recientemente aparecerán aquí. ¡Empezar!',
+  'See all': 'Ver todos',
 };

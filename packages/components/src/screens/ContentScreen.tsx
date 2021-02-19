@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -75,6 +75,10 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const [hasPlayed, toggleHasPlayed] = useState(false);
   const { auth } = useCurrentUser();
 
+  // Reference for video player to run methods from
+  const player = useRef();
+  // console.log('PALYER REF', player.current);
+
   // Hide poster when video has started
   if (showPoster && (currentTime > 0 || !isPaused)) {
     togglePoster(false);
@@ -100,6 +104,11 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   );
 
   const handleComplete = (): void => {
+    if (!!player.current) {
+      console.log('DISMISSING', player.current.dismissFullscreenPlayer);
+      player.current.dismissFullscreenPlayer();
+    }
+
     markComplete();
     navigation.navigate('Celebration');
   };
@@ -212,6 +221,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             onLoad={onLoad}
             onError={handleError}
             onProgress={onProgress}
+            ref={(ref) => (player.current = ref)}
           />
 
           {showPoster && isPaused && (

@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { AuthService, LocalStateService } from 'services';
 import { Error, Box, Paragraph, Button, LanguageToggle } from '../primitives';
-import {
-  Body,
-  Left,
-  List,
-  Icon,
-  ListItem,
-  Right,
-  Text,
-  Toast,
-} from 'native-base';
+import { Body, Toast } from 'native-base';
 import { Alert, Linking, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
@@ -30,8 +21,6 @@ type SettingsLink = {
     | 'success'
     | 'danger';
 };
-const service = new AuthService();
-const localStateService = new LocalStateService();
 
 const SettingsScreen: React.FC = () => {
   const { auth, translation } = useCurrentUser();
@@ -40,13 +29,21 @@ const SettingsScreen: React.FC = () => {
   const navigation = useNavigation();
   const version = getReadableVersion();
 
+  // const container = useContainer();
+  // const authService = container.getInstance<AuthServiceType>('auth');
+  // const localStateService = container.getInstance<LocalStateServiceType>(
+  //   'localState',
+  // );
+
   const handleNavigate = (screen: string): void => {
     navigation.navigate(screen);
   };
 
   const handleLogout = async () => {
     try {
-      await service.logout();
+      const authService = new AuthService();
+      const localStateService = new LocalStateService();
+      await authService.logout();
       await localStateService.resetStorage();
     } catch (err) {
       setError(err);

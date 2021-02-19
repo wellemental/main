@@ -24,10 +24,6 @@ export const IAPContext: React.Context<any> = React.createContext({
 
 const localStateService = new LocalStateService();
 
-const storePlanAsync = async (planData: any) => {
-  await localStateService.setStorage('wmPlan', planData);
-};
-
 let purchaseUpdateSubscription;
 let purchaseErrorSubscription;
 
@@ -37,6 +33,15 @@ export const IAPProvider = ({ children }: any) => {
   const [activePlan, setActivePlan] = useState('free');
   const [statuses, setStatus] = useState([]);
   const [error, setError] = useState<PurchaseError | string>('');
+
+  // const container = useContainer();
+  // const localStateService = container.getInstance<LocalStateServiceType>(
+  //   'localState',
+  // );
+
+  const storePlanAsync = async (planData: any) => {
+    await localStateService.setStorage('wmPlan', planData);
+  };
 
   // const purchaseUpdateSubscription = useRef(null);
   // const purchaseErrorSubscription = useRef(null);

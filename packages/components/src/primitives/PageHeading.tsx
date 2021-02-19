@@ -43,7 +43,7 @@ const PageHeading: React.FC<Props> = ({
       style={{
         paddingTop: pt,
         paddingHorizontal: 5,
-        paddingBottom: 25,
+        paddingBottom: noHeader ? 25 : 15,
         alignItems: center ? 'center' : 'flex-start',
       }}>
       {withLogo && (

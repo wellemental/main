@@ -47,7 +47,7 @@ const ProfileScreen: React.FC = () => {
 
   return (
     <Container scrollEnabled>
-      <PageHeading noHeader withLogo center title={translation.Profile} />
+      <PageHeading noHeader title={translation.Profile} />
 
       <Error error={error} />
 

@@ -34,14 +34,11 @@ export const Content = React.createContext<ContentContext>({
   getDbContent: null,
 });
 
-const localStateService = new LocalStateService();
+// export const Content = React.createContext<ContentContext | undefined>(
+//   undefined,
+// );
 
-const setLocalContent = async (content, teachers) => {
-  await localStateService.setStorage('wmContent', {
-    content,
-    teachers,
-  });
-};
+const localStateService = new LocalStateService();
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const [content, setContent] = useState<ContentObj | null>(null);
@@ -50,13 +47,22 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const [statuses, setStatus] = useState([]);
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const { user } = useCurrentUser();
-  const [loading, setLoading] = useState(
-    // !auth ? false : !content || !teachers ? true : false,
-    !content || !teachers ? true : false,
-  );
+  const [loading, setLoading] = useState(!content || !teachers ? true : false);
+
   const localUpdatedAt = useRef<Date | undefined>();
 
+  // const container = useContainer();
+  // const localStateService = container.getInstance<LocalStateServiceType>(
+  //   'localState',
+  // );
+
   const getDbContent = async (): Promise<void> => {
+    const setLocalContent = async (content, teachers) => {
+      await localStateService.setStorage('wmContent', {
+        content,
+        teachers,
+      });
+    };
     // Get teachers and content from firestore
     try {
       const teacherService = new TeacherService();

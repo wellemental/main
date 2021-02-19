@@ -18,7 +18,7 @@ import variables from '../assets/native-base-theme/variables/wellemental';
 
 const HomeScreen: React.FC = ({ navigation }) => {
   const today = moment();
-  const { translation, activePlan } = useCurrentUser();
+  const { translation, activePlan, user } = useCurrentUser();
   const { features } = useContent();
 
   // Determine Time of Day for header customization
@@ -82,7 +82,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
       />
       <ContentLoop filter={timeOfDay} />
 
-      <TabsNB />
+      {user && <TabsNB />}
 
       {features && features.categories ? (
         <>

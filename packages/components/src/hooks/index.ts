@@ -8,6 +8,6 @@ export * from './useDepends';
 export * from './useIap';
 export * from './useContainer';
 export * from './useContent';
-export * from './useLoadMore';
+export { default as useLoadMore } from './useLoadMore';
 export * from './useConfig';
 export { useNavigation } from './useNavigation';

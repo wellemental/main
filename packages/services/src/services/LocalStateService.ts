@@ -1,12 +1,15 @@
-// import AsyncStorage from '@react-native-community/async-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApplicationError } from '../models/Errors';
-import { LocalUser, LocalContent, UserProfile } from '../types';
-import logger from './LoggerService';
+import {
+  LocalUser,
+  LocalContent,
+  UserProfile,
+  LocalStateServiceType,
+} from '../types';
 import firestore from '@react-native-firebase/firestore';
-// import { firestore } from '../base';
+import logger from './LoggerService';
 
-class LocalStateService {
+class LocalStateService implements LocalStateServiceType {
   public async resetStorage(): Promise<void> {
     try {
       await AsyncStorage.multiRemove(['wmUser', 'wmContent']);

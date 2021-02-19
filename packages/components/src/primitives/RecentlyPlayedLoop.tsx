@@ -1,53 +1,47 @@
-import React, { useState } from 'react';
-import { View, Platform } from 'react-native';
-import { PlaysServiceType, PlayEvent, convertTimestamp } from 'services';
+import React from 'react';
+import { Platform } from 'react-native';
 import {
-  Error,
-  PageHeading,
-  Container,
-  StatDisplay,
-  Button,
-  ListEmpty,
-  Tabs,
-  Box,
-  Headline,
-  Spinner,
-  ContentCardSmall,
-  Paragraph,
-} from '../primitives';
+  PlayEvent,
+  convertTimestamp,
+  ContentObj,
+  AllTeachers,
+  PlaysObj,
+} from 'services';
+import { Button, ListEmpty, Spinner, ContentCardSmall } from '../primitives';
 import { List } from 'native-base';
-import { MenuItem } from '../types';
-import { useCurrentUser, useContent, useContainer } from '../hooks';
-import useLoadMore from '../hooks/useLoadMore';
-import SettingsScreen from '../screens/SettingsScreen';
+import { useCurrentUser } from '../hooks';
+// import useLoadMore from '../hooks/useLoadMore';
 
 type Props = {
   homepage?: boolean;
+  loading: boolean;
+  content: ContentObj;
+  teachers: AllTeachers;
+  loadingMore: boolean;
+  loadMore: () => any;
+  hasMore: boolean;
+  items: any[];
 };
 
-const RecentlyPlayedLoop: React.FC<Props> = ({ homepage }) => {
+const RecentlyPlayedLoop: React.FC<Props> = ({
+  homepage,
+  loading,
+  content,
+  items,
+  teachers,
+  hasMore,
+  loadingMore,
+  loadMore,
+}) => {
   const { translation } = useCurrentUser();
-  const { content, teachers } = useContent();
-  const [error, setError] = useState();
-
-  const container = useContainer();
-  const service = container.getInstance<PlaysServiceType>('playsService');
-
-  const {
-    items,
-    loading,
-    loadMore,
-    loadingMore,
-    hasMore,
-  } = useLoadMore(service.query, { limit: homepage ? 2 : 7 });
 
   return loading || !content || !teachers ? (
     <Spinner />
   ) : (
     <>
       <List style={{ marginHorizontal: Platform.OS === 'android' ? 0 : 5 }}>
-        {items && items.length > 0 ? (
-          items.map((item, idx: number) => {
+        {!!items && items.length > 0 ? (
+          items.slice(0, 2).map((item, idx: number) => {
             const data = item.data() as PlayEvent;
             const contentMatch =
               data && data.contentId && content[data.contentId];
@@ -62,9 +56,11 @@ const RecentlyPlayedLoop: React.FC<Props> = ({ homepage }) => {
                 key={idx}
                 content={contentMatch}
                 teacher={teacherMatch}
-                recentDate={convertTimestamp(data.createdAt).format(
-                  'MMM DD, YYYY',
-                )}
+                recentDate={
+                  homepage
+                    ? undefined
+                    : convertTimestamp(data.createdAt).format('MMM DD, YYYY')
+                }
               />
             ) : null;
           })
@@ -77,7 +73,7 @@ const RecentlyPlayedLoop: React.FC<Props> = ({ homepage }) => {
             }
           </ListEmpty>
         )}
-        {homepage && <Button text={translation['See All']} />}
+        {homepage && <Button text={translation['See all']} transparent />}
         {hasMore && !homepage && (
           <Button
             transparent

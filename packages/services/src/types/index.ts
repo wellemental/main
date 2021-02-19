@@ -1,6 +1,7 @@
 import defaultValues from '../services/RemoteConfigDefaults';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
+import { FirebaseError } from 'firebase';
 // import { firestore } from '../base';
 
 export type Timestamp = FirebaseFirestoreTypes.Timestamp;
@@ -256,6 +257,26 @@ export interface PlaysServiceType {
   add(id: string): Promise<void>;
   complete(id: string, duration: number): Promise<void>;
   get(): Promise<PlaysObj | PlayEvent[]>;
+}
+
+export interface AuthServiceType {
+  checkExistingLogins(email: string): Promise<string[]>;
+  login(email: string, password: string): Promise<void>;
+  signup(account: NewAccount): Promise<void>;
+  checkError(err: FirebaseError): Error;
+  logout(): Promise<void>;
+}
+
+export interface LocalStateServiceType {
+  resetStorage(): Promise<void>;
+  setStorage(
+    key: string,
+    value: string | { [key: string]: string } | LocalUser | UserProfile,
+  ): Promise<void>;
+  getStorage(key: string): Promise<string>;
+  getContent(): Promise<LocalContent>;
+  getUser(): Promise<LocalUser>;
+  removeStorage(key: string): Promise<void>;
 }
 
 export interface ContentServiceType {

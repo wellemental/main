@@ -8,6 +8,8 @@ import { buildFirestore } from './FirebaseService';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
 import ObserveNotifications from './ObserveNotifications';
+// import LocalStateService from './LocalStateService';
+// import AuthService from './AuthService';
 // import UpdateProfileService from './UpdateProfileService';
 
 interface DependencyDescriptor {
@@ -22,7 +24,6 @@ const BASE_SERVICE_DEPENDENCIES = [
   'currentUser',
   'logger',
   'tracker',
-  'updateUserService',
   'firestore',
 ];
 
@@ -45,7 +46,7 @@ const dependenciesDescriptors = {
   },
   remoteConfig: {
     class: RemoteConfig,
-    dependencies: BASE_SERVICE_DEPENDENCIES,
+    dependencies: ['logger'],
   },
   playsService: {
     class: PlaysService,
@@ -55,6 +56,14 @@ const dependenciesDescriptors = {
     class: ObserveNotifications,
     dependencies: ['currentUser', 'firestore', 'logger'],
   },
+  // localState: {
+  //   class: LocalStateService,
+  //   dependencies: ['logger'],
+  // },
+  // auth: {
+  //   class: AuthService,
+  //   dependencies: ['logger', 'tracker'],
+  // },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;
 type DescriptorMap = { [key in DependencyName]: DependencyDescriptor };

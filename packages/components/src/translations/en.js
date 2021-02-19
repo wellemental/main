@@ -183,4 +183,6 @@ export const English = {
   'If payment succeeded, please wait one minute for your account to be upgraded.':
     'If payment succeeded, please wait one minute for your account to be upgraded.',
   years: 'years',
+  'See all': 'See all',
+  'Error loading content': 'Error loading content',
 };
