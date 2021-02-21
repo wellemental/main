@@ -5,7 +5,7 @@ import { Container, Button, Error } from '../primitives';
 import { useCurrentUser } from '../hooks';
 import { deviceHeight, deviceWidth } from 'services';
 import { brandColors } from '../assets/native-base-theme/variables/wellemental';
-import { tracker, TrackingEvents } from 'services';
+// import { tracker, TrackingEvents } from 'services';
 
 type Props = {
   setLock: React.Dispatch<boolean>;
@@ -20,10 +20,10 @@ const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
   const handleAnswer = () => {
     setError('');
     if (+answer === 99) {
-      tracker.track(TrackingEvents.AskParentsSucceed);
+      // tracker.track(TrackingEvents.AskParentsSucceed);
       setLock(false);
     } else {
-      tracker.track(TrackingEvents.AskParentsFail);
+      // tracker.track(TrackingEvents.AskParentsFail);
       setError(translation['Please ask your parents to proceed']);
     }
   };

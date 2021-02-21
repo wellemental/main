@@ -1,7 +1,7 @@
 package com.wellemental.wellemental;
 
 import android.os.Bundle; // added to resolve build issue
-// import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
 import android.content.Intent;
 import android.content.res.Configuration;

@@ -19,6 +19,8 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.wonday.orientation.OrientationActivityLifecycle;
 import com.rnfs.RNFSPackage;
+import com.brentvatne.react.ReactVideoPackage;
+
 // public class MainApplication extends Application implements ReactApplication {
 public class MainApplication extends MultiDexApplication implements ReactApplication { // Added
 

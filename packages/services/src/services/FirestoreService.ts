@@ -25,7 +25,7 @@ class FirestoreService extends BaseService implements FirestoreServiceType {
         createdAt: new Date(),
       });
     } catch (err) {
-      this.logger.error(err);
+      // this.logger.error(err);
       throw new ApplicationError('Error storing user play data');
     }
   };
@@ -45,7 +45,7 @@ class FirestoreService extends BaseService implements FirestoreServiceType {
         return plays;
       }
     } catch (err) {
-      this.logger.error(err);
+      // this.logger.error(err);
       throw new ApplicationError('Error getting user plays');
     }
   };

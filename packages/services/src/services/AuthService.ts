@@ -3,9 +3,9 @@ import { AuthenticationError } from '../models/Errors';
 import { NewAccount, AuthServiceType } from '../types';
 import LocalStateService from './LocalStateService';
 import UpdateUserService from './UpdateUserService';
-import tracker, { TrackingEvents } from './TrackerService';
+// import tracker, { TrackingEvents } from './TrackerService';
 import { FirebaseError } from 'firebase';
-import logger from './LoggerService';
+// import logger from './LoggerService';
 
 const profileService = new UpdateUserService();
 const localStateService = new LocalStateService();
@@ -15,7 +15,7 @@ class AuthService implements AuthServiceType {
     try {
       return await auth().fetchSignInMethodsForEmail(email);
     } catch (err) {
-      logger.error('Error checking existing logins');
+      // logger.error('Error checking existing logins');
       return Promise.reject(this.checkError(err));
     }
   }
@@ -33,7 +33,7 @@ class AuthService implements AuthServiceType {
       logger.error('Error logging in');
       return Promise.reject(this.checkError(err));
     }
-    tracker.track(TrackingEvents.Login);
+    // tracker.track(TrackingEvents.Login);
     return Promise.resolve();
   }
 
@@ -73,13 +73,13 @@ class AuthService implements AuthServiceType {
               language: account.language,
             });
           } catch (err) {
-            logger.error(`Error creating user doc - ${err}`);
+            // logger.error(`Error creating user doc - ${err}`);
           }
         })
         .catch((err) => {
-          logger.error(`Error creating user and userDoc - ${err}`);
+          // logger.error(`Error creating user and userDoc - ${err}`);
         });
-      tracker.track(TrackingEvents.SignUp);
+      // tracker.track(TrackingEvents.SignUp);
     } catch (err) {
       return Promise.reject(this.checkError(err));
     }
@@ -110,7 +110,7 @@ class AuthService implements AuthServiceType {
 
   public async logout(): Promise<void> {
     try {
-      tracker.track(TrackingEvents.Logout);
+      // tracker.track(TrackingEvents.Logout);
       return auth().signOut();
     } catch (err) {
       return Promise.reject(

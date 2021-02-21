@@ -130,7 +130,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
         loading={loading}
         onPress={handleStep}
       />
-      <Box gt>
+      <Box mt={2}>
         <Button
           transparent
           text={translation['Forgot password?']}

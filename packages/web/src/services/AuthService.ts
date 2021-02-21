@@ -4,8 +4,8 @@ import firebase from '../base';
 import { NewAccount } from '../types';
 // import LocalStateService from './LocalStateService';
 import UpdateUserService from './UpdateUserService';
-// import logger from './LoggerService';
-// import tracker, { TrackingEvents } from './TrackerService';
+import logger from './LoggerService';
+import tracker, { TrackingEvents } from './TrackerService';
 import { FirebaseError } from 'firebase';
 
 const profileService = new UpdateUserService();
@@ -14,7 +14,7 @@ class AuthService {
     try {
       return await firebase.auth().fetchSignInMethodsForEmail(email);
     } catch (err) {
-      //   logger.error('Error checking existing logins');
+      logger.error('Error checking existing logins');
       return Promise.reject(this.checkError(err));
     }
   }
@@ -30,10 +30,10 @@ class AuthService {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (err) {
-      //   logger.error('Error logging in');
+      logger.error('Error logging in');
       return Promise.reject(this.checkError(err));
     }
-    // tracker.track(TrackingEvents.Login);
+    tracker.track(TrackingEvents.Login);
     return Promise.resolve();
   }
 
@@ -76,14 +76,14 @@ class AuthService {
                 language: account.language,
               });
             } catch (err) {
-              // logger.error(`Error creating user doc - ${err}`);
+              logger.error(`Error creating user doc - ${err}`);
             }
           }
         })
         .catch((err) => {
-          //   logger.error(`Error creating user and userDoc - ${err}`);
+          logger.error(`Error creating user and userDoc - ${err}`);
         });
-      //   tracker.track(TrackingEvents.SignUp);
+      tracker.track(TrackingEvents.SignUp);
     } catch (err) {
       return Promise.reject(this.checkError(err));
     }

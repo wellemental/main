@@ -15,7 +15,7 @@ import {
 import { useCurrentUser, useIap } from '../hooks';
 import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';
-import { PromoCodeService, logger } from 'services';
+import { PromoCodeService } from 'services';
 import styled from 'styled-components';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import AskParentsScreen from './AskParentsScreen';
@@ -84,7 +84,7 @@ const PlansScreen: React.FC = () => {
         setError(
           `Unable to retrieve products. Please try again or contact support@wellemental.co`,
         );
-        logger.error(`Error retrieving Iap Products - ${err}`);
+        // logger.error(`Error retrieving Iap Products - ${err}`);
       }
       setLoading(false);
     };
@@ -106,15 +106,17 @@ const PlansScreen: React.FC = () => {
       );
       setProcessing(false);
     } catch (err) {
-      logger.error(
-        `Error requesting Iap Subscription - ${
-          err && err.message ? err.message : err
-        }`,
-      );
+      // logger.error(
+      //   `Error requesting Iap Subscription - ${
+      //     err && err.message ? err.message : err
+      //   }`,
+      // );
       setError(
-        `Error requesting Iap Subscription - ${
-          err && err.message ? err.message : err
-        }`,
+        `${
+          translation[
+            'There was an error creating your subscription. Please try again. If problem persists, email hello@wellemental.co.'
+          ]
+        } ${err && err.message ? err.message : err}`,
       );
       setProcessing(false);
     }

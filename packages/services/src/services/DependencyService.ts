@@ -1,6 +1,6 @@
 import { User } from '../types';
-import { buildLogger } from './LoggerService';
-import { buildTracker } from './TrackerService';
+// import { buildLogger } from './LoggerService';
+// import { buildTracker } from './TrackerService';
 import UpdateUserService from './UpdateUserService';
 import { buildFirestore } from './FirebaseService';
 // import { buildNavigationService } from './navigationService';
@@ -22,8 +22,8 @@ let dependenciesInstances: { [key: string]: any } = {};
 
 const BASE_SERVICE_DEPENDENCIES = [
   'currentUser',
-  'logger',
-  'tracker',
+  // 'logger',
+  // 'tracker',
   'firestore',
 ];
 
@@ -32,29 +32,29 @@ const dependenciesDescriptors = {
     factory: buildFirestore,
     dependencies: [],
   },
-  logger: {
-    factory: buildLogger,
-    dependencies: [],
-  },
-  tracker: {
-    factory: buildTracker,
-    dependencies: [],
-  },
+  // logger: {
+  //   factory: buildLogger,
+  //   dependencies: [],
+  // },
+  // tracker: {
+  //   factory: buildTracker,
+  //   dependencies: [],
+  // },
   updateUserService: {
     class: UpdateUserService,
     dependencies: ['currentUser', 'firestore'],
   },
   remoteConfig: {
     class: RemoteConfig,
-    dependencies: ['logger'],
+    dependencies: [],
   },
   playsService: {
     class: PlaysService,
-    dependencies: ['firestore', 'currentUser', 'logger', 'tracker'],
+    dependencies: ['firestore', 'currentUser'],
   },
   observeNotifications: {
     class: ObserveNotifications,
-    dependencies: ['currentUser', 'firestore', 'logger'],
+    dependencies: ['currentUser', 'firestore'],
   },
   // localState: {
   //   class: LocalStateService,

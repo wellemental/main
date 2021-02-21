@@ -66,6 +66,7 @@ const ProfileScreen: React.FC = () => {
           <Box mt={2}>
             <Button
               bordered
+              warning
               text={translation.Settings}
               onPress={() => navigation.navigate('Settings')}
             />

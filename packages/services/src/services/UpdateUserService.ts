@@ -2,8 +2,8 @@ import firestore from '@react-native-firebase/firestore';
 // import { firestore } from '../base';
 import { ApplicationError } from '../models/Errors';
 import { UserProfile, UpdateUserServiceType, InitialUserDoc } from '../types';
-import logger from './LoggerService';
-import tracker, { TrackingEvents } from './TrackerService';
+// import logger from './LoggerService';
+// import tracker, { TrackingEvents } from './TrackerService';
 
 const COLLECTION = 'users';
 const collection = firestore().collection(COLLECTION);
@@ -36,12 +36,12 @@ class UpdateUserService implements UpdateUserServiceType {
           });
         }
         if (isFav) {
-          tracker.track(TrackingEvents.Favorite);
+          // tracker.track(TrackingEvents.Favorite);
         } else {
-          tracker.track(TrackingEvents.Unfavorite);
+          // tracker.track(TrackingEvents.Unfavorite);
         }
       } catch (error) {
-        logger.error('Failed to favorite content');
+        // logger.error('Failed to favorite content');
         throw new ApplicationError('Unable to fav content');
       }
     } catch (err) {}
@@ -58,7 +58,7 @@ class UpdateUserService implements UpdateUserServiceType {
         created_at,
       });
     } catch (err) {
-      logger.error('Failed to create user doc');
+      // logger.error('Failed to create user doc');
     }
   }
 
@@ -74,7 +74,7 @@ class UpdateUserService implements UpdateUserServiceType {
         updated_at: firestore.FieldValue.serverTimestamp(),
       });
     } catch (error) {
-      logger.error(`Failed to update user '${id}'`);
+      // logger.error(`Failed to update user '${id}'`);
       throw new ApplicationError('Unable to update');
     }
     return Promise.resolve();

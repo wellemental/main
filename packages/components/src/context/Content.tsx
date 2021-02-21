@@ -8,7 +8,7 @@ import {
   Features,
 } from 'services';
 import { useConfig, useCurrentUser } from '../hooks';
-import { logger } from 'services';
+// import { logger } from 'services';
 
 interface ContentContext {
   content: ContentObj;
@@ -74,9 +74,9 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       if (dbTeachers && dbContent) {
         await setLocalContent(dbContent, dbTeachers);
       } else {
-        logger.info(
-          `No results from fb for teachers or content. Not setting locally.`,
-        );
+        // logger.info(
+        //   `No results from fb for teachers or content. Not setting locally.`,
+        // );
       }
 
       // Update state with firestore data
@@ -84,8 +84,8 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       setTeachers(dbTeachers);
     } catch (err) {
       setError(`Error fetching content from database - ${err}`);
-      logger.error('Error getting firestore content data');
-      logger.error(`Error getting firestore content data - ${err}`);
+      // logger.error('Error getting firestore content data');
+      // logger.error(`Error getting firestore content data - ${err}`);
     }
     setLoading(false);
   };
@@ -97,7 +97,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
           ...status,
           'Getting latest updates from content and teachers',
         ]);
-        logger.info('Calculating update available');
+        // logger.info('Calculating update available');
         // Get latest updated_at times from firestore
         const teacherService = new TeacherService();
         const contentService = new ContentService();
@@ -140,13 +140,13 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
             }
             setLoading(false);
           } else {
-            logger.info('No local data, fetching from database');
+            // logger.info('No local data, fetching from database');
             // If nothing in AsyncStorage, pull from Database
             await getDbContent();
           }
           await calcUpdateAvailable();
         } catch (err) {
-          logger.error('Error getting local content data');
+          // logger.error('Error getting local content data');
 
           // In case there's an error getting localStorage, then pull from database as backup
           await getDbContent();

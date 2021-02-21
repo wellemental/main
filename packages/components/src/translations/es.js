@@ -51,7 +51,7 @@ export const Español = {
   'What is your email?': '¿Cuál es tu correo electrónico?',
   'Create Account': 'Crea Tu Cuenta',
   'Creating account...': 'Creando tu cuenta...',
-  'Error. Please try again.': 'Error. Porfavor intentar otra vez.',
+  'Error. Please try again.': 'Error. Por favor intentar otra vez.',
   'Password must be at least 7 characters long.':
     'La contraseña tiene que tener por lo menos 7 caracteres.',
   'Error creating profile. Try again.':

@@ -1,7 +1,7 @@
-import analytics from '@react-native-firebase/analytics';
-import { TrackingEvents, TrackingService } from '../types';
+// import analytics from '@react-native-firebase/analytics';
+// import { TrackingEvents, TrackingService } from '../types';
 
-export { TrackingEvents } from '../types';
+// export { TrackingEvents } from '../types';
 
 // Segment Tracking Helper
 // Apple was rejecting us for sharing data with 3rd parties. Think this was why. Will comment back in if needed.
@@ -23,30 +23,30 @@ export { TrackingEvents } from '../types';
 
 // Fire tracking events to Firebase or console
 // TODO: Limit EventParams to specific types as we add them & get config variables to work
-type EventParams = {};
+// type EventParams = {};
 
-export abstract class Tracker implements TrackingService {
-  abstract track(name: TrackingEvents, params?: EventParams): void;
-}
+// export abstract class Tracker implements TrackingService {
+//   abstract track(name: TrackingEvents, params?: EventParams): void;
+// }
 
-class ConsoleTracker extends Tracker {
-  public track(name: TrackingEvents, params?: EventParams): void {
-    console.log(
-      `Track Event: ${name}, params: ${JSON.stringify(params || {})}`,
-    );
-  }
-}
+// class ConsoleTracker extends Tracker {
+//   public track(name: TrackingEvents, params?: EventParams): void {
+//     console.log(
+//       `Track Event: ${name}, params: ${JSON.stringify(params || {})}`,
+//     );
+//   }
+// }
 
-class FirebaseTracker extends Tracker {
-  public track(name: TrackingEvents, params?: EventParams): void {
-    analytics().logEvent(name, params);
-  }
-}
+// class FirebaseTracker extends Tracker {
+//   public track(name: TrackingEvents, params?: EventParams): void {
+//     analytics().logEvent(name, params);
+//   }
+// }
 
-const tracker = new FirebaseTracker();
-// Config.ENABLE_FIREBASE_LOGGING === 'true'
-//   ? new FirebaseTracker()
-//   : new ConsoleTracker();
+// const tracker = new FirebaseTracker();
+// // Config.ENABLE_FIREBASE_LOGGING === 'true'
+// //   ? new FirebaseTracker()
+// //   : new ConsoleTracker();
 
-export const buildTracker = (): Tracker => tracker;
-export default tracker;
+// export const buildTracker = (): Tracker => tracker;
+// export default tracker;

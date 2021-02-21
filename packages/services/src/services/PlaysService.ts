@@ -3,7 +3,7 @@ import {
   PlaysObj,
   User,
   PlaysServiceType,
-  TrackingEvents,
+  // TrackingEvents,
 } from '../types';
 import { ApplicationError } from '../models/Errors';
 import BaseService from './BaseService';
@@ -32,9 +32,9 @@ class PlaysService extends BaseService implements PlaysServiceType {
 
       await this.userDoc.update(newUpdate);
 
-      this.tracker.track(TrackingEvents.PlayVideo);
+      // this.tracker.track(TrackingEvents.PlayVideo);
     } catch (err) {
-      this.logger.error(err);
+      // this.logger.error(err);
       throw new ApplicationError('Error storing user play data');
     }
   };
@@ -66,7 +66,7 @@ class PlaysService extends BaseService implements PlaysServiceType {
 
       await this.userDoc.update(userUpdate);
     } catch (err) {
-      this.logger.error(err);
+      // this.logger.error(err);
       throw new ApplicationError('Error logging completed play stats');
     }
 
@@ -81,7 +81,7 @@ class PlaysService extends BaseService implements PlaysServiceType {
           doc.ref.update({ completed: true });
         });
     } catch (err) {
-      this.logger.error(err);
+      // this.logger.error(err);
       throw new ApplicationError('Error updating play complete status');
     }
   };
@@ -102,7 +102,7 @@ class PlaysService extends BaseService implements PlaysServiceType {
         );
       return plays;
     } catch (err) {
-      this.logger.error(err);
+      // this.logger.error(err);
       throw new ApplicationError('Error getting user plays');
     }
   };

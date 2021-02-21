@@ -7,7 +7,7 @@ import auth from '@react-native-firebase/auth';
 import { Alert } from 'react-native';
 import { ObserveNotificationsType } from '../types';
 import { ApplicationError } from '../models/Errors';
-import logger from './LoggerService';
+// import logger from './LoggerService';
 import PushNotification from 'react-native-push-notification';
 
 type UnsubscribeFunction = () => void;
@@ -30,7 +30,7 @@ class ObserveNotifications implements ObserveNotificationsType {
     try {
       await messaging().requestPermission();
     } catch (err) {
-      logger.warn(`Requesting notification permissions was denied: ${err}`);
+      // logger.warn(`Requesting notification permissions was denied: ${err}`);
       return Promise.reject(
         new ApplicationError(
           "Unable to access the Notification permission. Please enable the Notification Permission from your phone's settings",
@@ -108,7 +108,7 @@ class ObserveNotifications implements ObserveNotificationsType {
         PushNotification.localNotification(newNotification);
       }
     } catch (error) {
-      logger.error(`Failed to handle notification: ${error}`);
+      // logger.error(`Failed to handle notification: ${error}`);
     }
 
     return Promise.resolve();

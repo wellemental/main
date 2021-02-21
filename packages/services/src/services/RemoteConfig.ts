@@ -30,18 +30,18 @@ class RemoteConfig extends BaseService implements RemoteConfigService {
       const fetchedRemotely = await config.fetchAndActivate();
 
       if (fetchedRemotely) {
-        this.logger.info(
-          'Remote configs were retrieved from the backend and activated.',
-        );
+        // this.logger.info(
+        //   'Remote configs were retrieved from the backend and activated.',
+        // );
       } else {
-        this.logger.error(
-          'No remote configs were fetched from the backend, and the local configs were already activated',
-        );
+        // this.logger.error(
+        //   'No remote configs were fetched from the backend, and the local configs were already activated',
+        // );
       }
 
       return;
     } catch (err) {
-      this.logger.error(`Error initiating remote config: ${err}`);
+      // this.logger.error(`Error initiating remote config: ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
   };

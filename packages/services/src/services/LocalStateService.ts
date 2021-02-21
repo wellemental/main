@@ -7,14 +7,14 @@ import {
   LocalStateServiceType,
 } from '../types';
 import firestore from '@react-native-firebase/firestore';
-import logger from './LoggerService';
+// import logger from './LoggerService';
 
 class LocalStateService implements LocalStateServiceType {
   public async resetStorage(): Promise<void> {
     try {
       await AsyncStorage.multiRemove(['wmUser', 'wmContent']);
     } catch (error) {
-      logger.error(`Failed to reset local state: ${error}`);
+      // logger.error(`Failed to reset local state: ${error}`);
       return Promise.reject(
         new ApplicationError('Unable to reset local state.'),
       );
@@ -37,7 +37,7 @@ class LocalStateService implements LocalStateServiceType {
         typeof value !== 'string' ? JSON.stringify(value) : value,
       );
     } catch (err) {
-      logger.error(`Failed to set ${key} to async storage - ${err}`);
+      // logger.error(`Failed to set ${key} to async storage - ${err}`);
       return Promise.reject(new ApplicationError('Unable to set local state.'));
     }
   }
@@ -46,7 +46,7 @@ class LocalStateService implements LocalStateServiceType {
     try {
       return await AsyncStorage.getItem(key);
     } catch (err) {
-      logger.error(`Failed to get ${key} from async storage`);
+      // logger.error(`Failed to get ${key} from async storage`);
       return Promise.reject(new ApplicationError('Unable to get local state.'));
     }
   }
@@ -65,7 +65,7 @@ class LocalStateService implements LocalStateServiceType {
       }
       return obj;
     } catch (err) {
-      logger.error(`Failed to get wmContent from async storage - ${err}`);
+      // logger.error(`Failed to get wmContent from async storage - ${err}`);
       return Promise.reject(
         new ApplicationError('Unable to get local content state.'),
       );
@@ -86,7 +86,7 @@ class LocalStateService implements LocalStateServiceType {
       }
       return obj;
     } catch (err) {
-      logger.error(`Failed to get wmUser from async storage - ${err}`);
+      // logger.error(`Failed to get wmUser from async storage - ${err}`);
       return Promise.reject(
         new ApplicationError('Unable to get local user state.'),
       );
@@ -97,7 +97,7 @@ class LocalStateService implements LocalStateServiceType {
     try {
       await AsyncStorage.removeItem(key);
     } catch (err) {
-      logger.error(`Failed to remove ${key} from async storage`);
+      // logger.error(`Failed to remove ${key} from async storage`);
       return Promise.reject(
         new ApplicationError('Unable to remove local state.'),
       );

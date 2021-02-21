@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Icon, Toast } from 'native-base';
-import { DownloadVideoService, Content } from 'services';
-// import { useMutation } from '../hooks/useMutation';
+import { DownloadVideoService } from 'services';
 import variables from '../assets/native-base-theme/variables/wellemental';
-import { logger } from 'services';
 
 interface Props {
   videoUrl: string;
@@ -19,7 +17,7 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
       try {
         toggleDownload(await service.checkExists(videoUrl));
       } catch (err) {
-        logger.error('Error checking video cache status');
+        // logger.error('Error checking video cache status');
       }
     };
     checkIfDownloaded();

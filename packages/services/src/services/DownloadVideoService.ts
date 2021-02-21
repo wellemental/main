@@ -1,7 +1,7 @@
 import { DownloadVideoServiceType } from '../types';
-import logger from '../services/LoggerService';
+// import logger from '../services/LoggerService';
+// import tracker, { TrackingEvents } from './TrackerService';
 import RNFS, { DownloadResult } from 'react-native-fs';
-import tracker, { TrackingEvents } from './TrackerService';
 
 class DownloadVideoService implements DownloadVideoServiceType {
   private convertUrlToFileName = (videoUrl: string): string => {
@@ -31,7 +31,7 @@ class DownloadVideoService implements DownloadVideoServiceType {
     const exists = await this.checkExists(videoUrl);
 
     if (exists) {
-      logger.info('Already downloaded');
+      // logger.info('Already downloaded');
       return Promise.resolve();
     }
 
@@ -41,11 +41,11 @@ class DownloadVideoService implements DownloadVideoServiceType {
       background: true,
     })
       .promise.then((res) => {
-        tracker.track(TrackingEvents.DownloadVideo);
-        logger.info(`File Downloaded: ${res}`);
+        // tracker.track(TrackingEvents.DownloadVideo);
+        // logger.info(`File Downloaded: ${res}`);
       })
       .catch((err) => {
-        logger.error(`Err downloadFile: ${err}`);
+        // logger.error(`Err downloadFile: ${err}`);
       });
   }
 
@@ -61,7 +61,7 @@ class DownloadVideoService implements DownloadVideoServiceType {
         }
       });
     } catch (err) {
-      logger.error(`Error getting video - ${err}`);
+      // logger.error(`Error getting video - ${err}`);
     }
     return Promise.resolve(path_name);
   }
@@ -72,11 +72,11 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
     try {
       const res = await RNFS.unlink(path_name);
-      tracker.track(TrackingEvents.UndownloadVideo);
-      logger.info(`File Deleted - ${res}`);
+      // tracker.track(TrackingEvents.UndownloadVideo);
+      // logger.info(`File Deleted - ${res}`);
       return Promise.resolve();
     } catch (err) {
-      logger.error('Error deleting video cache');
+      // logger.error('Error deleting video cache');
       return Promise.reject(err.message);
     }
   }

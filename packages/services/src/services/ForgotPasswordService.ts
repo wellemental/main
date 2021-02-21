@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth';
 // import { auth } from '../base';
 import { AuthenticationError } from '../models/Errors';
-import tracker, { TrackingEvents } from './TrackerService';
+// import tracker, { TrackingEvents } from './TrackerService';
 
 class ForgotPasswordService {
   public async perform(email: string): Promise<void> {
@@ -24,7 +24,7 @@ class ForgotPasswordService {
       }
     }
 
-    tracker.track(TrackingEvents.PasswordReset);
+    // tracker.track(TrackingEvents.PasswordReset);
     return Promise.resolve();
   }
 }
