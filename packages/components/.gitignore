@@ -33,6 +33,7 @@ local.properties
 android/app/src/debug/google-services*
 android/app/src/release/google-services*
 *google-services*
+*.hprof
 
 # Visual Studio Code
 #

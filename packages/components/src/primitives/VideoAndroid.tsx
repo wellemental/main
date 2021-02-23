@@ -38,7 +38,6 @@ const VideoAndroid: React.FC = (props) => {
   const [isFullscreen, toggleFullscreen] = useState(false);
 
   const handleOrientation = (orientation: string) => {
-    console.log('ORIANTATION', orientation);
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       toggleFullscreen(true);
       StatusBar.setHidden(true);
