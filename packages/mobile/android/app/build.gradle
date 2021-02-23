@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -77,11 +78,36 @@ import com.android.build.OutputFile
  * ]
  */
 
+/**
+ * // Only non-monorepo code
+ *project.ext.react = [
+ *    entryFile: "packages/mobile/index.js",
+ *    root: "../../../../",
+ *    enableHermes: true,  // clean and rebuild if changing
+ *]
+ */
+
+// getPassword func added for keystore keychain access
+ def getPassword(String currentUser, String keyChain) {
+   def stdout = new ByteArrayOutputStream()
+   def stderr = new ByteArrayOutputStream()
+   exec {
+       commandLine 'security', '-q', 'find-generic-password', '-a', currentUser, '-s', keyChain, '-w'
+       standardOutput = stdout
+       errorOutput = stderr
+       ignoreExitValue true
+   }
+   //noinspection GroovyAssignabilityCheck
+      stdout.toString().trim()
+}
+
+
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+    entryFile: "packages/mobile/index.js",
+    root: "../../../../"
 ]
 
-apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../../../node_modules/react-native/react.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -120,6 +146,9 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+// Add this line for keychain access for keystore
+def pass = getPassword("Wellemental","android_release_keystore")
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -132,8 +161,9 @@ android {
         applicationId "com.wellemental.wellemental"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.4"
+        multiDexEnabled true // Added
     }
     splits {
         abi {
@@ -149,6 +179,14 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        release {
+            if (project.hasProperty('release.keystore')) {
+                storeFile file(release.keystore)
+                storePassword pass
+                keyAlias androidreleasekey
+                keyPassword pass
+            }
         }
     }
     buildTypes {
@@ -187,6 +225,14 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
+    implementation "androidx.multidex:multidex:2.0.1" // Added for multidex
+    implementation platform('com.google.firebase:firebase-bom:26.2.0') // Added for Firebase
+    implementation 'com.google.firebase:firebase-analytics' // Added for Firebase Analytics
+    implementation project(':react-native-splash-screen') // Added for RN Splash Screen
+    compile project(':react-native-iap') // Added for RN IAP
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-fs')
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
@@ -216,4 +262,14 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: file("../../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
+]
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Name of the font files you want to copy
+]
+
+apply from: "../../../../node_modules/react-native-vector-icons/fonts.gradle"

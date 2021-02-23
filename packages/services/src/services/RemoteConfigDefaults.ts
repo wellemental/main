@@ -1,39 +1,55 @@
-export default {
+import { ConfigDefaults } from '../types';
+
+const defaults: ConfigDefaults = {
   featured: {
     title: 'Featured',
+    'title-es': 'Destacado',
     categories: [
       {
-        title: 'Category One',
-        description: 'Lorem ipsum description and stuff.',
-        tag: 'Featured',
+        title: 'Study Break',
+        'title-es': 'ES Study Break',
+        description: 'Short mindful practices to rest during remote learning.',
+        'description-es':
+          'ES Short mindful practices to rest during remote learning.',
+        tag: 'study',
         image:
-          'https://media.wired.com/photos/5b8999943667562d3024c321/master/w_2560%2Cc_limit/trash2-01.jpg',
+          'https://firebasestorage.googleapis.com/v0/b/prod-wellemental.appspot.com/o/featured%2Fstudyhall_category.png?alt=media&token=e7806438-329f-447e-9342-ea79bbf005fe',
       },
       {
-        title: 'Category One',
-        description: 'Lorem ipsum description and stuff.',
-        tag: 'Featured',
+        title: 'Black Lives Matter',
+        'title-es': 'ES Black Lives Matter',
+        description:
+          'Practices led by Black instructors for honoring and respecting our roots.',
+        'description-es':
+          'ES Practices led by Black instructors for honoring and respecting our roots.',
+        tag: 'black',
         image:
-          'https://media.wired.com/photos/5b8999943667562d3024c321/master/w_2560%2Cc_limit/trash2-01.jpg',
+          'https://firebasestorage.googleapis.com/v0/b/prod-wellemental.appspot.com/o/featured%2Fblm_category.png?alt=media&token=56bf2425-d2eb-4979-a15f-aeac5beade96',
       },
     ],
-    version: '0.29.1',
+    event: {
+      enabled: true,
+      headline: 'Live Event Tonight at 8:30pm EST',
+      dayOfWeek: 4,
+      hour: 20,
+      minute: 30,
+      title: 'Live Event',
+      articleId: 'live',
+      url: 'https://wellemental.co/live',
+    },
+  },
+  version: {
+    version: '0.5.2',
     build: 80,
     forceUpgrade: false,
     iosUrl:
       'https://apps.apple.com/us/app/mhl-mental-health-league/id1479870559',
-    upgradeForceTitle: 'App Upgrade',
-    upgradeForceBody:
-      'Tap below to download the latest version of Wellemental.',
-  },
-  version: {
-    version: '0.29.1',
-    build: 80,
-    forceUpgrade: false,
-    iosUrl:
+    androidUrl:
       'https://apps.apple.com/us/app/mhl-mental-health-league/id1479870559',
     upgradeForceTitle: 'App Upgrade',
     upgradeForceBody:
       'Tap below to download the latest version of Wellemental.',
   },
 };
+
+export default defaults;

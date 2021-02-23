@@ -9,23 +9,26 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '../types';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import { useCurrentUser } from '../hooks';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import ProfileScreen from './ProfileScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabNav: React.FC = () => {
-  const { translation } = useCurrentUser();
+  const { translation, activePlan, user } = useCurrentUser();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused }) => {
           let iconName = focused
             ? route.name.toLowerCase()
             : route.name.toLowerCase().concat('-outline');
 
           if (route.name === 'Favorites') {
             iconName = focused ? 'heart' : 'heart-outline';
-          } else if (route.name === 'Settings') {
+          } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
 
@@ -40,8 +43,11 @@ const TabNav: React.FC = () => {
         activeTintColor: variables.white,
         style: {
           backgroundColor: variables.brandPrimary,
-          height: 90,
+          height: 60 + insets.bottom,
           paddingTop: 10,
+          paddingBottom: 5 + insets.bottom,
+          borderTopWidth: 1,
+          borderTopColor: variables.brandPrimary,
         },
       }}>
       <Tab.Screen
@@ -54,20 +60,26 @@ const TabNav: React.FC = () => {
         component={LibraryScreen}
         options={{ title: translation.Library }}
       />
+
+      {activePlan && (
+        <>
+          <Tab.Screen
+            name="Favorites"
+            component={FavoritesScreen}
+            options={{ title: translation.Favorites }}
+          />
+          <Tab.Screen
+            name="Search"
+            component={SearchScreen}
+            options={{ title: translation.Search }}
+          />
+        </>
+      )}
       <Tab.Screen
-        name="Favorites"
-        component={FavoritesScreen}
-        options={{ title: translation.Favorites }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{ title: translation.Search }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{ title: translation.Settings }}
+        name="Profile"
+        // component={SettingsScreen}
+        component={ProfileScreen}
+        options={{ title: translation.Profile }}
       />
     </Tab.Navigator>
   );

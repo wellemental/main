@@ -4,6 +4,7 @@ import { H3 } from 'native-base';
 import Paragraph from './Paragraph';
 import Favorite from './Favorite';
 import Avatar from './Avatar';
+import Box from './Box';
 
 type Props = {
   source: string;
@@ -22,13 +23,16 @@ const AvyName: React.FC<Props> = ({
   onProfile,
 }) => {
   const Name = onProfile ? H3 : Paragraph;
+  // const Name = Paragraph;
+
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <Box row>
       <View
         style={{
           flex: 5,
           flexDirection: 'row',
           alignContent: 'space-between',
+          marginTop: 9,
         }}>
         <Avatar source={source} mb={mb} size={size} />
 
@@ -36,7 +40,7 @@ const AvyName: React.FC<Props> = ({
       </View>
 
       {favoriteId && <Favorite contentId={favoriteId} />}
-    </View>
+    </Box>
   );
 };
 

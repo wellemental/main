@@ -15,22 +15,22 @@ const isIphoneX =
     deviceHeight === 896 ||
     deviceWidth === 896);
 
-const brandColors = {
+export const brandColors = {
   brandPrimary: '#214f4b',
   brandSecondary: '#2A2968',
-  brandInfo: '#9554C2',
+  brandInfo: '#272a63', //'#9554C2',
   brandSuccess: '#A3CEC9',
   brandDanger: '#d9534f',
-  brandWarning: '#CAAB29',
+  brandWarning: '#C78D36', //'#CAAB29',
   brandLight: '#dfbead',
   lightGray: '#838383',
   offWhite: '#F4E6D0',
   white: '#ffffff',
   placeholderGray: '#dbdbdb',
-  dimGray: '#6b6b6b',
   textColor: '#333',
   lightTextColor: 'rgba(0, 0, 0, 0.4)',
   darkTextColor: 'rgba(0, 0, 0, 0.87)',
+  skyBlue: '#dde2e6',
 };
 
 export default {
@@ -70,7 +70,7 @@ export default {
 
   // Button
   buttonFontFamily: platform === PLATFORM.IOS ? 'Inter' : 'Inter',
-  buttonDisabledBg: this.textColor,
+  buttonDisabledBg: brandColors.textColor,
   buttonPadding: 6,
   get buttonPrimaryBg() {
     return this.brandPrimary;
@@ -151,7 +151,7 @@ export default {
 
   // Date Picker
   datePickerTextColor: brandColors.textColor,
-  datePickerBg: 'transparent',
+  datePickerBg: '#222', //'transparent',
 
   // FAB
   fabWidth: 56,

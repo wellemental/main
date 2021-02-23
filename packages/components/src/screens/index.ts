@@ -14,3 +14,6 @@ export { default as CategoryScreen } from './CategoryScreen';
 export { default as LandingScreen } from './LandingScreen';
 export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
 export { default as SaveUserScreen } from './SaveUserScreen';
+export { default as NotificationsScreen } from './NotificationsScreen';
+export { default as PlansScreen } from './PlansScreen';
+export { default as CelebrationScreen } from './CelebrationScreen';

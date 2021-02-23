@@ -1,27 +1,30 @@
-import { NativeBase } from 'native-base';
-import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import React, { CSSProperties } from 'react';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import ScrollView from './ScrollView';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 type ContainerProps = {
+  style?: CSSProperties;
   noPadding?: 'vertical' | 'horizontal' | 'none';
   color?: string;
   center?: boolean;
   scrollEnabled?: boolean;
 };
 
-const Container: React.FC<ContainerProps & NativeBase.Content> = ({
+const Container: React.FC<ContainerProps> = ({
   style,
-  scrollEnabled = true,
+  scrollEnabled = false,
   children,
   color,
   center,
   noPadding,
   ...props
 }) => {
+  const bgColor = color ? color : variables.containerBgColor;
+
   const styles = StyleSheet.flatten([
     {
-      backgroundColor: variables.containerBgColor,
+      backgroundColor: bgColor,
       paddingHorizontal:
         noPadding === 'horizontal' || noPadding === 'none'
           ? 0
@@ -32,27 +35,21 @@ const Container: React.FC<ContainerProps & NativeBase.Content> = ({
           : variables.mainContentPaddingVertical,
       justifyContent: center ? 'center' : undefined,
       alignItems: center ? 'center' : undefined,
-      flex: 1,
-      alignContent: 'center',
+      alignContent: center ? 'center' : undefined,
     },
     style,
   ]);
   const container = scrollEnabled ? (
-    <ScrollView
-      {...props}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles}
-      children={children}
-      style={{ backgroundColor: variables.containerBgColor }}
-    />
+    <ScrollView {...props} color={bgColor} children={children} />
   ) : (
     <View style={[{ flex: 1 }, styles]} children={children} />
   );
   return (
     <SafeAreaView
       style={{
-        backgroundColor: color ? color : variables.white,
+        backgroundColor: color ? color : variables.containerBgColor,
         flex: 1,
+        paddingTop: 0,
       }}>
       {container}
     </SafeAreaView>

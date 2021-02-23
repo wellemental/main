@@ -1,36 +1,61 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
-  Dimensions,
-  Image,
+  StatusBar,
+  Platform,
   ImageBackground,
+  Image,
 } from 'react-native';
-import { H1, Button as NBButton, Icon } from 'native-base';
+import { Button as NBButton, Icon } from 'native-base';
 import {
   AvyName,
   Box,
   Button,
   Container,
   Download,
+  VideoAndroid,
+  ScrollView,
   Favorite,
+  Headline,
   Paragraph,
-  Spinner,
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
+import { DownloadVideoService, PlaysServiceType } from 'services';
+import FadeIn from 'react-native-fade-in-image';
+import { useContainer, useMutation, useCurrentUser } from '../hooks';
+import { deviceWidth, deviceHeight } from 'services';
 
 type Props = {
   route: ContentScreenRouteProp;
   navigation: ContentScreenNavigationProp;
 };
 
-const deviceWidth = Dimensions.get('window').width - 30;
-const deviceHeight = deviceWidth * 0.56;
+// const deviceWidth = deviceWidthOg - 30;
+const videoHeight = deviceWidth * 0.56;
 
 const styles = StyleSheet.create({
   backgroundVideo: {
-    // position: 'absolute',
+    position: 'absolute',
+    top: 0,
+    height: videoHeight,
+    width: deviceWidth,
+  },
+  nativeVideoControls: {
+    top: 0,
+    height: videoHeight,
+    width: deviceWidth,
+  },
+  videoPoster: {
+    height: videoHeight,
+    width: deviceWidth,
+    justifyContent: 'center',
+    top: 0,
+    position: 'absolute',
+    backgroundColor: 'white',
+  },
+  fullscreen: {
     height: deviceHeight,
     width: deviceWidth,
   },
@@ -38,39 +63,135 @@ const styles = StyleSheet.create({
 
 const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const { content, teacher } = route.params;
-  const player = useRef();
+  const [video, setVideo] = useState(content.video);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(content.seconds);
+  const [isBuffering, setBuffering] = useState(false);
+  const [isOver, toggleOver] = useState(false);
+  const [showPoster, togglePoster] = useState(true);
+  const [error, setError] = useState();
+  const [isPaused, togglePaused] = useState(true);
+  const [showControls, toggleControls] = useState(false);
+  const [hasPlayed, toggleHasPlayed] = useState(false);
+  const { auth } = useCurrentUser();
 
-  if (player.current) {
-    player.current.presentFullscreenPlayer();
+  // Reference for video player to run methods from
+  const player = useRef();
+  // console.log('PALYER REF', player.current);
+
+  // Hide poster when video has started
+  if (showPoster && (currentTime > 0 || !isPaused)) {
+    togglePoster(false);
   }
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
-  const [videoRef, setVideoRef] = useState();
+  // Get PlaysService
+  const container = useContainer();
+  const playsService = container.getInstance<PlaysServiceType>('playsService');
 
-  const onBuffer = () => {
-    setLoading(true);
+  // Reset Has Played when it's a new content page
+  useEffect(() => {
+    toggleHasPlayed(false);
+  }, [content]);
+
+  // Determine when video is over to trigger transition to celebration page
+  if (!isOver && currentTime >= duration - 1) {
+    toggleOver(true);
+  }
+
+  // Increment totalComplete and totalMinutes stats
+  const { mutate: markComplete } = useMutation(() =>
+    playsService.complete(content.id, duration),
+  );
+
+  const handleComplete = (): void => {
+    if (!!player.current) {
+      console.log('DISMISSING', player.current.dismissFullscreenPlayer);
+      player.current.dismissFullscreenPlayer();
+    }
+
+    markComplete();
+    navigation.navigate('Celebration');
+  };
+
+  // Trigger handleComplete function once isOver state updates to true
+  useEffect(() => {
+    if (isOver) {
+      handleComplete();
+    }
+  }, [isOver]);
+
+  // Add to user's recently played when they tap the play button
+  const { mutate: addPlayCount } = useMutation(() =>
+    playsService.add(content.id),
+  );
+
+  const androidOrPortrait =
+    content.video_orientation === 'portrait' || Platform.OS === 'android';
+
+  const handlePlay = (): void => {
+    // Only count if it hasn't been logged already
+    if (!hasPlayed) {
+      addPlayCount();
+      toggleHasPlayed(true);
+    }
+
+    // If vertical video, trigger to VideoScreen, if not just play the video
+    if (androidOrPortrait) {
+      navigation.navigate('Video', {
+        content,
+        teacher,
+        savedVideoPath: video,
+        handleComplete: handleComplete,
+      });
+    } else {
+      toggleControls(!showControls);
+      togglePaused(!isPaused);
+    }
+  };
+
+  const service = new DownloadVideoService();
+
+  useEffect(() => {
+    const handleGetVideo = async (): Promise<void> => {
+      const newVideo = await service.getVideo(video);
+      setVideo(newVideo);
+    };
+
+    handleGetVideo();
+  }, []);
+
+  const handleError = (err: any): void => {
+    setError(err);
+  };
+
+  const onProgress = (data): void => {
+    if (!isOver) {
+      setCurrentTime(data.currentTime);
+    }
+  };
+
+  const onLoad = (data): void => {
+    setDuration(data.duration);
+  };
+
+  const onBuffer = ({ isBuffering }: { isBuffering: boolean }): void => {
+    setBuffering(isBuffering);
   };
 
   return (
-    <Container>
-      <View style={{ width: deviceWidth, height: deviceHeight }}>
-        {content.video_orientation === 'portrait' ? (
+    <>
+      {androidOrPortrait ? (
+        <View style={{ width: deviceWidth, height: videoHeight }}>
           <ImageBackground
             source={{ uri: content.thumbnail }}
             style={{
-              height: deviceHeight,
+              height: videoHeight,
               width: deviceWidth,
               justifyContent: 'center',
               flex: 1,
             }}>
             <NBButton
-              onPress={() =>
-                navigation.navigate('Video', {
-                  content,
-                  teacher,
-                })
-              }
+              onPress={handlePlay}
               style={{
                 backgroundColor: 'rgba(112,113,118,.95)', //'#707176', //'rgba(0,0,0,.5)',
                 borderRadius: 40,
@@ -81,58 +202,91 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
               <Icon name="play" style={{ fontSize: 30 }} />
             </NBButton>
           </ImageBackground>
-        ) : (
+        </View>
+      ) : (
+        <View style={{ width: deviceWidth, height: videoHeight }}>
           <Video
             source={{
               uri: content.video,
             }} // Can be a URL or a local file.
-            ref={(ref) => {
-              setVideoRef(ref);
-            }}
-            fullscreenAutorotate={false}
-            fullscreenOrientation={content.video_orientation}
+            style={styles.nativeVideoControls}
             controls={true}
             playInBackground={true}
+            ignoreSilentSwitch="ignore"
             resizeMode="cover"
-            paused={true}
+            paused={isPaused}
             poster={content.thumbnail}
             posterResizeMode="cover"
-            onLoad={() => <Spinner />}
-            onBuffer={() => <Spinner />} // Callback when remote video is buffering
-            //onError={this.videoError} // Callback when video cannot be loaded
-            style={styles.backgroundVideo}
+            onBuffer={onBuffer}
+            onLoad={onLoad}
+            onError={handleError}
+            onProgress={onProgress}
+            ref={(ref) => (player.current = ref)}
           />
-        )}
-      </View>
-      {/* <Image
-        source={{ uri: content.thumbnail }}
-        style={{ height: 200, width: null, flex: 1 }}
-      /> */}
-      <Box row justifyContent="space-between" gt={2} gb={1}>
-        <H1>{content.title}</H1>
-        <Box row>
-          <Favorite onProfile contentId={content.id} />
-          <Download videoUrl={content.video} />
+
+          {showPoster && isPaused && (
+            <View style={styles.videoPoster}>
+              <NBButton
+                onPress={handlePlay}
+                style={{
+                  backgroundColor: 'rgba(112,113,118,.95)',
+                  borderRadius: 40,
+                  height: 60,
+                  zIndex: 100,
+                  width: 60,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="play" style={{ fontSize: 30 }} />
+              </NBButton>
+              <FadeIn style={styles.videoPoster}>
+                <Image
+                  source={{ uri: content.thumbnail }}
+                  style={styles.videoPoster}
+                />
+              </FadeIn>
+            </View>
+          )}
+        </View>
+      )}
+      <ScrollView>
+        <Box row justifyContent="space-between" mt={2} mb={1}>
+          <Headline style={{ flex: 4 }}>{content.title}</Headline>
+          <Box row>
+            <Favorite onProfile contentId={content.id} />
+            <Download videoUrl={content.video} />
+          </Box>
         </Box>
-      </Box>
 
-      <Paragraph gb={1}>
-        {content.type.toUpperCase()} | {content.length}
-      </Paragraph>
+        <Paragraph gb={1}>
+          {content.type.toUpperCase()} | {content.length}
+        </Paragraph>
 
-      <Paragraph gb={2}>{content.description}</Paragraph>
+        <Paragraph gb={1}>{content.description}</Paragraph>
 
-      <Button
-        transparent
-        onPress={() =>
-          navigation.navigate('Teacher', {
-            teacher,
-          })
-        }>
-        <AvyName source={teacher.photo} name={content.teacher} onProfile />
-      </Button>
-      <Paragraph>{teacher.bio}</Paragraph>
-    </Container>
+        <Button
+          transparent
+          onPress={(): void =>
+            navigation.navigate('Teacher', {
+              teacher,
+            })
+          }>
+          <AvyName source={teacher.photo} name={content.teacher} onProfile />
+        </Button>
+        <Paragraph>{teacher.bio}</Paragraph>
+
+        {auth &&
+          (auth.email === 'test@test.com' ||
+            auth.email === 'mike.r.vosters@gmail.com') && (
+            <>
+              <Paragraph>Current Time: {currentTime}</Paragraph>
+              <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
+              <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
+              <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
+            </>
+          )}
+      </ScrollView>
+    </>
   );
 };
 

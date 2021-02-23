@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Icon, Text } from 'native-base';
-import { DownloadVideoService, Content } from 'services';
-// import { useMutation } from '../hooks/useMutation';
+import { Button, Icon, Toast } from 'native-base';
+import { DownloadVideoService } from 'services';
 import variables from '../assets/native-base-theme/variables/wellemental';
-import { logger } from 'services';
 
 interface Props {
   videoUrl: string;
@@ -11,8 +9,6 @@ interface Props {
 
 const Download: React.FC<Props> = ({ videoUrl }) => {
   const [isDownloaded, toggleDownload] = useState(false);
-
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const service = new DownloadVideoService();
 
@@ -21,8 +17,7 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
       try {
         toggleDownload(await service.checkExists(videoUrl));
       } catch (err) {
-        logger.error('Error checking video cache status');
-        setError('Error, Try again');
+        // logger.error('Error checking video cache status');
       }
     };
     checkIfDownloaded();
@@ -40,17 +35,36 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
 
   const handleDownload = async () => {
     setLoading(true);
-    try {
-      if (isDownloaded) {
+    if (isDownloaded) {
+      try {
         await service.deleteVideo(videoUrl);
         toggleDownload(false);
-      } else {
+        Toast.show({
+          text: 'Video removed',
+          style: { marginBottom: 20 },
+        });
+      } catch (err) {
+        Toast.show({
+          text: 'Error removing video. Try again.',
+          style: { marginBottom: 20 },
+        });
+      }
+    } else {
+      try {
         await service.downloadVideo(videoUrl);
         toggleDownload(true);
+        Toast.show({
+          text: 'Video saved for offline',
+          style: { marginBottom: 20 },
+        });
+      } catch (err) {
+        Toast.show({
+          text: 'Error saving video for offline. Please try again.',
+          style: { marginBottom: 20 },
+        });
       }
-    } catch (err) {
-      setError('Error. Try again.');
     }
+
     setLoading(false);
   };
   return (

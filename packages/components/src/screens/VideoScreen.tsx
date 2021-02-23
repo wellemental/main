@@ -1,26 +1,17 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Image, Dimensions } from 'react-native';
-import { H1 } from 'native-base';
-import {
-  Container,
-  Button,
-  Paragraph,
-  AvyName,
-  Spinner,
-  Favorite,
-  Box,
-  Error,
-} from '../primitives';
-import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Platform } from 'react-native';
+import { Error, VideoAndroid, Container } from '../primitives';
+import { VideoScreenNavigationProp, VideoScreenRouteProp } from '../types';
 import Video from 'react-native-video';
+import { useNavigation } from '../hooks';
+import { deviceWidth } from 'services';
 
 type Props = {
-  route: ContentScreenRouteProp;
-  navigation: ContentScreenNavigationProp;
+  route: VideoScreenRouteProp;
+  navigation: VideoScreenNavigationProp;
 };
 
-const deviceHeight = Dimensions.get('window').height - 100;
-const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = deviceWidth * 1.78;
 
 const styles = StyleSheet.create({
   backgroundVideo: {
@@ -32,81 +23,65 @@ const styles = StyleSheet.create({
   },
 });
 
-const VideoScreen: React.FC<Props> = ({ navigation, route }) => {
-  const { content, teacher } = route.params;
-  const player = useRef();
+const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
+  const { content, savedVideoPath, handleComplete } = route.params;
+  const [error, setError] = useState();
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(content.seconds);
+  const [isOver, toggleOver] = useState(false);
 
-  if (player.current !== undefined) {
-    player.current.presentFullscreenPlayer();
+  if (!isOver && currentTime >= duration - 1) {
+    toggleOver(true);
   }
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
+  useEffect(() => {
+    if (isOver) {
+      handleComplete();
+    }
+  }, [isOver]);
 
-  const [videoRef, setVideoRef] = useState();
-
-  const onBuffer = () => {
-    setLoading(true);
-  };
-
-  const onLoad = (payload) => {
-    if (videoRef) {
-      console.log('PAYLOAD', payload);
-      videoRef.presentFullscreenPlayer();
+  const onProgress = (data) => {
+    if (!isOver) {
+      setCurrentTime(data.currentTime);
     }
   };
 
-  return (
-    <View>
+  const onLoad = (data) => {
+    setDuration(data.duration);
+  };
+
+  return Platform.OS === 'android' ? (
+    <VideoAndroid
+      source={{
+        uri: savedVideoPath ? savedVideoPath : content.video,
+      }}
+      // onProgress={onProgress}
+      // onLoad={onLoad}
+      // onError={setError}
+      onBack={navigation.goBack}
+      style={{ marginTop: 20 }}
+    />
+  ) : (
+    <View style={{ backgroundColor: '#000' }}>
       <View style={{ height: deviceHeight, width: deviceWidth }}>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <Video
-            source={{
-              uri: content.video,
-            }} // Can be a URL or a local file.
-            ref={(ref) => {
-              setVideoRef(ref);
-            }}
-            fullscreenAutorotate={false}
-            fullscreenOrientation={content.video_orientation}
-            playInBackground={true}
-            controls={true}
-            resizeMode="cover"
-            paused={true}
-            // onReadyForDisplay={onLoad}
-            // onBuffer={onBuffer} // Callback when remote video is buffering
-            onError={setError}
-            style={styles.backgroundVideo}
-          />
-        )}
+        <Video
+          source={{
+            uri: savedVideoPath ? savedVideoPath : content.video,
+          }} // Can be a URL or a local file.
+          fullscreenAutorotate={false}
+          fullscreenOrientation={content.video_orientation}
+          controls={true}
+          playInBackground={true}
+          ignoreSilentSwitch="ignore"
+          // resizeMode="cover"
+          // paused={true}
+          onProgress={onProgress}
+          onLoad={onLoad}
+          onError={setError}
+          style={styles.backgroundVideo}
+        />
       </View>
       <Error error={error} />
-      {/* <Image
-        source={{ uri: content.thumbnail }}
-        style={{ height: 200, width: null, flex: 1 }}
-      /> */}
-      {/* <Box row justifyContent="space-between" gt={2} gb={1}>
-        <H1>{content.title}</H1>
-        <Favorite onProfile contentId={content.id} />
-      </Box> */}
-
-      {/* <Paragraph gb>
-        {content.type.toUpperCase()} | {content.length}
-      </Paragraph>
-
-      <Paragraph gb>{content.description}</Paragraph> */}
-
-      {/* <Button
-        transparent
-        onPress={() =>
-          navigation.navigate('Teacher', {
-            teacher,
-          })
-        }>
-        <AvyName source={teacher.photo} name={content.teacher} onProfile />
-      </Button> */}
     </View>
   );
 };

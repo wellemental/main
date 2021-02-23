@@ -7,23 +7,29 @@ import {
   RegisteredStyle,
   Text,
 } from 'react-native';
-import variables from '../assets/native-base-theme/variables/wellemental';
+import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 
-interface Props {
+export interface ParagraphProps {
   style?: RecursiveArray<false | TextStyle | RegisteredStyle<TextStyle>>;
   gb?: number;
   gt?: number;
   gv?: number;
   size?: number;
+  center?: boolean;
+  fine?: boolean;
+  bold?: boolean;
 }
 
-const Paragraph: React.FC<Props & NativeBase.Text> = ({
+const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
   style,
   children,
   size,
   gt,
   gb,
   gv,
+  center,
+  fine,
+  bold,
 }) => {
   const spacing = 15;
   const styles2 = StyleSheet.flatten([
@@ -32,7 +38,9 @@ const Paragraph: React.FC<Props & NativeBase.Text> = ({
       lineHeight: 22,
       paddingTop: gv ? spacing * gv : gt ? spacing * gt : 0,
       paddingBottom: gv ? spacing * gv : gb ? spacing * gb : 0,
-      color: variables.textColor,
+      color: fine ? brandColors.lightTextColor : brandColors.textColor,
+      textAlign: center ? 'center' : 'left',
+      fontWeight: bold ? '900' : undefined,
     },
     style,
   ]);

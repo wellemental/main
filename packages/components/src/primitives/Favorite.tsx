@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon } from 'native-base';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { UpdateUserService } from 'services';
@@ -11,28 +11,35 @@ interface Props {
 }
 
 const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
-  const { user } = useCurrentUser();
+  const { auth, user } = useCurrentUser();
   const [isFav, toggleFav] = useState(
-    user &&
-      user.actions &&
-      user.actions[contentId] &&
-      user.actions[contentId].favorited,
+    user && user.favorites && user.favorites[contentId]
+      ? user.favorites[contentId].favorited
+      : false,
   );
 
   const [error, setError] = useState();
+
   const service = new UpdateUserService();
   const { loading, mutate } = useMutation(() =>
-    service.favorite(user.id, contentId, !isFav),
+    service.favorite(auth.uid, contentId, !isFav),
   );
 
   const handleFavorite = () => {
     try {
       mutate();
-      toggleFav(!isFav);
     } catch (err) {
       setError('Error');
     }
   };
+
+  useEffect(() => {
+    toggleFav(
+      user && user.favorites && user.favorites[contentId]
+        ? user.favorites[contentId].favorited
+        : false,
+    );
+  }, [user, contentId]);
 
   return (
     <Button

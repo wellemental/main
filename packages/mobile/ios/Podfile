@@ -1,15 +1,11 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../../../node_modules/react-native/scripts/react_native_pods'
+require_relative '../../../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '10.0'
 
 target 'wellemental' do
   config = use_native_modules!
-
-  use_react_native!(:path => config["reactNativePath"])
-
-  # Manually add additional Pods
-  ## None so far
+  use_react_native!(path: '../../../node_modules/react-native')
 
   target 'wellementalTests' do
     inherit! :complete
@@ -22,6 +18,10 @@ target 'wellemental' do
   # you should disable these next few lines.
   use_flipper!
   post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
+    
     flipper_post_install(installer)
   end
 end

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Container, ContentLoop, PageHeading } from '../primitives';
 import { CategoryScreenRouteProp } from '../types';
+import { useCurrentUser } from '../hooks';
+import { defaultAgeGroups } from '../constants';
 
 type Props = {
   route: CategoryScreenRouteProp;
@@ -8,13 +10,20 @@ type Props = {
 
 const CategoryScreen: React.FC<Props> = ({ route }) => {
   const { category } = route.params;
+  const { translation } = useCurrentUser();
+
+  const isAgeGroup = defaultAgeGroups.includes(category);
 
   return (
-    <Container>
+    <Container scrollEnabled>
       <PageHeading
-        title={category.title} // translation[category.title]}
+        title={
+          isAgeGroup ? `${category.title} ${translation.years}` : category.title
+        }
         subtitle={
-          category.description // ? translation[category.description] : undefined
+          translation[category.description]
+            ? translation[category.description]
+            : category.description // ? translation[category.description] : undefined
         }
       />
 

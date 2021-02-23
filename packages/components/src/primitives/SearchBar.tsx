@@ -18,7 +18,7 @@ const SearchBar: React.FC<Props> = ({ value, setState }) => {
           marginBottom: 15,
         }}>
         <Icon name="ios-search" />
-        <Input autoFocus value={value} onChangeText={setState} />
+        <Input value={value} onChangeText={setState} />
         {!!value && (
           <Button
             transparent

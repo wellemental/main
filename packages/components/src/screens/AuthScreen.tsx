@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthService, Languages } from 'services';
 import {
   Container,
@@ -7,9 +7,8 @@ import {
   Input,
   Error,
   Box,
-  DatePicker,
+  LegalLinks,
 } from '../primitives';
-import moment from 'moment';
 import { AuthScreenRouteProp, Translations } from '../types';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
@@ -30,11 +29,8 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   const [auths, setAuths] = useState<null | string[]>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [name, setName] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
-  const minBirthday = moment().subtract(13, 'years').toDate();
-  const [birthday, setBirthday] = useState<Date>(minBirthday);
 
   const service = new AuthService();
 
@@ -65,22 +61,11 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
     const newAccount = {
       email,
       password,
-      birthday: moment(birthday).format('YYYY-MM-DD'),
       language,
-      name,
     };
 
     if (password.length < 7) {
       setError(translation['Password must be at least 7 characters long.']);
-      setLoading(false);
-      return;
-    }
-
-    if (birthday > minBirthday) {
-      setError(translation['You are not old enough to join Wellemental.']);
-      setEmail('');
-      setPassword('');
-      setAuths(null);
       setLoading(false);
       return;
     }
@@ -95,6 +80,15 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   };
 
   let handleStep: () => void = handleCheckEmail;
+  const [headline, setHeadline] = useState('Enter email...');
+
+  useEffect(() => {
+    if (auths && auths.length === 0) {
+      setHeadline('Create Account');
+    } else if (auths && auths.length > 0) {
+      setHeadline('Login');
+    }
+  }, [auths]);
 
   if (auths && auths.length === 0) {
     handleStep = handleSignup;
@@ -103,8 +97,8 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   }
 
   return (
-    <Container>
-      <PageHeading title={translation.Login} />
+    <Container scrollEnabled>
+      <PageHeading title={translation[headline]} />
 
       <Input
         label={translation.Email}
@@ -127,20 +121,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
             onChangeText={setPassword}
           />
 
-          {auths && auths.length === 0 && (
-            <>
-              <Input
-                label={translation.Username}
-                value={name}
-                onChangeText={setName}
-              />
-              <DatePicker
-                onDateChange={setBirthday}
-                translation={translation}
-                locale={language === Languages.Es ? 'es' : 'en'}
-              />
-            </>
-          )}
+          {auths && auths.length === 0 && <LegalLinks />}
         </>
       )}
       <Button
@@ -149,7 +130,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
         loading={loading}
         onPress={handleStep}
       />
-      <Box gt>
+      <Box mt={2}>
         <Button
           transparent
           text={translation['Forgot password?']}

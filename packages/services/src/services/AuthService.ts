@@ -1,26 +1,27 @@
-import React from 'react';
-// import { auth } from '../base';
-import { AuthenticationError } from '../models/Errors';
 import auth from '@react-native-firebase/auth';
-import { NewAccount } from '../types';
+import { AuthenticationError } from '../models/Errors';
+import { NewAccount, AuthServiceType } from '../types';
 import LocalStateService from './LocalStateService';
-import Logger from './LoggerService';
-import tracker, { TrackingEvents } from './TrackerService';
+import UpdateUserService from './UpdateUserService';
+// import tracker, { TrackingEvents } from './TrackerService';
 import { FirebaseError } from 'firebase';
+// import logger from './LoggerService';
 
-class AuthService {
+const profileService = new UpdateUserService();
+const localStateService = new LocalStateService();
+
+class AuthService implements AuthServiceType {
   public async checkExistingLogins(email: string): Promise<string[]> {
     try {
       return await auth().fetchSignInMethodsForEmail(email);
     } catch (err) {
-      Logger.error('Error checking existing logins');
+      // logger.error('Error checking existing logins');
       return Promise.reject(this.checkError(err));
     }
   }
 
   public async login(email: string, password: string): Promise<void> {
     // Reset local state before sign-in to avoid race conditions with listeners
-    const localStateService = new LocalStateService();
     try {
       localStateService.resetStorage();
     } catch (error) {
@@ -29,37 +30,56 @@ class AuthService {
     try {
       await auth().signInWithEmailAndPassword(email, password);
     } catch (err) {
-      Logger.error('Error logging in');
+      logger.error('Error logging in');
       return Promise.reject(this.checkError(err));
     }
-    tracker.track(TrackingEvents.Login);
+    // tracker.track(TrackingEvents.Login);
     return Promise.resolve();
   }
 
   public async signup(account: NewAccount): Promise<void> {
     try {
       // Reset local state before creating the user to avoid race conditions with listeners
-      const localStateService = new LocalStateService();
       try {
-        localStateService.resetStorage();
+        await localStateService.resetStorage();
       } catch (err) {
         return Promise.reject(err);
       }
 
-      // Save extra login info to LocalStorage so we can save to database on redirect
-      try {
-        await localStateService.setStorage('wmBirthday', account.birthday);
-        await localStateService.setStorage('wmLanguage', account.language);
-        await localStateService.setStorage('wmName', account.name);
-      } catch (err) {
-        Logger.error(`Failed to set async storage for new account: ${err}`);
-      }
+      // // Create base local user for Async Storage, not storing sensitive info
+      // const localUser: LocalUser = {
+      //   name: account.name,
+      //   birthday: account.birthday,
+      //   language: account.language,
+      //   onboardingComplete: false,
+      // };
 
-      await auth().createUserWithEmailAndPassword(
-        account.email,
-        account.password,
-      );
-      tracker.track(TrackingEvents.Login);
+      // // Save extra login info to LocalStorage so we can save to database on redirect
+      // try {
+      //   await localStateService.setStorage('wmUser', localUser);
+      // } catch (err) {
+      //   logger.error(`Failed to set async storage for new account: ${err}`);
+      // }
+
+      await auth()
+        .createUserWithEmailAndPassword(account.email, account.password)
+        .then(async (user) => {
+          try {
+            await profileService.createProfile({
+              id: user.user.uid,
+              email: user.user.email,
+              // name: account.name,
+              // birthday: account.birthday,
+              language: account.language,
+            });
+          } catch (err) {
+            // logger.error(`Error creating user doc - ${err}`);
+          }
+        })
+        .catch((err) => {
+          // logger.error(`Error creating user and userDoc - ${err}`);
+        });
+      // tracker.track(TrackingEvents.SignUp);
     } catch (err) {
       return Promise.reject(this.checkError(err));
     }
@@ -90,7 +110,7 @@ class AuthService {
 
   public async logout(): Promise<void> {
     try {
-      tracker.track(TrackingEvents.Logout);
+      // tracker.track(TrackingEvents.Logout);
       return auth().signOut();
     } catch (err) {
       return Promise.reject(

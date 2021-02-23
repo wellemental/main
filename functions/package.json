@@ -10,7 +10,15 @@
     "deploy": "firebase deploy --only functions",
     "deploy:staging": "yarn run firebase deploy --only functions -P staging",
     "deploy:production": "yarn run firebase deploy --only functions -P production",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "cloneEnv:toStaging": "firebase functions:config:clone --from prod-wellemental",
+    "cloneEnv:toProduction": "firebase functions:config:clone --from dev-wellemental",
+    "setActive:production": "firebase use production",
+    "setActive:staging": "firebase use staging",
+    "runMigration:staging": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=staging.json node lib/migrations/command.js",
+    "runMigration:production": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=production.json node lib/migrations/command.js",
+    "importMailchimp:production": "yarn run build && FIREBASE=prod node lib/scripts/importMailchimp.js",
+    "getIapReceipts:production": "yarn run build && FIREBASE=prod node lib/scripts/iapUsersSignup.js"
   },
   "engines": {
     "node": "10"
@@ -19,13 +27,18 @@
   "dependencies": {
     "firebase-admin": "^9.1.1",
     "firebase-functions": "^3.6.1",
+    "glob": "^7.1.6",
+    "googleapis": "^67.0.0",
+    "mailchimp-api-v3": "^1.14.0",
+    "md5": "^2.3.0",
     "moment": "^2.27.0",
+    "node-apple-receipt-verify": "^1.7.4",
     "stripe": "^8.90.0"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0",
     "tslint": "^5.12.0",
-    "typescript": "^3.8.0"
+    "typescript": "^3.9.7"
   },
   "private": true
 }

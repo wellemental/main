@@ -2,7 +2,14 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { Content, Teacher, Languages, Category, Version } from 'services';
+import {
+  Content,
+  Teacher,
+  Languages,
+  Category,
+  Tags,
+  VersionConfig,
+} from 'services';
 import { ReactElement } from 'react';
 
 export type TabParamList = {
@@ -10,7 +17,12 @@ export type TabParamList = {
   Home: undefined;
   Favorites: undefined;
   Search: undefined;
-  Settings: undefined;
+  Profile: undefined;
+};
+
+export type MenuItem = {
+  label: string;
+  filter?: Tags;
 };
 
 export type Unsubscriber = () => void;
@@ -19,13 +31,21 @@ export type RootStackParamList = {
   TabNav: undefined;
   Content: { content: Content; teacher: Teacher };
   Category: { category: Category };
-  Video: { content: Content; teacher: Teacher };
+  Video: {
+    content: Content;
+    teacher: Teacher;
+    savedVideoPath?: string;
+    handleComplete: () => void;
+  };
   Teacher: { teacher: Teacher };
   'Edit Profile': undefined;
   'Save User': undefined;
   'Forgot Password': { translation: Translations };
   AuthStack: undefined;
-  Upgrade: { version: Version };
+  Upgrade: { version: VersionConfig };
+  Plans: undefined;
+  Celebration: undefined;
+  Notifications: undefined;
 };
 
 export type AuthStackParamList = {

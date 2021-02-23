@@ -1,9 +1,8 @@
 // import { firestore } from '../base';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { User as FBUser } from 'firebase/app';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
+// import {firestore, auth, FbUser, DocumentSnapshot} from '../base'
 import { Teacher, Teachers, User } from '../types';
 import { ApplicationError } from '../models/Errors';
 
@@ -18,14 +17,14 @@ export interface UserServiceType {
 // NOT CURRENTLY USING, KEPT IT ALL IN CURRENT USER CONTEXT
 
 class UserService implements UserServiceType {
-  private auth: FirebaseAuthTypes.User | null = null;
+  private auth: FbUser | null = null;
   private user?: User;
   private authUnsubscriber?: () => void;
   private userDocUnsubscriber?: () => void;
-  private setAuth: React.Dispatch<FBUser | null>;
+  private setAuth: React.Dispatch<FbUser | null>;
   private setUser: React.Dispatch<React.SetStateAction<User | null>>;
 
-  constructor(setAuth: React.SetStateAction<FBUser | null>, setUser: React.Dispatch<React.SetStateAction<User | null>>) {
+  constructor(setAuth: React.SetStateAction<FbUser | null>, setUser: React.Dispatch<React.SetStateAction<User | null>>) {
     this.setAuth = setAuth;
     this.setUser = setUser;
   }
@@ -50,7 +49,7 @@ class UserService implements UserServiceType {
   public subscribeToUserDoc = async (user: User) {
     userDocUnsubscriber.current = firestore()
       .collection('users')
-      .onSnapshot(async (snapshot: firestore.DocumentSnapshot) => {
+      .onSnapshot(async (snapshot: DocumentSnapshot) => {
         const userData = snapshot.data();
 
         if (!user.email) {

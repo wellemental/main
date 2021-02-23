@@ -10,8 +10,19 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+// Imports below were added
+import androidx.multidex.MultiDexApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage; // react-native-splash-screen >= 0.3.1 
+// import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import com.dooboolab.RNIap.RNIapPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import org.wonday.orientation.OrientationPackage;
+import org.wonday.orientation.OrientationActivityLifecycle;
+import com.rnfs.RNFSPackage;
+import com.brentvatne.react.ReactVideoPackage;
 
-public class MainApplication extends Application implements ReactApplication {
+// public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication { // Added
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -31,7 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected String getJSMainModuleName() {
-          return "index";
+          return "packages/mobile/index";
         }
       };
 
@@ -45,6 +56,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
   }
 
   /**
@@ -62,7 +74,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.wellemental.wellemental.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.wellemental.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

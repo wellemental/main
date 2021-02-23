@@ -26,7 +26,6 @@ interface Props {
     | 'Octicons'
     | 'SimpleLineIcons'
     | 'Zocial';
-  padder?: 'top' | 'bottom' | 'vertical';
 }
 
 const Button: React.FC<Props & NativeBase.Button> = ({
@@ -50,7 +49,7 @@ const Button: React.FC<Props & NativeBase.Button> = ({
         <>
           {iconName && (
             <Icon
-              type={iconType ? iconType : 'FontAwesome5'}
+              type={iconType ? iconType : 'Ionicons'}
               name={iconName}
               style={{ paddingRight: 0, marginRight: -5 }}
             />

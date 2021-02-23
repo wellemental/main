@@ -1,8 +1,9 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
 import Paragraph from './Paragraph';
-import { Card, CardItem, Thumbnail } from 'native-base';
+import { Card, CardItem } from 'native-base';
 import { Teacher } from 'services';
+import Image from './Image';
 import { useNavigation } from '@react-navigation/native';
 
 interface Props {
@@ -30,7 +31,7 @@ const TeacherCard: React.FC<Props> = ({ teacher }) => {
           justifyContent: 'center',
           flexDirection: 'column',
         }}>
-        <Thumbnail
+        <Image
           style={{ height: deviceWidth, width: deviceWidth, borderRadius: 100 }}
           source={{ uri: teacher.photo }}
         />

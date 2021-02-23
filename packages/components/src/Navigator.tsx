@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   TabNav,
@@ -9,9 +10,12 @@ import {
   LandingScreen,
   CategoryScreen,
   EditProfileScreen,
-  SaveUserScreen,
   ForgotPasswordScreen,
+  NotificationsScreen,
   UpgradeScreen,
+  CelebrationScreen,
+  PlansScreen,
+  SettingsScreen,
 } from './screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList, AuthStackParamList } from './types';
@@ -27,7 +31,10 @@ const AuthStackScreen: React.FC = () => {
     <AuthStack.Navigator
       screenOptions={{
         headerBackTitleVisible: false,
-        headerStyle: { shadowOpacity: 0 },
+        headerStyle: {
+          elevation: 0, // remove shadow on Android
+          shadowOpacity: 0, // remove shadow on iOS,
+        },
         headerTitle: '',
         headerTintColor: variables.brandPrimary,
         headerLeftContainerStyle: { paddingLeft: 10, paddingTop: 10 },
@@ -39,9 +46,7 @@ const AuthStackScreen: React.FC = () => {
 };
 
 const Navigator: React.FC = () => {
-  const { auth, user } = useCurrentUser();
-  const userDocCreated =
-    user && !!user.email && !!user.birthday && !!user.name && !!user.language;
+  const { user } = useCurrentUser();
 
   return (
     <NavigationContainer>
@@ -49,7 +54,10 @@ const Navigator: React.FC = () => {
         mode="modal"
         screenOptions={{
           headerBackTitleVisible: false,
-          headerStyle: { shadowOpacity: 0 },
+          headerStyle: {
+            elevation: 0, // remove shadow on Android
+            shadowOpacity: 0, // remove shadow on iOS,
+          },
           headerTitle: '',
           headerTintColor: variables.brandPrimary,
           headerLeftContainerStyle: {
@@ -58,36 +66,54 @@ const Navigator: React.FC = () => {
             transform: [{ rotateZ: '-90deg' }],
           },
         }}>
-        {auth ? (
+        {user ? (
           <>
-            {!userDocCreated ? (
-              <Stack.Screen name="Save User" component={SaveUserScreen} />
-            ) : (
-              <>
-                <Stack.Screen
-                  name="TabNav"
-                  component={TabNav}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen name="Content" component={ContentScreen} />
-                <Stack.Screen name="Category" component={CategoryScreen} />
-                <Stack.Screen name="Video" component={VideoScreen} />
-                <Stack.Screen
-                  name="Upgrade"
-                  component={UpgradeScreen}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen name="Teacher" component={TeacherScreen} />
-                <Stack.Screen
-                  name="Edit Profile"
-                  component={EditProfileScreen}
-                />
-              </>
-            )}
+            <Stack.Screen
+              name="TabNav"
+              component={TabNav}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="Content" component={ContentScreen} />
+            <Stack.Screen
+              name="Celebration"
+              component={CelebrationScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="Plans" component={PlansScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="Category" component={CategoryScreen} />
+            <Stack.Screen
+              name="Video"
+              component={VideoScreen}
+              options={{
+                headerStyle: {
+                  backgroundColor: '#000',
+                  shadowOpacity: 0,
+                },
+                headerTintColor: '#fff',
+                cardStyle: {
+                  backgroundColor: '#000',
+                },
+                headerShown: Platform.OS === 'android' ? false : true,
+              }}
+            />
+            <Stack.Screen
+              name="Upgrade"
+              component={UpgradeScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="Teacher" component={TeacherScreen} />
+            <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+            <Stack.Screen
+              name="Notifications"
+              component={NotificationsScreen}
+            />
           </>
         ) : (
           <>

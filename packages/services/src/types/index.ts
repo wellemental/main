@@ -1,11 +1,15 @@
-import React from 'react';
 import defaultValues from '../services/RemoteConfigDefaults';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
+import { FirebaseError } from 'firebase';
+// import { firestore } from '../base';
 
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
-
+export type Timestamp = FirebaseFirestoreTypes.Timestamp;
+export type FieldValue = FirebaseFirestoreTypes.FieldValue;
+export type Query = FirebaseFirestoreTypes.Query;
+export type QueryDocumentSnapshot = FirebaseFirestoreTypes.QueryDocumentSnapshot;
 export type Translations = { [key: string]: string };
+export type AuthorizationStatus = FirebaseMessagingTypes.AuthorizationStatus;
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -57,9 +61,14 @@ export enum Tags {
 export type Category = {
   title: string;
   description: string;
-  tag: Tags | TimeOfDay | Category;
+  tag: Tags | TimeOfDay | Category | string;
   image: string;
 };
+
+export interface Feature extends Category {
+  'title-es': string;
+  'description-es': string;
+}
 
 export enum Categories {
   Meditate = 'Meditate',
@@ -77,18 +86,78 @@ export enum ContentStatus {
   Draft = 'draft',
 }
 
-export type Action = {
+export type Favorite = {
   favorited: boolean;
+  updated_at: Date;
+};
+
+export interface LocalUser {
+  id?: string;
+  // name: string;
+  // birthday: string;
+  language: Languages;
+  updated_at?: Date;
+}
+
+export interface LocalContent {
+  content: ContentObj;
+  teachers: AllTeachers;
+  updated_at?: Date;
+}
+
+export type IapValidate = {
+  receipt: any;
+  productId: string;
+};
+
+export enum PlanId {
+  Monthly = 'wellemental_pro',
+  Yearly = 'wellemental_pro_year',
+  Free = 'free',
+}
+
+export type UserPlan = {
+  type: 'iosIap' | 'promoCode';
+  auto_renew_status: boolean;
+  nextRenewalDate: string; // Just storing so humans can easily read it in database
+  nextRenewalUnix: number; // unix timestamp
+  canceledAtUnix?: number;
+  planId: string;
+  status: 'canceled' | 'active' | 'trialing' | 'pending';
+};
+
+type Product = {
+  bundleId: string;
+  expirationDate: number;
+  originalTransactionId: string;
+  productId: PlanId;
+  quantity: number;
+  transactionId: string;
+};
+
+type ReceiptIap = {
+  userId: string;
+  receipt: string;
+  verified: boolean;
+  products: Product[];
+  timestamp: number;
 };
 
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  birthday: string;
+  email?: string;
+  id?: string;
   language: Languages;
-  subStatus: SubStatus;
-  actions: { [key: string]: Action };
+  totalPlays: number | FieldValue;
+  totalCompleted: number | FieldValue;
+  totalSeconds: number | FieldValue;
+  streak: number | FieldValue;
+  firstPlay?: Date;
+  lastPlay?: Date;
+  stripeId?: string;
+  subStatus?: SubStatus;
+  favorites?: { [key: string]: Favorite };
+  plan?: UserPlan;
+  updated_at?: Date;
 }
 
 export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
@@ -107,8 +176,15 @@ export interface Content {
   length: string;
   language: Languages;
   status: ContentStatus;
-  updated_at: typeof firestore.Timestamp;
-  created_at: Date; //typeof firestore.Timestamp;
+  totalPlays?: number | FieldValue;
+  totalCompleted?: number | FieldValue;
+  totalFavorites?: number | FieldValue;
+  updated_at: Timestamp;
+  created_at: Timestamp; //typeof Timestamp;
+}
+
+export interface ContentObj {
+  [key: string]: Content;
 }
 
 export interface Teacher {
@@ -116,6 +192,8 @@ export interface Teacher {
   name: string; //Teachers;
   bio: string;
   photo: string;
+  language: Languages;
+  updated_at: Timestamp;
 }
 
 export interface AllTeachers {
@@ -123,24 +201,25 @@ export interface AllTeachers {
 }
 
 export interface UserProfile {
-  name?: string;
-  birthday?: string;
+  // name?: string;
+  // birthday?: string;
   language?: Languages;
+  updated_at?: Timestamp;
 }
 
 export interface NewAccount {
   email: string;
   password: string;
-  name: string;
-  birthday: string;
+  // name: string;
+  // birthday: string;
   language: Languages;
 }
 
 export interface InitialUserDoc {
   id: string;
   email: string;
-  name: string;
-  birthday: string;
+  // name: string;
+  // birthday: string;
   language: Languages | string;
 }
 
@@ -156,9 +235,67 @@ export type DownloadProgressCallbackResult = {
   bytesWritten: number; // The number of bytes written to the file so far
 };
 
+export type PlayEvent = {
+  contentId: string;
+  completed?: boolean;
+  createdAt: Timestamp;
+};
+
+export interface PlaysObj {
+  [id: string]: PlayEvent;
+}
+
+export interface ObserveNotificationsType {
+  requestPermissions(): Promise<void>;
+  saveTokenToDatabase(token: string): Promise<void>;
+  subscribe(): Promise<void>;
+  unsubscribe(): void;
+}
+
+export interface PlaysServiceType {
+  query: Query;
+  add(id: string): Promise<void>;
+  complete(id: string, duration: number): Promise<void>;
+  get(): Promise<PlaysObj | PlayEvent[]>;
+}
+
+export interface AuthServiceType {
+  checkExistingLogins(email: string): Promise<string[]>;
+  login(email: string, password: string): Promise<void>;
+  signup(account: NewAccount): Promise<void>;
+  checkError(err: FirebaseError): Error;
+  logout(): Promise<void>;
+}
+
+export interface LocalStateServiceType {
+  resetStorage(): Promise<void>;
+  setStorage(
+    key: string,
+    value: string | { [key: string]: string } | LocalUser | UserProfile,
+  ): Promise<void>;
+  getStorage(key: string): Promise<string>;
+  getContent(): Promise<LocalContent>;
+  getUser(): Promise<LocalUser>;
+  removeStorage(key: string): Promise<void>;
+}
+
 export interface ContentServiceType {
-  buildContent(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Content;
-  getContent(): Promise<Content[]>;
+  buildContent(doc: QueryDocumentSnapshot): Content;
+  getContent(): Promise<ContentObj>;
+  getLatestUpdate(): Promise<Date>;
+}
+
+export type PromoCode = {
+  id: string;
+  code: string;
+  limit: number;
+  used: number;
+};
+
+export interface PromoCodeServiceType {
+  validateCode(code: string): Promise<PromoCode>;
+  upgradeUser(userId: string, code: string): Promise<void>;
+  validateAndUpgrade(userId: string, code: string): Promise<void>;
 }
 
 export interface DownloadVideoServiceType {
@@ -177,9 +314,10 @@ export interface UpdateUserServiceType {
 }
 
 export interface TeacherServiceType {
-  buildTeacher(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot): Teacher;
+  buildTeacher(doc: QueryDocumentSnapshot): Teacher;
   findTeacherByName(name: string): Promise<Teacher | void>;
   getAllTeachers(): Promise<AllTeachers>;
+  getLatestUpdate(): Promise<Date>;
 }
 
 export enum TrackingEvents {
@@ -190,6 +328,10 @@ export enum TrackingEvents {
   PlayVideo = 'play_video',
   Favorite = 'favorite',
   Unfavorite = 'unfavorite',
+  DownloadVideo = 'download_video',
+  UndownloadVideo = 'undownload_video',
+  AskParentsFail = 'ask_parents_fail',
+  AskParentsSucceed = 'ask_parents_succeed',
 }
 
 export interface TrackingService {
@@ -201,24 +343,35 @@ export interface RemoteConfigService {
   getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }
 
+export type EventConfig = {
+  enabled: boolean;
+  headline: string;
+  dayOfWeek: number;
+  hour: number;
+  minute: number;
+  title: string;
+  articleId: string;
+  url: string;
+};
+
 export type Features = {
   title: string;
-  categories: Category[];
+  'title-es': string;
+  categories: Feature[];
+  event: EventConfig;
+};
+
+export type VersionConfig = {
   version: string;
   build: number;
   forceUpgrade: boolean;
   iosUrl: string;
-  upgradeText: string;
+  androidUrl: string;
   upgradeForceTitle: string;
   upgradeForceBody: string;
 };
 
-export type Version = {
-  version: string;
-  build: number;
-  forceUpgrade: boolean;
-  iosUrl: string;
-  upgradeText: string;
-  upgradeForceTitle: string;
-  upgradeForceBody: string;
-};
+export interface ConfigDefaults {
+  featured: Features;
+  version: VersionConfig;
+}

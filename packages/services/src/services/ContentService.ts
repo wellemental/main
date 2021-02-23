@@ -1,10 +1,11 @@
-// import { firestore } from '../base';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Content, ContentServiceType } from '../types';
+// import { firestore, FirebaseFirestoreTypes } from '../base';
+import { Content, ContentObj, ContentServiceType } from '../types';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
+import logger from './LoggerService';
 
 const COLLECTION = 'content';
 const collection = firestore().collection(COLLECTION);
@@ -29,18 +30,20 @@ class ContentService implements ContentServiceType {
         : typeof data.tags === 'string'
         ? data.tags.split(', ')
         : Object.values(data.tags),
-      seconds: data.length,
-      length: moment().startOf('day').seconds(data.length).format('m:ss'),
+      seconds: data.seconds,
+      length: data.seconds
+        ? moment().startOf('day').seconds(data.seconds).format('m:ss')
+        : undefined,
       language: data.language,
       status: data.status,
       updated_at: data.updated_at,
-      created_at: data.updated_at,
+      created_at: data.created_at,
     };
   };
 
-  public getContent = async (): Promise<Content[]> => {
+  public getContent = async (): Promise<ContentObj> => {
     // With no tags passed, get all Content
-    const query: FirebaseFirestoreTypes.CollectionReference = collection.orderBy(
+    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection.orderBy(
       'updated_at',
       'desc',
     );
@@ -50,10 +53,36 @@ class ContentService implements ContentServiceType {
     // }
 
     try {
-      return await query
+      const content: ContentObj = {};
+
+      await query
+        .get()
+        .then((snapshot) =>
+          snapshot.docs.forEach(
+            (doc) => (content[doc.id] = this.buildContent(doc)),
+          ),
+        );
+
+      return content;
+    } catch (err) {
+      logger.error(`Unable to get all content - ${err}`);
+      return Promise.reject(new ApplicationError(err));
+    }
+  };
+
+  public getLatestUpdate = async (): Promise<Date> => {
+    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection
+      .orderBy('updated_at', 'desc')
+      .limit(1);
+
+    try {
+      const content = await query
         .get()
         .then((snapshot) => snapshot.docs.map((doc) => this.buildContent(doc)));
+
+      return content[0].updated_at.toDate();
     } catch (err) {
+      logger.error('Unable to get latest content update');
       return Promise.reject(new ApplicationError(err));
     }
   };

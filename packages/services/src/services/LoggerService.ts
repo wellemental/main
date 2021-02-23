@@ -1,70 +1,74 @@
-import Config from 'react-native-config';
-import analytics from '@react-native-firebase/analytics';
+// REMOVED IN ORDER TO GET IOS APPROVED FOR IOS 14 IN KIDS CATEGORY
+// import Config from 'react-native-config';
+// import analytics from '@react-native-firebase/analytics';
+// import { analytics } from '../base';
 
-export interface Logger {
-  error(msg: string): void;
-  warn(msg: string): void;
-  info(msg: string): void;
-  debug(msg: string): void;
-}
+// export interface Logger {
+//   error(msg: string): void;
+//   warn(msg: string): void;
+//   info(msg: string): void;
+//   debug(msg: string): void;
+// }
 
-class ConsoleLogger implements Logger {
-  public error(msg: string): void {
-    console.error(msg);
-  }
+// class ConsoleLogger implements Logger {
+//   public error(msg: string): void {
+//     console.error(msg);
+//   }
 
-  public warn(msg: string): void {
-    console.warn(msg);
-  }
+//   public warn(msg: string): void {
+//     console.warn(msg);
+//   }
 
-  public info(msg: string): void {
-    console.info(msg);
-  }
+//   public info(msg: string): void {
+//     console.info(msg);
+//   }
 
-  public debug(msg: string): void {
-    console.debug(msg);
-  }
-}
+//   public debug(msg: string): void {
+//     console.debug(msg);
+//   }
+// }
 
-enum LogLevel {
-  Error = 'error',
-  Warning = 'warning',
-  Info = 'info',
-  Debug = 'debug',
-}
+// enum LogLevel {
+//   Error = 'error',
+//   Warning = 'warning',
+//   Info = 'info',
+//   Debug = 'debug',
+// }
 
-class FirebaseLogger implements Logger {
-  readonly EventName = 'app_log';
+// class FirebaseLogger implements Logger {
+//   readonly EventName = 'app_log';
 
-  public error(msg: string): void {
-    this.log(LogLevel.Error, msg);
-  }
+//   public error(msg: string): void {
+//     this.log(LogLevel.Error, msg);
+//   }
 
-  public warn(msg: string): void {
-    this.log(LogLevel.Warning, msg);
-  }
+//   public warn(msg: string): void {
+//     this.log(LogLevel.Warning, msg);
+//   }
 
-  public info(msg: string): void {
-    this.log(LogLevel.Info, msg);
-  }
+//   public info(msg: string): void {
+//     this.log(LogLevel.Info, msg);
+//   }
 
-  public debug(msg: string): void {
-    this.log(LogLevel.Debug, msg);
-  }
+//   public debug(msg: string): void {
+//     this.log(LogLevel.Debug, msg);
+//   }
 
-  private log(level: LogLevel, message: string): void {
-    analytics().logEvent(this.EventName, {
-      level,
-      message,
-    });
-  }
-}
+//   private log(level: LogLevel, message: string): void {
+//     analytics().logEvent(this.EventName, {
+//       level,
+//       message,
+//     });
+//   }
+// }
 
-const logger =
-  Config.ENABLE_FIREBASE_LOGGING === 'true'
-    ? new FirebaseLogger()
-    : new ConsoleLogger();
+// const logger = new FirebaseLogger();
+// Could not get RN Config working, need to come back to
+// const logger =
+//   Config.ENABLE_FIREBASE_LOGGING === 'true'
+//     ? new FirebaseLogger()
+//     : new ConsoleLogger();
 
-export const buildLogger = (): Logger => logger;
+// export const buildLogger = (): Logger => logger;
 
-export default logger;
+// export default logger;

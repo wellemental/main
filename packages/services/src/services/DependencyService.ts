@@ -1,11 +1,15 @@
 import { User } from '../types';
-import { buildLogger } from './LoggerService';
-import { buildTracker } from './TrackerService';
+// import { buildLogger } from './LoggerService';
+// import { buildTracker } from './TrackerService';
 import UpdateUserService from './UpdateUserService';
 import { buildFirestore } from './FirebaseService';
 // import { buildNavigationService } from './navigationService';
 // import { Navigator } from './interfaces';
 import RemoteConfig from './RemoteConfig';
+import PlaysService from './PlaysService';
+import ObserveNotifications from './ObserveNotifications';
+// import LocalStateService from './LocalStateService';
+// import AuthService from './AuthService';
 // import UpdateProfileService from './UpdateProfileService';
 
 interface DependencyDescriptor {
@@ -18,9 +22,8 @@ let dependenciesInstances: { [key: string]: any } = {};
 
 const BASE_SERVICE_DEPENDENCIES = [
   'currentUser',
-  'logger',
-  'tracker',
-  'updateUserService',
+  // 'logger',
+  // 'tracker',
   'firestore',
 ];
 
@@ -29,22 +32,38 @@ const dependenciesDescriptors = {
     factory: buildFirestore,
     dependencies: [],
   },
-  logger: {
-    factory: buildLogger,
-    dependencies: [],
-  },
-  tracker: {
-    factory: buildTracker,
-    dependencies: [],
-  },
+  // logger: {
+  //   factory: buildLogger,
+  //   dependencies: [],
+  // },
+  // tracker: {
+  //   factory: buildTracker,
+  //   dependencies: [],
+  // },
   updateUserService: {
     class: UpdateUserService,
     dependencies: ['currentUser', 'firestore'],
   },
   remoteConfig: {
     class: RemoteConfig,
-    dependencies: BASE_SERVICE_DEPENDENCIES,
+    dependencies: [],
   },
+  playsService: {
+    class: PlaysService,
+    dependencies: ['firestore', 'currentUser'],
+  },
+  observeNotifications: {
+    class: ObserveNotifications,
+    dependencies: ['currentUser', 'firestore'],
+  },
+  // localState: {
+  //   class: LocalStateService,
+  //   dependencies: ['logger'],
+  // },
+  // auth: {
+  //   class: AuthService,
+  //   dependencies: ['logger', 'tracker'],
+  // },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;
 type DescriptorMap = { [key in DependencyName]: DependencyDescriptor };

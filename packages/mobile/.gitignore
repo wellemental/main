@@ -21,7 +21,11 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+wellemental.xcworkspace
 MHL.app.dSYM.zip
+ios/wellemental.xcworkspace/*
+*.xcuserstate
+*.xcuserdatad
 
 # Android/IntelliJ
 #
@@ -30,6 +34,13 @@ build/
 .gradle
 local.properties
 *.iml
+android/app/src/debug/google-services*
+android/app/src/release/google-services*
+*google-services*
+*.hprof
+android/app/debug.keystore
+*.aab
+*.apk
 
 # Visual Studio Code
 #
@@ -45,6 +56,7 @@ yarn-error.log
 buck-out/
 \.buckd/
 *.keystore
+
 
 # fastlane
 #

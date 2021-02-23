@@ -6,39 +6,15 @@ import wellemental from './assets/native-base-theme/variables/wellemental';
 import {
   CurrentUserProvider,
   ContentProvider,
+  NotificationProvider,
   ServicesProvider,
+  IAPProvider,
 } from './context';
 import Navigator from './Navigator';
-// import { useCurrentUser, useContent } from './hooks';
-// import { ObserveUserService } from 'services';
-// import { English } from './translations/en';
-// import { Español } from './translations/es';
 import SplashScreen from 'react-native-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App: React.FC = () => {
-  // const [user, setUser] = useState();
-  // const [userObserver] = useState(new ObserveUserService(setUser));
-  // useEffect(() => {
-  //   userObserver.subscribe();
-
-  //   return userObserver.unsubscribe();
-  // }, []);
-
-  // const { user, translation } = useCurrentUser();
-  // const { content, teachers } = useContent();
-
-  // !user || !content || !teachers ? (
-  //   <Spinner
-  //     text={
-  //       !user
-  //         ? 'Loading user...'
-  //         : !content
-  //         ? 'Loading Content...'
-  //         : 'Loading teachers...'
-  //     }
-  //   />
-  // ) :
-
   useEffect(() => {
     SplashScreen.hide();
   }, []);
@@ -46,21 +22,27 @@ const App: React.FC = () => {
   return (
     <CurrentUserProvider>
       <StyleProvider style={getTheme(wellemental)}>
-        <ContentProvider>
-          <ServicesProvider>
-            {/* <CurrentUser2.Provider
-            value={{
-              user: user,
-              translation:
-                user && user.language === 'Español' ? Español : English,
-            }}> */}
-            <Root>
-              {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-              <Navigator />
-            </Root>
-            {/* </CurrentUser2.Provider> */}
-          </ServicesProvider>
-        </ContentProvider>
+        <ServicesProvider>
+          <ContentProvider>
+            <IAPProvider>
+              <NotificationProvider>
+                <Root>
+                  <SafeAreaProvider>
+                    {Platform.OS === 'ios' ? (
+                      <StatusBar barStyle="dark-content" />
+                    ) : (
+                      <StatusBar
+                        translucent={true}
+                        backgroundColor={'transparent'}
+                      />
+                    )}
+                    <Navigator />
+                  </SafeAreaProvider>
+                </Root>
+              </NotificationProvider>
+            </IAPProvider>
+          </ContentProvider>
+        </ServicesProvider>
       </StyleProvider>
     </CurrentUserProvider>
   );
