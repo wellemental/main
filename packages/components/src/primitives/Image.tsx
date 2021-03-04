@@ -1,27 +1,24 @@
-import React, { useRef, useEffect } from 'react';
-import { Image as RNImage, ImageProps } from 'react-native';
-import FadeIn from 'react-native-fade-in-image';
-import ConditionalWrapper from './ConditionalWrapper';
+import React from 'react';
+import { ImageStyle, StyleProp } from 'react-native';
+import FastImage, { FastImageProps } from 'react-native-fast-image';
 
-const Image: React.FC<ImageProps> = ({ style, source, ...props }) => {
-  // const firstLoad = useRef(true);
+type Props = {
+  source: { uri: string };
+  style: StyleProp<ImageStyle>;
+};
 
-  // useEffect(() => {
-  //   firstLoad.current = false;
-  // }, []);
-
-  // console.log('FIRST LOAD', firstLoad.current);
-
+const Image: React.FC<Props & FastImageProps> = ({
+  style,
+  source,
+  ...props
+}) => {
   return (
-    // <ConditionalWrapper
-    //   condition={firstLoad.current}
-    //   wrapper={(children: React.ReactChildren) => (
-    //     <FadeIn style={style}>{children}</FadeIn>
-    //   )}>
-    <FadeIn style={style}>
-      <RNImage source={source} style={style} {...props} />
-    </FadeIn>
-    // </ConditionalWrapper>
+    <FastImage
+      source={source}
+      resizeMode={FastImage.resizeMode.cover}
+      style={style}
+      {...props}
+    />
   );
 };
 

@@ -36,7 +36,7 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
             source={{
               uri: content.thumbnail,
             }}
-            style={{ height: 125, flex: 1, borderRadius: 20 }}
+            style={{ height: 125, width: 100, flex: 1, borderRadius: 20 }}
           />
         </Left>
         <Body
