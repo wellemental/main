@@ -16,6 +16,7 @@ export { default as AgeCards } from './AgeCards';
 export { default as LanguageToggle } from './LanguageToggle';
 export { default as Error } from './Error';
 export { default as LogoIcon } from './LogoIcon';
+export { default as PageHeadingHome } from './PageHeadingHome';
 export { default as StatDisplay } from './StatDisplay';
 export { default as Download } from './Download';
 export { default as ScrollView } from './ScrollView';

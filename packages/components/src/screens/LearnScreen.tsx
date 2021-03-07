@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, ContentLoop, PageHeading } from '../primitives';
 import { useCurrentUser } from '../hooks';
 
-const FavoritesScreen: React.FC = () => {
+const LearnScreen: React.FC = () => {
   const { user, translation } = useCurrentUser();
   const favorites =
     user &&
@@ -20,4 +20,4 @@ const FavoritesScreen: React.FC = () => {
   );
 };
 
-export default FavoritesScreen;
+export default LearnScreen;

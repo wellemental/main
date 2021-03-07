@@ -1,14 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
-import {
-  TeacherService,
-  ContentService,
-  AllTeachers,
-  LocalStateService,
-  ContentObj,
-  Features,
-} from 'services';
+import { TeacherService, ContentService, LocalStateService } from 'services';
+import { AllTeachers, ContentObj, Features, Teachers } from 'common';
 import { useConfig, useCurrentUser } from '../hooks';
-// import { logger } from 'services';
+import { Content as ContentType, Teacher } from 'common';
 
 interface ContentContext {
   content: ContentObj;
@@ -20,7 +14,13 @@ interface ContentContext {
   updateAvailable: boolean;
   status: string[];
   getDbContent: () => void;
+  getTeacher: (selected: ContentType) => Teacher;
 }
+
+// Check localStorage for Content
+// If no localStorage, pull from Database
+// Get content and teachers and match them together
+// Return both content and teachers
 
 export const Content = React.createContext<ContentContext>({
   content: null,
@@ -32,11 +32,8 @@ export const Content = React.createContext<ContentContext>({
   updateAvailable: false,
   status: [],
   getDbContent: null,
+  getTeacher: null,
 });
-
-// export const Content = React.createContext<ContentContext | undefined>(
-//   undefined,
-// );
 
 const localStateService = new LocalStateService();
 
@@ -67,7 +64,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
     try {
       const teacherService = new TeacherService();
       const contentService = new ContentService();
-      const dbTeachers = await teacherService.getAllTeachers();
+      const dbTeachers = await teacherService.getAll();
       const dbContent = await contentService.getContent();
 
       // Update AsyncStorage with firestore data
@@ -85,7 +82,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
     } catch (err) {
       setError(`Error fetching content from database - ${err}`);
       // logger.error('Error getting firestore content data');
-      // logger.error(`Error getting firestore content data - ${err}`);
     }
     setLoading(false);
   };
@@ -140,7 +136,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
             }
             setLoading(false);
           } else {
-            // logger.info('No local data, fetching from database');
             // If nothing in AsyncStorage, pull from Database
             await getDbContent();
           }
@@ -177,6 +172,15 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
     // return <Spinner text="Loading Content..." />;
   }
 
+  const getTeacher = (selected: ContentType): Teacher => {
+    let selectedTeacher: Teacher | undefined;
+    if (teachers) {
+      selectedTeacher = teachers[selected.teacher];
+    }
+
+    return selectedTeacher;
+  };
+
   return (
     <Content.Provider
       value={{
@@ -189,6 +193,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         error,
         status: statuses,
         getDbContent,
+        getTeacher,
       }}>
       {children}
     </Content.Provider>

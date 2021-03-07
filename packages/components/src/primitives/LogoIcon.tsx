@@ -2,16 +2,19 @@ import React from 'react';
 import Image from './Image';
 import { deviceWidth } from 'services';
 
-const imageWidth = deviceWidth * 0.8;
-const imageHeight = imageWidth * 0.4;
+type Props = {
+  width?: number;
+};
 
-const LogoIcon: React.FC = () => {
+const LogoIcon: React.FC<Props> = ({ width }) => {
+  const imageDimensions = width ? width : deviceWidth * 0.8;
+
   return (
     <Image
       source={require('../assets/images/icon.png')}
       style={{
-        height: imageHeight,
-        width: imageWidth,
+        height: imageDimensions,
+        width: imageDimensions,
         resizeMode: 'contain',
       }}
     />

@@ -1,13 +1,6 @@
 import defaultValues from '../services/RemoteConfigDefaults';
-import { firestore } from 'firebase/app';
-import FirebaseFirestoreTypes from '@firebase/firestore-types';
 
 export type Translations = { [key: string]: string };
-export type Query = firestore.Query;
-export type Timestamp = firestore.Timestamp;
-export type FieldValue = firestore.FieldValue;
-export type QueryDocumentSnapshot = firestore.QueryDocumentSnapshot;
-export type FirestoreModule = FirebaseFirestoreTypes.FirebaseFirestore;
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -36,41 +29,11 @@ export enum TimeOfDay {
   Evening = 'Evening',
 }
 
-export enum Tags {
-  Morning = 'Morning',
-  Afternoon = 'Afternoon',
-  Night = 'Night',
-  Evening = 'Evening',
-  Calm = 'Calm',
-  Breathing = 'Breathing',
-  Visualization = 'Visualization',
-  Meditation = 'Meditation',
-  Grateful = 'Grateful',
-  Bedtime = 'Bedtime',
-  Insomnia = 'Insomnia',
-  OuterSpace = 'Outer Space',
-  Meditate = 'Meditate',
-  Move = 'Move',
-  Sleep = 'Sleep',
-  Learn = 'Learn',
-  Featured = 'Featured',
-  Toddler = 'toddler',
-  PreK = 'PreK-5',
-  '6-8' = '6-8',
-  '9-12' = '9-12',
-}
-
-export type Category = {
-  title: string;
-  description: string;
-  tag: Tags | TimeOfDay | Category;
-  image: string;
-  slug?: string;
-};
-
-export interface Feature extends Category {
-  'title-es': string;
-  'description-es': string;
+export interface TimeOfDayObj {
+  name: TimeOfDay;
+  headline: string;
+  tagline: string;
+  btnText: string;
 }
 
 export enum Categories {
@@ -80,9 +43,35 @@ export enum Categories {
   Learn = 'Learn',
 }
 
-// export type Categories = Partial<
-//   Pick<Tags, Tags.Meditate | Tags.Move | Tags.Sleep | Tags.Learn>
-// >;
+// extend enum using "extends" keyword
+const Tags = {
+  ...TimeOfDay,
+  ...Categories,
+  Night: 'Night',
+  Calm: 'Calm',
+  Breathing: 'Breathing',
+  Visualization: 'Visualization',
+  Meditation: 'Meditation',
+  Grateful: 'Grateful',
+  Bedtime: 'Bedtime',
+  Insomnia: 'Insomnia',
+  OuterSpace: 'Outer Space',
+  Featured: 'Featured',
+};
+
+export type Tags = keyof typeof Tags;
+
+export type Category = {
+  title: string;
+  description: string;
+  tag: Tags;
+  image: string;
+};
+
+export interface Feature extends Category {
+  'title-es': string;
+  'description-es': string;
+}
 
 export enum ContentStatus {
   Published = 'published',
@@ -108,8 +97,6 @@ export interface LocalContent {
   updated_at?: Date;
 }
 
-export type Unsubscriber = () => void;
-
 export type IapValidate = {
   receipt: any;
   productId: string;
@@ -124,7 +111,7 @@ export enum PlanId {
 export type UserPlan = {
   type: 'iosIap' | 'promoCode';
   auto_renew_status: boolean;
-  nextRenewalDate: string;
+  nextRenewalDate: string; // Just storing so humans can easily read it in database
   nextRenewalUnix: number; // unix timestamp
   canceledAtUnix?: number;
   planId: string;
@@ -152,20 +139,20 @@ export interface User {
   email?: string;
   id?: string;
   language: Languages;
-  stripeId?: string;
-  subStatus?: SubStatus;
   totalPlays: number | FieldValue;
   totalCompleted: number | FieldValue;
   totalSeconds: number | FieldValue;
   streak: number | FieldValue;
   firstPlay?: Date;
   lastPlay?: Date;
+  stripeId?: string;
+  subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;
   updated_at?: Date;
 }
 
-// export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
+export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
 
 export interface Content {
   id: string;
@@ -174,18 +161,18 @@ export interface Content {
   video_orientation: 'landscape' | 'portrait';
   thumbnail: string;
   description: string;
-  teacher: Teachers;
+  teacher: Teacher;
   type: Categories;
-  tags?: Tags[] | string[];
+  tags: Tags[] | string[];
   seconds: number;
-  length?: string;
+  length: string;
   language: Languages;
   status: ContentStatus;
   totalPlays?: number | FieldValue;
   totalCompleted?: number | FieldValue;
   totalFavorites?: number | FieldValue;
   updated_at: Timestamp;
-  created_at: Timestamp;
+  created_at: Timestamp; //typeof Timestamp;
 }
 
 export interface ContentObj {
@@ -194,22 +181,22 @@ export interface ContentObj {
 
 export interface Teacher {
   id: string;
-  name: Teachers;
+  name: string; //Teachers;
   bio: string;
   photo: string;
   language: Languages;
-  updated_at: firestore.Timestamp;
+  updated_at: Timestamp;
 }
 
 export interface AllTeachers {
-  [key: string]: Teacher;
+  [key: Teachers]: Teacher;
 }
 
 export interface UserProfile {
   // name?: string;
   // birthday?: string;
   language?: Languages;
-  updated_at?: firestore.Timestamp;
+  updated_at?: Timestamp;
 }
 
 export interface NewAccount {
@@ -250,6 +237,13 @@ export interface PlaysObj {
   [id: string]: PlayEvent;
 }
 
+export interface ObserveNotificationsType {
+  requestPermissions(): Promise<void>;
+  saveTokenToDatabase(token: string): Promise<void>;
+  subscribe(): Promise<void>;
+  unsubscribe(): void;
+}
+
 export interface PlaysServiceType {
   query: Query;
   add(id: string): Promise<void>;
@@ -257,8 +251,28 @@ export interface PlaysServiceType {
   get(): Promise<PlaysObj | PlayEvent[]>;
 }
 
+export interface AuthServiceType {
+  checkExistingLogins(email: string): Promise<string[]>;
+  login(email: string, password: string): Promise<void>;
+  signup(account: NewAccount): Promise<void>;
+  checkError(err: FirebaseError): Error;
+  logout(): Promise<void>;
+}
+
+export interface LocalStateServiceType {
+  resetStorage(): Promise<void>;
+  setStorage(
+    key: string,
+    value: string | { [key: string]: string } | LocalUser | UserProfile,
+  ): Promise<void>;
+  getStorage(key: string): Promise<string>;
+  getContent(): Promise<LocalContent>;
+  getUser(): Promise<LocalUser>;
+  removeStorage(key: string): Promise<void>;
+}
+
 export interface ContentServiceType {
-  buildContent(doc: firestore.QueryDocumentSnapshot): Content;
+  buildContent(doc: QueryDocumentSnapshot): Content;
   getContent(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
 }
@@ -271,7 +285,7 @@ export type PromoCode = {
 };
 
 export interface PromoCodeServiceType {
-  validateCode(code: string): Promise<PromoCode | void>;
+  validateCode(code: string): Promise<PromoCode>;
   upgradeUser(userId: string, code: string): Promise<void>;
   validateAndUpgrade(userId: string, code: string): Promise<void>;
 }
@@ -292,9 +306,9 @@ export interface UpdateUserServiceType {
 }
 
 export interface TeacherServiceType {
-  buildTeacher(doc: firestore.QueryDocumentSnapshot): Teacher;
+  buildTeacher(doc: QueryDocumentSnapshot): Teacher;
   findTeacherByName(name: string): Promise<Teacher | void>;
-  getAllTeachers(): Promise<AllTeachers>;
+  getAll(): Promise<AllTeachers>;
   getLatestUpdate(): Promise<Date>;
 }
 
@@ -321,41 +335,35 @@ export interface RemoteConfigService {
   getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }
 
+export type EventConfig = {
+  enabled: boolean;
+  headline: string;
+  dayOfWeek: number;
+  hour: number;
+  minute: number;
+  title: string;
+  articleId: string;
+  url: string;
+};
+
 export type Features = {
   title: string;
+  'title-es': string;
   categories: Feature[];
+  event: EventConfig;
+};
+
+export type VersionConfig = {
   version: string;
   build: number;
   forceUpgrade: boolean;
   iosUrl: string;
-  upgradeText: string;
+  androidUrl: string;
   upgradeForceTitle: string;
   upgradeForceBody: string;
 };
 
-export type Version = {
-  version: string;
-  build: number;
-  forceUpgrade: boolean;
-  iosUrl: string;
-  upgradeText: string;
-  upgradeForceTitle: string;
-  upgradeForceBody: string;
-};
-
-export type TabParamList = {
-  Library: { default: string };
-  Home: undefined;
-  Favorites: undefined;
-  Search: undefined;
-  Settings: undefined;
-};
-
-export type MenuItem = {
-  label: string;
-  filter?: Tags | 'All';
-};
-
-export interface LocationState {
-  [key: string]: any;
+export interface ConfigDefaults {
+  featured: Features;
+  version: VersionConfig;
 }

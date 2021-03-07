@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import firebase, { FbUser } from '../base';
 import { Unsubscriber, Languages, User } from '../types';
-import { English } from '../translations/en.js';
-import { Español } from '../translations/es.js';
+import { English } from 'common';
+import { Español } from 'common';
 import { Spinner } from '../primitives';
 import moment from 'moment';
 import { convertTimestamp } from '../services/helpers';

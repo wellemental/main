@@ -16,11 +16,11 @@ import {
   CelebrationScreen,
   PlansScreen,
   SettingsScreen,
-} from './screens';
+} from '../screens';
 import { createStackNavigator } from '@react-navigation/stack';
-import { RootStackParamList, AuthStackParamList } from './types';
-import { useCurrentUser } from './hooks';
-import variables from './assets/native-base-theme/variables/wellemental';
+import { RootStackParamList, AuthStackParamList } from '../types';
+import { useCurrentUser } from '../hooks';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 const Stack = createStackNavigator<RootStackParamList>();
 // const ModalStack = createStackNavigator<ModalStackParamList>();

@@ -22,10 +22,10 @@ import {
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
-import { DownloadVideoService, PlaysServiceType } from 'services';
+import { PlaysServiceType } from 'common';
 import FadeIn from 'react-native-fade-in-image';
 import { useContainer, useMutation, useCurrentUser } from '../hooks';
-import { deviceWidth, deviceHeight } from 'services';
+import { DownloadVideoService, deviceWidth, deviceHeight } from 'services';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 });
 
 const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
-  const { content, teacher } = route.params;
+  const { content } = route.params;
   const [video, setVideo] = useState(content.video);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(content.seconds);
@@ -139,7 +139,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     if (androidOrPortrait) {
       navigation.navigate('Video', {
         content,
-        teacher,
         savedVideoPath: video,
         handleComplete: handleComplete,
       });
@@ -268,12 +267,16 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           transparent
           onPress={(): void =>
             navigation.navigate('Teacher', {
-              teacher,
+              teacher: content.teacher.name,
             })
           }>
-          <AvyName source={teacher.photo} name={content.teacher} onProfile />
+          <AvyName
+            source={content.teacher.photo}
+            name={content.teacher.name}
+            onProfile
+          />
         </Button>
-        <Paragraph>{teacher.bio}</Paragraph>
+        <Paragraph>{content.teacher.bio}</Paragraph>
 
         {auth &&
           (auth.email === 'test@test.com' ||

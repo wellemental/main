@@ -5,7 +5,7 @@ import {
   LocalContent,
   UserProfile,
   LocalStateServiceType,
-} from '../types';
+} from 'common';
 import firestore from '@react-native-firebase/firestore';
 // import logger from './LoggerService';
 

@@ -1,13 +1,10 @@
 // NativeBase tabs with animation effect. Couldn't use in main library because lists were too long
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
-// import Headline from './Headline';
-// import Paragraph from './Paragraph';
 import Button from './Button';
 import NewContentLoop from './NewContentLoop';
 import Box from './Box';
 import RecentlyPlayedLoop from './RecentlyPlayedLoop';
-// import { Tabs, Tab, TabHeading, Icon, Text } from 'native-base';
 import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 import {
   useLoadMore,

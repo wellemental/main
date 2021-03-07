@@ -1,40 +1,28 @@
 import React from 'react';
 import { TouchableOpacity, Linking } from 'react-native';
 import {
+  PageHeadingHome,
   PageHeading,
   Container,
   ContentLoop,
   CategoryCard,
+  Button,
   AgeCards,
   Spinner,
-  TabsNB,
   Paragraph,
+  TabsNB,
 } from '../primitives';
-import moment from 'moment';
-import { TimeOfDay, VersionConfig } from 'services';
+import { VersionConfig } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { getVersion } from 'react-native-device-info';
 import variables from '../assets/native-base-theme/variables/wellemental';
+import { getTimeOfDay } from 'common';
 
 const HomeScreen: React.FC = ({ navigation }) => {
-  const today = moment();
-  const { translation, activePlan, user } = useCurrentUser();
+  const { translation, activePlan } = useCurrentUser();
   const { features } = useContent();
 
-  // Determine Time of Day for header customization
-  let timeOfDay: TimeOfDay = TimeOfDay.Morning;
-  let tagline = translation['Start the day with some morning stretches'];
-  if (
-    today.isAfter(moment().hour(19), 'hour') ||
-    today.isBefore(moment().hour(4), 'hour')
-  ) {
-    timeOfDay = TimeOfDay.Evening;
-    tagline =
-      translation['Get ready for bedtime with these soothing practices.'];
-  } else if (today.isAfter(moment().hour(12), 'hour')) {
-    timeOfDay = TimeOfDay.Afternoon;
-    tagline = translation['Shake out the day with some fun movement.'];
-  }
+  const timeOfDay = getTimeOfDay(translation);
 
   // Upgrade Screen prompt
   const { data } = useConfig<VersionConfig>('version');
@@ -58,7 +46,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
   };
 
   return (
-    <Container scrollEnabled color="#fff">
+    <Container scrollEnabled color="rgba(0,0,0,0)">
       {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}
@@ -75,14 +63,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
         </TouchableOpacity>
       )}
 
-      <PageHeading
-        noHeader
-        title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}`}
-        subtitle={tagline}
-      />
-      <ContentLoop filter={timeOfDay} />
-
-      {/* {user && <TabsNB />} */}
+      <PageHeadingHome timeOfDay={timeOfDay} />
 
       {features && features.categories ? (
         <>

@@ -9,14 +9,15 @@ import {
   Category,
   Tags,
   VersionConfig,
-} from 'services';
+} from 'common';
 import { ReactElement } from 'react';
 
 export type TabParamList = {
-  Library: { default: string };
+  Learn: undefined; //{ default: string };
   Home: undefined;
-  Favorites: undefined;
-  Search: undefined;
+  Meditate: undefined;
+  Sleep: undefined;
+  Move: undefined;
   Profile: undefined;
 };
 
@@ -29,7 +30,7 @@ export type Unsubscriber = () => void;
 
 export type RootStackParamList = {
   TabNav: undefined;
-  Content: { content: Content; teacher: Teacher };
+  Content: { content: Content };
   Category: { category: Category };
   Video: {
     content: Content;

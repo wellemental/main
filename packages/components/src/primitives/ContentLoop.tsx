@@ -104,24 +104,6 @@ const ContentLoop: React.FC<Props> = ({
       ) : (
         <ListEmpty />
       )}
-      {/* <Paragraph>
-        Language: {user && user.language ? user.language : 'N/A'}
-      </Paragraph>
-      <Paragraph>Content Loading? {loading.toString()}</Paragraph>
-      <Paragraph>Remote Config Loading? {rcLoading.toString()}</Paragraph>
-      <Paragraph>Got Content? {content && !!content.toString()}</Paragraph>
-      <Paragraph>Got Teachers? {content && !!content.toString()}</Paragraph>
-      {filter && <Paragraph>Filter: {filter}</Paragraph>}
-      {favorites && <Paragraph>Favs!</Paragraph>}
-      {teacher && <Paragraph>Teacher: {teacher}</Paragraph>} */}
-      {/* {search && <Paragraph>Search: {search}</Paragraph>} */}
-      {/* <Paragraph>Status***</Paragraph> */}
-      {/* {status &&
-        status.map((item, idx) => (
-          <Paragraph note key={idx + item}>
-            *** {item}
-          </Paragraph>
-        ))} */}
     </View>
   );
 };

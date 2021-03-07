@@ -1,7 +1,15 @@
 import React, { CSSProperties } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  ImageBackground,
+  Platform,
+} from 'react-native';
 import ScrollView from './ScrollView';
 import variables from '../assets/native-base-theme/variables/wellemental';
+import { deviceHeight, deviceWidth } from 'services';
+import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 
 type ContainerProps = {
   style?: CSSProperties;
@@ -9,6 +17,17 @@ type ContainerProps = {
   color?: string;
   center?: boolean;
   scrollEnabled?: boolean;
+  bg?: keyof typeof backgrounds;
+};
+
+const backgrounds = {
+  morning: require('../assets/images/wm_header_morning.jpg'),
+  afternoon: require('../assets/images/wm_header_afternoon.jpg'),
+  night: require('../assets/images/wm_bg_sleep.jpg'),
+  sleep: require('../assets/images/wm_bg_sleep.jpg'),
+  move: require('../assets/images/wm_bg_move.jpg'),
+  learn: require('../assets/images/wm_bg_learn.jpg'),
+  meditate: require('../assets/images/wm_bg_sleep.jpg'),
 };
 
 const Container: React.FC<ContainerProps> = ({
@@ -20,11 +39,11 @@ const Container: React.FC<ContainerProps> = ({
   noPadding,
   ...props
 }) => {
-  const bgColor = color ? color : variables.containerBgColor;
+  const bgColor = 'rgba(0, 0, 0, 0)';
 
   const styles = StyleSheet.flatten([
     {
-      backgroundColor: bgColor,
+      backgroundColor: brandColors.skyBlue,
       paddingHorizontal:
         noPadding === 'horizontal' || noPadding === 'none'
           ? 0
@@ -45,14 +64,30 @@ const Container: React.FC<ContainerProps> = ({
     <View style={[{ flex: 1 }, styles]} children={children} />
   );
   return (
-    <SafeAreaView
+    <View
       style={{
-        backgroundColor: color ? color : variables.containerBgColor,
         flex: 1,
-        paddingTop: 0,
+        width: deviceWidth,
+        height: deviceHeight,
+        backgroundColor: brandColors.skyBlue,
       }}>
-      {container}
-    </SafeAreaView>
+      <ImageBackground
+        source={backgrounds.afternoon}
+        style={{
+          width: deviceWidth,
+          height: deviceHeight,
+          flex: 1,
+        }}>
+        <SafeAreaView
+          style={{
+            backgroundColor: color ? color : variables.containerBgColor,
+            flex: 1,
+            paddingTop: 0,
+          }}>
+          {container}
+        </SafeAreaView>
+      </ImageBackground>
+    </View>
   );
 };
 

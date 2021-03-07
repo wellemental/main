@@ -48,7 +48,7 @@ const PageHeading: React.FC<Props> = ({
       }}>
       {withLogo && (
         <Box mb={2}>
-          <LogoIcon />
+          <LogoIcon width={100} />
         </Box>
       )}
       {avatar && <Avatar source={avatar} size={200} mb={30} />}

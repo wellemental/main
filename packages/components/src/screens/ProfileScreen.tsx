@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { PlaysServiceType, PlayEvent, convertTimestamp } from 'services';
 import {
   Error,
@@ -9,11 +9,10 @@ import {
   Button,
   ListEmpty,
   Tabs,
+  ContentLoop,
   Box,
-  Headline,
   Spinner,
   ContentCardSmall,
-  Paragraph,
 } from '../primitives';
 import { List } from 'native-base';
 import { MenuItem } from '../types';
@@ -35,7 +34,7 @@ const ProfileScreen: React.FC = () => {
   const tabs: MenuItem[] = [
     { label: 'Stats' },
     { label: 'Journey' },
-    // { label: 'Settings' },
+    { label: 'Favorites' },
   ];
 
   const [tab, setTab] = useState(tabs[0]);
@@ -51,6 +50,13 @@ const ProfileScreen: React.FC = () => {
     hasMore,
   } = useLoadMore(service.query, { limit: 7 });
 
+  const favorites =
+    user &&
+    user.favorites &&
+    Object.keys(user.favorites).filter(
+      (item: string) => user.favorites[item].favorited,
+    );
+
   return (
     <Container scrollEnabled>
       <PageHeading noHeader title={translation.Profile} />
@@ -58,6 +64,8 @@ const ProfileScreen: React.FC = () => {
       <Error error={error} />
 
       <Tabs tabs={tabs} active={tab} setTab={setTab} />
+      {tab.label === 'Favorites' && <ContentLoop favorites={favorites} />}
+
       {tab.label === 'Stats' && (
         <>
           <StatDisplay type="streak" />

@@ -13,5 +13,6 @@ export const useContent = () => {
     error: contentContext.error,
     status: contentContext.status,
     getDbContent: contentContext.getDbContent,
+    getTeacher: contentContext.getTeacher,
   };
 };
