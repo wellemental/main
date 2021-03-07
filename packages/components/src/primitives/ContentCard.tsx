@@ -1,20 +1,20 @@
 import React from 'react';
 import { Card, CardItem, Left, Body, H3 } from 'native-base';
 import { View } from 'react-native';
-import { Content } from 'services';
+import { Content, Teacher } from 'common';
 import AvyName from './AvyName';
 import Image from './Image';
 import { useNavigation } from '../hooks';
-import { Teacher } from 'services';
 import Paragraph from './Paragraph';
+import { TeacherScreen } from '../screens';
 
 interface Props {
   content: Content;
-  teacher: Teacher;
 }
 
-const ContentCard: React.FC<Props> = ({ content, teacher }) => {
+const ContentCard: React.FC<Props> = ({ content }) => {
   const navigation = useNavigation();
+  const teacher = content.teacher;
 
   return (
     <Card>
@@ -47,7 +47,7 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
           </View>
           <AvyName
             source={teacher.photo}
-            name={content.teacher}
+            name={teacher.name}
             favoriteId={content.id}
           />
         </Body>

@@ -4,20 +4,14 @@ import { Content } from 'services';
 import Image from './Image';
 import Headline from './Headline';
 import { useNavigation } from '../hooks';
-import { Teacher } from 'services';
 import Paragraph from './Paragraph';
 
 interface Props {
   content: Content;
-  teacher: Teacher;
   recentDate?: string;
 }
 
-const ContentCardSmall: React.FC<Props> = ({
-  content,
-  teacher,
-  recentDate,
-}) => {
+const ContentCardSmall: React.FC<Props> = ({ content, recentDate }) => {
   const navigation = useNavigation();
 
   return (
@@ -28,7 +22,6 @@ const ContentCardSmall: React.FC<Props> = ({
         onPress={() =>
           navigation.navigate('Content', {
             content,
-            teacher,
           })
         }>
         <Left>

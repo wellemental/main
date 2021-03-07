@@ -41,8 +41,6 @@ const PageHeadingHome: React.FC<Props> = ({ timeOfDay }) => {
     }
   }, [selectedContent]);
 
-  console.log('time OF DAY', timeOfDay);
-
   return (
     <Box mb={2} alignItems="center">
       <PageHeading

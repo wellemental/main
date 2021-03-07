@@ -45,17 +45,11 @@ const RecentlyPlayedLoop: React.FC<Props> = ({
             const data = item.data() as PlayEvent;
             const contentMatch =
               data && data.contentId && content[data.contentId];
-            const teacherMatch =
-              data &&
-              data.contentId &&
-              content[data.contentId] &&
-              teachers[content[data.contentId].teacher];
 
-            return contentMatch && teacherMatch ? (
+            return contentMatch ? (
               <ContentCardSmall
                 key={idx}
                 content={contentMatch}
-                teacher={teacherMatch}
                 recentDate={
                   homepage
                     ? undefined

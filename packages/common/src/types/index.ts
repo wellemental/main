@@ -1,6 +1,7 @@
 import defaultValues from '../services/RemoteConfigDefaults';
 
 export type Translations = { [key: string]: string };
+type ValueOf<T> = T[keyof T];
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -43,23 +44,29 @@ export enum Categories {
   Learn = 'Learn',
 }
 
-// extend enum using "extends" keyword
-const Tags = {
+const Backgrounds = {
   ...TimeOfDay,
   ...Categories,
-  Night: 'Night',
-  Calm: 'Calm',
-  Breathing: 'Breathing',
-  Visualization: 'Visualization',
-  Meditation: 'Meditation',
-  Grateful: 'Grateful',
-  Bedtime: 'Bedtime',
-  Insomnia: 'Insomnia',
-  OuterSpace: 'Outer Space',
-  Featured: 'Featured',
 };
 
-export type Tags = keyof typeof Tags;
+export type Backgrounds = keyof typeof Backgrounds;
+
+export enum Tags {
+  Night = 'night',
+  Calm = 'calm',
+  Breathing = 'breathing',
+  Visualization = 'visualization',
+  Meditation = 'meditation',
+  Grateful = 'grateful',
+  Bedtime = 'bedtime',
+  Sleep = 'sleep',
+  Insomnia = 'insomnia',
+  OuterSpace = 'outer Space',
+  Featured = 'featured',
+}
+
+//export type Tags = keyof typeof Tags;
+// export type Tags = ValueOf<tags>;
 
 export type Category = {
   title: string;

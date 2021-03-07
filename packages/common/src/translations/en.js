@@ -224,4 +224,5 @@ export const English = {
   'Start Morning Meditation': 'Start Morning Meditation',
   'Start Afternoon Meditation': 'Start Afternoon Meditation',
   'Start Evening Meditation': 'Start Sleep Meditation',
+  Categories: 'Categories',
 };

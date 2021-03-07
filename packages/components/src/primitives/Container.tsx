@@ -1,11 +1,5 @@
 import React, { CSSProperties } from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  ImageBackground,
-  Platform,
-} from 'react-native';
+import { SafeAreaView, StyleSheet, View, ImageBackground } from 'react-native';
 import ScrollView from './ScrollView';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import { deviceHeight, deviceWidth } from 'services';
@@ -21,13 +15,13 @@ type ContainerProps = {
 };
 
 const backgrounds = {
-  morning: require('../assets/images/wm_header_morning.jpg'),
-  afternoon: require('../assets/images/wm_header_afternoon.jpg'),
-  night: require('../assets/images/wm_bg_sleep.jpg'),
-  sleep: require('../assets/images/wm_bg_sleep.jpg'),
-  move: require('../assets/images/wm_bg_move.jpg'),
-  learn: require('../assets/images/wm_bg_learn.jpg'),
-  meditate: require('../assets/images/wm_bg_sleep.jpg'),
+  Morning: require('../assets/images/wm_header_morning.jpg'),
+  Afternoon: require('../assets/images/wm_header_afternoon.jpg'),
+  Night: require('../assets/images/wm_bg_sleep.jpg'),
+  Sleep: require('../assets/images/wm_bg_sleep.jpg'),
+  Move: require('../assets/images/wm_bg_move.jpg'),
+  Learn: require('../assets/images/wm_bg_learn.jpg'),
+  Meditate: require('../assets/images/wm_bg_meditate.jpg'),
 };
 
 const Container: React.FC<ContainerProps> = ({
@@ -36,6 +30,7 @@ const Container: React.FC<ContainerProps> = ({
   children,
   color,
   center,
+  bg,
   noPadding,
   ...props
 }) => {
@@ -63,16 +58,16 @@ const Container: React.FC<ContainerProps> = ({
   ) : (
     <View style={[{ flex: 1 }, styles]} children={children} />
   );
+
   return (
     <View
       style={{
         flex: 1,
         width: deviceWidth,
         height: deviceHeight,
-        backgroundColor: brandColors.skyBlue,
       }}>
       <ImageBackground
-        source={backgrounds.afternoon}
+        source={backgrounds[bg]}
         style={{
           width: deviceWidth,
           height: deviceHeight,
@@ -80,7 +75,7 @@ const Container: React.FC<ContainerProps> = ({
         }}>
         <SafeAreaView
           style={{
-            backgroundColor: color ? color : variables.containerBgColor,
+            backgroundColor: bg ? bgColor : variables.containerBgColor,
             flex: 1,
             paddingTop: 0,
           }}>

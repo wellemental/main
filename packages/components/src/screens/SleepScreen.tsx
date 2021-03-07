@@ -1,21 +1,15 @@
 import React from 'react';
-import { Container, ContentLoop, PageHeading } from '../primitives';
+import { Container, ContentLoop, Headline, PageHeading } from '../primitives';
 import { useCurrentUser } from '../hooks';
+import { Tags } from 'common';
 
 const SleepScreen: React.FC = () => {
   const { user, translation } = useCurrentUser();
-  const favorites =
-    user &&
-    user.favorites &&
-    Object.keys(user.favorites).filter(
-      (item: string) => user.favorites[item].favorited,
-    );
 
   return (
-    <Container scrollEnabled>
-      <PageHeading noHeader title={translation['Your Favorites']} />
-      {/* <Tabs tabs={tabs} active={tab} setTab={setTab} /> */}
-      <ContentLoop favorites={favorites} />
+    <Container scrollEnabled bg="Sleep">
+      <PageHeading noHeader title={translation.Sleep} />
+      <ContentLoop filter="sleep" />
     </Container>
   );
 };

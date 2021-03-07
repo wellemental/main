@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import MoveScreen from '../screens/MoveScreen';
-import MeditationScreen from '../screens/MeditationScreen';
+import MeditateScreen from '../screens/MeditateScreen';
 import LearnScreen from '../screens/LearnScreen';
 import SleepScreen from '../screens/SleepScreen';
 
@@ -66,7 +66,7 @@ const TabNav: React.FC = () => {
       />
       <Tab.Screen
         name="Meditate"
-        component={MeditationScreen}
+        component={MeditateScreen}
         options={{ title: translation.Meditate }}
       />
 

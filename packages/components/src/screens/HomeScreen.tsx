@@ -46,7 +46,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
   };
 
   return (
-    <Container scrollEnabled color="rgba(0,0,0,0)">
+    <Container scrollEnabled bg={timeOfDay.name}>
       {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}

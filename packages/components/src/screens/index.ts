@@ -17,7 +17,7 @@ export { default as SaveUserScreen } from './SaveUserScreen';
 export { default as NotificationsScreen } from './NotificationsScreen';
 export { default as PlansScreen } from './PlansScreen';
 export { default as CelebrationScreen } from './CelebrationScreen';
-export { default as MeditationScreen } from './SaveUserScreen';
+export { default as MeditateScreen } from './MeditateScreen';
 export { default as MoveScreen } from './MoveScreen';
 export { default as SleepScreen } from './SleepScreen';
 export { default as LearnScreen } from './CelebrationScreen';

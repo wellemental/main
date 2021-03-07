@@ -2,16 +2,15 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
-import { Content, Tags, Categories, TimeOfDay } from 'services';
+import { Content, Tags, Teachers, TimeOfDay, Categories } from 'common';
 import ListEmpty from './ListEmpty';
-import { Teachers } from 'services';
 import Error from './Error';
 import Paragraph from './Paragraph';
 import Spinner from './Spinner';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 
 interface Props {
-  filter?: Tags | TimeOfDay | Categories;
+  filter?: Tags | Categories | TimeOfDay;
   favorites?: string[];
   search?: string;
   teacher?: Teachers;
