@@ -1,9 +1,9 @@
 import React from 'react';
-import { Card, CardItem, Right, Body, H3 } from 'native-base';
+import { Card, CardItem, Right, Body, H3, Icon } from 'native-base';
 import Image from './Image';
 import { useNavigation, useCurrentUser } from '../hooks';
 import Paragraph from './Paragraph';
-import { Category, Feature, Languages, isFeature } from 'services';
+import { Category, Feature, Languages, isFeature } from 'common';
 
 type Props = {
   category: Category | Feature;
@@ -43,23 +43,34 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
             paddingBottom: 15,
           }}>
           <H3>{title}</H3>
-          {description && <Paragraph small>{description}</Paragraph>}
+          {description && <Paragraph>{description}</Paragraph>}
         </Body>
         <Right style={{ flex: 1, marginLeft: 10 }}>
-          <Image
-            source={
-              typeof category.image === 'string'
-                ? {
-                    uri: category.image,
-                  }
-                : category.image
-            }
-            style={{
-              height: 120,
-              width: 120,
-              borderRadius: 20,
-            }}
-          />
+          {category.image && (
+            <Image
+              source={
+                typeof category.image === 'string'
+                  ? {
+                      uri: category.image,
+                    }
+                  : category.image
+              }
+              style={{
+                height: 120,
+                width: 120,
+                borderRadius: 20,
+              }}
+            />
+          )}
+          {category.icon && (
+            <Icon
+              name={category.icon}
+              style={{
+                fontSize: 50,
+                color: 'black',
+              }}
+            />
+          )}
         </Right>
       </CardItem>
     </Card>

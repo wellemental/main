@@ -2,7 +2,6 @@ import defaultValues from '../services/RemoteConfigDefaults';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import { FirebaseError } from 'firebase';
-// import { firestore } from '../base';
 
 export type Timestamp = FirebaseFirestoreTypes.Timestamp;
 export type FieldValue = FirebaseFirestoreTypes.FieldValue;

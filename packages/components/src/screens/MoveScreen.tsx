@@ -1,21 +1,32 @@
-import React from 'react';
-import { Container, ContentLoop, PageHeading } from '../primitives';
-import { useCurrentUser } from '../hooks';
+import React, { useEffect } from 'react';
+import {
+  Container,
+  ContentLoopSmall,
+  Subheadline,
+  PageHeading,
+  CategoryCard,
+} from '../primitives';
+import { useCurrentUser, useContent } from '../hooks';
+import { Categories, moveCategories } from 'common';
 
 const MoveScreen: React.FC = () => {
-  const { user, translation } = useCurrentUser();
-  const favorites =
-    user &&
-    user.favorites &&
-    Object.keys(user.favorites).filter(
-      (item: string) => user.favorites[item].favorited,
-    );
+  const { translation } = useCurrentUser();
+
+  const { getFeatures } = useContent();
+
+  const data = getFeatures(Categories.Meditate);
 
   return (
-    <Container scrollEnabled>
-      <PageHeading noHeader title={translation['Your Favorites']} />
-      {/* <Tabs tabs={tabs} active={tab} setTab={setTab} /> */}
-      <ContentLoop favorites={favorites} />
+    <Container scrollEnabled bg="Move">
+      <PageHeading noHeader title={translation.Meditate} />
+
+      <Subheadline>{translation.Featured}</Subheadline>
+      <ContentLoopSmall content={data} />
+      <Subheadline>{translation.Categories}</Subheadline>
+
+      {moveCategories.map((category) => (
+        <CategoryCard key={category.title} category={category} />
+      ))}
     </Container>
   );
 };

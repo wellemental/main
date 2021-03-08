@@ -1,15 +1,15 @@
 import React from 'react';
-import { Container, ContentLoop, Headline, PageHeading } from '../primitives';
+import { Container, ContentLoop, PageHeading } from '../primitives';
 import { useCurrentUser } from '../hooks';
 import { Tags } from 'common';
 
 const SleepScreen: React.FC = () => {
-  const { user, translation } = useCurrentUser();
+  const { translation } = useCurrentUser();
 
   return (
     <Container scrollEnabled bg="Sleep">
-      <PageHeading noHeader title={translation.Sleep} />
-      <ContentLoop filter="sleep" />
+      <PageHeading color="white" noHeader title={translation.Sleep} />
+      <ContentLoop filter={Tags.Sleep} />
     </Container>
   );
 };

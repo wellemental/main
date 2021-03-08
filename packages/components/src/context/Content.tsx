@@ -1,12 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { TeacherService, ContentService, LocalStateService } from 'services';
-import { AllTeachers, ContentObj, Features, Teachers } from 'common';
+import { ContentService, LocalStateService } from 'services';
+import {
+  ContentObj,
+  Features,
+  Categories,
+  Tags,
+  Content as ContentType,
+} from 'common';
+import Spinner from '../primitives/Spinner';
 import { useConfig, useCurrentUser } from '../hooks';
-import { Content as ContentType, Teacher } from 'common';
 
 interface ContentContext {
   content: ContentObj;
-  teachers: AllTeachers;
   error: Error | string;
   loading: boolean;
   rcLoading: boolean;
@@ -14,7 +19,7 @@ interface ContentContext {
   updateAvailable: boolean;
   status: string[];
   getDbContent: () => void;
-  getTeacher: (selected: ContentType) => Teacher;
+  getFeatures: (category: Categories) => ContentType[];
 }
 
 // Check localStorage for Content
@@ -24,7 +29,6 @@ interface ContentContext {
 
 export const Content = React.createContext<ContentContext>({
   content: null,
-  teachers: null,
   error: null,
   loading: false,
   rcLoading: false,
@@ -32,44 +36,38 @@ export const Content = React.createContext<ContentContext>({
   updateAvailable: false,
   status: [],
   getDbContent: null,
-  getTeacher: null,
+  getFeatures: null,
 });
 
+const contentService = new ContentService();
 const localStateService = new LocalStateService();
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const [content, setContent] = useState<ContentObj | null>(null);
-  const [teachers, setTeachers] = useState<AllTeachers | null>(null);
   const [error, setError] = useState('');
   const [statuses, setStatus] = useState([]);
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const { user } = useCurrentUser();
-  const [loading, setLoading] = useState(!content || !teachers ? true : false);
+  const [loading, setLoading] = useState(!content ? true : false);
 
   const localUpdatedAt = useRef<Date | undefined>();
 
-  // const container = useContainer();
-  // const localStateService = container.getInstance<LocalStateServiceType>(
-  //   'localState',
-  // );
-
   const getDbContent = async (): Promise<void> => {
-    const setLocalContent = async (content, teachers) => {
-      await localStateService.setStorage('wmContent', {
-        content,
-        teachers,
-      });
+    const setLocalContent = async (newContent: ContentObj): Promise<void> => {
+      await localStateService.setStorage<{ [key: string]: ContentObj }>(
+        'wmContent',
+        {
+          content: newContent,
+        },
+      );
     };
     // Get teachers and content from firestore
     try {
-      const teacherService = new TeacherService();
-      const contentService = new ContentService();
-      const dbTeachers = await teacherService.getAll();
       const dbContent = await contentService.getContent();
 
       // Update AsyncStorage with firestore data
-      if (dbTeachers && dbContent) {
-        await setLocalContent(dbContent, dbTeachers);
+      if (dbContent) {
+        await setLocalContent(dbContent);
       } else {
         // logger.info(
         //   `No results from fb for teachers or content. Not setting locally.`,
@@ -78,7 +76,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
 
       // Update state with firestore data
       setContent(dbContent);
-      setTeachers(dbTeachers);
     } catch (err) {
       setError(`Error fetching content from database - ${err}`);
       // logger.error('Error getting firestore content data');
@@ -89,23 +86,12 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   useEffect(() => {
     if (user) {
       const calcUpdateAvailable = async () => {
-        setStatus((status) => [
-          ...status,
-          'Getting latest updates from content and teachers',
-        ]);
-        // logger.info('Calculating update available');
         // Get latest updated_at times from firestore
-        const teacherService = new TeacherService();
-        const contentService = new ContentService();
         const dbContentLatest = await contentService.getLatestUpdate();
-        const dbTeacherLatest = await teacherService.getLatestUpdate();
 
         // Set updateAvailable to true if either database updated_at is more recent
-        if (dbContentLatest || dbTeacherLatest) {
-          setUpdateAvailable(
-            dbContentLatest > localUpdatedAt.current ||
-              dbTeacherLatest > localUpdatedAt.current,
-          );
+        if (dbContentLatest) {
+          setUpdateAvailable(dbContentLatest > localUpdatedAt.current);
         } else {
           setStatus((status) => [...status, 'Failed to get latest from db']);
         }
@@ -124,12 +110,15 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
               // So if their localStarage content is an array, repull from db to make it an object.
               if (Array.isArray(localData.content)) {
                 await getDbContent();
+                // We updated content model to already have been built with the full corresponding teacher obj
+                // If user's localStorage has old model, then update it
+              } else if (
+                typeof Object.values(localData.content)[0].teacher === 'string'
+              ) {
+                await getDbContent();
               } else {
                 setContent(localData.content);
               }
-            }
-            if (localData.teachers) {
-              setTeachers(localData.teachers);
             }
             if (localData.updated_at) {
               localUpdatedAt.current = localData.updated_at;
@@ -148,11 +137,17 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         }
       };
 
-      if (!teachers || !content) {
+      if (!content) {
         fetchContent();
       }
     }
-  }, [content, teachers, user]);
+  }, [content, user]);
+
+  const getFeatures = (category: Categories): ContentType[] => {
+    return Object.values(content).filter(
+      (item) => item.type === category && item.tags.includes(Tags.Featured),
+    );
+  };
 
   // If updateAvailable, refetch content from database automatically
   useEffect(() => {
@@ -168,24 +163,14 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   // Get Featured Content from Remote Config
   const { loading: rcLoading, data: rcData } = useConfig<Features>('featured');
 
-  if ((user && loading) || (user && rcLoading)) {
-    // return <Spinner text="Loading Content..." />;
+  if (!content || !rcData) {
+    return <Spinner text="Loading Content..." />;
   }
-
-  const getTeacher = (selected: ContentType): Teacher => {
-    let selectedTeacher: Teacher | undefined;
-    if (teachers) {
-      selectedTeacher = teachers[selected.teacher];
-    }
-
-    return selectedTeacher;
-  };
 
   return (
     <Content.Provider
       value={{
         content,
-        teachers,
         features: rcData,
         loading: loading,
         rcLoading: rcLoading,
@@ -193,7 +178,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         error,
         status: statuses,
         getDbContent,
-        getTeacher,
+        getFeatures,
       }}>
       {children}
     </Content.Provider>

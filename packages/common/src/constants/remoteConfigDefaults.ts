@@ -1,6 +1,6 @@
 import { ConfigDefaults } from '../types';
 
-const defaults: ConfigDefaults = {
+export const configDefaults: ConfigDefaults = {
   featured: {
     title: 'Featured',
     'title-es': 'Destacado',
@@ -51,5 +51,3 @@ const defaults: ConfigDefaults = {
       'Tap below to download the latest version of Wellemental.',
   },
 };
-
-export default defaults;

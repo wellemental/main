@@ -1,12 +1,19 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-// import { firestore, FirebaseFirestoreTypes } from '../base';
-import { Content, ContentObj, ContentServiceType } from '../types';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
 import logger from './LoggerService';
-import { LocalStateServiceType, AllTeachers, TeacherServiceType } from 'common';
+import {
+  LocalStateServiceType,
+  AllTeachers,
+  TeacherServiceType,
+  Content,
+  ContentObj,
+  Categories,
+  ContentServiceType,
+  Tags,
+} from 'common';
 import LocalStateService from './LocalStateService';
 import TeacherService from './TeacherService';
 
@@ -17,12 +24,14 @@ class ContentService implements ContentServiceType {
   private teachers: AllTeachers | undefined;
   private localStorage: LocalStateServiceType;
   private teacherService: TeacherServiceType;
+  private content: ContentObj;
 
   constructor() {
     this.localStorage = new LocalStateService();
     this.teacherService = new TeacherService();
 
     this.teachers = undefined;
+    this.content = {};
   }
 
   public buildContent = (
@@ -56,8 +65,6 @@ class ContentService implements ContentServiceType {
   };
 
   public getContent = async (): Promise<ContentObj> => {
-    // With no tags passed, get all Content
-
     const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection.orderBy(
       'updated_at',
       'desc',
@@ -81,6 +88,7 @@ class ContentService implements ContentServiceType {
           ),
         );
 
+      this.content = content;
       return content;
     } catch (err) {
       logger.error(`Unable to get all content - ${err}`);

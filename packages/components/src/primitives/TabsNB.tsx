@@ -57,7 +57,6 @@ const TabsNB: React.FC = () => {
           homepage
           loading={loading}
           content={content}
-          teachers={teachers}
           loadingMore={loadingMore}
           loadMore={loadMore}
           items={items}

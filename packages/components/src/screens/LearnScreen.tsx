@@ -1,21 +1,32 @@
 import React from 'react';
-import { Container, ContentLoop, PageHeading } from '../primitives';
-import { useCurrentUser } from '../hooks';
+import {
+  Container,
+  ContentLoopSmall,
+  Subheadline,
+  PageHeading,
+  CategoryCard,
+} from '../primitives';
+import { useCurrentUser, useContent } from '../hooks';
+import { Categories, learnCategories } from 'common';
 
 const LearnScreen: React.FC = () => {
-  const { user, translation } = useCurrentUser();
-  const favorites =
-    user &&
-    user.favorites &&
-    Object.keys(user.favorites).filter(
-      (item: string) => user.favorites[item].favorited,
-    );
+  const { translation } = useCurrentUser();
+
+  const { getFeatures } = useContent();
+
+  const data = getFeatures(Categories.Learn);
 
   return (
-    <Container scrollEnabled>
-      <PageHeading noHeader title={translation['Your Favorites']} />
-      {/* <Tabs tabs={tabs} active={tab} setTab={setTab} /> */}
-      <ContentLoop favorites={favorites} />
+    <Container scrollEnabled bg="Learn">
+      <PageHeading color="white" noHeader title={translation.Learn} />
+
+      <Subheadline color="white">{translation.Featured}</Subheadline>
+      <ContentLoopSmall content={data} />
+      <Subheadline color="white">{translation.Categories}</Subheadline>
+
+      {learnCategories.map((category) => (
+        <CategoryCard key={category.title} category={category} />
+      ))}
     </Container>
   );
 };

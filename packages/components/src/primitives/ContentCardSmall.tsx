@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, CardItem, Left, Body } from 'native-base';
-import { Content } from 'services';
+import { Content } from 'common';
 import Image from './Image';
 import Headline from './Headline';
-import { useNavigation } from '../hooks';
 import Paragraph from './Paragraph';
+import { useNavigation } from '../hooks';
 
 interface Props {
   content: Content;

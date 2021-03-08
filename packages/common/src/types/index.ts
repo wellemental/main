@@ -29,7 +29,6 @@ export enum TimeOfDay {
   Afternoon = 'Afternoon',
   Evening = 'Evening',
 }
-
 export interface TimeOfDayObj {
   name: TimeOfDay;
   headline: string;
@@ -61,8 +60,16 @@ export enum Tags {
   Bedtime = 'bedtime',
   Sleep = 'sleep',
   Insomnia = 'insomnia',
-  OuterSpace = 'outer Space',
+  OuterSpace = 'outer-space',
   Featured = 'featured',
+  Focus = 'focus',
+  Stress = 'stress',
+  Energize = 'energize',
+  Rest = 'rest',
+  'Yoga Breaks' = 'yoga-breaks',
+  'Yoga Classes' = 'yoga-classes',
+  Philosophy = 'philosophy',
+  History = 'history',
 }
 
 //export type Tags = keyof typeof Tags;
@@ -70,10 +77,15 @@ export enum Tags {
 
 export type Category = {
   title: string;
-  description: string;
   tag: Tags;
-  image: string;
+  description?: string;
+  image?: string;
+  icon?: string;
 };
+
+export interface CategoryObj {
+  [key: string]: Category;
+}
 
 export interface Feature extends Category {
   'title-es': string;
@@ -282,6 +294,7 @@ export interface ContentServiceType {
   buildContent(doc: QueryDocumentSnapshot): Content;
   getContent(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
+  getFeatured(category: Categories): Content[];
 }
 
 export type PromoCode = {

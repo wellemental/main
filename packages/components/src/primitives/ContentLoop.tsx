@@ -27,7 +27,7 @@ const ContentLoop: React.FC<Props> = ({
   hasPadding,
 }) => {
   const { user, translation } = useCurrentUser();
-  const { content, teachers, error, loading } = useContent();
+  const { content, error, loading } = useContent();
 
   let filteredContent: Content[] = content ? Object.values(content) : [];
 
@@ -74,27 +74,19 @@ const ContentLoop: React.FC<Props> = ({
 
       {loading ? (
         <Spinner />
-      ) : content && teachers && scrollEnabled && hasFilteredContent ? (
+      ) : content && scrollEnabled && hasFilteredContent ? (
         // If tabs and header need to be able to scroll up with the list
         <ScrollView showsVerticalScrollIndicator={false}>
           {filteredContent.map((item, idx) => (
             <>
               <Paragraph>First one</Paragraph>
-              <ContentCard
-                key={idx}
-                content={item}
-                teacher={teachers[item.teacher]}
-              />
+              <ContentCard key={idx} content={item} />
             </>
           ))}
         </ScrollView>
-      ) : content && teachers && hasFilteredContent ? (
+      ) : content && hasFilteredContent ? (
         filteredContent.map((item, idx) => (
-          <ContentCard
-            key={idx}
-            content={item}
-            teacher={teachers[item.teacher]}
-          />
+          <ContentCard key={idx} content={item} />
         ))
       ) : favorites ? (
         <ListEmpty>

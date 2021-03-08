@@ -6,6 +6,7 @@ import Avatar from './Avatar';
 import LogoIcon from './LogoIcon';
 import { View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors, Colors } from 'common';
 
 type Props = {
   title: string;
@@ -15,6 +16,7 @@ type Props = {
   noHeader?: boolean;
   subheader?: boolean;
   withLogo?: boolean;
+  color?: Colors;
 };
 const PageHeading: React.FC<Props> = ({
   title,
@@ -24,6 +26,7 @@ const PageHeading: React.FC<Props> = ({
   noHeader,
   subheader,
   withLogo,
+  color,
 }) => {
   const insets = useSafeAreaInsets();
   let pt = 35;
@@ -52,7 +55,11 @@ const PageHeading: React.FC<Props> = ({
         </Box>
       )}
       {avatar && <Avatar source={avatar} size={200} mb={30} />}
-      <Headline center={center ? center : false}>{title}</Headline>
+      <Headline
+        center={center ? center : false}
+        style={{ color: color ? colors[color] : colors.brandPrimary }}>
+        {title}
+      </Headline>
       {subtitle && <Paragraph style={{ paddingTop: 5 }}>{subtitle}</Paragraph>}
     </View>
   );
