@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
-import { UpdateUserService } from '../services';
 import { useMutation } from '../hooks/useMutation';
 import { useQuery } from '../hooks/useQuery';
 import { useContainer } from '../hooks/useContainer';
@@ -41,7 +40,7 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
 
   // Set fav state once pulled from database
   useEffect(() => {
-    toggleFav(initialFavState);
+    toggleFav(!!initialFavState);
   }, [initialFavState]);
 
   // Update favorite doc in database

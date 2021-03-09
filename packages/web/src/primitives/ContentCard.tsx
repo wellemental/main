@@ -1,9 +1,8 @@
 import React from 'react';
-import { Content, Teacher } from '../types';
+import { Content } from 'common';
 import AvyName from './AvyName';
 import { useHistory } from '../hooks';
 import Paragraph from './Paragraph';
-import Headline from './Headline';
 import CardTitle from './CardTitle';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -14,12 +13,17 @@ import { slugify } from '../services/helpers';
 
 interface Props {
   content: Content;
-  teacher: Teacher;
 }
 
-const ContentCard: React.FC<Props> = ({ content, teacher }) => {
+const ContentCard: React.FC<Props> = ({ content }) => {
   const history = useHistory();
 
+  const teacher = content.teacher;
+
+  if (!teacher) {
+    console.log('CONTENT', content);
+    console.log('TEACHER', teacher);
+  }
   return (
     <Card
       style={{
@@ -45,7 +49,7 @@ const ContentCard: React.FC<Props> = ({ content, teacher }) => {
 
             <AvyName
               source={teacher.photo}
-              name={content.teacher}
+              name={teacher.name}
               favoriteId={content.id}
             />
           </CardContent>

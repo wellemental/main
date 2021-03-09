@@ -1,10 +1,13 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useRef } from 'react';
 import { FlatList } from 'react-native';
 import TeacherCard from './TeacherCard';
-import { useContent, useCurrentUser } from '../hooks';
+import Box from './Box';
+import Loading from './Loading';
+import { useContent, useCurrentUser, useQuery, useContainer } from '../hooks';
 import ListEmpty from './ListEmpty';
-import { Teacher } from 'types';
 import { View } from 'react-native';
+import { TeacherService } from 'services';
+import { Teacher, TeacherServiceType } from 'common';
 
 type Props = {
   scrollEnabled?: boolean;
@@ -12,40 +15,57 @@ type Props = {
 };
 
 const TeacherLoop: React.FC<Props> = ({ header, scrollEnabled }) => {
-  const { teachers } = useContent();
   const { user } = useCurrentUser();
 
-  let filteredTeachers = Object.values(teachers);
+  const container = useContainer();
+  const service = container.getInstance<TeacherServiceType>('teacherService');
+
+  const { data: teachers, loading } = useQuery(service.getAll);
+
+  const renderTeachers = (): Teacher[] => {
+    let arr: Teacher[] = [];
+
+    if (teachers) {
+      arr = Object.values(teachers);
+      arr = arr.filter((item: Teacher) => item.language === user.language);
+    }
+
+    return arr;
+  };
 
   // Filter by language
-  if (user && user.language && filteredTeachers) {
-    filteredTeachers = filteredTeachers.filter(
-      (item: Teacher) => item.language === user.language,
-    );
-  }
+  // if (user && user.language && filteredTeachers) {
+  //   filteredTeachers = filteredTeachers.filter(
+  //     (item: Teacher) => item.language === user.language,
+  //   );
+  // }
 
-  const hasFilteredTeachers = filteredTeachers && filteredTeachers.length > 0;
+  // const hasFilteredTeachers = filteredTeachers && filteredTeachers.length > 0;
 
-  return teachers && scrollEnabled && hasFilteredTeachers ? (
-    <FlatList
-      ListHeaderComponent={header}
-      numColumns={2}
-      data={Object.values(filteredTeachers)}
-      renderItem={({ item }) => <TeacherCard teacher={item} />}
-    />
-  ) : teachers && hasFilteredTeachers ? (
-    <View
-      style={{
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-      }}>
-      {Object.values(teachers).map((item: Teacher, idx) => (
-        <TeacherCard key={idx} teacher={item} />
-      ))}
-    </View>
-  ) : (
-    <ListEmpty />
+  return (
+    <Loading loading={loading}>
+      {scrollEnabled && teachers ? (
+        <FlatList
+          ListHeaderComponent={header}
+          numColumns={2}
+          data={renderTeachers()}
+          renderItem={({ item }) => <TeacherCard teacher={item} />}
+        />
+      ) : teachers ? (
+        <Box
+          style={{
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}>
+          {renderTeachers().map((teacher, idx) => (
+            <TeacherCard key={idx} teacher={teacher} />
+          ))}
+        </Box>
+      ) : (
+        <ListEmpty />
+      )}
+    </Loading>
   );
 };
 

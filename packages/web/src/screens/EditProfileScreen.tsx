@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Error, Box, PageHeading, Button, ToggleButtons } from '../primitives';
 import { useCurrentUser, useMutation } from '../hooks';
 import { UpdateUserService } from '../services';
-import { UserProfile, Languages } from '../types';
+import { UserProfile, Languages } from 'common';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 

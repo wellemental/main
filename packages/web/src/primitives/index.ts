@@ -4,6 +4,7 @@ export { default as Headline } from './Headline';
 export { default as Input } from './Input';
 export { default as Error } from './Error';
 export { default as Page } from './Page';
+export { default as Loading } from './Loading';
 export { default as Logo } from './Logo';
 export { default as PageHeading } from './PageHeading';
 export { default as ContentCard } from './ContentCard';

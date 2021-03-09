@@ -54,7 +54,7 @@ class FavoritesService extends BaseService implements FavoritesServiceType {
         const ref = this.collection.doc(contentId);
         const newFav = {
           contentId,
-          updatedAt: fav.updated_at,
+          updatedAt: fav.updatedAt,
           favorited: fav.favorited,
           createdAt: new Date(),
         };

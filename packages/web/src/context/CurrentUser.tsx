@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import firebase, { FbUser } from '../base';
-import { Unsubscriber, Languages, User } from '../types';
+import { Unsubscriber, Languages, User } from 'common';
 import { English } from 'common';
 import { Español } from 'common';
 import { Spinner } from '../primitives';

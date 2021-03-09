@@ -1,8 +1,8 @@
 import firebase from '../base';
-import { TrackingEvents, TrackingService } from '../types';
+import { TrackingEvents, TrackingService } from 'common';
 import logger from './LoggerService';
 
-export { TrackingEvents } from '../types';
+export { TrackingEvents } from 'common';
 
 // Segment Tracking Helper
 export const setUserProperties = async (

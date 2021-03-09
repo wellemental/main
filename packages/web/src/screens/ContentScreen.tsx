@@ -11,7 +11,7 @@ import {
 } from '../primitives';
 import IconButton from '@material-ui/core/IconButton';
 import ReactPlayer from 'react-player';
-import { Teacher, Content, PlaysServiceType } from '../types';
+import { Teacher, Content, PlaysServiceType } from 'common';
 import {
   useHistory,
   useContent,
@@ -46,7 +46,7 @@ const ContentScreen: React.FC = () => {
   const classes = useStyles();
   const { translation, auth } = useCurrentUser();
   const history = useHistory();
-  const { teachers, content: allContent } = useContent();
+  const { content: allContent } = useContent();
   const match = useRouteMatch();
   const [error, setError] = useState();
   const [isPaused, togglePaused] = useState(true);
@@ -66,8 +66,8 @@ const ContentScreen: React.FC = () => {
   }
 
   // Match teacher based on matched content
-  if (content && teachers) {
-    teacher = teachers[content.teacher];
+  if (content) {
+    teacher = content.teacher;
   }
 
   // Set content duration after match
@@ -188,11 +188,18 @@ const ContentScreen: React.FC = () => {
             <Headline variant="h5" style={{ flex: 8 }}>
               {content.title}
             </Headline>
+
             <Box display="flex" flexDirection="row">
               <Favorite onProfile contentId={content.id} />
               {/* <Download videoUrl={content.video} /> */}
             </Box>
           </Box>
+
+          {auth &&
+            (auth.email === 'test@test.com' ||
+              auth.email === 'mike.r.vosters@gmail.com') && (
+              <Paragraph fine>{content.id}</Paragraph>
+            )}
 
           <Paragraph gb={1}>
             {content.type.toUpperCase()} | {content.length}
@@ -205,23 +212,11 @@ const ContentScreen: React.FC = () => {
           <AvyName
             source={teacher.photo}
             teacher={teacher}
-            name={content.teacher}
+            name={content.teacher.name}
             onProfile
           />
 
           <Paragraph>{teacher.bio}</Paragraph>
-
-          {auth &&
-            (auth.email === 'test@test.com' ||
-              auth.email === 'mike.r.vosters@gmail.com') && (
-              <Box mt={2}>
-                <Paragraph>{content.id}</Paragraph>
-                <Paragraph>Current Time: {currentTime}</Paragraph>
-                <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
-                <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
-                <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
-              </Box>
-            )}
         </CardContent>
       </Card>
     </>

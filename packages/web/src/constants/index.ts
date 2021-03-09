@@ -1,4 +1,4 @@
-import { Category, Tags } from '../types';
+import { Category, Tags } from 'common';
 
 export const ageGroups: Category[] = [
   {

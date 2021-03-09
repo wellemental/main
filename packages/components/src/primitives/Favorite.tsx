@@ -30,7 +30,7 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
 
   // Set fav state once pulled from database
   useEffect(() => {
-    toggleFav(initialFavState);
+    toggleFav(!!initialFavState);
   }, [initialFavState]);
 
   // Update favorite doc in database

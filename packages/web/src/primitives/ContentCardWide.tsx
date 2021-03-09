@@ -1,5 +1,5 @@
 import React from 'react';
-import { Content, Teacher } from '../types';
+import { Content, Teacher } from 'common';
 import AvyName from './AvyName';
 import { useHistory } from '../hooks';
 import Paragraph from './Paragraph';
@@ -12,11 +12,11 @@ import { slugify } from '../services/helpers';
 
 interface Props {
   content: Content;
-  teacher: Teacher;
 }
 
-const ContentCardWide: React.FC<Props> = ({ content, teacher }) => {
+const ContentCardWide: React.FC<Props> = ({ content }) => {
   const history = useHistory();
+  const teacher = content.teacher;
 
   return (
     <Card
@@ -45,7 +45,7 @@ const ContentCardWide: React.FC<Props> = ({ content, teacher }) => {
             </>
             <AvyName
               source={teacher.photo}
-              name={content.teacher}
+              name={teacher.name}
               favoriteId={content.id}
             />
           </CardContent>

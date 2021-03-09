@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useCurrentUser } from '../hooks';
 import Paragraph from './Paragraph';
-import { Category, Languages, Feature } from '../types';
+import { Category, Languages, Feature } from 'common';
 import {
   Card,
   Box,
@@ -32,7 +32,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
   const description: string =
     isFeature(category) && user.language === Languages.Es
       ? category['description-es']
-      : translation[category.description]
+      : !!category.description && translation[category.description]
       ? translation[category.description]
       : category.description;
 

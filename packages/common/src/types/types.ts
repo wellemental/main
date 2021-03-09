@@ -1,7 +1,9 @@
-import defaultValues from '../services/RemoteConfigDefaults';
+import { configDefaults } from '../constants/remoteConfigDefaults';
 
 export type Translations = { [key: string]: string };
 type ValueOf<T> = T[keyof T];
+
+export type Unsubscriber = () => void;
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -65,11 +67,23 @@ export enum Tags {
   Focus = 'focus',
   Stress = 'stress',
   Energize = 'energize',
+  Toddler = 'toddler',
   Rest = 'rest',
   'Yoga Breaks' = 'yoga-breaks',
   'Yoga Classes' = 'yoga-classes',
   Philosophy = 'philosophy',
   History = 'history',
+  Morning = 'Morning',
+  Afternoon = 'Afternoon',
+  Evening = 'Evening',
+  Meditate = 'Meditate',
+  Move = 'Move',
+  Learn = 'Learn',
+  Black = 'black',
+  Study = 'study',
+  PreK = 'PreK-5',
+  '6-8' = '6-8',
+  '9-12' = '9-12',
 }
 
 //export type Tags = keyof typeof Tags;
@@ -81,6 +95,7 @@ export type Category = {
   description?: string;
   image?: string;
   icon?: string;
+  slug?: string;
 };
 
 export interface CategoryObj {
@@ -177,7 +192,7 @@ export interface Content {
   description: string;
   teacher: Teacher;
   type: Categories;
-  tags: Tags[] | string[];
+  tags: Tags[];
   seconds: number;
   length: string;
   language: Languages;
@@ -196,7 +211,7 @@ export interface ContentObj {
 
 export interface Teacher {
   id: string;
-  name: string; //Teachers;
+  name: Teachers;
   bio: string;
   photo: string;
   language: Languages;
@@ -204,7 +219,7 @@ export interface Teacher {
 }
 
 export interface AllTeachers {
-  [key: Teachers]: Teacher;
+  [key: string]: Teacher;
 }
 
 export interface UserProfile {
@@ -280,7 +295,7 @@ export type FavoritesObj = { [key: string]: Favorite };
 
 // Used to import old fav style in CurrentUser to full subcollection
 export type FavoritesObjPartial = {
-  [key: string]: { updated_at: Date; favorited: boolean };
+  [key: string]: { updatedAt: Date; favorited: boolean };
 };
 
 export interface FavoritesServiceType {
@@ -319,10 +334,10 @@ export interface LocalStateServiceType {
 }
 
 export interface ContentServiceType {
-  buildContent(doc: QueryDocumentSnapshot): Content;
+  buildContent(doc: QueryDocumentSnapshot): Content | null;
   getContent(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
-  getFeatured(category: Categories): Content[];
+  // getFeatured(category: Categories): Content[];
 }
 
 export type PromoCode = {
@@ -333,7 +348,7 @@ export type PromoCode = {
 };
 
 export interface PromoCodeServiceType {
-  validateCode(code: string): Promise<PromoCode>;
+  validateCode(code: string): Promise<PromoCode | void>;
   upgradeUser(userId: string, code: string): Promise<void>;
   validateAndUpgrade(userId: string, code: string): Promise<void>;
 }
@@ -414,4 +429,9 @@ export type VersionConfig = {
 export interface ConfigDefaults {
   featured: Features;
   version: VersionConfig;
+}
+
+// WEB ONLY
+export interface LocationState {
+  [key: string]: any;
 }

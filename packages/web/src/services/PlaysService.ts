@@ -4,7 +4,7 @@ import {
   User,
   PlaysServiceType,
   TrackingEvents,
-} from '../types';
+} from 'common';
 import { ApplicationError } from '../models/Errors';
 import BaseService from './BaseService';
 import { increment } from './helpers';

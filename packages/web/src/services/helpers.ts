@@ -1,4 +1,5 @@
-import { Feature, Category, Timestamp, FieldValue } from '../types';
+import { Feature, Category } from 'common';
+import { Timestamp, FieldValue } from '../types';
 import moment from 'moment';
 import { firestore } from 'firebase/app';
 

@@ -11,7 +11,7 @@ import {
   Spinner,
 } from '../primitives';
 import AuthService from '../services/AuthService';
-import { Languages, Translations } from '../types';
+import { Languages, Translations } from 'common';
 import { useLocation, useCurrentUser } from '../hooks';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';

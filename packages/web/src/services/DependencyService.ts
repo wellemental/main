@@ -1,4 +1,4 @@
-import { User } from '../types';
+import { User } from 'common';
 import { buildLogger } from './LoggerService';
 import { buildTracker } from './TrackerService';
 import UpdateUserService from './UpdateUserService';

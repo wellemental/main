@@ -1,7 +1,7 @@
 import React from 'react';
 import { ContentLoop, PageHeading, Spinner } from '../primitives';
 import { useContent, useRouteMatch, useCurrentUser } from '../hooks';
-import { Category } from '../types';
+import { Category } from 'common';
 import { slugify } from '../services/helpers';
 import { ageGroups } from '../constants';
 
@@ -35,7 +35,7 @@ const CategoryScreen: React.FC = () => {
             : category.title
         } // translation[category.title]}
         subtitle={
-          translation[category.description]
+          category.description && translation[category.description]
             ? translation[category.description]
             : category.description
         }

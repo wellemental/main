@@ -7,7 +7,7 @@ import Avatar from './Avatar';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import { useHistory } from '../hooks';
-import { Teacher } from '../types';
+import { Teacher } from 'common';
 import { slugify } from '../services/helpers';
 
 type Props = {

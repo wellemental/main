@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageHeading, ContentLoop, CategoryCard, Spinner } from '../primitives';
 import moment from 'moment';
-import { TimeOfDay, Category } from '../types';
+import { TimeOfDay, Category } from 'common';
 import { useCurrentUser, useContent } from '../hooks';
 import { ageGroups } from '../constants';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
-import { Content, Tags, Categories, TimeOfDay, Teachers } from '../types';
+import { Content, Tags, Categories, TimeOfDay, Teachers } from 'common';
 import ListEmpty from './ListEmpty';
 import Error from './Error';
 import { useCurrentUser } from '../hooks/useCurrentUser';
@@ -25,7 +25,7 @@ const ContentLoop: React.FC<Props> = ({
   hasPadding,
 }) => {
   const { user, translation } = useCurrentUser();
-  const { content, teachers, error } = useContent();
+  const { content, error } = useContent();
   let filteredContent: Content[] = content ? Object.values(content) : [];
 
   const [isLangFilter, setLangFilter] = useState(true);
@@ -63,7 +63,7 @@ const ContentLoop: React.FC<Props> = ({
   // Filter by teacher
   if (teacher && filteredContent) {
     filteredContent = filteredContent.filter(
-      (item: Content) => item.teacher === teacher,
+      (item: Content) => item.teacher.name === teacher,
     );
   }
 
@@ -80,30 +80,16 @@ const ContentLoop: React.FC<Props> = ({
     <>
       <Error error={error} />
 
-      {content &&
-      teachers &&
-      scrollEnabled &&
-      hasFilteredContent &&
-      filteredContent ? (
+      {content && scrollEnabled && hasFilteredContent && filteredContent ? (
         // If tabs and header need to be able to scroll up with the list
         <>
           {filteredContent.map((item, idx) => (
-            <>
-              <ContentCard
-                key={idx}
-                content={item}
-                teacher={teachers[item.teacher]}
-              />
-            </>
+            <ContentCard key={idx} content={item} />
           ))}
         </>
-      ) : content && teachers && hasFilteredContent && filteredContent ? (
+      ) : content && hasFilteredContent && filteredContent ? (
         filteredContent.map((item, idx) => (
-          <ContentCard
-            key={idx}
-            content={item}
-            teacher={teachers[item.teacher]}
-          />
+          <ContentCard key={idx} content={item} />
         ))
       ) : favorites ? (
         <ListEmpty>

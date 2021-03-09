@@ -28,7 +28,7 @@ class ContentService implements ContentServiceType {
     this.localStorage = new LocalStateService();
     this.teacherService = new TeacherService();
 
-    this.teachers = undefined;
+    this.teachers;
     this.content = {};
   }
 
@@ -36,6 +36,7 @@ class ContentService implements ContentServiceType {
     doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
   ): Content => {
     const data = doc.data();
+    const tags: Tags[] = data.tags ? data.tags.split(', ') : [];
 
     return {
       id: doc.id,
@@ -46,15 +47,11 @@ class ContentService implements ContentServiceType {
       description: data.description,
       teacher: this.teachers[data.teacher],
       type: data.type,
-      tags: !data.tags
-        ? undefined
-        : typeof data.tags === 'string'
-        ? data.tags.split(', ')
-        : Object.values(data.tags),
+      tags: tags,
       seconds: data.seconds,
       length: data.seconds
         ? moment().startOf('day').seconds(data.seconds).format('m:ss')
-        : undefined,
+        : '0:00',
       language: data.language,
       priority: data.priority,
       status: data.status,

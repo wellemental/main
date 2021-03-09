@@ -12,6 +12,7 @@ export { default as RecentlyPlayedLoop } from './RecentlyPlayedLoop';
 export { default as ContentCardSmall } from './ContentCardSmall';
 export { default as ContentLoopSmall } from './ContentLoopSmall';
 export { default as Favorite } from './Favorite';
+export { default as Loading } from './Loading';
 export { default as ConditionalWrapper } from './ConditionalWrapper';
 export { default as LegalLinks } from './LegalLinks';
 export { default as AgeCards } from './AgeCards';

@@ -82,7 +82,7 @@ export default Tabs;
 
 // import React from 'react';
 // import Paragraph from './Paragraph';
-// import { MenuItem } from '../types';
+// import { MenuItem } from 'common';
 
 // type Props = {
 //   tabs: MenuItem[];

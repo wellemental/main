@@ -8,6 +8,7 @@ import { buildFirestore } from './FirebaseService';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
 import FavoritesService from './FavoritesService';
+import TeacherService from './TeacherService';
 import ObserveNotifications from './ObserveNotifications';
 // import LocalStateService from './LocalStateService';
 // import AuthService from './AuthService';
@@ -50,6 +51,10 @@ const dependenciesDescriptors = {
   },
   favoritesService: {
     class: FavoritesService,
+    dependencies: BASE_SERVICE_DEPENDENCIES,
+  },
+  teacherService: {
+    class: TeacherService,
     dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   observeNotifications: {

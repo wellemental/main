@@ -1,7 +1,7 @@
 // @ts-nocheck
 import firebase from '../base';
 import defaultValues from './RemoteConfigDefaults';
-import { RemoteConfigService } from '../types';
+import { RemoteConfigService } from 'common';
 import { ApplicationError } from '../models/Errors';
 import logger from '../services/LoggerService';
 

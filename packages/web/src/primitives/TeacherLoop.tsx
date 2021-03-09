@@ -1,47 +1,58 @@
 import React, { ReactElement } from 'react';
 import TeacherCard from './TeacherCard';
-import { Box } from '../primitives';
-import { useContent, useCurrentUser } from '../hooks';
+import { Box, Loading } from '../primitives';
+import { useContent, useCurrentUser, useQuery } from '../hooks';
 import ListEmpty from './ListEmpty';
-import { Teacher } from '../types';
+import { Teacher, AllTeachers } from 'common';
+import { TeacherService } from '../services';
 
 type Props = {
   scrollEnabled?: boolean;
   header?: ReactElement;
 };
 
+const service = new TeacherService();
+
 const TeacherLoop: React.FC<Props> = ({ header, scrollEnabled }) => {
-  const { teachers } = useContent();
   const { user } = useCurrentUser();
+  const { data: teachers, loading } = useQuery<AllTeachers>(service.getAll);
 
-  let filteredTeachers;
+  const renderTeachers = (): React.ReactElement[] => {
+    let arr: Teacher[] = [];
 
-  if (teachers) {
-    filteredTeachers = Object.values(teachers);
-  }
+    if (teachers) {
+      arr = Object.values(teachers);
+      arr = arr.filter((item: Teacher) => item.language === user.language);
+    }
+    return arr.map((teacher, idx) => (
+      <TeacherCard key={idx} teacher={teacher} />
+    ));
+  };
 
   // Filter by language
-  if (user && user.language && filteredTeachers) {
-    filteredTeachers = filteredTeachers.filter(
-      (item: Teacher) => item.language === user.language,
-    );
-  }
+  // if (user && user.language) {
+  //   filteredTeachers = filteredTeachers.filter(
+  //     (item: Teacher) => item.language === user.language,
+  //   );
+  // }
 
-  const hasFilteredTeachers = filteredTeachers && filteredTeachers.length > 0;
+  // const hasFilteredTeachers = filteredTeachers && filteredTeachers.length > 0;
 
-  return teachers && hasFilteredTeachers ? (
-    <Box
-      style={{
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-      }}>
-      {Object.values(teachers).map((item: Teacher, idx) => (
-        <TeacherCard key={idx} teacher={item} />
-      ))}
-    </Box>
-  ) : (
-    <ListEmpty />
+  return (
+    <Loading loading={loading}>
+      {!teachers ? (
+        <Box
+          style={{
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}>
+          {renderTeachers()}
+        </Box>
+      ) : (
+        <ListEmpty />
+      )}
+    </Loading>
   );
 };
 

@@ -9,7 +9,7 @@ const run = async (): Promise<void> => {
   }
 
   try {
-    const collection = firebase.firestore().collection('content');
+    const collection = firebase.firestore().collection('teachers');
     const batch = firebase.firestore().batch();
 
     const arr = teachers;
@@ -24,7 +24,7 @@ const run = async (): Promise<void> => {
       await batch.commit();
       console.log(`${arr.length} Items batch added to database!`);
     } catch (err) {
-      console.log('Error copying content', err);
+      console.log('Error copying teachers', err);
     }
 
     return Promise.resolve();

@@ -1,6 +1,6 @@
 import React from 'react';
 import Paragraph from './Paragraph';
-import { Teacher } from '../types';
+import { Teacher } from 'common';
 import { useHistory } from '../hooks';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';

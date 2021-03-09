@@ -48,31 +48,33 @@ class FavoritesService extends BaseService implements FavoritesServiceType {
   };
 
   public import = async (): Promise<void> => {
-    try {
-      const contentIds = Object.keys(this.currentUser.favorites);
-      const favObjects = Object.values(this.currentUser.favorites);
-      const batch = this.firestore.batch();
+    if (this.currentUser.favorites) {
+      try {
+        const contentIds = Object.keys(this.currentUser.favorites);
+        const favObjects = Object.values(this.currentUser.favorites);
+        const batch = this.firestore.batch();
 
-      contentIds.map((contentId, idx) => {
-        const fav = favObjects[idx];
-        const ref = this.collection.doc(contentId);
-        const newFav = {
-          contentId,
-          updatedAt: fav.updated_at,
-          favorited: fav.favorited,
-          createdAt: new Date(),
-        };
-        batch.set(ref, newFav);
-      });
+        contentIds.map((contentId, idx) => {
+          const fav = favObjects[idx];
+          const ref = this.collection.doc(contentId);
+          const newFav = {
+            contentId,
+            updatedAt: fav.updatedAt,
+            favorited: fav.favorited,
+            createdAt: new Date(),
+          };
+          batch.set(ref, newFav);
+        });
 
-      // Batch update, and then set favorites property to null so it doesn't import again
-      batch.commit().then(() =>
-        this.userDoc.update({
-          favorites: null,
-        }),
-      );
-    } catch (err) {
-      throw new ApplicationError('Error favoriting item');
+        // Batch update, and then set favorites property to null so it doesn't import again
+        batch.commit().then(() =>
+          this.userDoc.update({
+            favorites: null,
+          }),
+        );
+      } catch (err) {
+        throw new ApplicationError('Error favoriting item');
+      }
     }
   };
 

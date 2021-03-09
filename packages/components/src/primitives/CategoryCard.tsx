@@ -34,7 +34,7 @@ const CategoryCard: React.FC<Props> = ({ category, color }) => {
   const description: string =
     isFeature(category) && user.language === Languages.Es
       ? category['description-es']
-      : translation[category.description]
+      : category.description && translation[category.description]
       ? translation[category.description]
       : category.description;
 
