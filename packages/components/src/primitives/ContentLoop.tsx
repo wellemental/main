@@ -31,6 +31,8 @@ const ContentLoop: React.FC<Props> = ({
 
   let filteredContent: Content[] = content ? Object.values(content) : [];
 
+  console.log('FILTER!!!!!', filter);
+
   // Filter by language
   if (user && user.language && filteredContent && favorites === undefined) {
     filteredContent = filteredContent.filter(

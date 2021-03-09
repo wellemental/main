@@ -14,11 +14,11 @@ const MoveScreen: React.FC = () => {
 
   const { getFeatures } = useContent();
 
-  const data = getFeatures(Categories.Meditate);
+  const data = getFeatures(Categories.Move);
 
   return (
     <Container scrollEnabled bg="Move">
-      <PageHeading noHeader title={translation.Meditate} />
+      <PageHeading noHeader title={translation.Move} />
 
       <Subheadline>{translation.Featured}</Subheadline>
       <ContentLoopSmall content={data} />

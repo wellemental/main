@@ -14,6 +14,7 @@ const CategoryScreen: React.FC<Props> = ({ route }) => {
 
   const isAgeGroup = defaultAgeGroups.includes(category);
 
+  console.log('FILTER ADF', category.tag);
   return (
     <Container scrollEnabled>
       <PageHeading

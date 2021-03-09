@@ -163,7 +163,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   // Get Featured Content from Remote Config
   const { loading: rcLoading, data: rcData } = useConfig<Features>('featured');
 
-  if (!content || !rcData) {
+  if (!content) {
     return <Spinner text="Loading Content..." />;
   }
 

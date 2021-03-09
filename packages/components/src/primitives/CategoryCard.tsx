@@ -1,15 +1,24 @@
 import React from 'react';
-import { Card, CardItem, Right, Body, H3, Icon } from 'native-base';
+import { Card, CardItem, Right, Body, Icon } from 'native-base';
 import Image from './Image';
 import { useNavigation, useCurrentUser } from '../hooks';
 import Paragraph from './Paragraph';
-import { Category, Feature, Languages, isFeature } from 'common';
+import Headline from './Headline';
+import {
+  Category,
+  Feature,
+  Languages,
+  isFeature,
+  ColorPairings,
+  colorPairings,
+} from 'common';
 
 type Props = {
   category: Category | Feature;
+  color: ColorPairings;
 };
 
-const CategoryCard: React.FC<Props> = ({ category }) => {
+const CategoryCard: React.FC<Props> = ({ category, color }) => {
   const navigation = useNavigation();
   const { translation, user } = useCurrentUser();
 
@@ -34,6 +43,9 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
       <CardItem
         cardBody
         button
+        style={{
+          backgroundColor: color ? colorPairings[color].main : undefined,
+        }}
         onPress={() => navigation.navigate('Category', { category: category })}>
         <Body
           style={{
@@ -42,7 +54,11 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
             padding: 15,
             paddingBottom: 15,
           }}>
-          <H3>{title}</H3>
+          <Headline
+            small
+            style={{ color: color ? colorPairings[color].text : undefined }}>
+            {title}
+          </Headline>
           {description && <Paragraph>{description}</Paragraph>}
         </Body>
         <Right style={{ flex: 1, marginLeft: 10 }}>
@@ -67,7 +83,9 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
               name={category.icon}
               style={{
                 fontSize: 50,
-                color: 'black',
+                color: color ? colorPairings[color].light : undefined,
+                paddingHorizontal: 20,
+                paddingVertical: 10,
               }}
             />
           )}

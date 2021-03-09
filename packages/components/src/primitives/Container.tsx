@@ -38,7 +38,7 @@ const Container: React.FC<ContainerProps> = ({
 
   const styles = StyleSheet.flatten([
     {
-      backgroundColor: brandColors.skyBlue,
+      backgroundColor: brandColors.white,
       paddingHorizontal:
         noPadding === 'horizontal' || noPadding === 'none'
           ? 0

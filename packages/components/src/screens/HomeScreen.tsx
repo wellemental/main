@@ -57,7 +57,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
             paddingBottom: 15,
             marginBottom: -10,
           }}>
-          <Paragraph center style={{ color: variables.brandDanger }}>
+          <Paragraph center>
             {translation['Tap to download the latest Wellemental update.']}
           </Paragraph>
         </TouchableOpacity>
@@ -65,7 +65,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
 
       <PageHeadingHome timeOfDay={timeOfDay} />
 
-      {features && features.categories ? (
+      {features && features.categories && (
         <>
           <PageHeading subheader title={translation.Featured} />
 
@@ -73,8 +73,6 @@ const HomeScreen: React.FC = ({ navigation }) => {
             <CategoryCard key={idx} category={item} />
           ))}
         </>
-      ) : (
-        <Spinner />
       )}
 
       {activePlan && (
@@ -85,10 +83,6 @@ const HomeScreen: React.FC = ({ navigation }) => {
           />
 
           <AgeCards />
-
-          {/* {ageGroups.map((item, idx) => (
-            <CategoryCard key={idx} category={item} />
-          ))} */}
         </>
       )}
     </Container>

@@ -39,7 +39,7 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
       paddingTop: gv ? spacing * gv : gt ? spacing * gt : 0,
       paddingBottom: gv ? spacing * gv : gb ? spacing * gb : 0,
       color: fine ? brandColors.lightTextColor : brandColors.textColor,
-      textAlign: center ? 'center' : 'left',
+      textAlign: center ? 'center' : undefined,
       fontWeight: bold ? '900' : undefined,
     },
     style,
