@@ -10,9 +10,7 @@ import {
   TeacherServiceType,
   Content,
   ContentObj,
-  Categories,
   ContentServiceType,
-  Tags,
 } from 'common';
 import LocalStateService from './LocalStateService';
 import TeacherService from './TeacherService';
@@ -58,6 +56,7 @@ class ContentService implements ContentServiceType {
         ? moment().startOf('day').seconds(data.seconds).format('m:ss')
         : undefined,
       language: data.language,
+      priority: data.priority,
       status: data.status,
       updated_at: data.updated_at,
       created_at: data.created_at,

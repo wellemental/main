@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button, Icon } from 'native-base';
-import { useCurrentUser } from '../hooks/useCurrentUser';
-import { UpdateUserService } from 'services';
 import { useMutation } from '../hooks/useMutation';
+import { useContainer } from '../hooks/useContainer';
+import { useQuery } from '../hooks/useQuery';
+import { FavoritesServiceType } from 'common';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 interface Props {
@@ -11,40 +12,36 @@ interface Props {
 }
 
 const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
-  const { auth, user } = useCurrentUser();
-  const [isFav, toggleFav] = useState(
-    user && user.favorites && user.favorites[contentId]
-      ? user.favorites[contentId].favorited
-      : false,
+  const [isFav, toggleFav] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+
+  const container = useContainer();
+  const service = container.getInstance<FavoritesServiceType>(
+    'favoritesService',
   );
 
-  const [error, setError] = useState();
+  // Query is content is favorited or not
+  const query = useRef(() => service.isFavorited(contentId));
+  const { data: initialFavState, loading } = useQuery<boolean>(query.current);
 
-  const service = new UpdateUserService();
-  const { loading, mutate } = useMutation(() =>
-    service.favorite(auth.uid, contentId, !isFav),
+  const { loading: mutating, mutate } = useMutation(() =>
+    service.toggle(contentId),
   );
 
-  const handleFavorite = () => {
-    try {
-      mutate();
-    } catch (err) {
-      setError('Error');
-    }
-  };
-
+  // Set fav state once pulled from database
   useEffect(() => {
-    toggleFav(
-      user && user.favorites && user.favorites[contentId]
-        ? user.favorites[contentId].favorited
-        : false,
-    );
-  }, [user, contentId]);
+    toggleFav(initialFavState);
+  }, [initialFavState]);
+
+  // Update favorite doc in database
+  const handleFavorite = () => {
+    mutate(() => toggleFav(!isFav));
+  };
 
   return (
     <Button
       iconRight
-      disabled={loading}
+      disabled={loading || mutating}
       style={{
         paddingRight: 0,
         paddingBottom: 0,

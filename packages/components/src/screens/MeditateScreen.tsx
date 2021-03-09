@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Container,
   ContentLoopSmall,
-  Headline,
   Subheadline,
   PageHeading,
   CategoryCard,
 } from '../primitives';
 import { useCurrentUser, useContent } from '../hooks';
-import { ContentService } from 'services';
-import { Categories, Content, Tags, meditationCategories } from 'common';
+import { Categories, meditationCategories } from 'common';
 
 const colors = ['yellow', 'blurple', 'orange', 'teal'];
 
 const MeditateScreen: React.FC = () => {
-  const { user, translation } = useCurrentUser();
+  const { translation } = useCurrentUser();
 
   const { getFeatures } = useContent();
 

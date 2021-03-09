@@ -11,6 +11,7 @@ export { default as PromoCodeService } from './services/PromoCodeService';
 export { default as ObserveNotifications } from './services/ObserveNotifications';
 export { buildDependencies, Dependency } from './services/DependencyService';
 export { default as LocalStateService } from './services/LocalStateService';
+export { default as FavoritesService } from './services/FavoritesService';
 // export { default as tracker } from './services/TrackerService';
 // export { default as logger } from './services/LoggerService';
 // export * from './services/TrackerService';

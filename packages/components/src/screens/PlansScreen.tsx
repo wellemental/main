@@ -160,7 +160,7 @@ const PlansScreen: React.FC = () => {
           // top: 0,
           flex: 1,
         }}>
-        <Container scrollEnabled color="rgba(0,0,0,0)">
+        <Container scrollEnabled bg="Plans">
           <PageHeading
             noHeader
             title={translation['An inclusive space for kids to breathe.']}

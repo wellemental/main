@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
-  StatusBar,
   Platform,
   ImageBackground,
   Image,
@@ -12,9 +11,7 @@ import {
   AvyName,
   Box,
   Button,
-  Container,
   Download,
-  VideoAndroid,
   ScrollView,
   Favorite,
   Headline,
@@ -281,12 +278,13 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         {auth &&
           (auth.email === 'test@test.com' ||
             auth.email === 'mike.r.vosters@gmail.com') && (
-            <>
+            <Box mt={2}>
+              <Paragraph>{content.id}</Paragraph>
               <Paragraph>Current Time: {currentTime}</Paragraph>
               <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
               <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
               <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
-            </>
+            </Box>
           )}
       </ScrollView>
     </>

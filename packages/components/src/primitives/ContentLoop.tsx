@@ -31,8 +31,6 @@ const ContentLoop: React.FC<Props> = ({
 
   let filteredContent: Content[] = content ? Object.values(content) : [];
 
-  console.log('FILTER!!!!!', filter);
-
   // Filter by language
   if (user && user.language && filteredContent && favorites === undefined) {
     filteredContent = filteredContent.filter(
@@ -42,8 +40,9 @@ const ContentLoop: React.FC<Props> = ({
 
   // Filter by tag or category
   if (filter && filteredContent) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      item.tags.includes(filter.toLowerCase()),
+    filteredContent = filteredContent.filter(
+      (item: Content) =>
+        item && item.tags && item.tags.includes(filter.toLowerCase()),
     );
   }
 
@@ -57,7 +56,7 @@ const ContentLoop: React.FC<Props> = ({
   // Filter by teacher
   if (teacher && filteredContent) {
     filteredContent = filteredContent.filter(
-      (item: Content) => item.teacher === teacher,
+      (item: Content) => item.teacher && item.teacher.name === teacher,
     );
   }
 

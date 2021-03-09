@@ -9,7 +9,7 @@ import {
 import { updateUserPlan } from './user';
 import { validateIap, renewOrCancelSubscriptions } from './iap';
 import { validateAndroidSubscription } from './android';
-import { StripeEvent, PlayEvent, FieldValue } from './types';
+import { StripeEvent, PlayEvent, FieldValue, Favorite } from './types';
 
 // Initialize Firebase
 firebase.initializeApp();
@@ -64,6 +64,10 @@ export const increment = (amount?: number): FieldValue => {
   return firebase.firestore.FieldValue.increment(amount ? amount : 1);
 };
 
+export const decrement = (amount?: number): FieldValue => {
+  return firebase.firestore.FieldValue.increment(amount ? amount : -1);
+};
+
 // Increment content stat for totalPlays when created
 const onPlayAdd = functions.firestore
   .document('users/{userId}/plays/{playId}')
@@ -104,6 +108,29 @@ const onPlayUpdate = functions.firestore
     return Promise.resolve();
   });
 
+// Update content stat for totalCompleted when play is updated
+const onFavUpdate = functions.firestore
+  .document('users/{userId}/favorites/{contentId}')
+  .onUpdate(async (change) => {
+    if (change.after.exists) {
+      const favAfter = change.after.data() as Favorite;
+
+      if (favAfter) {
+        // Prob don't need this conditional, but keeping just in case
+        // Find the document in /content by the contentId
+        const contentDoc = await firebase
+          .firestore()
+          .collection('content')
+          .doc(favAfter.contentId);
+
+        // Increment or decrememt the totalFavorites stat on the doc
+        const adjustment = favAfter.favorited ? increment : decrement;
+        await contentDoc.update({ totalFavorites: adjustment() });
+      }
+    }
+    return Promise.resolve();
+  });
+
 const EVERY_HOUR_CRON = '0 * * * *';
 const runRenewOrCancelSubs = functions.pubsub
   .schedule(EVERY_HOUR_CRON)
@@ -120,4 +147,5 @@ export {
   onGetBillingPortal,
   onPlayAdd,
   onPlayUpdate,
+  onFavUpdate,
 };

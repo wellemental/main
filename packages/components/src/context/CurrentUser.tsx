@@ -124,40 +124,6 @@ export const CurrentUserProvider = ({ children }: any) => {
       .collection('users')
       .doc(user.uid)
       .onSnapshot((snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
-        // If user just signed up, save their user data to database
-        // if (!snapshot.exists) {
-        //   setCreatingUser(true);
-
-        //   const newDoc: User = {
-        //     id: currentAuth.uid,
-        //     email: currentAuth.email,
-        //     birthday: '',
-        //     name: '',
-        //     language: Languages.En,
-        //     onboardingComplete: false,
-        //   };
-
-        //   try {
-        //     const localUser = await localStateService.getUser();
-        //     if (localUser) {
-        //       console.log('LOCAL USER', localUser);
-
-        //       newDoc.birthday = localUser.birthday;
-        //       newDoc.language = localUser.language;
-        //       newDoc.name = localUser.name;
-        //       newDoc.onboardingComplete = true;
-        //     }
-        //   } catch (err) {
-        //     logger.error(`Error getting local user - ${err}`);
-        //   }
-
-        //   console.log('AUTH***', currentAuth);
-        //   await profileService.createProfile(newDoc);
-
-        //   // Set onboardingComplete locally so this doesn't run after first load
-        //   setCreatingUser(false);
-        // }
-
         // If user isn't logged in or doc doesn't exist
         if (!user.email) {
           return Promise.resolve();

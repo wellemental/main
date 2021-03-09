@@ -1,12 +1,11 @@
 import React from 'react';
 import { Card, CardItem, Left, Body, H3 } from 'native-base';
 import { View } from 'react-native';
-import { Content, Teacher } from 'common';
+import { Content } from 'common';
 import AvyName from './AvyName';
 import Image from './Image';
 import { useNavigation } from '../hooks';
 import Paragraph from './Paragraph';
-import { TeacherScreen } from '../screens';
 
 interface Props {
   content: Content;
@@ -15,6 +14,10 @@ interface Props {
 const ContentCard: React.FC<Props> = ({ content }) => {
   const navigation = useNavigation();
   const teacher = content.teacher;
+
+  if (!teacher) {
+    console.log('WHAT CONTENT!!!!', content.id);
+  }
 
   return (
     <Card>
@@ -45,11 +48,13 @@ const ContentCard: React.FC<Props> = ({ content }) => {
             <Paragraph>{content.length}</Paragraph>
             <H3 numberOfLines={1}>{content.title}</H3>
           </View>
-          <AvyName
-            source={teacher.photo}
-            name={teacher.name}
-            favoriteId={content.id}
-          />
+          {teacher && (
+            <AvyName
+              source={teacher.photo}
+              name={teacher.name}
+              favoriteId={content.id}
+            />
+          )}
         </Body>
       </CardItem>
     </Card>

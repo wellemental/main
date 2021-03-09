@@ -11,14 +11,15 @@ type Props = {
 };
 
 const PageHeadingHome: React.FC<Props> = ({ timeOfDay }) => {
-  const { content, loading, getTeacher } = useContent();
+  const { content, loading } = useContent();
   const navigation = useNavigation();
   let filteredContent: Content[] = content ? Object.values(content) : [];
   const filter = timeOfDay.name;
 
   if (filter && filteredContent) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      item.tags.includes(filter.toLowerCase()),
+    filteredContent = filteredContent.filter(
+      (item: Content) =>
+        item && item.tags && item.tags.includes(filter.toLowerCase()),
     );
   }
 

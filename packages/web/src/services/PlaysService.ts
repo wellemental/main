@@ -9,6 +9,7 @@ import { ApplicationError } from '../models/Errors';
 import BaseService from './BaseService';
 import { increment } from './helpers';
 import moment from 'moment';
+import { Platforms } from 'common';
 
 class PlaysService extends BaseService implements PlaysServiceType {
   userDoc = this.firestore.collection('users').doc(this.currentUser.id);
@@ -20,6 +21,7 @@ class PlaysService extends BaseService implements PlaysServiceType {
       // Add to the plays collection
       await this.collection.add({
         contentId: id,
+        platform: Platforms.Web,
         createdAt: new Date(),
       });
 

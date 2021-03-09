@@ -22,6 +22,8 @@ const backgrounds = {
   Move: require('../assets/images/wm_bg_move.jpg'),
   Learn: require('../assets/images/wm_bg_learn.jpg'),
   Meditate: require('../assets/images/wm_bg_meditate.jpg'),
+  Plans: require('../assets/images/cloud_bg.png'),
+  Parents: require('../assets/images/parents_bg.png'),
 };
 
 const Container: React.FC<ContainerProps> = ({
@@ -38,7 +40,7 @@ const Container: React.FC<ContainerProps> = ({
 
   const styles = StyleSheet.flatten([
     {
-      backgroundColor: brandColors.white,
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       paddingHorizontal:
         noPadding === 'horizontal' || noPadding === 'none'
           ? 0

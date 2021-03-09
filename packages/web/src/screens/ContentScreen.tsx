@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ContentScreen: React.FC = () => {
   const classes = useStyles();
-  const { translation } = useCurrentUser();
+  const { translation, auth } = useCurrentUser();
   const history = useHistory();
   const { teachers, content: allContent } = useContent();
   const match = useRouteMatch();
@@ -210,6 +210,18 @@ const ContentScreen: React.FC = () => {
           />
 
           <Paragraph>{teacher.bio}</Paragraph>
+
+          {auth &&
+            (auth.email === 'test@test.com' ||
+              auth.email === 'mike.r.vosters@gmail.com') && (
+              <Box mt={2}>
+                <Paragraph>{content.id}</Paragraph>
+                <Paragraph>Current Time: {currentTime}</Paragraph>
+                <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
+                <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
+                <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
+              </Box>
+            )}
         </CardContent>
       </Card>
     </>
