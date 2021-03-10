@@ -67,6 +67,11 @@ const ContentLoop: React.FC<Props> = ({
     );
   }
 
+  // Sort by priority
+  filteredContent = filteredContent.sort((a, b) =>
+    a.priority > b.priority ? 1 : -1,
+  );
+
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (

@@ -39,7 +39,6 @@ const Tabs: React.FC<Props> = ({ tabs, active, setTab }) => {
           key={item.label}>
           <Paragraph
             style={{
-              fontSize: 20,
               fontFamily: 'Inter',
               marginLeft: 7,
               marginRight: 7,

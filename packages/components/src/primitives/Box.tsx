@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 
-type Props = {
+export type BoxProps = {
   pt?: number;
   pb?: number;
   py?: number;
@@ -25,7 +25,7 @@ type Props = {
   style?: ViewStyle;
 };
 
-const Box: React.FC<Props> = ({
+const Box: React.FC<BoxProps> = ({
   m,
   p,
   pt,

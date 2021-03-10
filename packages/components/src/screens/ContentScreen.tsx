@@ -264,7 +264,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           transparent
           onPress={(): void =>
             navigation.navigate('Teacher', {
-              teacher: content.teacher.name,
+              teacher: content.teacher,
             })
           }>
           <AvyName

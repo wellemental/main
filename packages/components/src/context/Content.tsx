@@ -6,6 +6,7 @@ import {
   Categories,
   Tags,
   Content as ContentType,
+  Category,
 } from 'common';
 import Spinner from '../primitives/Spinner';
 import { useConfig, useCurrentUser } from '../hooks';
@@ -27,6 +28,9 @@ interface ContentContext {
 // Get content and teachers and match them together
 // Return both content and teachers
 
+const contentService = new ContentService();
+const localStateService = new LocalStateService();
+
 export const Content = React.createContext<ContentContext>({
   content: null,
   error: null,
@@ -39,9 +43,6 @@ export const Content = React.createContext<ContentContext>({
   getFeatures: null,
 });
 
-const contentService = new ContentService();
-const localStateService = new LocalStateService();
-
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const [content, setContent] = useState<ContentObj | null>(null);
   const [error, setError] = useState('');
@@ -51,6 +52,10 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const [loading, setLoading] = useState(!content ? true : false);
 
   const localUpdatedAt = useRef<Date | undefined>();
+
+  const getFeatures = (category: Categories): ContentType[] => {
+    return contentService.getFeatures(category, content);
+  };
 
   const getDbContent = async (): Promise<void> => {
     const setLocalContent = async (newContent: ContentObj): Promise<void> => {
@@ -142,12 +147,6 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       }
     }
   }, [content, user]);
-
-  const getFeatures = (category: Categories): ContentType[] => {
-    return Object.values(content).filter(
-      (item) => item.type === category && item.tags.includes(Tags.Featured),
-    );
-  };
 
   // If updateAvailable, refetch content from database automatically
   useEffect(() => {

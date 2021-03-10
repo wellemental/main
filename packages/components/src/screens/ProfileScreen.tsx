@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Platform } from 'react-native';
 import { PlaysServiceType, PlayEvent, convertTimestamp } from 'services';
+import { Card, CardItem } from 'native-base';
 import {
   Error,
   PageHeading,
@@ -8,14 +9,14 @@ import {
   StatDisplay,
   Button,
   ListEmpty,
-  Tabs,
+  TabsButtons,
   ContentLoop,
   Box,
   Spinner,
   ContentCardSmall,
 } from '../primitives';
 import { List } from 'native-base';
-import { MenuItem } from '../types';
+import { Tab } from 'common';
 import {
   useCurrentUser,
   useContent,
@@ -27,17 +28,17 @@ import SettingsScreen from '../screens/SettingsScreen';
 
 const ProfileScreen: React.FC = () => {
   const { translation, user } = useCurrentUser();
-  const { content, teachers } = useContent();
+  const { content } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
 
-  const tabs: MenuItem[] = [
+  const tabs: Tab[] = [
     { label: 'Stats' },
     { label: 'Journey' },
     { label: 'Favorites' },
   ];
 
-  const [tab, setTab] = useState(tabs[0]);
+  const [tab, setTab] = useState<string>(tabs[0].label);
 
   const container = useContainer();
   const service = container.getInstance<PlaysServiceType>('playsService');
@@ -50,39 +51,47 @@ const ProfileScreen: React.FC = () => {
     hasMore,
   } = useLoadMore(service.query, { limit: 7 });
 
-  const favorites =
-    user &&
-    user.favorites &&
-    Object.keys(user.favorites).filter(
-      (item: string) => user.favorites[item].favorited,
-    );
+  const {
+    items: favorites,
+    loading: favsLoading,
+    loadMore: loadMoreFavs,
+    loadingMore: loadingMoreFav,
+    hasMore: hasMoreFavs,
+  } = useLoadMore(service.query, { limit: 7 });
 
   return (
-    <Container scrollEnabled>
+    <Container scrollEnabled bg="Profile">
       <PageHeading noHeader title={translation.Profile} />
 
       <Error error={error} />
 
-      <Tabs tabs={tabs} active={tab} setTab={setTab} />
-      {tab.label === 'Favorites' && <ContentLoop favorites={favorites} />}
+      <Card>
+        <CardItem style={{ paddingBottom: 0, paddingTop: 0 }}>
+          <TabsButtons tabs={tabs} active={tab} setState={setTab} />
+        </CardItem>
+      </Card>
+      {tab === 'Favorites' && <ContentLoop favorites={favorites} />}
 
-      {tab.label === 'Stats' && (
+      {tab === 'Stats' && (
         <>
-          <StatDisplay type="streak" />
-          <StatDisplay type="completed" />
-          <StatDisplay type="time" />
-          <Box mt={2}>
+          <Card style={{ paddingTop: 0 }}>
+            <StatDisplay type="streak" />
+            <StatDisplay type="completed" />
+            <StatDisplay type="time" last />
+          </Card>
+          <Box mt={1.5}>
             <Button
-              bordered
               warning
+              iconName="settings"
+              iconType="Feather"
               text={translation.Settings}
               onPress={() => navigation.navigate('Settings')}
             />
           </Box>
         </>
       )}
-      {tab.label === 'Journey' &&
-        (loading || !content || !teachers ? (
+      {tab === 'Journey' &&
+        (loading || !content ? (
           <Spinner />
         ) : (
           <>
@@ -93,17 +102,11 @@ const ProfileScreen: React.FC = () => {
                   const data = item.data() as PlayEvent;
                   const contentMatch =
                     data && data.contentId && content[data.contentId];
-                  const teacherMatch =
-                    data &&
-                    data.contentId &&
-                    content[data.contentId] &&
-                    teachers[content[data.contentId].teacher];
 
-                  return contentMatch && teacherMatch ? (
+                  return contentMatch ? (
                     <ContentCardSmall
                       key={idx}
                       content={contentMatch}
-                      teacher={teacherMatch}
                       recentDate={convertTimestamp(data.createdAt).format(
                         'MMM DD, YYYY',
                       )}
@@ -130,7 +133,6 @@ const ProfileScreen: React.FC = () => {
             </List>
           </>
         ))}
-      {tab.label === 'Settings' && <SettingsScreen />}
     </Container>
   );
 };

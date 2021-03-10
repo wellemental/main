@@ -8,9 +8,10 @@ import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 
 type Props = {
   type: 'streak' | 'completed' | 'time';
+  last?: boolean;
 };
 
-const StatDisplay: React.FC<Props> = ({ type }) => {
+const StatDisplay: React.FC<Props> = ({ type, last }) => {
   const { translation, user } = useCurrentUser();
   const totalSeconds = 120; //user.totalSeconds;
   const totalHours = totalSeconds > 0 ? Math.floor(totalSeconds / 3600) : 0;
@@ -125,26 +126,20 @@ const StatDisplay: React.FC<Props> = ({ type }) => {
       </Box>
     );
 
-  // const totalTimeDisplay =
-  //   totalHours > 0
-  //     ? `${totalHours}${hourLabel} ${minuteRemainder}${minuteLabel}`
-  //     : `${minuteRemainder}mins`;
-
   return (
     <Box
       mt={1}
       p={2}
       style={{
-        // backgroundColor: typeObj.bgColor,
-        borderBottomWidth: 3,
+        borderBottomWidth: last ? 0 : 3,
         borderBottomColor: typeObj.bgColor,
         display: 'flex',
         alignItems: 'center',
+        paddingHorizontal: 20,
       }}>
       <Box row mb={1}>
         <Icon
           style={{
-            // color: 'white',
             color: typeObj.bgColor,
             fontSize: 24,
             lineHeight: 25,
@@ -154,7 +149,6 @@ const StatDisplay: React.FC<Props> = ({ type }) => {
         />
         <Text
           style={{
-            // color: 'white',
             color: typeObj.bgColor,
             lineHeight: 25,
             fontSize: 16,
@@ -166,7 +160,6 @@ const StatDisplay: React.FC<Props> = ({ type }) => {
         <Headline
           center
           style={{
-            // color: 'white',
             color: typeObj.bgColor,
             fontSize: 48,
             lineHeight: 56,

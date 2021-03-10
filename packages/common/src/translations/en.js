@@ -225,4 +225,12 @@ export const English = {
   'Start Afternoon Meditation': 'Start Afternoon Meditation',
   'Start Evening Meditation': 'Start Sleep Meditation',
   Categories: 'Categories',
+  Energize: 'Energize',
+  'Anxiety & Stress': 'Anxiety & Stress',
+  Focus: 'Focus',
+  Rest: 'Rest',
+  'Yoga Philosophy': 'Yoga Philosophy',
+  'History of Yoga': 'History of Yoga',
+  'Yoga Breaks': 'Yoga Breaks',
+  'Full-Length Yoga Classes': 'Full-Length Yoga Classes',
 };

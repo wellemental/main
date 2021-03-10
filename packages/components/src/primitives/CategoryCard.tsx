@@ -81,6 +81,7 @@ const CategoryCard: React.FC<Props> = ({ category, color }) => {
           {category.icon && (
             <Icon
               name={category.icon}
+              type={category.iconType ? category.iconType : undefined}
               style={{
                 fontSize: 50,
                 color: color ? colorPairings[color].light : undefined,

@@ -4,7 +4,7 @@ import {
   ContentLoopSmall,
   Subheadline,
   PageHeading,
-  CategoryCard,
+  CategoryLoop,
 } from '../primitives';
 import { useCurrentUser, useContent } from '../hooks';
 import { Categories, learnCategories } from 'common';
@@ -18,15 +18,13 @@ const LearnScreen: React.FC = () => {
 
   return (
     <Container scrollEnabled bg="Learn">
-      <PageHeading color="white" noHeader title={translation.Learn} />
+      <PageHeading noHeader title={translation.Learn} />
 
-      <Subheadline color="white">{translation.Featured}</Subheadline>
+      <Subheadline>{translation.Featured}</Subheadline>
       <ContentLoopSmall content={data} />
-      <Subheadline color="white">{translation.Categories}</Subheadline>
+      <Subheadline>{translation.Categories}</Subheadline>
 
-      {learnCategories.map((category) => (
-        <CategoryCard key={category.title} category={category} />
-      ))}
+      <CategoryLoop categories={learnCategories} />
     </Container>
   );
 };

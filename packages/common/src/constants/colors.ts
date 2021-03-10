@@ -12,7 +12,7 @@ export const colors = {
   offWhite: '#F4E6D0',
   white: '#ffffff',
   placeholderGray: '#dbdbdb',
-  textColor: '#333',
+  textColor: 'rgba(0,0,0,0.6)',
   lightTextColor: 'rgba(0, 0, 0, 0.4)',
   darkTextColor: 'rgba(0, 0, 0, 0.87)',
   skyBlue: '#dde2e6',

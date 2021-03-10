@@ -4,42 +4,50 @@ export const categories: CategoryObj = {
   Focus: {
     title: 'Focus',
     tag: Tags.Focus,
-    icon: 'glasses',
+    icon: 'target',
+    iconType: 'Feather',
   },
   Stress: {
     title: 'Anxiety & Stress',
     tag: Tags.Stress,
-    icon: 'sunny',
+    icon: 'meh',
+    iconType: 'Feather',
   },
   Energize: {
     title: 'Energize',
     tag: Tags.Energize,
-    icon: 'ios-barbell',
+    icon: 'trending-up',
+    iconType: 'Feather',
   },
   Rest: {
     title: 'Rest',
     tag: Tags.Rest,
-    icon: 'bed',
+    icon: 'trending-down',
+    iconType: 'Feather',
   },
   Philosophy: {
     title: 'Yoga Philosophy',
     tag: Tags.Philosophy,
-    icon: 'ios-barbell',
+    icon: 'book-open',
+    iconType: 'Feather',
   },
   History: {
     title: 'History',
     tag: Tags.History,
-    icon: 'bed',
+    icon: 'history',
+    iconType: 'FontAwesome5',
   },
   Classes: {
     title: 'Full-Length Yoga Classes',
     tag: Tags['Yoga Classes'],
-    icon: 'ios-barbell',
+    icon: 'teach',
+    iconType: 'MaterialCommunityIcons',
   },
   Breaks: {
     title: 'Yoga Breaks',
     tag: Tags['Yoga Breaks'],
-    icon: 'bed',
+    icon: 'clock',
+    iconType: 'Feather',
   },
 };
 

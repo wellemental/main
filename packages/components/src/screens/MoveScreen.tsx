@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Container,
   ContentLoopSmall,
   Subheadline,
   PageHeading,
-  CategoryCard,
+  CategoryLoop,
 } from '../primitives';
 import { useCurrentUser, useContent } from '../hooks';
 import { Categories, moveCategories } from 'common';
@@ -24,9 +24,7 @@ const MoveScreen: React.FC = () => {
       <ContentLoopSmall content={data} />
       <Subheadline>{translation.Categories}</Subheadline>
 
-      {moveCategories.map((category) => (
-        <CategoryCard key={category.title} category={category} />
-      ))}
+      <CategoryLoop categories={moveCategories} />
     </Container>
   );
 };

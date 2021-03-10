@@ -7,8 +7,8 @@ const SleepScreen: React.FC = () => {
   const { translation } = useCurrentUser();
 
   return (
-    <Container scrollEnabled bg="Sleep">
-      <PageHeading color="white" noHeader title={translation.Sleep} />
+    <Container scrollEnabled bg="Evening">
+      <PageHeading noHeader title={translation.Sleep} color="white" />
       <ContentLoop filter={Tags.Sleep} />
     </Container>
   );

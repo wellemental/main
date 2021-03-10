@@ -11,6 +11,8 @@ import {
   Content,
   ContentObj,
   ContentServiceType,
+  Categories,
+  Tags,
 } from 'common';
 import LocalStateService from './LocalStateService';
 import TeacherService from './TeacherService';
@@ -58,6 +60,15 @@ class ContentService implements ContentServiceType {
       updated_at: data.updated_at,
       created_at: data.created_at,
     };
+  };
+
+  public getFeatures = (
+    category: Categories,
+    contentObj: ContentObj,
+  ): Content[] => {
+    return Object.values(contentObj).filter(
+      (item) => item.type === category && item.tags.includes(Tags.Featured),
+    );
   };
 
   public getContent = async (): Promise<ContentObj> => {

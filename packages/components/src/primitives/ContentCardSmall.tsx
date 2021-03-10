@@ -38,10 +38,7 @@ const ContentCardSmall: React.FC<Props> = ({ content, recentDate }) => {
             padding: 15,
             paddingBottom: 5,
           }}>
-          <Headline
-            small
-            numberOfLines={1}
-            style={{ marginTop: 5, marginBottom: 7 }}>
+          <Headline small numberOfLines={1} style={{ marginTop: 3 }}>
             {content.title}
           </Headline>
           <Paragraph fine>{recentDate ? recentDate : content.length}</Paragraph>

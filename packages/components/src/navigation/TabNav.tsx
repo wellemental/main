@@ -42,21 +42,38 @@ const TabNav: React.FC = () => {
           }
 
           // You can return any component that you like here!
-          return <Icon name={iconName} style={{ color: 'white' }} />;
+          return (
+            <Icon
+              name={iconName}
+              style={{
+                color: variables.textColor,
+                opacity: focused ? 1 : 0.4,
+              }}
+            />
+          );
         },
       })}
       tabBarOptions={{
-        inactiveBackgroundColor: variables.brandPrimary,
-        activeBackgroundColor: variables.brandPrimary,
-        inactiveTintColor: variables.white,
-        activeTintColor: variables.white,
+        inactiveBackgroundColor: variables.white,
+        activeBackgroundColor: variables.white,
+        inactiveTintColor: variables.lightTextColor,
+        activeTintColor: variables.textColor,
         style: {
-          backgroundColor: variables.brandPrimary,
+          backgroundColor: variables.white,
           height: 60 + insets.bottom,
           paddingTop: 10,
           paddingBottom: 5 + insets.bottom,
           borderTopWidth: 1,
-          borderTopColor: variables.brandPrimary,
+          borderTopColor: variables.offWhite,
+          shadowColor: variables.lightGray,
+          borderTopWidth: 0,
+          shadowOffset: {
+            width: 0,
+            height: 1,
+          },
+          shadowOpacity: 0.35,
+          shadowRadius: 13.84,
+          elevation: 5,
         },
       }}>
       <Tab.Screen
@@ -75,16 +92,17 @@ const TabNav: React.FC = () => {
         component={LearnScreen}
         options={{ title: translation.Learn }}
       />
-      <Tab.Screen
-        name="Sleep"
-        component={SleepScreen}
-        options={{ title: translation.Sleep }}
-      />
 
       <Tab.Screen
         name="Move"
         component={MoveScreen}
         options={{ title: translation.Move }}
+      />
+
+      <Tab.Screen
+        name="Sleep"
+        component={SleepScreen}
+        options={{ title: translation.Sleep }}
       />
 
       <Tab.Screen

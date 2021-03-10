@@ -4,12 +4,10 @@ import {
   ContentLoopSmall,
   Subheadline,
   PageHeading,
-  CategoryCard,
+  CategoryLoop,
 } from '../primitives';
 import { useCurrentUser, useContent } from '../hooks';
 import { Categories, meditationCategories } from 'common';
-
-const colors = ['yellow', 'blurple', 'orange', 'teal'];
 
 const MeditateScreen: React.FC = () => {
   const { translation } = useCurrentUser();
@@ -26,15 +24,8 @@ const MeditateScreen: React.FC = () => {
 
       <Subheadline>{translation.Featured}</Subheadline>
       <ContentLoopSmall content={data} />
-      <Subheadline>{translation.Categories}</Subheadline>
 
-      {meditationCategories.map((category, idx) => (
-        <CategoryCard
-          key={category.title}
-          color={colors[idx]}
-          category={category}
-        />
-      ))}
+      <CategoryLoop categories={meditationCategories} />
     </Container>
   );
 };

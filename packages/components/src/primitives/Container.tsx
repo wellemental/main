@@ -1,6 +1,7 @@
 import React, { CSSProperties } from 'react';
 import { SafeAreaView, StyleSheet, View, ImageBackground } from 'react-native';
 import ScrollView from './ScrollView';
+import ConditionalWrapper from './ConditionalWrapper';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import { deviceHeight, deviceWidth } from 'services';
 import { brandColors } from '../assets/native-base-theme/variables/wellemental';
@@ -21,10 +22,18 @@ const backgrounds = {
   Night: require('../assets/images/wm_bg_evening.jpg'),
   Sleep: require('../assets/images/wm_bg_sleep.jpg'),
   Move: require('../assets/images/wm_bg_move.jpg'),
-  Learn: require('../assets/images/wm_bg_learn.jpg'),
-  Meditate: require('../assets/images/wm_bg_meditate.jpg'),
+  Learn: require('../assets/images/wm_bg_meditate.jpg'),
+  Meditate: require('../assets/images/wm_bg_sky.jpg'),
   Plans: require('../assets/images/cloud_bg.png'),
+  Profile: require('../assets/images/wm_bg_tree.jpg'),
   Parents: require('../assets/images/parents_bg.png'),
+};
+
+const bgColors = {
+  Meditate: '#A3CEC9',
+  Move: '#F4E6D0',
+  Sleep: '#2A2968',
+  Learn: '#D8E1E6',
 };
 
 const Container: React.FC<ContainerProps> = ({
@@ -37,7 +46,8 @@ const Container: React.FC<ContainerProps> = ({
   noPadding,
   ...props
 }) => {
-  const bgColor = 'rgba(0, 0, 0, 0)';
+  const bgColor = color ? bgColors[color] : 'rgba(0, 0, 0, 0)';
+  const lowOpacity = bg === 'Learn' || bg === 'Move';
 
   const styles = StyleSheet.flatten([
     {
@@ -69,22 +79,36 @@ const Container: React.FC<ContainerProps> = ({
         width: deviceWidth,
         height: deviceHeight,
       }}>
-      <ImageBackground
-        source={backgrounds[bg]}
-        style={{
-          width: deviceWidth,
-          height: deviceHeight,
-          flex: 1,
-        }}>
+      <ConditionalWrapper
+        condition={bg}
+        wrapper={(children: React.ReactChildren) => (
+          <ImageBackground
+            source={backgrounds[bg]}
+            style={{
+              width: deviceWidth,
+              height: deviceHeight,
+              flex: 1,
+            }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: lowOpacity
+                  ? 'rgba(254,254,254,0.4)'
+                  : undefined,
+              }}>
+              {children}
+            </View>
+          </ImageBackground>
+        )}>
         <SafeAreaView
           style={{
-            backgroundColor: bg ? bgColor : variables.containerBgColor,
+            backgroundColor: color || bg ? bgColor : variables.containerBgColor,
             flex: 1,
             paddingTop: 0,
           }}>
           {container}
         </SafeAreaView>
-      </ImageBackground>
+      </ConditionalWrapper>
     </View>
   );
 };

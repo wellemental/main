@@ -67,7 +67,6 @@ export enum Tags {
   Focus = 'focus',
   Stress = 'stress',
   Energize = 'energize',
-  Toddler = 'toddler',
   Rest = 'rest',
   'Yoga Breaks' = 'yoga-breaks',
   'Yoga Classes' = 'yoga-classes',
@@ -81,13 +80,21 @@ export enum Tags {
   Learn = 'Learn',
   Black = 'black',
   Study = 'study',
-  PreK = 'PreK-5',
-  '6-8' = '6-8',
-  '9-12' = '9-12',
+  Toddler = 'toddler',
+  PreK = 'prek5',
+  '6-8' = '68',
+  '9-12' = '912',
 }
 
 //export type Tags = keyof typeof Tags;
 // export type Tags = ValueOf<tags>;
+
+export type IconTypes = 'Feather' | 'FontAwesome5' | 'MaterialCommunityIcons';
+
+export type Tab = {
+  label: string;
+  icon?: string;
+};
 
 export type Category = {
   title: string;
@@ -96,6 +103,7 @@ export type Category = {
   image?: string;
   icon?: string;
   slug?: string;
+  iconType?: IconTypes;
 };
 
 export interface CategoryObj {
@@ -335,9 +343,9 @@ export interface LocalStateServiceType {
 
 export interface ContentServiceType {
   buildContent(doc: QueryDocumentSnapshot): Content | null;
+  getFeatures(category: Categories, contentObj: ContentObj): Content[];
   getContent(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
-  // getFeatured(category: Categories): Content[];
 }
 
 export type PromoCode = {

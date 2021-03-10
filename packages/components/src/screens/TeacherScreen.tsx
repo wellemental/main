@@ -9,9 +9,10 @@ type Props = {
 const TeacherScreen: React.FC<Props> = ({ route }) => {
   const { teacher } = route.params;
 
+  console.log('TEACHER!!!!', teacher);
+
   return (
     <Container scrollEnabled>
-      {/* <SearchBar value={searchTerm} setState={setSearchTerm} /> */}
       <PageHeading
         title={`I'm ${teacher.name}!`}
         subtitle={teacher.bio}
