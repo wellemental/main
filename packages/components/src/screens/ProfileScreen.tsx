@@ -7,12 +7,13 @@ import {
   PageHeading,
   Container,
   StatDisplay,
+  ContentLoopLoadMore,
   Button,
   ListEmpty,
   TabsButtons,
   ContentLoop,
   Box,
-  Spinner,
+  Loading,
   ContentCardSmall,
 } from '../primitives';
 import { List } from 'native-base';
@@ -24,13 +25,18 @@ import {
   useNavigation,
 } from '../hooks';
 import useLoadMore from '../hooks/useLoadMore';
-import SettingsScreen from '../screens/SettingsScreen';
+import { ProfileScreenRouteProp } from '../types';
 
-const ProfileScreen: React.FC = () => {
-  const { translation, user } = useCurrentUser();
+type Props = {
+  route: ProfileScreenRouteProp;
+};
+
+const ProfileScreen: React.FC<Props> = ({ route }) => {
+  const { translation } = useCurrentUser();
   const { content } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
+  const defaultTab = route && route.params && route.params.defaultTab;
 
   const tabs: Tab[] = [
     { label: 'Stats' },
@@ -38,7 +44,9 @@ const ProfileScreen: React.FC = () => {
     { label: 'Favorites' },
   ];
 
-  const [tab, setTab] = useState<string>(tabs[0].label);
+  const [tab, setTab] = useState<string>(
+    defaultTab ? defaultTab : tabs[0].label,
+  );
 
   const container = useContainer();
   const service = container.getInstance<PlaysServiceType>('playsService');
@@ -49,16 +57,19 @@ const ProfileScreen: React.FC = () => {
     loadMore,
     loadingMore,
     hasMore,
+    lastLoaded,
   } = useLoadMore(service.query, { limit: 7 });
 
   const {
     items: favorites,
     loading: favsLoading,
     loadMore: loadMoreFavs,
-    loadingMore: loadingMoreFav,
+    loadingMore: loadingMoreFavs,
     hasMore: hasMoreFavs,
+    lastLoaded: lastFavLoaded,
   } = useLoadMore(service.query, { limit: 7 });
 
+  console.log('LSAST LOADED', lastLoaded, 'FAVS', lastFavLoaded);
   return (
     <Container scrollEnabled bg="Profile">
       <PageHeading noHeader title={translation.Profile} />
@@ -70,7 +81,15 @@ const ProfileScreen: React.FC = () => {
           <TabsButtons tabs={tabs} active={tab} setState={setTab} />
         </CardItem>
       </Card>
-      {tab === 'Favorites' && <ContentLoop favorites={favorites} />}
+      {tab === 'Favorites' && (
+        <ContentLoopLoadMore
+          items={favorites}
+          loading={favsLoading}
+          loadingMore={loadingMoreFavs}
+          loadMore={loadMore}
+          hasMore={hasMoreFavs}
+        />
+      )}
 
       {tab === 'Stats' && (
         <>
@@ -90,49 +109,45 @@ const ProfileScreen: React.FC = () => {
           </Box>
         </>
       )}
-      {tab === 'Journey' &&
-        (loading || !content ? (
-          <Spinner />
-        ) : (
-          <>
-            <List
-              style={{ marginHorizontal: Platform.OS === 'android' ? 0 : 5 }}>
-              {items && items.length > 0 ? (
-                items.map((item, idx: number) => {
-                  const data = item.data() as PlayEvent;
-                  const contentMatch =
-                    data && data.contentId && content[data.contentId];
+      {tab === 'Journey' && (
+        <Loading loading={loading || !content}>
+          <List>
+            {items && items.length > 0 ? (
+              items.map((item, idx: number) => {
+                const data = item.data() as PlayEvent;
+                const contentMatch =
+                  data && data.contentId && content[data.contentId];
 
-                  return contentMatch ? (
-                    <ContentCardSmall
-                      key={idx}
-                      content={contentMatch}
-                      recentDate={convertTimestamp(data.createdAt).format(
-                        'MMM DD, YYYY',
-                      )}
-                    />
-                  ) : null;
-                })
-              ) : (
-                <ListEmpty>
-                  {
-                    translation[
-                      'Your recently played videos will appear here. Get started!'
-                    ]
-                  }
-                </ListEmpty>
-              )}
-              {hasMore && (
-                <Button
-                  transparent
-                  disabled={loadingMore}
-                  text={translation['Load More']}
-                  onPress={loadMore}
-                />
-              )}
-            </List>
-          </>
-        ))}
+                return contentMatch ? (
+                  <ContentCardSmall
+                    key={idx}
+                    content={contentMatch}
+                    recentDate={convertTimestamp(data.createdAt).format(
+                      'MMM DD, YYYY',
+                    )}
+                  />
+                ) : null;
+              })
+            ) : (
+              <ListEmpty center>
+                {
+                  translation[
+                    'Your recently played videos will appear here. Get started!'
+                  ]
+                }
+              </ListEmpty>
+            )}
+            {hasMore && (
+              <Button
+                transparent
+                disabled={loadingMore}
+                text={translation['Load More']}
+                onPress={loadMore}
+              />
+            )}
+          </List>
+        </Loading>
+      )}
     </Container>
   );
 };

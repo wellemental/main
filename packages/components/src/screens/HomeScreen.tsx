@@ -65,6 +65,8 @@ const HomeScreen: React.FC = ({ navigation }) => {
 
       <PageHeadingHome timeOfDay={timeOfDay} />
 
+      <TabsNB />
+
       {features && features.categories && (
         <>
           <PageHeading subheader title={translation.Featured} />

@@ -37,6 +37,7 @@ const initialState = {
   loading: true,
   loadingError: null,
   loadingMore: false,
+  loadMore: null,
   loadingMoreError: null,
 };
 
@@ -59,7 +60,7 @@ function reducer(state: StateType, action: ActionType): StateType {
 
       const nextLimit = items.length + action.limit;
 
-      let end = items.length < action.limit || nextLimit === state.limit;
+      const end = items.length < action.limit || nextLimit === state.limit;
 
       return {
         ...state,
@@ -152,6 +153,9 @@ const useLoadMore = (
     loading: state.loading,
     hasMore: state.hasMore,
     items: state.items,
+    after: state.after,
+    lastLoaded: state.lastLoaded,
+    limit: state.limit,
     loadMore,
   };
 };

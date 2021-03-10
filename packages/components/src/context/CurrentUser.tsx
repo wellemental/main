@@ -6,7 +6,6 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { English } from 'common';
 import { Español } from 'common';
-import { Spinner } from '../primitives';
 import moment from 'moment';
 import { convertTimestamp } from 'services';
 
@@ -25,7 +24,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   );
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [creatingUser, setCreatingUser] = useState(false);
 
   // const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
   //   null,
@@ -191,10 +189,6 @@ export const CurrentUserProvider = ({ children }: any) => {
     //   getLocaluser();
     // }
   }, [currentUser]);
-
-  if (creatingUser) {
-    return <Spinner text="Creating account..." />;
-  }
 
   return (
     <CurrentUser.Provider

@@ -1,22 +1,19 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { PlayEvent } from 'common';
+import { convertTimestamp } from 'services';
 import {
-  PlayEvent,
-  convertTimestamp,
-  ContentObj,
-  AllTeachers,
-  PlaysObj,
-} from 'services';
-import { Button, ListEmpty, Spinner, ContentCardSmall } from '../primitives';
+  Button,
+  ListEmpty,
+  Loading,
+  ContentCardSmall,
+  Box,
+} from '../primitives';
 import { List } from 'native-base';
-import { useCurrentUser } from '../hooks';
-// import useLoadMore from '../hooks/useLoadMore';
+import { useCurrentUser, useNavigation, useContent } from '../hooks';
 
 type Props = {
   homepage?: boolean;
   loading: boolean;
-  content: ContentObj;
-  teachers: AllTeachers;
   loadingMore: boolean;
   loadMore: () => any;
   hasMore: boolean;
@@ -26,23 +23,22 @@ type Props = {
 const RecentlyPlayedLoop: React.FC<Props> = ({
   homepage,
   loading,
-  content,
   items,
-  teachers,
   hasMore,
   loadingMore,
   loadMore,
 }) => {
   const { translation } = useCurrentUser();
+  const { content } = useContent();
+  const navigation = useNavigation();
 
-  return loading || !content || !teachers ? (
-    <Spinner />
-  ) : (
-    <>
-      <List style={{ marginHorizontal: Platform.OS === 'android' ? 0 : 5 }}>
+  return (
+    <Loading loading={loading || !content} fullPage={false}>
+      <List>
         {!!items && items.length > 0 ? (
           items.slice(0, 2).map((item, idx: number) => {
             const data = item.data() as PlayEvent;
+
             const contentMatch =
               data && data.contentId && content[data.contentId];
 
@@ -67,7 +63,18 @@ const RecentlyPlayedLoop: React.FC<Props> = ({
             }
           </ListEmpty>
         )}
-        {homepage && <Button text={translation['See all']} transparent />}
+        {homepage && (
+          <Box mt={1}>
+            <Button
+              small
+              text={translation['See all']}
+              transparent
+              onPress={() =>
+                navigation.navigate('Profile', { defaultTab: 'Journey' })
+              }
+            />
+          </Box>
+        )}
         {hasMore && !homepage && (
           <Button
             transparent
@@ -77,7 +84,7 @@ const RecentlyPlayedLoop: React.FC<Props> = ({
           />
         )}
       </List>
-    </>
+    </Loading>
   );
 };
 

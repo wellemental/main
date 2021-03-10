@@ -15,7 +15,7 @@ const ContentCardSmall: React.FC<Props> = ({ content, recentDate }) => {
   const navigation = useNavigation();
 
   return (
-    <Card>
+    <Card style={{ marginBottom: 0 }}>
       <CardItem
         cardBody
         button

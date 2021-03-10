@@ -6,7 +6,7 @@ import { Content, Tags, Teachers, TimeOfDay, Categories } from 'common';
 import ListEmpty from './ListEmpty';
 import Error from './Error';
 import Paragraph from './Paragraph';
-import Spinner from './Spinner';
+import Loading from './Loading';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 
 interface Props {
@@ -75,33 +75,35 @@ const ContentLoop: React.FC<Props> = ({
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (
-    <View style={{ marginHorizontal: hasPadding ? 15 : 0 }}>
-      <Error error={error} />
+    <Loading
+      loading={content && scrollEnabled && hasFilteredContent}
+      fullPage={false}>
+      <View style={{ marginHorizontal: hasPadding ? 15 : 0 }}>
+        <Error error={error} />
 
-      {loading ? (
-        <Spinner />
-      ) : content && scrollEnabled && hasFilteredContent ? (
-        // If tabs and header need to be able to scroll up with the list
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {filteredContent.map((item, idx) => (
-            <>
-              <Paragraph>First one</Paragraph>
-              <ContentCard key={idx} content={item} />
-            </>
-          ))}
-        </ScrollView>
-      ) : content && hasFilteredContent ? (
-        filteredContent.map((item, idx) => (
-          <ContentCard key={idx} content={item} />
-        ))
-      ) : favorites ? (
-        <ListEmpty>
-          {translation['Tap the heart icon to favorite content']}
-        </ListEmpty>
-      ) : (
-        <ListEmpty />
-      )}
-    </View>
+        {content && scrollEnabled && hasFilteredContent ? (
+          // If tabs and header need to be able to scroll up with the list
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {filteredContent.map((item, idx) => (
+              <>
+                <Paragraph>First one</Paragraph>
+                <ContentCard key={idx} content={item} />
+              </>
+            ))}
+          </ScrollView>
+        ) : content && hasFilteredContent ? (
+          filteredContent.map((item, idx) => (
+            <ContentCard key={idx} content={item} />
+          ))
+        ) : favorites ? (
+          <ListEmpty>
+            {translation['Tap the heart icon to favorite content']}
+          </ListEmpty>
+        ) : (
+          <ListEmpty />
+        )}
+      </View>
+    </Loading>
   );
 };
 

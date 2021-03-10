@@ -9,6 +9,7 @@ import {
   ContentScreen,
   LandingScreen,
   CategoryScreen,
+  LibraryScreen,
   EditProfileScreen,
   ForgotPasswordScreen,
   NotificationsScreen,
@@ -84,6 +85,7 @@ const Navigator: React.FC = () => {
               }}
             />
             <Stack.Screen name="Plans" component={PlansScreen} />
+            <Stack.Screen name="Library" component={LibraryScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="Category" component={CategoryScreen} />
             <Stack.Screen

@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import Button from './Button';
 import NewContentLoop from './NewContentLoop';
 import Box from './Box';
+import TabsButtons from './TabsButtons';
 import RecentlyPlayedLoop from './RecentlyPlayedLoop';
 import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 import {
@@ -13,14 +14,15 @@ import {
   useCurrentUser,
 } from '../hooks';
 import { PlaysServiceType } from 'services';
+import { Tabs } from 'common';
 
 const TabsNB: React.FC = () => {
-  const tabs = ['History', 'New'];
+  const tabs: Tabs[] = [{ label: 'History' }, { label: 'New' }];
 
-  const [tab, setTab] = useState(tabs[0]);
+  const [tab, setTab] = useState(tabs[0].label);
 
   const { translation } = useCurrentUser();
-  const { content, teachers } = useContent();
+  const { content } = useContent();
 
   const container = useContainer();
   const service = container.getInstance<PlaysServiceType>('playsService');
@@ -36,21 +38,7 @@ const TabsNB: React.FC = () => {
   return (
     <>
       <Box row pt={3}>
-        {tabs.map((item, idx) => (
-          <Button
-            key={idx}
-            text={item}
-            style={{
-              borderBottomColor:
-                item === tab ? brandColors.brandPrimary : 'rgba(0,0,0,0)',
-              borderBottomWidth: 3,
-              borderRadius: 0,
-              height: 40,
-            }}
-            transparent
-            onPress={() => setTab(item)}
-          />
-        ))}
+        <TabsButtons tabs={tabs} setState={setTab} active={tab} small />
       </Box>
       {tab === 'History' && (
         <RecentlyPlayedLoop

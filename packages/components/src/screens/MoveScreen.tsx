@@ -22,7 +22,6 @@ const MoveScreen: React.FC = () => {
 
       <Subheadline>{translation.Featured}</Subheadline>
       <ContentLoopSmall content={data} />
-      <Subheadline>{translation.Categories}</Subheadline>
 
       <CategoryLoop categories={moveCategories} />
     </Container>

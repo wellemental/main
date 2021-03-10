@@ -1,26 +1,11 @@
 // NOT USING YET, MAY DELETE PENDING PROGRESS
 import React, { useState } from 'react';
 import { Platform } from 'react-native';
-import {
-  Error,
-  PageHeading,
-  Container,
-  StatDisplay,
-  Button,
-  ListEmpty,
-  Tabs,
-  Box,
-  Headline,
-  Spinner,
-  ContentCardSmall,
-  Paragraph,
-} from '../primitives';
+import { Button, ListEmpty, ContentCardSmall } from '../primitives';
 import { List } from 'native-base';
-import { MenuItem, Content } from 'common';
+import { Content } from 'common';
 import { convertTimestamp } from 'services';
-import { useCurrentUser, useContent, useContainer } from '../hooks';
-import useLoadMore from '../hooks/useLoadMore';
-import SettingsScreen from '../screens/SettingsScreen';
+import { useCurrentUser } from '../hooks';
 
 type Props = {
   homepage?: boolean;

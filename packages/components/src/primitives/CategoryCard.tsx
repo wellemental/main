@@ -12,6 +12,7 @@ import {
   ColorPairings,
   colorPairings,
 } from 'common';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 type Props = {
   category: Category | Feature;
@@ -56,7 +57,9 @@ const CategoryCard: React.FC<Props> = ({ category, color }) => {
           }}>
           <Headline
             small
-            style={{ color: color ? colorPairings[color].text : undefined }}>
+            style={{
+              color: color ? colorPairings[color].text : variables.brandPrimary,
+            }}>
             {title}
           </Headline>
           {description && <Paragraph>{description}</Paragraph>}

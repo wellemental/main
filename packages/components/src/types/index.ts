@@ -18,7 +18,7 @@ export type TabParamList = {
   Meditate: undefined;
   Sleep: undefined;
   Move: undefined;
-  Profile: undefined;
+  Profile: { defaultTab: string };
 };
 
 export type MenuItem = {
@@ -81,6 +81,7 @@ export type TeacherScreenRouteProp = RouteProp<RootStackParamList, 'Teacher'>;
 export type AuthScreenRouteProp = RouteProp<AuthStackParamList, 'Auth'>;
 export type LibraryScreenRouteProp = RouteProp<TabParamList, 'Library'>;
 export type CategoryScreenRouteProp = RouteProp<RootStackParamList, 'Category'>;
+export type ProfileScreenRouteProp = RouteProp<TabParamList, 'Profile'>;
 export type ForgotPasswordScreenRouteProp = RouteProp<
   RootStackParamList,
   'Forgot Password'

@@ -4,11 +4,9 @@ import {
   ContentObj,
   Features,
   Categories,
-  Tags,
   Content as ContentType,
-  Category,
 } from 'common';
-import Spinner from '../primitives/Spinner';
+import Loading from '../primitives/Loading';
 import { useConfig, useCurrentUser } from '../hooks';
 
 interface ContentContext {
@@ -163,7 +161,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const { loading: rcLoading, data: rcData } = useConfig<Features>('featured');
 
   if (!content) {
-    return <Spinner text="Loading Content..." />;
+    return <Loading fullPage loading={!content} />;
   }
 
   return (

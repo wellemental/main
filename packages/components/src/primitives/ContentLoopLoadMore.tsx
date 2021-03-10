@@ -1,65 +1,93 @@
-// NOT USING YET, MAY DELETE PENDING PROGRESS
-import React, { useState } from 'react';
-import { Platform } from 'react-native';
-import { PlaysServiceType, PlayEvent, convertTimestamp } from 'services';
+import React from 'react';
+import { PlayEvent, ContentObj } from 'common';
+import { convertTimestamp } from 'services';
 import {
   Button,
   ListEmpty,
-  Tabs,
-  Box,
-  Headline,
-  Spinner,
+  Loading,
   ContentCardSmall,
-  Paragraph,
-} from '.';
+  Box,
+} from '../primitives';
 import { List } from 'native-base';
-import { MenuItem } from '../types';
-import { useCurrentUser, useContent, useNavigation } from '../hooks';
-import useLoadMore from '../hooks/useLoadMore';
-import SettingsScreen from '../screens/SettingsScreen';
+import { useCurrentUser, useNavigation, useContent } from '../hooks';
 
-// type Props = {
-//   homepage?: boolean;
-//   short?: boolean;
-//   type?: 'recent' | 'new' | 'favs';
-// };
+type Props = {
+  homepage?: boolean;
+  loading: boolean;
+  loadingMore: boolean;
+  loadMore: () => any;
+  hasMore: boolean;
+  items: any[];
+};
 
-// Recently played
-// Favs
-// New
-
-const ContentLoopLoadMore: React.FC = () => {
+const ContentLoopLoadMore: React.FC<Props> = ({
+  homepage,
+  loading,
+  items,
+  hasMore,
+  loadingMore,
+  loadMore,
+}) => {
   const { translation } = useCurrentUser();
-  const { loading, content, teachers } = useContent();
+  const { content } = useContent();
   const navigation = useNavigation();
 
-  const items = Object.values(content).slice(0, 2);
+  console.log('HAS MORE', hasMore, items.length);
 
-  return loading || !content || !teachers ? (
-    <Spinner />
-  ) : (
-    <>
-      <List style={{ marginHorizontal: Platform.OS === 'android' ? 0 : 5 }}>
-        {items && items.length > 0 ? (
+  return (
+    <Loading loading={loading || !content} fullPage={false}>
+      <List>
+        {!!items && items.length > 0 ? (
           items.slice(0, 2).map((item, idx: number) => {
-            return (
+            const data = item.data() as PlayEvent;
+            console.log('DATA', data);
+
+            const contentMatch =
+              data && data.contentId && content[data.contentId];
+
+            return contentMatch ? (
               <ContentCardSmall
                 key={idx}
-                content={item}
-                teacher={teachers[item.teacher]}
+                content={contentMatch}
+                recentDate={
+                  homepage
+                    ? undefined
+                    : convertTimestamp(data.createdAt).format('MMM DD, YYYY')
+                }
               />
-            );
+            ) : null;
           })
         ) : (
-          <ListEmpty>{translation['Error loading content']}</ListEmpty>
+          <ListEmpty>
+            {
+              translation[
+                'Your recently played videos will appear here. Get started!'
+              ]
+            }
+          </ListEmpty>
         )}
-        <Button
-          text={translation['See all']}
-          transparent
-          onPress={() => navigation.navigate('Library')}
-        />
+        {homepage && (
+          <Box mt={1}>
+            <Button
+              small
+              text={translation['See all']}
+              transparent
+              onPress={() =>
+                navigation.navigate('Profile', { defaultTab: 'Journey' })
+              }
+            />
+          </Box>
+        )}
+        {hasMore && !homepage && (
+          <Button
+            transparent
+            disabled={loadingMore}
+            text={translation['Load More']}
+            onPress={loadMore}
+          />
+        )}
       </List>
-    </>
+    </Loading>
   );
 };
 

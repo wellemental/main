@@ -28,7 +28,8 @@ const TabNav: React.FC = () => {
             : route.name.toLowerCase().concat('-outline');
 
           if (route.name === 'Sleep') {
-            iconName = focused ? 'bed' : 'bed-outline';
+            iconName = focused ? 'moon' : 'moon-outline';
+            // iconName = focused ? 'bed' : 'bed-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           } else if (route.name === 'Learn') {
@@ -36,9 +37,9 @@ const TabNav: React.FC = () => {
           } else if (route.name === 'Move') {
             iconName = focused ? 'body' : 'body-outline';
           } else if (route.name === 'Meditate') {
-            iconName = focused ? 'happy' : 'happy-outline';
-          } else if (route.name === 'Home') {
             iconName = focused ? 'sunny' : 'sunny-outline';
+          } else if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
           }
 
           // You can return any component that you like here!

@@ -8,7 +8,7 @@ import {
   Paragraph,
   Error,
   Input,
-  Spinner,
+  Loading,
   LegalLinks,
   PageHeading,
 } from '../primitives';
@@ -140,127 +140,126 @@ const PlansScreen: React.FC = () => {
 
   return parentalLock ? (
     <AskParentsScreen setLock={setParentalLock} />
-  ) : upgrading ? (
-    <Spinner text={translation['One moment...']} />
   ) : (
-    <View
-      style={{
-        flex: 1,
-        width: deviceWidth,
-        height: deviceHeight,
-        backgroundColor: brandColors.skyBlue,
-      }}>
-      <ImageBackground
-        source={require('../assets/images/cloud_bg.png')}
+    <Loading loading={upgrading}>
+      <View
         style={{
-          // justifyContent: 'center',
+          flex: 1,
           width: deviceWidth,
           height: deviceHeight,
-          // position: 'absolute',
-          // top: 0,
-          flex: 1,
+          backgroundColor: brandColors.skyBlue,
         }}>
-        <Container scrollEnabled bg="Plans">
-          <PageHeading
-            noHeader
-            title={translation['An inclusive space for kids to breathe.']}
-            subtitle={
-              translation[
-                'Spark a  mindful practice with the children in your life. Learn meditation and yoga with Wellemental.'
-              ]
-            }
-          />
+        <ImageBackground
+          source={require('../assets/images/cloud_bg.png')}
+          style={{
+            // justifyContent: 'center',
+            width: deviceWidth,
+            height: deviceHeight,
+            // position: 'absolute',
+            // top: 0,
+            flex: 1,
+          }}>
+          <Container scrollEnabled bg="Plans">
+            <PageHeading
+              noHeader
+              title={translation['An inclusive space for kids to breathe.']}
+              subtitle={
+                translation[
+                  'Spark a  mindful practice with the children in your life. Learn meditation and yoga with Wellemental.'
+                ]
+              }
+            />
 
-          <Box mb={2}>
-            {bullets.map((bullet) => (
-              <Box row key={bullet} mb={0.5}>
-                <Icon
-                  name="ios-checkmark-sharp"
-                  style={{ fontSize: 22, color: brandColors.brandWarning }}
-                />
+            <Box mb={2}>
+              {bullets.map((bullet) => (
+                <Box row key={bullet} mb={0.5}>
+                  <Icon
+                    name="ios-checkmark-sharp"
+                    style={{ fontSize: 22, color: brandColors.brandWarning }}
+                  />
 
-                <Paragraph style={{ paddingHorizontal: 5 }} key={bullet}>
-                  {bullet}
-                </Paragraph>
-              </Box>
-            ))}
-          </Box>
-
-          {!showAccessDisplay ? (
-            <>
-              <Box row justifyContent="space-evenly">
-                <PlanSelect
-                  activeOpacity={1}
-                  style={{
-                    marginRight: 5,
-                    borderColor:
-                      selectedPlan === PlanId.Monthly
-                        ? variables.brandWarning
-                        : variables.lightTextColor,
-                  }}
-                  onPress={() => setSelectedPlan(PlanId.Monthly)}>
-                  <Header2>{translation.Monthly}</Header2>
-                  <Header2>$6.99 / {translation.mo}</Header2>
-                  <Paragraph
-                    style={{
-                      color: 'white',
-                    }}>
-                    ***
+                  <Paragraph style={{ paddingHorizontal: 5 }} key={bullet}>
+                    {bullet}
                   </Paragraph>
-                </PlanSelect>
-
-                <PlanSelect
-                  activeOpacity={1}
-                  style={{
-                    marginLeft: 5,
-                    borderColor:
-                      selectedPlan === PlanId.Yearly
-                        ? variables.brandWarning
-                        : variables.lightTextColor,
-                  }}
-                  onPress={() => setSelectedPlan(PlanId.Yearly)}>
-                  <Header2>{translation.Annual}</Header2>
-                  <Header2>$59.99 / {translation.yr}</Header2>
-                  <Paragraph>$4.58 / {translation.mo}</Paragraph>
-                </PlanSelect>
-              </Box>
-              <Button
-                primary
-                disabled={loading || processing}
-                loading={processing}
-                text={translation.Subscribe}
-                onPress={() => handleSubscription(PlanId.Monthly)}
-              />
-              <Box mt={1} mb={6}>
-                <Error
-                  success={error.includes('succeed')}
-                  error={error}
-                  center
-                />
-                <Box mt={2}>
-                  <LegalLinks subs />
                 </Box>
-              </Box>
-            </>
-          ) : (
-            <>
-              <Input
-                label={translation['Access code']}
-                value={promoCode}
-                autoFocus
-                onChangeText={setPromoCode}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Button
-                primary
-                disabled={processing}
-                text={translation.Submit}
-                onPress={() => handlePromoCode()}
-              />
-            </>
-          )}
-          {/* <Box gt={1}>
+              ))}
+            </Box>
+
+            {!showAccessDisplay ? (
+              <>
+                <Box row justifyContent="space-evenly">
+                  <PlanSelect
+                    activeOpacity={1}
+                    style={{
+                      marginRight: 5,
+                      borderColor:
+                        selectedPlan === PlanId.Monthly
+                          ? variables.brandWarning
+                          : variables.lightTextColor,
+                    }}
+                    onPress={() => setSelectedPlan(PlanId.Monthly)}>
+                    <Header2>{translation.Monthly}</Header2>
+                    <Header2>$6.99 / {translation.mo}</Header2>
+                    <Paragraph
+                      style={{
+                        color: 'white',
+                      }}>
+                      ***
+                    </Paragraph>
+                  </PlanSelect>
+
+                  <PlanSelect
+                    activeOpacity={1}
+                    style={{
+                      marginLeft: 5,
+                      borderColor:
+                        selectedPlan === PlanId.Yearly
+                          ? variables.brandWarning
+                          : variables.lightTextColor,
+                    }}
+                    onPress={() => setSelectedPlan(PlanId.Yearly)}>
+                    <Header2>{translation.Annual}</Header2>
+                    <Header2>$59.99 / {translation.yr}</Header2>
+                    <Paragraph>$4.58 / {translation.mo}</Paragraph>
+                  </PlanSelect>
+                </Box>
+                <Button
+                  primary
+                  disabled={loading || processing}
+                  loading={processing}
+                  text={translation.Subscribe}
+                  onPress={() => handleSubscription(PlanId.Monthly)}
+                />
+                <Box mt={1} mb={6}>
+                  <Error
+                    success={error.includes('succeed')}
+                    error={error}
+                    center
+                  />
+                  <Box mt={2}>
+                    <LegalLinks subs />
+                  </Box>
+                </Box>
+              </>
+            ) : (
+              <>
+                <Input
+                  label={translation['Access code']}
+                  value={promoCode}
+                  autoFocus
+                  onChangeText={setPromoCode}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Button
+                  primary
+                  disabled={processing}
+                  text={translation.Submit}
+                  onPress={() => handlePromoCode()}
+                />
+              </>
+            )}
+            {/* <Box gt={1}>
         <Button
           transparent
           disabled={processing}
@@ -274,71 +273,72 @@ const PlansScreen: React.FC = () => {
         />
       </Box> */}
 
-          {auth &&
-            (auth.email === 'mike.r.vosters@gmail.com' ||
-              auth.email === 'denise@test.com') &&
-            status && (
-              <Box mt={2} mb={10}>
-                <Paragraph>IAP Error Msg:</Paragraph>
-                <Error error={iapError} center />
-                <Paragraph>******</Paragraph>
-                <Paragraph>AVAIL PRODUCTS</Paragraph>
-
-                {products &&
-                  products.map((product, idx) => (
-                    <Paragraph>
-                      {idx}:
-                      {typeof product === 'object'
-                        ? JSON.stringify(product)
-                        : typeof product === 'string'
-                        ? product
-                        : typeof product}
-                    </Paragraph>
-                  ))}
-
-                <Paragraph>******</Paragraph>
-                <Paragraph>SELECTED PLAN</Paragraph>
-                <Paragraph>{selectedPlan}</Paragraph>
-                <Paragraph>******</Paragraph>
-                <Paragraph>IAP ACTIVE PLAN</Paragraph>
-                <Paragraph>{activePlan}</Paragraph>
-                <Paragraph>******</Paragraph>
-                <Paragraph>USER PLAN</Paragraph>
-                {user && !user.plan ? (
-                  <Paragraph>No Plan</Paragraph>
-                ) : user && user.plan ? (
-                  <Paragraph>
-                    {user.plan.status} - {user.plan.planId}
-                  </Paragraph>
-                ) : (
-                  <Paragraph>No user</Paragraph>
-                )}
-
-                <Box mt={1}>
+            {auth &&
+              (auth.email === 'mike.r.vosters@gmail.com' ||
+                auth.email === 'denise@test.com') &&
+              status && (
+                <Box mt={2} mb={10}>
+                  <Paragraph>IAP Error Msg:</Paragraph>
+                  <Error error={iapError} center />
                   <Paragraph>******</Paragraph>
-                  <Paragraph>DEBUGGING</Paragraph>
-                  {status.map((item, idx) => (
-                    <Paragraph note key={idx + item}>
-                      *{item}
+                  <Paragraph>AVAIL PRODUCTS</Paragraph>
+
+                  {products &&
+                    products.map((product, idx) => (
+                      <Paragraph>
+                        {idx}:
+                        {typeof product === 'object'
+                          ? JSON.stringify(product)
+                          : typeof product === 'string'
+                          ? product
+                          : typeof product}
+                      </Paragraph>
+                    ))}
+
+                  <Paragraph>******</Paragraph>
+                  <Paragraph>SELECTED PLAN</Paragraph>
+                  <Paragraph>{selectedPlan}</Paragraph>
+                  <Paragraph>******</Paragraph>
+                  <Paragraph>IAP ACTIVE PLAN</Paragraph>
+                  <Paragraph>{activePlan}</Paragraph>
+                  <Paragraph>******</Paragraph>
+                  <Paragraph>USER PLAN</Paragraph>
+                  {user && !user.plan ? (
+                    <Paragraph>No Plan</Paragraph>
+                  ) : user && user.plan ? (
+                    <Paragraph>
+                      {user.plan.status} - {user.plan.planId}
                     </Paragraph>
-                  ))}
+                  ) : (
+                    <Paragraph>No user</Paragraph>
+                  )}
+
+                  <Box mt={1}>
+                    <Paragraph>******</Paragraph>
+                    <Paragraph>DEBUGGING</Paragraph>
+                    {status.map((item, idx) => (
+                      <Paragraph note key={idx + item}>
+                        *{item}
+                      </Paragraph>
+                    ))}
+                  </Box>
                 </Box>
-              </Box>
-            )}
-        </Container>
-      </ImageBackground>
-      <Image
-        source={require('../assets/images/grass.png')}
-        style={{
-          position: 'absolute',
-          left: -3,
-          right: 0,
-          bottom: 0,
-          width: deviceWidth + 3,
-          height: deviceWidth * 0.16,
-        }}
-      />
-    </View>
+              )}
+          </Container>
+        </ImageBackground>
+        <Image
+          source={require('../assets/images/grass.png')}
+          style={{
+            position: 'absolute',
+            left: -3,
+            right: 0,
+            bottom: 0,
+            width: deviceWidth + 3,
+            height: deviceWidth * 0.16,
+          }}
+        />
+      </View>
+    </Loading>
   );
 };
 

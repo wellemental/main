@@ -1,24 +1,8 @@
 import React from 'react';
 import { Spinner as NBSpinner } from 'native-base';
-import Paragraph from './Paragraph';
-import Container from './Container';
 
-type Props = {
-  text?: string;
-};
-
-const Spinner: React.FC<Props> = ({ text }) => {
-  return (
-    <Container
-      center
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      {text && <Paragraph>{text}</Paragraph>}
-      <NBSpinner color="#A3CEC9" />
-    </Container>
-  );
+const Spinner: React.FC = () => {
+  return <NBSpinner color="#A3CEC9" />;
 };
 
 export default Spinner;
