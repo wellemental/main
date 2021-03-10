@@ -15,9 +15,10 @@ type ContainerProps = {
 };
 
 const backgrounds = {
-  Morning: require('../assets/images/wm_header_morning.jpg'),
-  Afternoon: require('../assets/images/wm_header_afternoon.jpg'),
-  Night: require('../assets/images/wm_bg_sleep.jpg'),
+  Morning: require('../assets/images/wm_bg_morning.jpg'),
+  Afternoon: require('../assets/images/wm_bg_afternoon.jpg'),
+  Evening: require('../assets/images/wm_bg_evening.jpg'),
+  Night: require('../assets/images/wm_bg_evening.jpg'),
   Sleep: require('../assets/images/wm_bg_sleep.jpg'),
   Move: require('../assets/images/wm_bg_move.jpg'),
   Learn: require('../assets/images/wm_bg_learn.jpg'),

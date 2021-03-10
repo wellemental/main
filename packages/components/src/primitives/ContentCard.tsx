@@ -15,10 +15,6 @@ const ContentCard: React.FC<Props> = ({ content }) => {
   const navigation = useNavigation();
   const teacher = content.teacher;
 
-  if (!teacher) {
-    console.log('WHAT CONTENT!!!!', content.id);
-  }
-
   return (
     <Card>
       <CardItem
