@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from './Box';
 import Headline from './Headline';
-import { Colors, colors } from 'common';
+import { Colors } from 'common';
 
 type Props = {
   color?: Colors;
@@ -9,10 +9,8 @@ type Props = {
 
 const Subheadline: React.FC<Props> = ({ color, children }) => {
   return (
-    <Box pt={4}>
-      <Headline
-        small
-        style={{ color: color ? colors[color] : colors.brandPrimary }}>
+    <Box pt={5} pb={1}>
+      <Headline small color={color ? color : undefined}>
         {children}
       </Headline>
     </Box>

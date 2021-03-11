@@ -3,6 +3,7 @@ import {
   Container,
   ContentLoopSmall,
   Subheadline,
+  FeaturedLoop,
   PageHeading,
   LockOverlay,
   CategoryLoop,
@@ -11,7 +12,7 @@ import { useCurrentUser, useContent } from '../hooks';
 import { Categories, meditationCategories } from 'common';
 
 const MeditateScreen: React.FC = () => {
-  const { translation, activePlan } = useCurrentUser();
+  const { translation, activePlan, user } = useCurrentUser();
 
   const { getFeatures } = useContent();
 
@@ -21,11 +22,8 @@ const MeditateScreen: React.FC = () => {
     <>
       <Container scrollEnabled bg="Meditate">
         <PageHeading noHeader title={translation.Meditate} />
-        {/* <Tabs tabs={tabs} active={tab} setTab={setTab} /> */}
-        {/* <ContentLoop favorites={favorites} /> */}
 
-        <Subheadline>{translation.Featured}</Subheadline>
-        <ContentLoopSmall content={data} />
+        <FeaturedLoop category={Categories.Meditate} />
 
         <CategoryLoop categories={meditationCategories} />
       </Container>

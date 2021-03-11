@@ -2,7 +2,7 @@ import React, { SetStateAction } from 'react';
 import Button from './Button';
 import Box, { BoxProps } from './Box';
 import variables from '../assets/native-base-theme/variables/wellemental';
-import { Tab } from 'common';
+import { Colors, Tab } from 'common';
 import { useCurrentUser } from '../hooks';
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
   small?: boolean;
   center?: boolean;
   full?: boolean;
+  color?: Colors;
 }
 
 const TabsButtons: React.FC<Props> = ({
@@ -20,10 +21,14 @@ const TabsButtons: React.FC<Props> = ({
   setState,
   small,
   center,
+  color,
   full,
   ...props
 }) => {
   const { translation } = useCurrentUser();
+
+  const activeColor = color ? variables[color] : variables.brandPrimary;
+
   return (
     <Box row center={center} {...props}>
       {tabs.map((tab) => {
@@ -39,13 +44,12 @@ const TabsButtons: React.FC<Props> = ({
             small={small}
             style={{
               flex: full ? 1 : undefined,
-              borderBottomColor: isActive
-                ? variables.brandPrimary
-                : 'rgba(0,0,0,0)',
+              borderBottomColor: isActive ? activeColor : 'rgba(0,0,0,0)',
               borderBottomWidth: 3,
               borderRadius: 0,
+              backgroundColor: 'rgba(0,0,0,0',
             }}
-            transparent
+            transparent={color === 'white' ? false : true}
             onPress={(): void => setState(tab.label)}
           />
         );

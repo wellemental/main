@@ -37,7 +37,7 @@ const AgeCards: React.FC = () => {
                   paddingBottom: 15,
                 }}>
                 <Headline center>{group.title}</Headline>
-                <Paragraph>{translation.years}</Paragraph>
+                <Paragraph center>{translation.years}</Paragraph>
               </Body>
             </CardItem>
           </Card>

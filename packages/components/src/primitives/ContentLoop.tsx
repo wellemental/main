@@ -27,12 +27,18 @@ const ContentLoop: React.FC<Props> = ({
   hasPadding,
 }) => {
   const { user, translation } = useCurrentUser();
-  const { content, error, loading } = useContent();
+  const { content, error } = useContent();
 
   let filteredContent: Content[] = content ? Object.values(content) : [];
 
   // Filter by language
-  if (user && user.language && filteredContent && favorites === undefined) {
+  if (
+    user &&
+    user.language &&
+    filteredContent &&
+    favorites === undefined &&
+    teacher === undefined
+  ) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.language === user.language,
     );

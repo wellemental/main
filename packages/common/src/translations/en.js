@@ -238,4 +238,6 @@ export const English = {
   'History of Yoga': 'History of Yoga',
   'Yoga Breaks': 'Yoga Breaks',
   'Full-Length Yoga Classes': 'Full-Length Yoga Classes',
+  'Account upgraded! Close this page and wait a few seconds for the app to update.':
+    'Account upgraded! Close this page and wait a few seconds for the app to update.',
 };

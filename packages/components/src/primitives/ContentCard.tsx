@@ -3,7 +3,7 @@ import { Card, CardItem, Left, Body } from 'native-base';
 import { View } from 'react-native';
 import { Content } from 'common';
 import AvyName from './AvyName';
-import Headline from './Headline';
+import CardTitle from './CardTitle';
 import Image from './Image';
 import { useNavigation } from '../hooks';
 import Paragraph from './Paragraph';
@@ -51,9 +51,7 @@ const ContentCard: React.FC<Props> = ({ content }) => {
             paddingBottom: 5,
           }}>
           <View style={{ flex: 1 }}>
-            <Headline small numberOfLines={1}>
-              {content.title}
-            </Headline>
+            <CardTitle>{content.title}</CardTitle>
             <Paragraph>{content.length}</Paragraph>
           </View>
           {teacher && (

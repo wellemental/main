@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlayEvent } from 'common';
+import { Colors, PlayEvent } from 'common';
 import { convertTimestamp } from 'services';
 import {
   Button,
@@ -18,6 +18,7 @@ type Props = {
   loadMore: () => any;
   hasMore: boolean;
   items: any[];
+  color: Colors;
 };
 
 const RecentlyPlayedLoop: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const RecentlyPlayedLoop: React.FC<Props> = ({
   loading,
   items,
   hasMore,
+  color,
   loadingMore,
   loadMore,
 }) => {
@@ -68,7 +70,10 @@ const RecentlyPlayedLoop: React.FC<Props> = ({
             <Button
               small
               text={translation['See all']}
-              transparent
+              style={{
+                backgroundColor: 'rgba(0,0,0,0',
+              }}
+              transparent={color === 'white' ? false : true}
               onPress={() =>
                 navigation.navigate('Profile', { defaultTab: 'Journey' })
               }

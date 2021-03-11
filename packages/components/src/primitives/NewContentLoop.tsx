@@ -1,11 +1,14 @@
-// NOT USING YET, MAY DELETE PENDING PROGRESS
 import React from 'react';
-import { Platform } from 'react-native';
 import { Button, ListEmpty, Loading, ContentCardSmall, Box } from '.';
 import { List } from 'native-base';
 import { useCurrentUser, useContent, useNavigation } from '../hooks';
+import { Colors } from 'packages/common';
 
-const ContentLoopSmall: React.FC = () => {
+type Props = {
+  color: Colors;
+};
+
+const ContentLoopSmall: React.FC<Props> = ({ color }) => {
   const { translation } = useCurrentUser();
   const { loading, content } = useContent();
   const navigation = useNavigation();
@@ -26,7 +29,10 @@ const ContentLoopSmall: React.FC = () => {
           <Button
             small
             text={translation['See all']}
-            transparent
+            style={{
+              backgroundColor: 'rgba(0,0,0,0',
+            }}
+            transparent={color === 'white' ? false : true}
             onPress={() => navigation.navigate('Library')}
           />
         </Box>

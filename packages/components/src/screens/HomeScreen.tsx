@@ -7,9 +7,7 @@ import {
   ContentLoop,
   CategoryCard,
   Subheadline,
-  Button,
   AgeCards,
-  Spinner,
   Paragraph,
   TabsNB,
 } from '../primitives';
@@ -17,7 +15,7 @@ import { VersionConfig } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { getVersion } from 'react-native-device-info';
 import variables from '../assets/native-base-theme/variables/wellemental';
-import { getTimeOfDay, Tags } from 'common';
+import { getTimeOfDay, Tags, TimeOfDay } from 'common';
 
 const HomeScreen: React.FC = ({ navigation }) => {
   const { translation, activePlan } = useCurrentUser();
@@ -46,8 +44,11 @@ const HomeScreen: React.FC = ({ navigation }) => {
     );
   };
 
+  const timeOfDayColor =
+    timeOfDay.name === TimeOfDay.Evening ? 'white' : undefined;
+
   return (
-    <Container scrollEnabled bg="Afternoon" proOnly={false}>
+    <Container scrollEnabled bg={timeOfDay.name} proOnly={false}>
       {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}
@@ -64,31 +65,35 @@ const HomeScreen: React.FC = ({ navigation }) => {
         </TouchableOpacity>
       )}
 
-      <PageHeadingHome timeOfDay={timeOfDay} />
+      <PageHeadingHome timeOfDay={timeOfDay} color={timeOfDayColor} />
 
       {activePlan ? (
         <>
-          <TabsNB />
+          <TabsNB color={timeOfDayColor} />
 
           {features && features.categories && (
             <>
-              <PageHeading subheader title={translation.Featured} />
+              <Subheadline color={timeOfDayColor}>
+                {translation.Featured}
+              </Subheadline>
 
               {features.categories.map((item, idx) => (
                 <CategoryCard key={idx} category={item} />
               ))}
             </>
           )}
-          <PageHeading
-            subheader
-            title={`${translation['Explore by age range']}`}
-          />
+          <Subheadline
+            color={
+              timeOfDayColor
+            }>{`${translation['Explore by age range']}`}</Subheadline>
 
           <AgeCards />
         </>
       ) : (
         <>
-          <Subheadline>{translation.Featured}</Subheadline>
+          <Subheadline color={timeOfDayColor}>
+            {translation.Featured}
+          </Subheadline>
           <ContentLoop filter={Tags.Featured} />
         </>
       )}

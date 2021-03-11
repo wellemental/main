@@ -3,14 +3,23 @@ import PageHeading from './PageHeading';
 import Box from './Box';
 import { LayoutAnimation } from 'react-native';
 import Button from './Button';
-import { TimeOfDayObj, Content, getRandomInt, Tags, Teacher } from 'common';
+import {
+  TimeOfDayObj,
+  Content,
+  getRandomInt,
+  Tags,
+  Teacher,
+  Colors,
+  TimeOfDay,
+} from 'common';
 import { useContent, useNavigation } from '../hooks';
 
 type Props = {
   timeOfDay: TimeOfDayObj;
+  color?: Colors;
 };
 
-const PageHeadingHome: React.FC<Props> = ({ timeOfDay }) => {
+const PageHeadingHome: React.FC<Props> = ({ timeOfDay, color }) => {
   const { content, loading } = useContent();
   const navigation = useNavigation();
   let filteredContent: Content[] = content ? Object.values(content) : [];
@@ -50,11 +59,14 @@ const PageHeadingHome: React.FC<Props> = ({ timeOfDay }) => {
         center
         title={timeOfDay.headline}
         subtitle={timeOfDay.tagline}
+        color={color ? color : undefined}
       />
 
       {show && (
-        <Box mt={-0.5}>
+        <Box mt={0.5}>
           <Button
+            light={timeOfDay.name === TimeOfDay.Evening}
+            warning={timeOfDay.name === TimeOfDay.Morning}
             text={timeOfDay.btnText}
             loading={loading}
             onPress={() =>

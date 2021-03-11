@@ -6,22 +6,19 @@ import NewContentLoop from './NewContentLoop';
 import Box from './Box';
 import TabsButtons from './TabsButtons';
 import RecentlyPlayedLoop from './RecentlyPlayedLoop';
-import { brandColors } from '../assets/native-base-theme/variables/wellemental';
-import {
-  useLoadMore,
-  useContainer,
-  useContent,
-  useCurrentUser,
-} from '../hooks';
+import { useLoadMore, useContainer, useContent } from '../hooks';
 import { PlaysServiceType } from 'services';
-import { Tabs } from 'common';
+import { Tabs, Colors } from 'common';
 
-const TabsNB: React.FC = () => {
+type Props = {
+  color?: Colors;
+};
+
+const TabsNB: React.FC<Props> = ({ color }) => {
   const tabs: Tabs[] = [{ label: 'History' }, { label: 'New' }];
 
   const [tab, setTab] = useState(tabs[0].label);
 
-  const { translation } = useCurrentUser();
   const { content } = useContent();
 
   const container = useContainer();
@@ -37,8 +34,14 @@ const TabsNB: React.FC = () => {
 
   return (
     <>
-      <Box row pt={3}>
-        <TabsButtons tabs={tabs} setState={setTab} active={tab} small />
+      <Box row pt={5} pb={1}>
+        <TabsButtons
+          color={color}
+          tabs={tabs}
+          setState={setTab}
+          active={tab}
+          small
+        />
       </Box>
       {tab === 'History' && (
         <RecentlyPlayedLoop
@@ -49,9 +52,10 @@ const TabsNB: React.FC = () => {
           loadMore={loadMore}
           items={items}
           hasMore={hasMore}
+          color={color}
         />
       )}
-      {tab === 'New' && <NewContentLoop />}
+      {tab === 'New' && <NewContentLoop color={color} />}
     </>
   );
 };

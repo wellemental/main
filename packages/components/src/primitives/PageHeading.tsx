@@ -46,7 +46,7 @@ const PageHeading: React.FC<Props> = ({
       style={{
         paddingTop: pt,
         paddingHorizontal: 5,
-        paddingBottom: noHeader ? 25 : 15,
+        paddingBottom: noHeader ? 15 : 5,
         alignItems: center ? 'center' : 'flex-start',
       }}>
       {withLogo && (
@@ -57,10 +57,17 @@ const PageHeading: React.FC<Props> = ({
       {avatar && <Avatar source={avatar} size={200} mb={30} />}
       <Headline
         center={center ? center : false}
-        style={{ color: color ? colors[color] : colors.brandPrimary }}>
+        color={color ? color : undefined}>
         {title}
       </Headline>
-      {subtitle && <Paragraph style={{ paddingTop: 5 }}>{subtitle}</Paragraph>}
+      {subtitle && (
+        <Paragraph
+          style={{ paddingTop: 5 }}
+          center={center ? center : false}
+          color={color ? color : undefined}>
+          {subtitle}
+        </Paragraph>
+      )}
     </View>
   );
 };

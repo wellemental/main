@@ -102,7 +102,7 @@ const PlansScreen: React.FC = () => {
       await requestSubscription(plan);
       setError(
         translation[
-          'If payment succeeded, please wait one minute for your account to be upgraded.'
+          'Account upgraded! Close this page and wait a few seconds for the app to update.'
         ],
       );
       setProcessing(false);
@@ -240,19 +240,6 @@ const PlansScreen: React.FC = () => {
             />
           </>
         )}
-        {/* <Box gt={1}>
-        <Button
-          transparent
-          disabled={processing}
-          loading={processing}
-          text={
-            showAccessDisplay
-              ? translation['New account?']
-              : translation['Access code?']
-          }
-          onPress={() => toggleDisplay(!showAccessDisplay)}
-        />
-      </Box> */}
 
         {auth &&
           (auth.email === 'mike.r.vosters@gmail.com' ||

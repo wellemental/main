@@ -33,6 +33,7 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
   color,
   fine,
   bold,
+  ...props
 }) => {
   const spacing = 15;
   const styles2 = StyleSheet.flatten([
@@ -53,7 +54,11 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
     style,
   ]);
 
-  return <Text style={styles2}>{children}</Text>;
+  return (
+    <Text style={styles2} {...props}>
+      {children}
+    </Text>
+  );
 };
 
 export default Paragraph;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardItem, Left, Body } from 'native-base';
 import { Content } from 'common';
 import Image from './Image';
-import Headline from './Headline';
+import CardTitle from './CardTitle';
 import Paragraph from './Paragraph';
 import { useNavigation } from '../hooks';
 import variables from '../assets/native-base-theme/variables/wellemental';
@@ -16,7 +16,7 @@ const ContentCardSmall: React.FC<Props> = ({ content, recentDate }) => {
   const navigation = useNavigation();
 
   return (
-    <Card style={{ marginBottom: 0 }}>
+    <Card style={{ marginBottom: 5 }}>
       <CardItem
         cardBody
         button
@@ -33,6 +33,8 @@ const ContentCardSmall: React.FC<Props> = ({ content, recentDate }) => {
             style={{
               height: 82,
               flex: 1,
+              marginLeft: -1,
+              marginBottom: -1,
               borderRadius: variables.cardBorderRadius,
             }}
           />
@@ -43,9 +45,7 @@ const ContentCardSmall: React.FC<Props> = ({ content, recentDate }) => {
             padding: 15,
             paddingBottom: 5,
           }}>
-          <Headline small numberOfLines={1} style={{ marginTop: 3 }}>
-            {content.title}
-          </Headline>
+          <CardTitle>{content.title}</CardTitle>
           <Paragraph fine>{recentDate ? recentDate : content.length}</Paragraph>
         </Body>
       </CardItem>

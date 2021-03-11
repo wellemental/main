@@ -242,4 +242,6 @@ export const Español = {
   'History of Yoga': 'Historia del Yoga',
   'Yoga Breaks': 'Descanso de Yoga',
   'Full-Length Yoga Classes': 'Clase Entera de Yoga ',
+  'Account upgraded! Close this page and wait a few seconds for the app to update.':
+    '¡Cuenta actualizada! Cierre esta página y espere unos segundos a que se actualice la aplicación. ',
 };
