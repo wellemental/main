@@ -9,7 +9,7 @@ export const colors = {
   brandWarning: '#C78D36', // Orange '#CAAB29',
   brandLight: '#dfbead', // Light Pink
   lightGray: '#838383',
-  offWhite: '#F4E6D0',
+  offWhite: '#ccc', //'#F4E6D0',
   white: '#ffffff',
   placeholderGray: '#dbdbdb',
   textColor: 'rgba(0,0,0,0.6)',

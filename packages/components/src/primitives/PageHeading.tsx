@@ -4,9 +4,9 @@ import Box from './Box';
 import Headline from './Headline';
 import Avatar from './Avatar';
 import LogoIcon from './LogoIcon';
-import { View, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, Colors } from 'common';
+import { Colors } from 'common';
 
 type Props = {
   title: string;
@@ -29,7 +29,7 @@ const PageHeading: React.FC<Props> = ({
   color,
 }) => {
   const insets = useSafeAreaInsets();
-  let pt = 35;
+  let pt = noHeader ? 30 : 15;
 
   if (Platform.OS === 'android' && noHeader) {
     pt = 35 + insets.top;
@@ -42,11 +42,11 @@ const PageHeading: React.FC<Props> = ({
   }
 
   return (
-    <View
+    <Box
+      pb={noHeader ? 1 : 3}
       style={{
         paddingTop: pt,
         paddingHorizontal: 5,
-        paddingBottom: noHeader ? 15 : 5,
         alignItems: center ? 'center' : 'flex-start',
       }}>
       {withLogo && (
@@ -62,13 +62,13 @@ const PageHeading: React.FC<Props> = ({
       </Headline>
       {subtitle && (
         <Paragraph
-          style={{ paddingTop: 5 }}
+          gt={0.5}
           center={center ? center : false}
           color={color ? color : undefined}>
           {subtitle}
         </Paragraph>
       )}
-    </View>
+    </Box>
   );
 };
 

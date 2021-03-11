@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { PlaysServiceType, PlayEvent, convertTimestamp } from 'services';
+import {
+  PlaysServiceType,
+  PlayEvent,
+  convertTimestamp,
+  FavoritesService,
+} from 'services';
 import { Card, CardItem } from 'native-base';
 import {
   Error,
@@ -13,9 +18,10 @@ import {
   Box,
   Loading,
   ContentCardSmall,
+  RecentlyPlayedLoop,
 } from '../primitives';
 import { List } from 'native-base';
-import { Tab } from 'common';
+import { FavoritesServiceType, Languages, Tab } from 'common';
 import {
   useCurrentUser,
   useContent,
@@ -30,7 +36,7 @@ type Props = {
 };
 
 const ProfileScreen: React.FC<Props> = ({ route }) => {
-  const { translation } = useCurrentUser();
+  const { translation, user } = useCurrentUser();
   const { content } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
@@ -48,6 +54,9 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
 
   const container = useContainer();
   const service = container.getInstance<PlaysServiceType>('playsService');
+  const favsService = container.getInstance<FavoritesServiceType>(
+    'favoritesService',
+  );
 
   const {
     items,
@@ -63,7 +72,7 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
     loadMore: loadMoreFavs,
     loadingMore: loadingMoreFavs,
     hasMore: hasMoreFavs,
-  } = useLoadMore(service.query, { limit: 7 });
+  } = useLoadMore(favsService.query, { limit: 7 });
 
   return (
     <Container scrollEnabled bg="Profile">
@@ -79,7 +88,12 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
             paddingLeft: 7,
             paddingRight: 7,
           }}>
-          <TabsButtons full small tabs={tabs} active={tab} setState={setTab} />
+          <TabsButtons
+            full={user.language === Languages.En}
+            tabs={tabs}
+            active={tab}
+            setState={setTab}
+          />
         </CardItem>
       </Card>
       {tab === 'Favorites' && (
@@ -111,43 +125,14 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
         </>
       )}
       {tab === 'Journey' && (
-        <Loading loading={loading || !content}>
-          <List>
-            {items && items.length > 0 ? (
-              items.map((item, idx: number) => {
-                const data = item.data() as PlayEvent;
-                const contentMatch =
-                  data && data.contentId && content[data.contentId];
-
-                return contentMatch ? (
-                  <ContentCardSmall
-                    key={idx}
-                    content={contentMatch}
-                    recentDate={convertTimestamp(data.createdAt).format(
-                      'MMM DD, YYYY',
-                    )}
-                  />
-                ) : null;
-              })
-            ) : (
-              <ListEmpty center>
-                {
-                  translation[
-                    'Your recently played videos will appear here. Get started!'
-                  ]
-                }
-              </ListEmpty>
-            )}
-            {hasMore && (
-              <Button
-                transparent
-                disabled={loadingMore}
-                text={translation['Load More']}
-                onPress={loadMore}
-              />
-            )}
-          </List>
-        </Loading>
+        <ContentLoopLoadMore
+          recentlyPlayed
+          loading={loading}
+          items={items}
+          hasMore={hasMore}
+          loadingMore={loadingMore}
+          loadMore={loadMore}
+        />
       )}
     </Container>
   );

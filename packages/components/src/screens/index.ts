@@ -10,6 +10,7 @@ export { default as TeacherScreen } from './TeacherScreen';
 export { default as EditProfileScreen } from './EditProfileScreen';
 export { default as VideoScreen } from './VideoScreen';
 export { default as UpgradeScreen } from './UpgradeScreen';
+export { default as TeachersScreen } from './TeachersScreen';
 export { default as CategoryScreen } from './CategoryScreen';
 export { default as LandingScreen } from './LandingScreen';
 export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';

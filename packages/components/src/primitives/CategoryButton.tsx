@@ -1,45 +1,44 @@
 import React from 'react';
-import { Card, CardItem, Right, Body, Icon } from 'native-base';
-import Image from './Image';
-import { useNavigation, useCurrentUser } from '../hooks';
+import { Card, CardItem, Right, Body } from 'native-base';
+import { useNavigation } from '../hooks';
 import Paragraph from './Paragraph';
+import Icon from './Icon';
 import Headline from './Headline';
 import {
   Category,
   Feature,
-  Languages,
-  isFeature,
   ColorPairings,
   colorPairings,
+  IconTypes,
 } from 'common';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 type Props = {
-  category: Category | Feature;
   color?: ColorPairings;
+  icon: string;
+  iconType?: IconTypes;
+  title: string;
+  description?: string;
+  category?: Category | Feature;
+  redirect?: string;
 };
 
-const CategoryCard: React.FC<Props> = ({ category, color }) => {
+const CategoryButton: React.FC<Props> = ({
+  title,
+  icon,
+  iconType,
+  description,
+  color,
+  redirect,
+  category,
+}) => {
   const navigation = useNavigation();
-  const { translation, user } = useCurrentUser();
 
-  // If it's a feature, get the translation from the features object
-  // Then if translation is possible - age groups have them, features don't currently
-  const title: string =
-    isFeature(category) && user.language === Languages.Es
-      ? category['title-es']
-      : translation[category.title]
-      ? translation[category.title]
-      : category.title;
-
-  const description: string =
-    isFeature(category) &&
-    user.language === Languages.Es &&
-    category['description-es']
-      ? category['description-es']
-      : category.description && translation[category.description]
-      ? translation[category.description]
-      : category.description;
+  const handlePress = category
+    ? () => navigation.navigate('Category', { category: category })
+    : redirect
+    ? () => navigation.navigate(redirect)
+    : undefined;
 
   return (
     <Card>
@@ -49,7 +48,7 @@ const CategoryCard: React.FC<Props> = ({ category, color }) => {
         style={{
           backgroundColor: color ? colorPairings[color].main : undefined,
         }}
-        onPress={() => navigation.navigate('Category', { category: category })}>
+        onPress={handlePress}>
         <Body
           style={{
             flex: 2,
@@ -61,16 +60,17 @@ const CategoryCard: React.FC<Props> = ({ category, color }) => {
             small
             style={{
               color: color ? colorPairings[color].text : variables.brandPrimary,
+              paddingTop: 5,
             }}>
             {title}
           </Headline>
           {description && <Paragraph>{description}</Paragraph>}
         </Body>
         <Right style={{ flex: 1, marginLeft: 10 }}>
-          {category.icon && (
+          {icon && (
             <Icon
-              name={category.icon}
-              type={category.iconType ? category.iconType : undefined}
+              name={icon}
+              type={iconType}
               style={{
                 fontSize: 50,
                 color: color ? colorPairings[color].light : undefined,
@@ -85,4 +85,4 @@ const CategoryCard: React.FC<Props> = ({ category, color }) => {
   );
 };
 
-export default CategoryCard;
+export default CategoryButton;

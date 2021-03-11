@@ -44,7 +44,7 @@ const ContentLoop: React.FC<Props> = ({
   }
 
   // Filter by tag or category
-  if (filter && filteredContent) {
+  if (!!filter && filteredContent) {
     filteredContent = filteredContent.filter((item: Content) => {
       if (item && item.tags) {
         return item.tags.includes(filter.toLowerCase() as Tags);

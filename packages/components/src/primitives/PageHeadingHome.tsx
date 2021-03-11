@@ -1,18 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageHeading from './PageHeading';
 import Box from './Box';
 import { LayoutAnimation } from 'react-native';
 import Button from './Button';
-import {
-  TimeOfDayObj,
-  Content,
-  getRandomInt,
-  Tags,
-  Teacher,
-  Colors,
-  TimeOfDay,
-} from 'common';
-import { useContent, useNavigation } from '../hooks';
+import { TimeOfDayObj, Content, getRandomInt, Colors, TimeOfDay } from 'common';
+import { useContent, useCurrentUser, useNavigation } from '../hooks';
 
 type Props = {
   timeOfDay: TimeOfDayObj;
@@ -21,6 +13,7 @@ type Props = {
 
 const PageHeadingHome: React.FC<Props> = ({ timeOfDay, color }) => {
   const { content, loading } = useContent();
+  const { user } = useCurrentUser();
   const navigation = useNavigation();
   let filteredContent: Content[] = content ? Object.values(content) : [];
   const filter = timeOfDay.name;
@@ -28,7 +21,10 @@ const PageHeadingHome: React.FC<Props> = ({ timeOfDay, color }) => {
   if (filter && filteredContent) {
     filteredContent = filteredContent.filter(
       (item: Content) =>
-        item && item.tags && item.tags.includes(filter.toLowerCase()),
+        item &&
+        item.tags &&
+        item.tags.includes(filter.toLowerCase()) &&
+        item.language === user.language,
     );
   }
 

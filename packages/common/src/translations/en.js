@@ -87,8 +87,8 @@ export const English = {
     'Get unlimited access to our content with an annual or monthly subscription.',
   'Or enter your access code': 'Or enter your access code',
   '100+ meditation and yoga videos': 'Explore 100+ mindful practices',
-  '100+ meditation and yoga videos and more':
-    'Explore 100+ mindful practices and more!',
+  'Explore 100+ mindful practices from diverse teachers in english and spanish!':
+    'Explore 100+ mindful practices from diverse teachers in english and spanish!',
   'Available in English and Spanish': 'Practice in English and Spanish',
   'Led by diverse teachers': 'Learn from diverse teachers',
   'Online or offline use': 'Breathe and move – online or offline',
@@ -113,6 +113,7 @@ export const English = {
   'You did it!': 'You did it!',
   'Keep going': 'Keep going',
   'Explore by age range': 'Explore by age range',
+  Explore: 'Explore',
   'Under 4 years': 'Under 4 years',
   'Simple practices for early learners': 'Simple practices for early learners',
   '4–9 year olds': '4–9 year olds',

@@ -1,28 +1,63 @@
 import React from 'react';
-import { Subheadline, CategoryCard } from '.';
+import { Subheadline, CategoryButton } from '.';
 import { useCurrentUser } from '../hooks';
-import { Category } from 'common';
+import { Category, Redirect } from 'common';
+
+const categoryColors = ['yellow', 'blurple', 'orange', 'teal'] as const;
+export type CategoryColors = typeof categoryColors[number];
 
 type Props = {
-  categories: Category[];
+  categories?: Category[];
+  title?: string;
+  hideTitle?: boolean;
+  redirects?: Redirect[];
+  colors?: CategoryColors[];
 };
 
-const colors = ['yellow', 'blurple', 'orange', 'teal'];
-
-const CategoryLoop: React.FC<Props> = ({ categories }) => {
+const CategoryLoop: React.FC<Props> = ({
+  categories,
+  title,
+  hideTitle,
+  redirects,
+  colors,
+}) => {
   const { translation } = useCurrentUser();
+
+  const theColors = colors ? colors : categoryColors;
 
   return (
     <>
-      <Subheadline>{translation.Categories}</Subheadline>
+      {!hideTitle && (
+        <Subheadline>
+          {title && translation[title]
+            ? translation[title]
+            : translation.Categories}
+        </Subheadline>
+      )}
 
-      {categories.map((category, idx) => (
-        <CategoryCard
-          key={category.title}
-          color={colors[idx]}
-          category={category}
-        />
-      ))}
+      {categories &&
+        categories.map((category, idx) => (
+          <CategoryButton
+            key={category.title}
+            title={category.title}
+            color={theColors[idx]}
+            category={category}
+            icon={category.icon}
+            iconType={category.iconType}
+          />
+        ))}
+
+      {redirects &&
+        redirects.map((redirect, idx) => (
+          <CategoryButton
+            key={redirect.title}
+            title={redirect.title}
+            color={theColors[idx]}
+            redirect={redirect.page}
+            icon={redirect.icon}
+            iconType={redirect.iconType}
+          />
+        ))}
     </>
   );
 };

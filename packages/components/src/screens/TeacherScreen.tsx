@@ -1,5 +1,11 @@
 import React from 'react';
-import { Container, ContentLoop, PageHeading } from '../primitives';
+import { useCurrentUser } from '../hooks';
+import {
+  Container,
+  ContentLoop,
+  PageHeading,
+  LockOverlay,
+} from '../primitives';
 import { TeacherScreenRouteProp } from '../types';
 
 type Props = {
@@ -8,16 +14,22 @@ type Props = {
 
 const TeacherScreen: React.FC<Props> = ({ route }) => {
   const { teacher } = route.params;
+  const { activePlan } = useCurrentUser();
 
   return (
-    <Container scrollEnabled>
-      <PageHeading
-        title={`I'm ${teacher.name}!`}
-        subtitle={teacher.bio}
-        avatar={teacher.photo}
-        center
+    <Container>
+      <ContentLoop
+        teacher={teacher.name}
+        header={
+          <PageHeading
+            title={`I'm ${teacher.name}!`}
+            subtitle={teacher.bio}
+            avatar={teacher.photo}
+            center
+          />
+        }
       />
-      <ContentLoop teacher={teacher.name} />
+      {!activePlan && <LockOverlay />}
     </Container>
   );
 };

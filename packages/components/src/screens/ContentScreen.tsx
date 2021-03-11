@@ -12,6 +12,7 @@ import {
   Box,
   Button,
   Download,
+  DownloadRow,
   ScrollView,
   Favorite,
   Headline,
@@ -29,7 +30,6 @@ type Props = {
   navigation: ContentScreenNavigationProp;
 };
 
-// const deviceWidth = deviceWidthOg - 30;
 const videoHeight = deviceWidth * 0.56;
 
 const styles = StyleSheet.create({
@@ -102,7 +102,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const handleComplete = (): void => {
     if (!!player.current) {
-      console.log('DISMISSING', player.current.dismissFullscreenPlayer);
       player.current.dismissFullscreenPlayer();
     }
 
@@ -246,19 +245,20 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
       )}
       <ScrollView>
-        <Box row justifyContent="space-between" mt={2} mb={1}>
+        <Box row justifyContent="space-between" mt={2} mb={0.5}>
           <Headline style={{ flex: 4 }}>{content.title}</Headline>
-          <Box row>
-            <Favorite onProfile contentId={content.id} />
-            <Download videoUrl={content.video} />
-          </Box>
+
+          <Favorite onProfile contentId={content.id} />
         </Box>
 
-        <Paragraph gb={1}>
-          {content.type.toUpperCase()} | {content.length}
-        </Paragraph>
+        <Box row pb={1.5}>
+          <Paragraph bold>{content.type} </Paragraph>
+          <Paragraph>// {content.length}</Paragraph>
+        </Box>
 
         <Paragraph gb={1}>{content.description}</Paragraph>
+
+        <DownloadRow videoUrl={content.video} />
 
         <Button
           transparent
@@ -273,7 +273,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             onProfile
           />
         </Button>
-        <Paragraph>{content.teacher.bio}</Paragraph>
+        <Paragraph gt={0.5}>{content.teacher.bio}</Paragraph>
 
         {auth &&
           (auth.email === 'test@test.com' ||
@@ -284,6 +284,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
               <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
               <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
               <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
+              <Paragraph>Tags: {content.tags.toString()}</Paragraph>
             </Box>
           )}
       </ScrollView>

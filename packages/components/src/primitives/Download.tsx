@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Icon, Toast } from 'native-base';
-import { DownloadVideoService } from 'services';
+import { DownloadVideoService, DownloadProgressCallbackResult } from 'services';
 import variables from '../assets/native-base-theme/variables/wellemental';
 
 interface Props {
@@ -17,7 +17,7 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
       try {
         toggleDownload(await service.checkExists(videoUrl));
       } catch (err) {
-        // logger.error('Error checking video cache status');
+        console.log('Error checking video cache status');
       }
     };
     checkIfDownloaded();
@@ -32,7 +32,6 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
   //     setProgress(percentage);
   //   }
   // };
-
   const handleDownload = async () => {
     setLoading(true);
     if (isDownloaded) {
@@ -73,10 +72,7 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
         iconRight
         disabled={loading}
         style={{
-          paddingRight: 5,
-          paddingLeft: 15,
           paddingBottom: 0,
-          marginTop: -14,
         }}
         transparent
         onPress={handleDownload}>

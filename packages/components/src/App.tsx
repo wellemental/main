@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StatusBar, Platform } from 'react-native';
+import { StatusBar, Platform, UIManager } from 'react-native';
 import { StyleProvider, Root } from 'native-base';
 import getTheme from './assets/native-base-theme/components';
 import wellemental from './assets/native-base-theme/variables/wellemental';
@@ -13,6 +13,13 @@ import {
 import Navigator from './navigation/Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const App: React.FC = () => {
   useEffect(() => {

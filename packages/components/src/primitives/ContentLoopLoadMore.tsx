@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlayEvent, ContentObj } from 'common';
+import { PlayEvent, Colors } from 'common';
 import { convertTimestamp } from 'services';
 import {
   Button,
@@ -18,6 +18,8 @@ type Props = {
   loadMore: () => any;
   hasMore: boolean;
   items: any[];
+  recentlyPlayed?: boolean;
+  color?: Colors;
 };
 
 const ContentLoopLoadMore: React.FC<Props> = ({
@@ -27,6 +29,8 @@ const ContentLoopLoadMore: React.FC<Props> = ({
   hasMore,
   loadingMore,
   loadMore,
+  color,
+  recentlyPlayed,
 }) => {
   const { translation } = useCurrentUser();
   const { content } = useContent();
@@ -35,21 +39,21 @@ const ContentLoopLoadMore: React.FC<Props> = ({
   return (
     <Loading loading={loading || !content} fullPage={false}>
       <List>
-        {!!items && items.length > 0 ? (
-          items.slice(0, 2).map((item, idx: number) => {
+        {content && !!items && items.length > 0 ? (
+          items.slice(0, homepage ? 2 : undefined).map((item, idx: number) => {
             const data = item.data() as PlayEvent;
 
             const contentMatch =
-              data && data.contentId && content[data.contentId];
+              content && data && data.contentId && content[data.contentId];
 
             return contentMatch ? (
               <ContentCardSmall
                 key={idx}
                 content={contentMatch}
                 recentDate={
-                  homepage
+                  !recentlyPlayed
                     ? undefined
-                    : convertTimestamp(data.createdAt).format('MMM DD, YYYY')
+                    : convertTimestamp(data.createdAt).format('MMM D, YYYY')
                 }
               />
             ) : null;
@@ -59,25 +63,33 @@ const ContentLoopLoadMore: React.FC<Props> = ({
             {translation['Your favorite videos will appear here. Get started!']}
           </ListEmpty>
         )}
-        {homepage && (
+
+        {homepage && recentlyPlayed && (
           <Box mt={1}>
             <Button
               small
               text={translation['See all']}
-              transparent
+              style={{
+                backgroundColor: 'rgba(0,0,0,0',
+              }}
+              transparent={color === 'white' ? false : true}
               onPress={() =>
                 navigation.navigate('Profile', { defaultTab: 'Journey' })
               }
             />
           </Box>
         )}
-        {hasMore && !loadingMore && !homepage && (
-          <Button
-            transparent
-            disabled={loadingMore}
-            text={translation['Load More']}
-            onPress={loadMore}
-          />
+
+        {hasMore && !loadingMore && !homepage && items.length >= 7 && (
+          <Box mt={1}>
+            <Button
+              warning
+              small
+              disabled={loadingMore}
+              text={translation['Load More']}
+              onPress={loadMore}
+            />
+          </Box>
         )}
       </List>
     </Loading>

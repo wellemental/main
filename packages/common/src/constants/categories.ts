@@ -1,4 +1,4 @@
-import { Tags, CategoryObj } from '../types';
+import { Tags, CategoryObj, Redirect } from '../types';
 
 export const categories: CategoryObj = {
   Focus: {
@@ -59,3 +59,12 @@ export const meditationCategories = [
 ];
 export const learnCategories = [categories.Philosophy, categories.History];
 export const moveCategories = [categories.Breaks, categories.Classes];
+
+export const exploreRedirects: Redirect[] = [
+  {
+    title: 'Teachers',
+    icon: 'school',
+    page: 'Teachers',
+  },
+  { title: 'Search', icon: 'search', page: 'Search' },
+];

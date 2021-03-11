@@ -92,6 +92,8 @@ export const Español = {
     'Recibe accesso ilimitado a nuestro contenido con una subscripcion annual o mensual.',
   'Or enter your access code': 'O entra tu código de accesso',
   '100+ meditation and yoga videos': '100+ videos de meditación y yoga',
+  'Explore 100+ mindful practices from diverse teachers in english and spanish!':
+    '¡Explore más de 100 prácticas conscientes de diversos profesores en inglés y español!',
   '100+ meditation and yoga videos and more':
     '100+ videos de meditación, yoga y más!',
   'Available in English and Spanish': 'Disponible en Ingles y Español',
@@ -118,6 +120,7 @@ export const Español = {
   'You did it!': '¡Lo hiciste!',
   'Keep going': 'Sigue adelante',
   'Explore by age range': 'Explorar por rango de edad',
+  Explore: 'Explorar',
   'Under 4 years': 'Menores de 4 años',
   'Simple practices for early learners':
     'Prácticas sencillas para principiantes',

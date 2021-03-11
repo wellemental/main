@@ -10,12 +10,14 @@ import {
   LandingScreen,
   CategoryScreen,
   LibraryScreen,
+  TeachersScreen,
   EditProfileScreen,
   ForgotPasswordScreen,
   NotificationsScreen,
   UpgradeScreen,
   CelebrationScreen,
   PlansScreen,
+  SearchScreen,
   SettingsScreen,
 } from '../screens';
 import { LockOverlay } from '../primitives';
@@ -94,6 +96,7 @@ const Navigator: React.FC = () => {
             />
             <Stack.Screen name="Lock" component={LockOverlay} />
             <Stack.Screen name="Library" component={LibraryScreen} />
+            <Stack.Screen name="Search" component={SearchScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="Category" component={CategoryScreen} />
             <Stack.Screen
@@ -119,6 +122,7 @@ const Navigator: React.FC = () => {
               }}
             />
             <Stack.Screen name="Teacher" component={TeacherScreen} />
+            <Stack.Screen name="Teachers" component={TeachersScreen} />
             <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
             <Stack.Screen
               name="Notifications"

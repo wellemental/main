@@ -5,6 +5,13 @@ type ValueOf<T> = T[keyof T];
 
 export type Unsubscriber = () => void;
 
+export type Redirect = {
+  title: string;
+  icon: string;
+  iconType?: IconTypes;
+  page?: string;
+};
+
 enum SubStatus {
   Canceled = 'canceled',
   Active = 'active',
@@ -98,7 +105,7 @@ export type Tab = {
 
 export type Category = {
   title: string;
-  tag: Tags;
+  tag: Tags | undefined;
   description?: string;
   image?: string;
   icon?: string;

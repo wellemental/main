@@ -47,12 +47,13 @@ const ContentCard: React.FC<Props> = ({ content }) => {
           style={{
             flex: 2,
             justifyContent: 'space-between',
-            padding: 15,
+            paddingHorizontal: 15,
             paddingBottom: 5,
+            paddingTop: 12,
           }}>
           <View style={{ flex: 1 }}>
             <CardTitle>{content.title}</CardTitle>
-            <Paragraph>{content.length}</Paragraph>
+            <Paragraph size={16}>{content.length}</Paragraph>
           </View>
           {teacher && (
             <AvyName

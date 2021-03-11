@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, ListEmpty, Loading, ContentCardSmall, Box } from '.';
 import { List } from 'native-base';
 import { useCurrentUser, useContent, useNavigation } from '../hooks';
-import { Colors } from 'packages/common';
+import { Colors } from 'common';
 
 type Props = {
   color: Colors;
@@ -33,7 +33,11 @@ const ContentLoopSmall: React.FC<Props> = ({ color }) => {
               backgroundColor: 'rgba(0,0,0,0',
             }}
             transparent={color === 'white' ? false : true}
-            onPress={() => navigation.navigate('Library')}
+            onPress={() =>
+              navigation.navigate('Category', {
+                category: { title: 'New', tag: undefined },
+              })
+            }
           />
         </Box>
       </List>

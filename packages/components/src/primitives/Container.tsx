@@ -4,7 +4,6 @@ import ScrollView from './ScrollView';
 import ConditionalWrapper from './ConditionalWrapper';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import { deviceHeight, deviceWidth } from 'services';
-import LockOverlay from './LockOverlay';
 
 type ContainerProps = {
   style?: CSSProperties;
@@ -12,7 +11,6 @@ type ContainerProps = {
   color?: string;
   center?: boolean;
   scrollEnabled?: boolean;
-  proOnly?: boolean;
   bg?: keyof typeof backgrounds;
 };
 
@@ -37,7 +35,6 @@ const Container: React.FC<ContainerProps> = ({
   children,
   color,
   center,
-  proOnly = true,
   bg,
   noPadding,
   ...props

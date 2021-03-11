@@ -19,7 +19,10 @@ const MoveScreen: React.FC = () => {
 
         <FeaturedLoop category={Categories.Move} />
 
-        <CategoryLoop categories={moveCategories} />
+        <CategoryLoop
+          categories={moveCategories}
+          colors={['blurple', 'teal']}
+        />
       </Container>
       {!activePlan && <LockOverlay />}
     </>

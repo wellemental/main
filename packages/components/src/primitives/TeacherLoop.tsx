@@ -1,12 +1,10 @@
-import React, { ReactElement, useRef } from 'react';
+import React, { ReactElement } from 'react';
 import { FlatList } from 'react-native';
 import TeacherCard from './TeacherCard';
 import Box from './Box';
 import Loading from './Loading';
-import { useContent, useCurrentUser, useQuery, useContainer } from '../hooks';
+import { useCurrentUser, useQuery, useContainer } from '../hooks';
 import ListEmpty from './ListEmpty';
-import { View } from 'react-native';
-import { TeacherService } from 'services';
 import { Teacher, TeacherServiceType } from 'common';
 
 type Props = {
@@ -32,15 +30,6 @@ const TeacherLoop: React.FC<Props> = ({ header, scrollEnabled }) => {
 
     return arr;
   };
-
-  // Filter by language
-  // if (user && user.language && filteredTeachers) {
-  //   filteredTeachers = filteredTeachers.filter(
-  //     (item: Teacher) => item.language === user.language,
-  //   );
-  // }
-
-  // const hasFilteredTeachers = filteredTeachers && filteredTeachers.length > 0;
 
   return (
     <Loading loading={loading}>

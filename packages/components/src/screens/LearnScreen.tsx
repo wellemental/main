@@ -19,7 +19,10 @@ const LearnScreen: React.FC = () => {
 
         <FeaturedLoop category={Categories.Learn} />
 
-        <CategoryLoop categories={learnCategories} />
+        <CategoryLoop
+          categories={learnCategories}
+          colors={['yellow', 'orange']}
+        />
       </Container>
       {!activePlan && <LockOverlay />}
     </>

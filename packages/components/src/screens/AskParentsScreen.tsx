@@ -18,10 +18,8 @@ const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
   const handleAnswer = () => {
     setError('');
     if (+answer === 99) {
-      // tracker.track(TrackingEvents.AskParentsSucceed);
       setLock(false);
     } else {
-      // tracker.track(TrackingEvents.AskParentsFail);
       setError(translation['Please ask your parents to proceed']);
     }
   };

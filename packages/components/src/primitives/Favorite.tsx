@@ -43,7 +43,7 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
       iconRight
       disabled={loading || mutating}
       style={{
-        paddingRight: 0,
+        paddingRight: onProfile ? 8 : 0,
         paddingBottom: 0,
         marginTop: onProfile ? -14 : 0,
       }}

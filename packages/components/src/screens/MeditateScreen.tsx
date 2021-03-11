@@ -1,22 +1,16 @@
 import React from 'react';
 import {
   Container,
-  ContentLoopSmall,
-  Subheadline,
   FeaturedLoop,
   PageHeading,
   LockOverlay,
   CategoryLoop,
 } from '../primitives';
-import { useCurrentUser, useContent } from '../hooks';
+import { useCurrentUser } from '../hooks';
 import { Categories, meditationCategories } from 'common';
 
 const MeditateScreen: React.FC = () => {
-  const { translation, activePlan, user } = useCurrentUser();
-
-  const { getFeatures } = useContent();
-
-  const data = getFeatures(Categories.Meditate);
+  const { translation, activePlan } = useCurrentUser();
 
   return (
     <>

@@ -23,7 +23,6 @@ const AvyName: React.FC<Props> = ({
   onProfile,
 }) => {
   const Name = onProfile ? H3 : Paragraph;
-  // const Name = Paragraph;
 
   return (
     <Box row>

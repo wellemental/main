@@ -38,8 +38,8 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
   const spacing = 15;
   const styles2 = StyleSheet.flatten([
     {
-      fontSize: size ? size : 16,
-      lineHeight: 22,
+      fontSize: size ? size : 18,
+      lineHeight: 26,
       paddingTop: gv ? spacing * gv : gt ? spacing * gt : 0,
       paddingBottom: gv ? spacing * gv : gb ? spacing * gb : 0,
       color: color
@@ -49,7 +49,7 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
         : brandColors.textColor,
       textAlign: center ? 'center' : undefined,
       alignSelf: center ? 'center' : 'flex-start',
-      fontWeight: bold ? '900' : undefined,
+      fontWeight: bold ? '700' : undefined,
     },
     style,
   ]);

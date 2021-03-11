@@ -9,7 +9,7 @@ type Props = {
 
 const Subheadline: React.FC<Props> = ({ color, children }) => {
   return (
-    <Box pt={5} pb={1}>
+    <Box pt={5} pb={1} px={1}>
       <Headline small color={color ? color : undefined}>
         {children}
       </Headline>

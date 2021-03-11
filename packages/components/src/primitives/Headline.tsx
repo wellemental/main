@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextStyle, TextProps } from 'react-native';
-import { H1, H3, H2 } from 'native-base';
+import { H1, H3 } from 'native-base';
 import { Colors } from 'common';
 import variables from '../assets/native-base-theme/variables/wellemental';
 

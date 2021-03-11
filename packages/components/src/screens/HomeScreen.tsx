@@ -2,10 +2,9 @@ import React from 'react';
 import { TouchableOpacity, Linking } from 'react-native';
 import {
   PageHeadingHome,
-  PageHeading,
   Container,
   ContentLoop,
-  CategoryCard,
+  CategoryLoop,
   Subheadline,
   AgeCards,
   Paragraph,
@@ -15,7 +14,7 @@ import { VersionConfig } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { getVersion } from 'react-native-device-info';
 import variables from '../assets/native-base-theme/variables/wellemental';
-import { getTimeOfDay, Tags, TimeOfDay } from 'common';
+import { getTimeOfDay, Tags, TimeOfDay, exploreRedirects } from 'common';
 
 const HomeScreen: React.FC = ({ navigation }) => {
   const { translation, activePlan } = useCurrentUser();
@@ -72,22 +71,19 @@ const HomeScreen: React.FC = ({ navigation }) => {
           <TabsNB color={timeOfDayColor} />
 
           {features && features.categories && (
-            <>
-              <Subheadline color={timeOfDayColor}>
-                {translation.Featured}
-              </Subheadline>
-
-              {features.categories.map((item, idx) => (
-                <CategoryCard key={idx} category={item} />
-              ))}
-            </>
+            <CategoryLoop title="Featured" categories={features.categories} />
           )}
-          <Subheadline
-            color={
-              timeOfDayColor
-            }>{`${translation['Explore by age range']}`}</Subheadline>
+          <Subheadline color={timeOfDayColor}>
+            {translation.Explore}
+          </Subheadline>
 
           <AgeCards />
+
+          <CategoryLoop
+            hideTitle
+            redirects={exploreRedirects}
+            colors={['orange', 'teal']}
+          />
         </>
       ) : (
         <>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, FlatList } from 'react-native';
 import ContentCard from './ContentCard';
 import { useContent } from '../hooks';
 import { Content, Tags, Teachers, TimeOfDay, Categories } from 'common';
@@ -11,34 +11,29 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 
 interface Props {
   filter?: Tags | Categories | TimeOfDay;
-  favorites?: string[];
   search?: string;
   teacher?: Teachers;
   scrollEnabled?: boolean;
+  header?: React.ReactElement;
   hasPadding?: boolean; // Apply horizontal margin for Library screen bc of tabs full width requirement
 }
 
 const ContentLoop: React.FC<Props> = ({
   filter,
-  favorites,
   search,
   teacher,
+  header,
   scrollEnabled,
   hasPadding,
+  ...props
 }) => {
-  const { user, translation } = useCurrentUser();
+  const { user } = useCurrentUser();
   const { content, error } = useContent();
 
   let filteredContent: Content[] = content ? Object.values(content) : [];
 
   // Filter by language
-  if (
-    user &&
-    user.language &&
-    filteredContent &&
-    favorites === undefined &&
-    teacher === undefined
-  ) {
+  if (user && user.language && filteredContent && teacher === undefined) {
     filteredContent = filteredContent.filter(
       (item: Content) => item.language === user.language,
     );
@@ -49,13 +44,6 @@ const ContentLoop: React.FC<Props> = ({
     filteredContent = filteredContent.filter(
       (item: Content) =>
         item && item.tags && item.tags.includes(filter.toLowerCase()),
-    );
-  }
-
-  // Filter by favorites
-  if (favorites && filteredContent) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      favorites.includes(item.id),
     );
   }
 
@@ -97,16 +85,20 @@ const ContentLoop: React.FC<Props> = ({
               </>
             ))}
           </ScrollView>
-        ) : content && hasFilteredContent ? (
-          filteredContent.map((item, idx) => (
-            <ContentCard key={idx} content={item} />
-          ))
-        ) : favorites ? (
-          <ListEmpty>
-            {translation['Tap the heart icon to favorite content']}
-          </ListEmpty>
         ) : (
-          <ListEmpty />
+          content && (
+            <FlatList
+              data={filteredContent}
+              initialNumToRender={10}
+              ListHeaderComponent={header}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item, idx }) => (
+                <ContentCard key={idx} content={item} />
+              )}
+              ListEmptyComponent={<ListEmpty />}
+              {...props}
+            />
+          )
         )}
       </View>
     </Loading>

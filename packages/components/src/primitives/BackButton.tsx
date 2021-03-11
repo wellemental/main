@@ -24,9 +24,9 @@ const BackButton: React.FC<Props> = ({
   const floatStyle = float
     ? {
         position: 'absolute',
-        top: 10,
-        // left: float === 'left' ? 10 : undefined,
-        right: float === 'right' ? 10 : undefined,
+        top: 0,
+        left: float === 'left' ? 0 : undefined,
+        right: float === 'right' ? 0 : undefined,
         zIndex: 10,
       }
     : {};
@@ -34,7 +34,7 @@ const BackButton: React.FC<Props> = ({
   return (
     <Button transparent onPress={handleBack} style={floatStyle}>
       <Icon
-        name={close ? 'closecircleo' : 'chevron-left'}
+        name={close ? 'closecircleo' : 'chevron-down'}
         type={close ? 'AntDesign' : 'FontAwesome5'}
         style={StyleSheet.flatten([
           {
