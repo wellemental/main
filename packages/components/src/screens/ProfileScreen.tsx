@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Platform } from 'react-native';
 import { PlaysServiceType, PlayEvent, convertTimestamp } from 'services';
 import { Card, CardItem } from 'native-base';
 import {
@@ -11,7 +10,6 @@ import {
   Button,
   ListEmpty,
   TabsButtons,
-  ContentLoop,
   Box,
   Loading,
   ContentCardSmall,
@@ -57,7 +55,6 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
     loadMore,
     loadingMore,
     hasMore,
-    lastLoaded,
   } = useLoadMore(service.query, { limit: 7 });
 
   const {
@@ -66,10 +63,8 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
     loadMore: loadMoreFavs,
     loadingMore: loadingMoreFavs,
     hasMore: hasMoreFavs,
-    lastLoaded: lastFavLoaded,
   } = useLoadMore(service.query, { limit: 7 });
 
-  console.log('LSAST LOADED', lastLoaded, 'FAVS', lastFavLoaded);
   return (
     <Container scrollEnabled bg="Profile">
       <PageHeading noHeader title={translation.Profile} />
@@ -77,8 +72,14 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
       <Error error={error} />
 
       <Card>
-        <CardItem style={{ paddingBottom: 0, paddingTop: 0 }}>
-          <TabsButtons tabs={tabs} active={tab} setState={setTab} />
+        <CardItem
+          style={{
+            paddingBottom: 0,
+            paddingTop: 0,
+            paddingLeft: 7,
+            paddingRight: 7,
+          }}>
+          <TabsButtons full small tabs={tabs} active={tab} setState={setTab} />
         </CardItem>
       </Card>
       {tab === 'Favorites' && (
@@ -86,7 +87,7 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
           items={favorites}
           loading={favsLoading}
           loadingMore={loadingMoreFavs}
-          loadMore={loadMore}
+          loadMore={loadMoreFavs}
           hasMore={hasMoreFavs}
         />
       )}

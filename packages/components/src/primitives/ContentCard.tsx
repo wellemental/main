@@ -7,6 +7,7 @@ import Headline from './Headline';
 import Image from './Image';
 import { useNavigation } from '../hooks';
 import Paragraph from './Paragraph';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 interface Props {
   content: Content;
@@ -35,7 +36,7 @@ const ContentCard: React.FC<Props> = ({ content }) => {
               height: 126,
               width: 100,
               flex: 1,
-              borderRadius: 20,
+              borderRadius: variables.cardBorderRadius,
               marginLeft: -1,
               marginTop: -1,
               marginBottom: -1,

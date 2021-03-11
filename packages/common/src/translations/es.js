@@ -20,7 +20,7 @@ export const Español = {
   Library: 'Biblioteca',
   Back: 'Regresar',
   Search: 'Buscar',
-  Favorites: 'Favoritos',
+  Favorites: 'Favs',
   Settings: 'Configuración',
   Loading: 'Descargando',
   Account: 'Tu Cuenta',
@@ -40,6 +40,7 @@ export const Español = {
   Move: 'Muévete',
   Meditate: 'Medita',
   Learn: 'Aprende',
+  'Learn More': 'Aprende Más',
   Sleep: 'Duerme',
   Teachers: 'Maestros',
   Email: 'Correo Electrónico',
@@ -91,6 +92,8 @@ export const Español = {
     'Recibe accesso ilimitado a nuestro contenido con una subscripcion annual o mensual.',
   'Or enter your access code': 'O entra tu código de accesso',
   '100+ meditation and yoga videos': '100+ videos de meditación y yoga',
+  '100+ meditation and yoga videos and more':
+    '100+ videos de meditación, yoga y más!',
   'Available in English and Spanish': 'Disponible en Ingles y Español',
   'Led by diverse teachers': 'Dirigido por maestros diversos',
   'Online or offline use': 'En línea o fuera de línea',
@@ -144,7 +147,7 @@ export const Español = {
   'Enter Access Code': 'Ingrese el código de acceso',
   'Live Event': 'Evento en vivo',
   Stats: 'Estadísticos',
-  Journey: 'Actividades',
+  Journey: 'Historia',
   'Load More': 'Cargar más',
   'Total Hours': 'Horas',
   Streak: 'Días consecutivos',
@@ -188,6 +191,8 @@ export const Español = {
   'Total Time': 'Tiempo Total',
   'Your recently played videos will appear here. Get started!':
     'Tus videos reproducidos recientemente aparecerán aquí. ¡Empezar!',
+  'Your favorite videos will appear here. Get started!':
+    'Tus videos favoritos aparecerán aquí. ¡Empezar!',
   'If payment succeeded, please wait one minute for your account to be upgraded.':
     'Si el pago se realizó correctamente, espere un minuto para que se actualice su cuenta.',
   years: 'años',

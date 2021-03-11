@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { ImageBackground, View, Platform } from 'react-native';
-import { H1, Card, CardItem, Body, Input, Item } from 'native-base';
-import { Container, Button, Error } from '../primitives';
-import { useCurrentUser } from '../hooks';
-import { deviceHeight, deviceWidth } from 'services';
-import { brandColors } from '../assets/native-base-theme/variables/wellemental';
-// import { tracker, TrackingEvents } from 'services';
+import { Platform } from 'react-native';
+import { Card, CardItem, Body, Input, Item } from 'native-base';
+import { Container, Button, Error, Headline, Box } from '../primitives';
+import { useCurrentUser, useNavigation } from '../hooks';
 
 type Props = {
   setLock: React.Dispatch<boolean>;
@@ -13,6 +10,7 @@ type Props = {
 
 const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
   const { translation } = useCurrentUser();
+  const navigation = useNavigation();
   const [error, setError] = useState('');
 
   const [answer, setAnswer] = useState<number>();
@@ -29,69 +27,55 @@ const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        width: deviceWidth,
-        height: deviceHeight,
-        backgroundColor: brandColors.skyBlue,
-      }}>
-      <ImageBackground
-        source={require('../assets/images/parents_bg.png')}
-        style={{
-          width: deviceWidth,
-          height: deviceHeight,
-          flex: 1,
-        }}>
-        <Container scrollEnabled color="rgba(0,0,0,0)">
-          <H1
-            style={{
-              color: 'white',
-              alignSelf: 'center',
-              paddingBottom: 20,
-              paddingTop: 40,
-            }}>
-            {translation['Ask your parents']}
-          </H1>
+    <Container scrollEnabled bg="AskParents" proOnly={false}>
+      <Box mt={6}>
+        <Headline center color="white">
+          {translation['Ask your parents']}
+        </Headline>
+      </Box>
 
-          <Card>
-            <CardItem>
-              <Body style={{ paddingVertical: 20, paddingHorizontal: 10 }}>
-                <H1 style={{ alignSelf: 'center' }}>
-                  {translation['What is 9 x 11?']}
-                </H1>
+      <Card>
+        <CardItem>
+          <Body style={{ paddingVertical: 20, paddingHorizontal: 10 }}>
+            <Headline style={{ alignSelf: 'center' }}>
+              {translation['What is 9 x 11?']}
+            </Headline>
 
-                <Item inlineLabel style={{ marginVertical: 25 }}>
-                  <Input
-                    value={answer}
-                    autoFocus
-                    type="number"
-                    onChangeText={setAnswer}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    style={{
-                      fontSize: 32,
-                      lineHeight: 32,
-                      height: Platform.OS === 'ios' ? 40 : 60,
-                      textAlign: 'center',
-                      marginBottom: Platform.OS === 'ios' ? 10 : 0,
-                    }}
-                  />
-                </Item>
-                <Button
-                  primary
-                  large
-                  disabled={!answer}
-                  text={translation.Submit}
-                  onPress={handleAnswer}
-                />
-                <Error center error={error} />
-              </Body>
-            </CardItem>
-          </Card>
-        </Container>
-      </ImageBackground>
-    </View>
+            <Item inlineLabel style={{ marginVertical: 25 }}>
+              <Input
+                value={answer}
+                autoFocus
+                type="number"
+                onChangeText={setAnswer}
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={{
+                  fontSize: 32,
+                  lineHeight: 32,
+                  height: Platform.OS === 'ios' ? 40 : 60,
+                  textAlign: 'center',
+                  marginBottom: Platform.OS === 'ios' ? 10 : 0,
+                }}
+              />
+            </Item>
+            <Button
+              primary
+              large
+              disabled={!answer}
+              text={translation.Submit}
+              onPress={handleAnswer}
+            />
+            <Error center error={error} />
+          </Body>
+        </CardItem>
+      </Card>
+      <Button
+        light
+        transparent
+        text={`‹ ${translation['Back']}`}
+        onPress={() => navigation.goBack()}
+      />
+    </Container>
   );
 };
 

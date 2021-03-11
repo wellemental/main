@@ -44,7 +44,9 @@ const Loading: React.FC<Props> = ({
         </Container>
       )}>
       {fullPage && (
-        <Paragraph>{text ? text : translation['One moment...']}</Paragraph>
+        <Paragraph center>
+          {text ? text : translation['One moment...']}
+        </Paragraph>
       )}
       <Spinner />
     </ConditionalWrapper>

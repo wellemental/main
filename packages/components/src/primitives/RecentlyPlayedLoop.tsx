@@ -75,7 +75,7 @@ const RecentlyPlayedLoop: React.FC<Props> = ({
             />
           </Box>
         )}
-        {hasMore && !homepage && (
+        {hasMore && !loadingMore && !homepage && (
           <Button
             transparent
             disabled={loadingMore}

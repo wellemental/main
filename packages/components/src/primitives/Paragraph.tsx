@@ -7,6 +7,7 @@ import {
   RegisteredStyle,
   Text,
 } from 'react-native';
+import { Colors } from 'common';
 import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 
 export interface ParagraphProps {
@@ -18,6 +19,7 @@ export interface ParagraphProps {
   center?: boolean;
   fine?: boolean;
   bold?: boolean;
+  color?: Colors;
 }
 
 const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
@@ -28,6 +30,7 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
   gb,
   gv,
   center,
+  color,
   fine,
   bold,
 }) => {
@@ -38,8 +41,13 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
       lineHeight: 22,
       paddingTop: gv ? spacing * gv : gt ? spacing * gt : 0,
       paddingBottom: gv ? spacing * gv : gb ? spacing * gb : 0,
-      color: fine ? brandColors.lightTextColor : brandColors.textColor,
+      color: color
+        ? brandColors[color]
+        : fine
+        ? brandColors.lightTextColor
+        : brandColors.textColor,
       textAlign: center ? 'center' : undefined,
+      alignSelf: center ? 'center' : 'flex-start',
       fontWeight: bold ? '900' : undefined,
     },
     style,

@@ -20,7 +20,7 @@ export const English = {
   Library: 'Library',
   Back: 'Back',
   Search: 'Search',
-  Favorites: 'Favorites',
+  Favorites: 'Favs',
   Settings: 'Settings',
   Loading: 'Loading',
   Account: 'Your Account',
@@ -39,6 +39,7 @@ export const English = {
   Move: 'Move',
   Meditate: 'Meditate',
   Learn: 'Learn',
+  'Learn More': 'Learn More',
   Sleep: 'Sleep',
   Teachers: 'Teachers',
   Email: 'Email',
@@ -86,6 +87,8 @@ export const English = {
     'Get unlimited access to our content with an annual or monthly subscription.',
   'Or enter your access code': 'Or enter your access code',
   '100+ meditation and yoga videos': 'Explore 100+ mindful practices',
+  '100+ meditation and yoga videos and more':
+    'Explore 100+ mindful practices and more!',
   'Available in English and Spanish': 'Practice in English and Spanish',
   'Led by diverse teachers': 'Learn from diverse teachers',
   'Online or offline use': 'Breathe and move – online or offline',
@@ -180,6 +183,8 @@ export const English = {
   'Total Time': 'Total Time',
   'Your recently played videos will appear here. Get started!':
     'Your recently played videos will appear here. Get started!',
+  'Your favorite videos will appear here. Get started!':
+    'Your favorite videos will appear here. Get started!',
   'If payment succeeded, please wait one minute for your account to be upgraded.':
     'If payment succeeded, please wait one minute for your account to be upgraded.',
   years: 'years',

@@ -16,7 +16,7 @@ import variables from '../assets/native-base-theme/variables/wellemental';
 
 type Props = {
   category: Category | Feature;
-  color: ColorPairings;
+  color?: ColorPairings;
 };
 
 const CategoryCard: React.FC<Props> = ({ category, color }) => {
@@ -77,7 +77,7 @@ const CategoryCard: React.FC<Props> = ({ category, color }) => {
               style={{
                 height: 120,
                 width: 120,
-                borderRadius: 20,
+                borderRadius: variables.cardBorderRadius,
               }}
             />
           )}

@@ -6,6 +6,7 @@ import {
   Container,
   ContentLoop,
   CategoryCard,
+  Subheadline,
   Button,
   AgeCards,
   Spinner,
@@ -16,7 +17,7 @@ import { VersionConfig } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { getVersion } from 'react-native-device-info';
 import variables from '../assets/native-base-theme/variables/wellemental';
-import { getTimeOfDay } from 'common';
+import { getTimeOfDay, Tags } from 'common';
 
 const HomeScreen: React.FC = ({ navigation }) => {
   const { translation, activePlan } = useCurrentUser();
@@ -46,7 +47,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
   };
 
   return (
-    <Container scrollEnabled bg="Afternoon">
+    <Container scrollEnabled bg="Afternoon" proOnly={false}>
       {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}
@@ -65,26 +66,30 @@ const HomeScreen: React.FC = ({ navigation }) => {
 
       <PageHeadingHome timeOfDay={timeOfDay} />
 
-      <TabsNB />
-
-      {features && features.categories && (
+      {activePlan ? (
         <>
-          <PageHeading subheader title={translation.Featured} />
+          <TabsNB />
 
-          {features.categories.map((item, idx) => (
-            <CategoryCard key={idx} category={item} />
-          ))}
-        </>
-      )}
+          {features && features.categories && (
+            <>
+              <PageHeading subheader title={translation.Featured} />
 
-      {activePlan && (
-        <>
+              {features.categories.map((item, idx) => (
+                <CategoryCard key={idx} category={item} />
+              ))}
+            </>
+          )}
           <PageHeading
             subheader
             title={`${translation['Explore by age range']}`}
           />
 
           <AgeCards />
+        </>
+      ) : (
+        <>
+          <Subheadline>{translation.Featured}</Subheadline>
+          <ContentLoop filter={Tags.Featured} />
         </>
       )}
     </Container>

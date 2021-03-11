@@ -5,6 +5,7 @@ import Image from './Image';
 import Headline from './Headline';
 import Paragraph from './Paragraph';
 import { useNavigation } from '../hooks';
+import variables from '../assets/native-base-theme/variables/wellemental';
 
 interface Props {
   content: Content;
@@ -29,7 +30,11 @@ const ContentCardSmall: React.FC<Props> = ({ content, recentDate }) => {
             source={{
               uri: content.thumbnail,
             }}
-            style={{ height: 82, flex: 1, borderRadius: 20 }}
+            style={{
+              height: 82,
+              flex: 1,
+              borderRadius: variables.cardBorderRadius,
+            }}
           />
         </Left>
         <Body

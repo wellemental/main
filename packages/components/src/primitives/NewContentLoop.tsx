@@ -14,7 +14,7 @@ const ContentLoopSmall: React.FC = () => {
 
   return (
     <Loading loading={loading || !content} fullPage={false}>
-      <List style={{ marginHorizontal: Platform.OS === 'android' ? 0 : 5 }}>
+      <List>
         {items && items.length > 0 ? (
           items.slice(0, 2).map((item, idx: number) => {
             return <ContentCardSmall key={idx} content={item} />;

@@ -4,10 +4,10 @@ import Headline from './Headline';
 import { Colors, colors } from 'common';
 
 type Props = {
-  color: Colors;
+  color?: Colors;
 };
 
-const Subheadline: React.FC = ({ color, children }) => {
+const Subheadline: React.FC<Props> = ({ color, children }) => {
   return (
     <Box pt={4}>
       <Headline

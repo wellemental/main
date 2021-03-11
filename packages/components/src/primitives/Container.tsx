@@ -4,7 +4,7 @@ import ScrollView from './ScrollView';
 import ConditionalWrapper from './ConditionalWrapper';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import { deviceHeight, deviceWidth } from 'services';
-import { brandColors } from '../assets/native-base-theme/variables/wellemental';
+import LockOverlay from './LockOverlay';
 
 type ContainerProps = {
   style?: CSSProperties;
@@ -12,6 +12,7 @@ type ContainerProps = {
   color?: string;
   center?: boolean;
   scrollEnabled?: boolean;
+  proOnly?: boolean;
   bg?: keyof typeof backgrounds;
 };
 
@@ -24,16 +25,10 @@ const backgrounds = {
   Move: require('../assets/images/wm_bg_move.jpg'),
   Learn: require('../assets/images/wm_bg_meditate.jpg'),
   Meditate: require('../assets/images/wm_bg_sky.jpg'),
-  Plans: require('../assets/images/cloud_bg.png'),
+  Plans: require('../assets/images/wm_bg_sky.jpg'),
   Profile: require('../assets/images/wm_bg_tree.jpg'),
   Parents: require('../assets/images/parents_bg.png'),
-};
-
-const bgColors = {
-  Meditate: '#A3CEC9',
-  Move: '#F4E6D0',
-  Sleep: '#2A2968',
-  Learn: '#D8E1E6',
+  AskParents: require('../assets/images/parents_bg.png'),
 };
 
 const Container: React.FC<ContainerProps> = ({
@@ -42,11 +37,12 @@ const Container: React.FC<ContainerProps> = ({
   children,
   color,
   center,
+  proOnly = true,
   bg,
   noPadding,
   ...props
 }) => {
-  const bgColor = color ? bgColors[color] : 'rgba(0, 0, 0, 0)';
+  const bgColor = 'rgba(0, 0, 0, 0)';
   const lowOpacity = bg === 'Learn' || bg === 'Move';
 
   const styles = StyleSheet.flatten([

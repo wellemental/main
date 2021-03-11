@@ -32,15 +32,12 @@ const ContentLoopLoadMore: React.FC<Props> = ({
   const { content } = useContent();
   const navigation = useNavigation();
 
-  console.log('HAS MORE', hasMore, items.length);
-
   return (
     <Loading loading={loading || !content} fullPage={false}>
       <List>
         {!!items && items.length > 0 ? (
           items.slice(0, 2).map((item, idx: number) => {
             const data = item.data() as PlayEvent;
-            console.log('DATA', data);
 
             const contentMatch =
               data && data.contentId && content[data.contentId];
@@ -58,12 +55,8 @@ const ContentLoopLoadMore: React.FC<Props> = ({
             ) : null;
           })
         ) : (
-          <ListEmpty>
-            {
-              translation[
-                'Your recently played videos will appear here. Get started!'
-              ]
-            }
+          <ListEmpty center>
+            {translation['Your favorite videos will appear here. Get started!']}
           </ListEmpty>
         )}
         {homepage && (
@@ -78,7 +71,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({
             />
           </Box>
         )}
-        {hasMore && !homepage && (
+        {hasMore && !loadingMore && !homepage && (
           <Button
             transparent
             disabled={loadingMore}

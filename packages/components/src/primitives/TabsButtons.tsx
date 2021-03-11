@@ -11,6 +11,7 @@ interface Props {
   tabs: Tab[];
   small?: boolean;
   center?: boolean;
+  full?: boolean;
 }
 
 const TabsButtons: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const TabsButtons: React.FC<Props> = ({
   setState,
   small,
   center,
+  full,
   ...props
 }) => {
   const { translation } = useCurrentUser();
@@ -36,7 +38,7 @@ const TabsButtons: React.FC<Props> = ({
             iconName={tab.icon ? tab.icon : undefined}
             small={small}
             style={{
-              flex: small ? undefined : 1,
+              flex: full ? 1 : undefined,
               borderBottomColor: isActive
                 ? variables.brandPrimary
                 : 'rgba(0,0,0,0)',
