@@ -20,7 +20,7 @@ import {
   SearchScreen,
   SettingsScreen,
 } from '../screens';
-import { LockOverlay } from '../primitives';
+import { LockOverlay, Container } from '../primitives';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList, AuthStackParamList } from '../types';
 import { useCurrentUser } from '../hooks';
@@ -79,6 +79,7 @@ const Navigator: React.FC = () => {
                 headerShown: false,
               }}
             />
+            <Stack.Screen name="Container" component={Container} />
             <Stack.Screen name="Content" component={ContentScreen} />
             <Stack.Screen
               name="Celebration"
@@ -94,7 +95,6 @@ const Navigator: React.FC = () => {
                 headerShown: false,
               }}
             />
-            <Stack.Screen name="Lock" component={LockOverlay} />
             <Stack.Screen name="Library" component={LibraryScreen} />
             <Stack.Screen name="Search" component={SearchScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />

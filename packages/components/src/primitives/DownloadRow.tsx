@@ -2,15 +2,16 @@ import React from 'react';
 import Download from './Download';
 import Box from './Box';
 import Paragraph from './Paragraph';
+import Icon from './Icon';
 import { colors } from 'common';
-import { DownloadVideoService } from 'services';
+import { useCurrentUser } from '../hooks';
 
 type Props = {
   videoUrl: string;
 };
 
 const DownloadRow: React.FC<Props> = ({ videoUrl }) => {
-  // const service = new DownloadVideoService();
+  const { activePlan, translation } = useCurrentUser();
 
   return (
     <Box
@@ -26,9 +27,16 @@ const DownloadRow: React.FC<Props> = ({ videoUrl }) => {
         borderColor: colors.offWhite,
       }}>
       <Box>
-        <Paragraph bold>Save for offline</Paragraph>
+        <Paragraph bold>{translation['Save for offline']}</Paragraph>
       </Box>
-      <Download videoUrl={videoUrl} />
+      {activePlan ? (
+        <Download videoUrl={videoUrl} />
+      ) : (
+        <Icon
+          name="lock-closed"
+          style={{ fontSize: 33, paddingVertical: 10 }}
+        />
+      )}
     </Box>
   );
 };

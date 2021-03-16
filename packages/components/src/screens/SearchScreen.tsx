@@ -12,7 +12,7 @@ const SearchScreen: React.FC = () => {
         search={searchTerm}
         header={
           <>
-            <PageHeading noHeader title={translation.Search} />
+            <PageHeading title={translation.Search} />
             <SearchBar value={searchTerm} setState={setSearchTerm} />
           </>
         }

@@ -60,7 +60,13 @@ const ContentLoopLoadMore: React.FC<Props> = ({
           })
         ) : (
           <ListEmpty center>
-            {translation['Your favorite videos will appear here. Get started!']}
+            {recentlyPlayed
+              ? translation[
+                  'Your recently played videos will appear here. Get started!'
+                ]
+              : translation[
+                  'Your favorite videos will appear here. Get started!'
+                ]}
           </ListEmpty>
         )}
 

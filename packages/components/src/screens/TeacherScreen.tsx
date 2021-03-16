@@ -14,7 +14,6 @@ type Props = {
 
 const TeacherScreen: React.FC<Props> = ({ route }) => {
   const { teacher } = route.params;
-  const { activePlan } = useCurrentUser();
 
   return (
     <Container>
@@ -29,7 +28,7 @@ const TeacherScreen: React.FC<Props> = ({ route }) => {
           />
         }
       />
-      {!activePlan && <LockOverlay />}
+      <LockOverlay pb={6} />
     </Container>
   );
 };

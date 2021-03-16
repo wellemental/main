@@ -30,7 +30,7 @@ class AuthService implements AuthServiceType {
     try {
       await auth().signInWithEmailAndPassword(email, password);
     } catch (err) {
-      logger.error('Error logging in');
+      // logger.error('Error logging in');
       return Promise.reject(this.checkError(err));
     }
     // tracker.track(TrackingEvents.Login);

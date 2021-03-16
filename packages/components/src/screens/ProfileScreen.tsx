@@ -44,7 +44,7 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
 
   const tabs: Tab[] = [
     { label: 'Stats' },
-    { label: 'Journey' },
+    { label: 'History' },
     { label: 'Favorites' },
   ];
 
@@ -116,15 +116,15 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
           <Box mt={1.5}>
             <Button
               warning
-              iconName="settings"
-              iconType="Feather"
+              iconName="cog"
+              iconType="FontAwesome5"
               text={translation.Settings}
               onPress={() => navigation.navigate('Settings')}
             />
           </Box>
         </>
       )}
-      {tab === 'Journey' && (
+      {tab === 'History' && (
         <ContentLoopLoadMore
           recentlyPlayed
           loading={loading}

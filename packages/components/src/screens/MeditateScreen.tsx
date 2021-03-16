@@ -10,7 +10,7 @@ import { useCurrentUser } from '../hooks';
 import { Categories, meditationCategories } from 'common';
 
 const MeditateScreen: React.FC = () => {
-  const { translation, activePlan } = useCurrentUser();
+  const { translation } = useCurrentUser();
 
   return (
     <>
@@ -21,7 +21,7 @@ const MeditateScreen: React.FC = () => {
 
         <CategoryLoop categories={meditationCategories} />
       </Container>
-      {!activePlan && <LockOverlay />}
+      <LockOverlay />
     </>
   );
 };

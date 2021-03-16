@@ -10,7 +10,7 @@ import {
   Container,
 } from '../primitives';
 import { Body, Toast } from 'native-base';
-import { Alert, Linking, View } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
 import { getReadableVersion } from 'react-native-device-info';

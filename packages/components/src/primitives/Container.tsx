@@ -66,43 +66,35 @@ const Container: React.FC<ContainerProps> = ({
   );
 
   return (
-    <View
-      style={{
-        flex: 1,
-        width: deviceWidth,
-        height: deviceHeight,
-      }}>
-      <ConditionalWrapper
-        condition={bg}
-        wrapper={(children: React.ReactChildren) => (
-          <ImageBackground
-            source={backgrounds[bg]}
-            style={{
-              width: deviceWidth,
-              height: deviceHeight,
-              flex: 1,
-            }}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: lowOpacity
-                  ? 'rgba(254,254,254,0.4)'
-                  : undefined,
-              }}>
-              {children}
-            </View>
-          </ImageBackground>
-        )}>
-        <SafeAreaView
+    // <View
+    //   style={{
+    //     flex: 1,
+    //     width: deviceWidth,
+    //     // height: deviceHeight,
+    //   }}>
+    <ConditionalWrapper
+      condition={bg}
+      wrapper={(children: React.ReactChildren) => (
+        <ImageBackground
+          source={backgrounds[bg]}
           style={{
-            backgroundColor: color || bg ? bgColor : variables.containerBgColor,
+            width: deviceWidth,
+            // height: deviceHeight,
             flex: 1,
-            paddingTop: 0,
           }}>
-          {container}
-        </SafeAreaView>
-      </ConditionalWrapper>
-    </View>
+          {children}
+        </ImageBackground>
+      )}>
+      <SafeAreaView
+        style={{
+          backgroundColor: color || bg ? bgColor : variables.containerBgColor,
+          flex: 1,
+          // paddingTop: 0,
+        }}>
+        {container}
+      </SafeAreaView>
+    </ConditionalWrapper>
+    // </View>
   );
 };
 

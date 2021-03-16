@@ -79,10 +79,7 @@ const ContentLoop: React.FC<Props> = ({
           // If tabs and header need to be able to scroll up with the list
           <ScrollView showsVerticalScrollIndicator={false}>
             {filteredContent.map((item, idx) => (
-              <>
-                <Paragraph>First one</Paragraph>
-                <ContentCard key={idx} content={item} />
-              </>
+              <ContentCard key={idx} content={item} />
             ))}
           </ScrollView>
         ) : (

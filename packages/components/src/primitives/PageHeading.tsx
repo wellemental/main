@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from 'common';
 
-type Props = {
+export type PageHeadingProps = {
   title: string;
   subtitle?: string;
   avatar?: string;
@@ -17,8 +17,9 @@ type Props = {
   subheader?: boolean;
   withLogo?: boolean;
   color?: Colors;
+  plansScreen?: boolean;
 };
-const PageHeading: React.FC<Props> = ({
+const PageHeading: React.FC<PageHeadingProps> = ({
   title,
   subtitle,
   avatar,
@@ -26,15 +27,21 @@ const PageHeading: React.FC<Props> = ({
   noHeader,
   subheader,
   withLogo,
+  plansScreen,
   color,
 }) => {
   const insets = useSafeAreaInsets();
-  let pt = noHeader ? 30 : 15;
+  let pt = plansScreen ? 40 : noHeader ? 30 : 15;
 
+  // Fixes for Android
   if (Platform.OS === 'android' && noHeader) {
     pt = 35 + insets.top;
   } else if (Platform.OS === 'android' && !subheader) {
     pt = 15;
+  }
+
+  if (Platform.OS === 'android' && plansScreen) {
+    pt = 85;
   }
 
   if (insets.top === 0) {

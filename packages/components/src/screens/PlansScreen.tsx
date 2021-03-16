@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, Image, View, ImageBackground } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 import { H2, Icon } from 'native-base';
 import {
   Box,
@@ -20,7 +20,7 @@ import { PromoCodeService } from 'services';
 import styled from 'styled-components';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import AskParentsScreen from './AskParentsScreen';
-import { deviceWidth, deviceHeight } from 'services';
+import { deviceWidth } from 'services';
 import { brandColors } from '../assets/native-base-theme/variables/wellemental';
 
 const PlanSelect = styled(TouchableOpacity)`
@@ -143,10 +143,10 @@ const PlansScreen: React.FC = () => {
     <AskParentsScreen setLock={setParentalLock} />
   ) : (
     <Loading loading={upgrading}>
-      <Container scrollEnabled bg="Plans" proOnly={false}>
-        <BackButton float="right" close />
+      <Container scrollEnabled bg="Plans">
+        <BackButton float="right" close plansScreen />
         <PageHeading
-          noHeader
+          plansScreen
           title={translation['An inclusive space for kids to breathe.']}
           subtitle={
             translation[
@@ -156,7 +156,7 @@ const PlansScreen: React.FC = () => {
         />
 
         <Box mb={2}>
-          {bullets.map((bullet) => (
+          {bullets.map(bullet => (
             <Box row key={bullet} mb={0.5}>
               <Icon
                 name="ios-checkmark-sharp"
@@ -215,7 +215,7 @@ const PlansScreen: React.FC = () => {
               text={translation.Subscribe}
               onPress={() => handleSubscription(PlanId.Monthly)}
             />
-            <Box mt={1} mb={6}>
+            <Box mt={1} pb={6}>
               <Error success={error.includes('succeed')} error={error} center />
               <Box mt={2}>
                 <LegalLinks subs />
@@ -240,58 +240,6 @@ const PlansScreen: React.FC = () => {
             />
           </>
         )}
-
-        {auth &&
-          (auth.email === 'mike.r.vosters@gmail.com' ||
-            auth.email === 'denise@test.com') &&
-          status && (
-            <Box mt={2} mb={10}>
-              <Paragraph>IAP Error Msg:</Paragraph>
-              <Error error={iapError} center />
-              <Paragraph>******</Paragraph>
-              <Paragraph>AVAIL PRODUCTS</Paragraph>
-
-              {products &&
-                products.map((product, idx) => (
-                  <Paragraph>
-                    {idx}:
-                    {typeof product === 'object'
-                      ? JSON.stringify(product)
-                      : typeof product === 'string'
-                      ? product
-                      : typeof product}
-                  </Paragraph>
-                ))}
-
-              <Paragraph>******</Paragraph>
-              <Paragraph>SELECTED PLAN</Paragraph>
-              <Paragraph>{selectedPlan}</Paragraph>
-              <Paragraph>******</Paragraph>
-              <Paragraph>IAP ACTIVE PLAN</Paragraph>
-              <Paragraph>{activePlan}</Paragraph>
-              <Paragraph>******</Paragraph>
-              <Paragraph>USER PLAN</Paragraph>
-              {user && !user.plan ? (
-                <Paragraph>No Plan</Paragraph>
-              ) : user && user.plan ? (
-                <Paragraph>
-                  {user.plan.status} - {user.plan.planId}
-                </Paragraph>
-              ) : (
-                <Paragraph>No user</Paragraph>
-              )}
-
-              <Box mt={1}>
-                <Paragraph>******</Paragraph>
-                <Paragraph>DEBUGGING</Paragraph>
-                {status.map((item, idx) => (
-                  <Paragraph note key={idx + item}>
-                    *{item}
-                  </Paragraph>
-                ))}
-              </Box>
-            </Box>
-          )}
       </Container>
 
       <Image

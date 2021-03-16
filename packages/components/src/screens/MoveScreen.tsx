@@ -10,7 +10,7 @@ import { useCurrentUser } from '../hooks';
 import { Categories, moveCategories } from 'common';
 
 const MoveScreen: React.FC = () => {
-  const { translation, activePlan } = useCurrentUser();
+  const { translation } = useCurrentUser();
 
   return (
     <>
@@ -19,12 +19,9 @@ const MoveScreen: React.FC = () => {
 
         <FeaturedLoop category={Categories.Move} />
 
-        <CategoryLoop
-          categories={moveCategories}
-          colors={['blurple', 'teal']}
-        />
+        <CategoryLoop categories={moveCategories} colors={['orange', 'teal']} />
       </Container>
-      {!activePlan && <LockOverlay />}
+      <LockOverlay />
     </>
   );
 };

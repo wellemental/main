@@ -10,7 +10,7 @@ import { useCurrentUser } from '../hooks';
 import { Categories, learnCategories } from 'common';
 
 const LearnScreen: React.FC = () => {
-  const { translation, activePlan } = useCurrentUser();
+  const { translation } = useCurrentUser();
 
   return (
     <>
@@ -21,10 +21,10 @@ const LearnScreen: React.FC = () => {
 
         <CategoryLoop
           categories={learnCategories}
-          colors={['yellow', 'orange']}
+          colors={['yellow', 'blurple']}
         />
       </Container>
-      {!activePlan && <LockOverlay />}
+      <LockOverlay />
     </>
   );
 };

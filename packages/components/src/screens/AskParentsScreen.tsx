@@ -25,8 +25,8 @@ const AskParentsScreen: React.FC<Props> = ({ setLock }) => {
   };
 
   return (
-    <Container scrollEnabled bg="AskParents" proOnly={false}>
-      <Box mt={6}>
+    <Container bg="AskParents">
+      <Box mt={Platform.OS === 'android' ? 12 : 6}>
         <Headline center color="white">
           {translation['Ask your parents']}
         </Headline>

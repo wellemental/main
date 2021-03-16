@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { Button, Icon } from 'native-base';
 import variables from '../assets/native-base-theme/variables/wellemental';
 import { useNavigation } from '../hooks';
@@ -9,11 +9,13 @@ type Props = {
   onPressBack?: () => void;
   float?: 'right' | 'left';
   close?: boolean;
+  plansScreen?: boolean; // fix for Android view
 };
 
 const BackButton: React.FC<Props> = ({
   inverse,
   onPressBack,
+  plansScreen,
   float,
   close,
   ...props
@@ -24,7 +26,7 @@ const BackButton: React.FC<Props> = ({
   const floatStyle = float
     ? {
         position: 'absolute',
-        top: 0,
+        top: Platform.OS === 'android' && plansScreen ? 45 : 0,
         left: float === 'left' ? 0 : undefined,
         right: float === 'right' ? 0 : undefined,
         zIndex: 10,
@@ -34,8 +36,8 @@ const BackButton: React.FC<Props> = ({
   return (
     <Button transparent onPress={handleBack} style={floatStyle}>
       <Icon
-        name={close ? 'closecircleo' : 'chevron-down'}
-        type={close ? 'AntDesign' : 'FontAwesome5'}
+        name={close ? 'times-circle' : 'chevron-down'}
+        type={close ? 'FontAwesome5' : 'FontAwesome5'}
         style={StyleSheet.flatten([
           {
             color: inverse ? variables.white : variables.brandPrimary,

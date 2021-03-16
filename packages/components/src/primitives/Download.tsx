@@ -23,15 +23,6 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
     checkIfDownloaded();
   }, [videoUrl]);
 
-  // Progress Indicator
-  // const [progress, setProgress] = useState<number>(0);
-  // const calcProgress = (data: DownloadProgressCallbackResult): void => {
-  //   console.log('CALC PROGRESS');
-  //   const percentage = ((100 * data.bytesWritten) / data.contentLength) | 0;
-  //   if (data) {
-  //     setProgress(percentage);
-  //   }
-  // };
   const handleDownload = async () => {
     setLoading(true);
     if (isDownloaded) {

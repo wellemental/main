@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardItem, Right, Body } from 'native-base';
-import { useNavigation } from '../hooks';
+import { useNavigation, useCurrentUser } from '../hooks';
 import Paragraph from './Paragraph';
 import Icon from './Icon';
 import Headline from './Headline';
@@ -33,6 +33,7 @@ const CategoryButton: React.FC<Props> = ({
   category,
 }) => {
   const navigation = useNavigation();
+  const { translation } = useCurrentUser();
 
   const handlePress = category
     ? () => navigation.navigate('Category', { category: category })
@@ -41,7 +42,11 @@ const CategoryButton: React.FC<Props> = ({
     : undefined;
 
   return (
-    <Card>
+    <Card
+      style={{
+        borderWidth: 0,
+        borderColor: color ? colorPairings[color].main : undefined,
+      }}>
       <CardItem
         cardBody
         button
@@ -62,7 +67,7 @@ const CategoryButton: React.FC<Props> = ({
               color: color ? colorPairings[color].text : variables.brandPrimary,
               paddingTop: 5,
             }}>
-            {title}
+            {translation[title] ? translation[title] : title}
           </Headline>
           {description && <Paragraph>{description}</Paragraph>}
         </Body>

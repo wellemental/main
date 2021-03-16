@@ -93,13 +93,14 @@ export const Español = {
   'Or enter your access code': 'O entra tu código de accesso',
   '100+ meditation and yoga videos': '100+ videos de meditación y yoga',
   'Explore 100+ mindful practices from diverse teachers in english and spanish!':
-    '¡Explore más de 100 prácticas conscientes de diversos profesores en inglés y español!',
+    '¡Explore más de 100 prácticas conscientes de diversos profesores en Inglés y Español!',
   '100+ meditation and yoga videos and more':
     '100+ videos de meditación, yoga y más!',
   'Available in English and Spanish': 'Disponible en Ingles y Español',
   'Led by diverse teachers': 'Dirigido por maestros diversos',
   'Online or offline use': 'En línea o fuera de línea',
   'Save for offline use': 'Guarda para fuera de línea',
+  'Save for offline': 'Guarda para fuera de línea',
   mo: 'mes.',
   yr: 'anu.',
   'Subscribe Annually': 'Suscríbete anualmente',

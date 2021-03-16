@@ -13,7 +13,7 @@ const ContentLoopSmall: React.FC<Props> = ({ color }) => {
   const { loading, content } = useContent();
   const navigation = useNavigation();
 
-  const items = Object.values(content).slice(0, 2);
+  const items = content ? Object.values(content).slice(0, 2) : 0;
 
   return (
     <Loading loading={loading || !content} fullPage={false}>

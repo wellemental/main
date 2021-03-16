@@ -30,6 +30,10 @@ export type Unsubscriber = () => void;
 
 export type RootStackParamList = {
   TabNav: undefined;
+  Library: undefined;
+  Search: undefined;
+  Settings: undefined;
+  Teachers: undefined;
   Content: { content: Content };
   Category: { category: Category };
   Video: {

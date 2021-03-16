@@ -1,7 +1,7 @@
 export type Colors = keyof typeof colors;
 
 export const colors = {
-  brandPrimary: '#214f4b', // Teal
+  brandPrimary: '#214f4b', // Teal  rgba(33,79,75,1)
   brandSecondary: '#2A2968', // Blurple
   brandInfo: '#272a63', //'#9554C2',
   brandSuccess: '#A3CEC9', // Light Green

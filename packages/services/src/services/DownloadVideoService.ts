@@ -41,42 +41,28 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
   public async downloadVideo(
     videoUrl: string,
-    progress?: (res: RNFS.DownloadProgressCallbackResult) => void,
   ): Promise<void | { jobId: number; promise: Promise<DownloadResult> }> {
     const filename = this.convertUrlToFileName(videoUrl);
     const path_name = this.createPathname(filename);
 
-    console.log('FILENAME', filename);
     const exists = await this.checkExists(videoUrl);
 
     if (exists) {
-      console.log('FILE EXISTS ALREADY!!!');
       return Promise.resolve();
     }
     RNFS.downloadFile({
       fromUrl: videoUrl,
       toFile: path_name.replace(/%20/g, '_'),
-      background: true,
       discretionary: true,
       cacheable: true,
-      progress: (res: DownloadProgressCallbackResult) => {
-        //here you can calculate your progress for file download
-
-        console.log('Response written ===\n\n');
-        const progressPercent = (res.bytesWritten / res.contentLength) * 100; // to calculate in percentage
-        console.log('\n\nprogress===', progressPercent);
-        // this.setState({ progress: progressPercent.toString() });
-        // item.downloadProgress = progressPercent;
-        console.log(res);
-      },
     })
       .promise.then((res) => {
-        console.log('res for saving file===', res);
-        return RNFS.readFile(path_name.replace(/%20/g, '_'), 'base64');
+        // console.log('Response', res);
+        // return RNFS.readFile(path_name.replace(/%20/g, '_'), 'base64');
       })
       .catch((err) => {
-        console.log('Error downloading video', err);
-        return Promise.reject('Error downloading video');
+        // console.log('Error downloading video', err);
+        return Promise.reject(`Error downloading video - ${err}`);
       });
   }
 

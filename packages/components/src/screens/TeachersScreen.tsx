@@ -7,7 +7,7 @@ const TeachersScreen: React.FC = () => {
 
   return (
     <Container scrollEnabled noPadding="horizontal">
-      <PageHeading noHeader title={translation.Teachers} />
+      <PageHeading title={translation.Teachers} />
 
       <TeacherLoop scrollEnabled />
     </Container>

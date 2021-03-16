@@ -88,11 +88,12 @@ export const English = {
   'Or enter your access code': 'Or enter your access code',
   '100+ meditation and yoga videos': 'Explore 100+ mindful practices',
   'Explore 100+ mindful practices from diverse teachers in english and spanish!':
-    'Explore 100+ mindful practices from diverse teachers in english and spanish!',
+    'Explore 100+ mindful practices from diverse teachers in English and Spanish!',
   'Available in English and Spanish': 'Practice in English and Spanish',
   'Led by diverse teachers': 'Learn from diverse teachers',
   'Online or offline use': 'Breathe and move – online or offline',
   'Save for offline use': 'Save for offline use',
+  'Save for offline': 'Save for offline',
   mo: 'mo',
   yr: 'yr',
   'Subscribe for $6.99 / mo': 'Subscribe for $6.99 / mo',

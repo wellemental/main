@@ -6,14 +6,14 @@ import TabsButtons from './TabsButtons';
 import ContentLoopLoadMore from './ContentLoopLoadMore';
 import { useLoadMore, useContainer, useContent } from '../hooks';
 import { PlaysServiceType } from 'services';
-import { Colors } from 'common';
+import { Colors, Tab } from 'common';
 
 type Props = {
   color?: Colors;
 };
 
 const TabsNB: React.FC<Props> = ({ color }) => {
-  const tabs: Tabs[] = [{ label: 'History' }, { label: 'New' }];
+  const tabs: Tab[] = [{ label: 'History' }, { label: 'New' }];
 
   const [tab, setTab] = useState(tabs[0].label);
 

@@ -19,11 +19,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>CocoaLibEvent.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>DoubleConversion.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -129,11 +124,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Folly.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -170,6 +160,11 @@
 			<false/>
 		</dict>
 		<key>Protobuf.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RCT-Folly.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -364,6 +359,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>React-perflogger.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>React-runtimeexecutor.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>React.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -425,6 +430,11 @@
 			<false/>
 		</dict>
 		<key>leveldb-library.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>libevent.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

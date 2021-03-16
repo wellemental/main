@@ -11,7 +11,6 @@ import {
   AvyName,
   Box,
   Button,
-  Download,
   DownloadRow,
   ScrollView,
   Favorite,
@@ -216,7 +215,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             onLoad={onLoad}
             onError={handleError}
             onProgress={onProgress}
-            ref={(ref) => (player.current = ref)}
+            ref={ref => (player.current = ref)}
           />
 
           {showPoster && isPaused && (
@@ -273,7 +272,9 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             onProfile
           />
         </Button>
-        <Paragraph gt={0.5}>{content.teacher.bio}</Paragraph>
+        <Paragraph gt={0.5} gb={3}>
+          {content.teacher.bio}
+        </Paragraph>
 
         {auth &&
           (auth.email === 'test@test.com' ||

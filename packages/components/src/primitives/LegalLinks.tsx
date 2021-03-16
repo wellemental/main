@@ -12,7 +12,7 @@ type Props = {
 const LegalLinks: React.FC<Props> = ({ subs }) => {
   const { translation } = useCurrentUser();
   return (
-    <Box center mh={1.5}>
+    <Box center mx={1.5}>
       <Paragraph note center style={{ color: '#999', marginBottom: 20 }}>
         {subs &&
           translation['Recurring billing. Cancel anytime for any reason.']}

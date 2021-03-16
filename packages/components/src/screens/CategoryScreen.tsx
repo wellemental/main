@@ -23,6 +23,8 @@ const CategoryScreen: React.FC<Props> = ({ route }) => {
             title={
               isAgeGroup
                 ? `${category.title} ${translation.years}`
+                : translation[category.title]
+                ? translation[category.title]
                 : category.title
             }
             subtitle={
