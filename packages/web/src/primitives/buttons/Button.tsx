@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
 type Props = {
   loading?: boolean;
   text?: string;
+  onPress?: () => void;
 };
 
 const Button: React.FC<Props & ButtonProps> = ({
@@ -28,6 +29,7 @@ const Button: React.FC<Props & ButtonProps> = ({
   text,
   disabled = false,
   children,
+  onPress,
   ...props
 }) => {
   const classes = useStyles();
@@ -39,6 +41,7 @@ const Button: React.FC<Props & ButtonProps> = ({
       size="large"
       color={props.color ? props.color : 'primary'}
       disabled={loading || disabled}
+      onClick={onPress ? onPress : props.onClick}
       {...props}>
       {loading ? (
         <CircularProgress size={26} />

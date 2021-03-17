@@ -1,14 +1,10 @@
 import React from 'react';
 import { useHistory, useCurrentUser } from '../../hooks';
 import Paragraph from '../typography/Paragraph';
+import { Card, CardItem, CardBody } from './';
+import Box from '../utils/Box';
 import { Category, Languages, Feature } from 'common';
-import {
-  Card,
-  Box,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-} from '@material-ui/core';
+import { CardMedia } from '@material-ui/core';
 import CardTitle from './CardTitle';
 import { slugify, isFeature } from 'common';
 
@@ -39,8 +35,8 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
         borderRadius: '20px',
         marginBottom: '15px',
       }}>
-      <CardActionArea
-        onClick={() =>
+      <CardItem
+        onPress={() =>
           history.push(
             `/category/${
               category.slug ? category.slug : slugify(category.title)
@@ -48,11 +44,11 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
           )
         }>
         <Box display="flex" flexDirection="row">
-          <CardContent style={{ flex: 1, padding: '20px 20px 5px' }}>
+          <CardBody style={{ flex: 1, padding: '20px 20px 5px' }}>
             <CardTitle text={title} />
 
             {description && <Paragraph small>{description}</Paragraph>}
-          </CardContent>
+          </CardBody>
 
           <CardMedia
             component="img"
@@ -63,7 +59,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
             style={{ width: '125px', borderRadius: '20px' }}
           />
         </Box>
-      </CardActionArea>
+      </CardItem>
     </Card>
   );
 };

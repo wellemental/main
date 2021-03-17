@@ -1,7 +1,21 @@
 import React from 'react';
-import { PageHeading, ContentLoop, CategoryCard, Spinner } from '../primitives';
+import {
+  PageHeadingHome,
+  ContentLoop,
+  CategoryCard,
+  CategoryLoop,
+  Subheadline,
+  Spinner,
+  AgeCards,
+} from '../primitives';
 import moment from 'moment';
-import { TimeOfDay, Category } from 'common';
+import {
+  getTimeOfDay,
+  TimeOfDay,
+  Category,
+  Tags,
+  exploreRedirects,
+} from 'common';
 import { useCurrentUser, useContent } from '../hooks';
 import { ageGroups } from '../constants';
 
@@ -10,47 +24,40 @@ const HomeScreen: React.FC = () => {
   const { activePlan } = useCurrentUser();
   const { features } = useContent();
 
-  // Determine Time of Day for header customization
-  let timeOfDay: TimeOfDay = TimeOfDay.Morning;
-  let tagline = 'Start the day with some morning stretches';
-  if (
-    today.isAfter(moment().hour(19), 'hour') ||
-    today.isBefore(moment().hour(4), 'hour')
-  ) {
-    timeOfDay = TimeOfDay.Evening;
-    tagline = 'Get ready for bedtime with these soothing practices.';
-  } else if (today.isAfter(moment().hour(12), 'hour')) {
-    timeOfDay = TimeOfDay.Afternoon;
-    tagline = 'Shake out the day with some fun movement.';
-  }
+  const timeOfDay = getTimeOfDay();
+  const timeOfDayColor =
+    timeOfDay.name === TimeOfDay.Evening ? 'white' : undefined;
 
   return (
     <>
-      <PageHeading
-        title={`Good ${timeOfDay.toLowerCase()}`}
-        subtitle={tagline}
-      />
-      <ContentLoop filter={timeOfDay} />
+      <PageHeadingHome timeOfDay={timeOfDay} color={timeOfDayColor} />
 
-      {features && features.categories ? (
+      {activePlan ? (
         <>
-          <PageHeading title="Featured" />
+          {/* <TabsNB color={timeOfDayColor} /> */}
 
-          {features.categories.map((item, idx: number) => (
-            <CategoryCard key={idx} category={item} />
-          ))}
+          {features && features.categories && (
+            <CategoryLoop title="Featured" categories={features.categories} />
+          )}
+          <Subheadline color={timeOfDayColor}>Explore</Subheadline>
+
+          <AgeCards />
+
+          <CategoryLoop
+            hideTitle
+            redirects={exploreRedirects}
+            colors={['orange', 'teal']}
+          />
         </>
       ) : (
-        <Spinner />
+        <>
+          <Subheadline color={timeOfDayColor}>Featured</Subheadline>
+          <ContentLoop filter={Tags.Featured} />
+        </>
       )}
 
-      {activePlan && (
-        <>
-          <PageHeading title={'Explore by age range'} />
-          {ageGroups.map((item: Category, idx: number) => (
-            <CategoryCard key={idx} category={item} />
-          ))}
-        </>
+      {features && features.categories && (
+        <CategoryLoop title="Featured" categories={features.categories} />
       )}
     </>
   );

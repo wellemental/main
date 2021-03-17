@@ -1,19 +1,29 @@
 import React from 'react';
 import TextTranslate from './TextTranslate';
-import { TypographyProps } from '@material-ui/core';
-import { Colors } from 'common';
+import {
+  default as MuiTypography,
+  TypographyProps,
+} from '@material-ui/core/Typography';
 
-export interface Headline {
+export interface HeadlineProps {
   gb?: number;
   gt?: number;
   gv?: number;
   size?: number;
   center?: boolean;
   small?: boolean;
-  color?: Colors;
+  component?:
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h4'
+    | 'h5'
+    | 'subtitle1'
+    | 'subtitle2';
 }
 
-const Headline: React.FC<Headline & TypographyProps> = ({
+const Headline: React.FC<TypographyProps & HeadlineProps> = ({
   style,
   children,
   size,
@@ -22,18 +32,20 @@ const Headline: React.FC<Headline & TypographyProps> = ({
   gv,
   center,
   small,
-  color,
+  component,
+  // color = 'brandPrimary',
   ...props
 }) => {
   return (
-    <TextTranslate
-      component="h2"
-      color="primary"
+    <MuiTypography
+      // @ts-ignore - Material-UI Typescipt is a nightmare with type component prop for some reason
+      component={component ? component : 'h2'}
       align={center || props.align === 'center' ? 'center' : 'inherit'}
       variant={small ? 'h5' : props.variant ? props.variant : 'h4'}
-      gutterBottom={props.gutterBottom ? props.gutterBottom : false}>
-      {children}
-    </TextTranslate>
+      gutterBottom={props.gutterBottom ? props.gutterBottom : false}
+      {...props}>
+      <TextTranslate>{children}</TextTranslate>
+    </MuiTypography>
   );
 };
 

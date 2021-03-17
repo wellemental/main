@@ -1,6 +1,9 @@
 import React from 'react';
-import { TypographyProps } from '@material-ui/core';
 import TextTranslate from './TextTranslate';
+import {
+  default as MuiTypography,
+  TypographyProps,
+} from '@material-ui/core/Typography';
 
 export interface ParagraphProps {
   gb?: number;
@@ -14,7 +17,7 @@ export interface ParagraphProps {
   bold?: boolean;
 }
 
-const Paragraph: React.FC<ParagraphProps & TypographyProps> = ({
+const Paragraph: React.FC<TypographyProps & ParagraphProps> = ({
   style,
   children,
   size,
@@ -26,11 +29,10 @@ const Paragraph: React.FC<ParagraphProps & TypographyProps> = ({
   small,
   slim,
   bold,
-  // fine,
   ...props
 }) => {
   return (
-    <TextTranslate
+    <MuiTypography
       align={center ? 'center' : 'inherit'}
       style={{
         fontSize: fine ? 12 : small ? 15 : size ? size : '16px',
@@ -39,8 +41,8 @@ const Paragraph: React.FC<ParagraphProps & TypographyProps> = ({
         ...style,
       }}
       {...props}>
-      {children}
-    </TextTranslate>
+      <TextTranslate>{children}</TextTranslate>
+    </MuiTypography>
   );
 };
 
