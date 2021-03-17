@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, TextStyle, TextProps } from 'react-native';
 import { H1, H3 } from 'native-base';
 import { Colors } from 'common';
-import variables from '../assets/native-base-theme/variables/wellemental';
+import variables from '../../assets/native-base-theme/variables/wellemental';
+import TextTranslate from './TextTranslate';
 
 export interface HeadlineProps extends TextProps {
   style?: TextStyle;
@@ -32,7 +33,7 @@ const Headline: React.FC<HeadlineProps> = ({
         style,
       ])}
       {...props}>
-      {children}
+      <TextTranslate>{children}</TextTranslate>
     </Head>
   );
 };

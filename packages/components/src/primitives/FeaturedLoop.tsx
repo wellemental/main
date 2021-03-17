@@ -15,14 +15,8 @@ const FeaturedLoop: React.FC<Props> = ({ category }) => {
 
   // Temporary hack to get features to updated upon language switch
   const filterLanguage = () => {
-    console.log('FILTERING FEATUERS!!!!!', data.length);
-    const filtered = data.filter(
-      (content) => content.language === user.language,
-    );
-    console.log('FILTERING LENGTH!!!!!', filtered.length);
-    const test = filtered.map((feature) => feature.language);
-
-    console.log('test', test);
+    const filtered = data.filter(content => content.language === user.language);
+    const test = filtered.map(feature => feature.language);
     const twoFeatures = filtered.slice(0, 2);
 
     setFeatures(twoFeatures);

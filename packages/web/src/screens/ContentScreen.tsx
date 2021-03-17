@@ -10,7 +10,7 @@ import {
   Headline,
 } from '../primitives';
 import IconButton from '@material-ui/core/IconButton';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/lazy';
 import { Teacher, Content, PlaysServiceType } from 'common';
 import {
   useHistory,
@@ -61,7 +61,7 @@ const ContentScreen: React.FC = () => {
   // Match content based on url - doing this instead of prop passing so you can land directly on content screen
   if (allContent) {
     content = Object.values(allContent).filter(
-      (content) => slugify(content.title) === match,
+      content => slugify(content.title) === match,
     )[0];
   }
 
@@ -79,7 +79,7 @@ const ContentScreen: React.FC = () => {
 
   const handleError = (err: any) => {
     setError(err);
-    logger.error('Error loading video');
+    // logger.error('Error loading video');
   };
 
   const onProgress = (data: any): void => {
@@ -172,10 +172,10 @@ const ContentScreen: React.FC = () => {
                 </IconButton>
               }
               playing={!isPaused}
-              file={{ forceVideo: true }}
+              // file={{ forceVideo: true }}
               light={content.thumbnail}
-              onError={handleError} // Callback when video cannot be loaded
-              onProgress={onProgress}
+              // onError={handleError} // Callback when video cannot be loaded
+              // onProgress={onProgress}
             />
           </div>
 

@@ -8,7 +8,8 @@ import {
   Text,
 } from 'react-native';
 import { Colors } from 'common';
-import { brandColors } from '../assets/native-base-theme/variables/wellemental';
+import { brandColors } from '../../assets/native-base-theme/variables/wellemental';
+import TextTranslate from './TextTranslate';
 
 export interface ParagraphProps {
   style?: RecursiveArray<false | TextStyle | RegisteredStyle<TextStyle>>;
@@ -56,7 +57,7 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
 
   return (
     <Text style={styles2} {...props}>
-      {children}
+      <TextTranslate>{children}</TextTranslate>
     </Text>
   );
 };

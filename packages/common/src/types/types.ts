@@ -1,6 +1,12 @@
+import React from 'react';
 import { configDefaults } from '../constants/remoteConfigDefaults';
 
-export type Translations = { [key: string]: string };
+export type StringObj = {
+  [key: string]: string;
+};
+
+export type Translation = StringObj;
+
 type ValueOf<T> = T[keyof T];
 
 export type Unsubscriber = () => void;

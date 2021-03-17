@@ -5,6 +5,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import TextTranslate from '../typography/TextTranslate';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,7 +40,13 @@ const Button: React.FC<Props & ButtonProps> = ({
       color={props.color ? props.color : 'primary'}
       disabled={loading || disabled}
       {...props}>
-      {loading ? <CircularProgress size={26} /> : text ? text : children}
+      {loading ? (
+        <CircularProgress size={26} />
+      ) : text ? (
+        <TextTranslate>{text}</TextTranslate>
+      ) : (
+        children
+      )}
     </MuiButton>
   );
 };

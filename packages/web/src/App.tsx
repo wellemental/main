@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Router, Switch } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { theme } from './assets/styles/theme';
 import { createBrowserHistory } from 'history';
@@ -15,6 +15,10 @@ import {
   ForgotPasswordScreen,
   SubscriptionScreen,
   StripePortal,
+  MeditateScreen,
+  LearnScreen,
+  SleepScreen,
+  MoveScreen,
   TeacherScreen,
   CategoryScreen,
   FavoritesScreen,
@@ -32,7 +36,7 @@ import { ServicesProvider } from './context/Services';
 import { ContentProvider } from './context/Content';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { routes, Route } from './navigation';
+import { PrivateRoute } from './navigation';
 
 let stripePromise: any = null;
 if (process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
@@ -53,7 +57,7 @@ function App() {
                   <Nav />
                   <Page fullPage background="general">
                     <Switch>
-                      {/* <PrivateRoute
+                      <PrivateRoute
                         path="/access"
                         component={PromoCodeScreen}
                       />
@@ -75,6 +79,13 @@ function App() {
                       />
                       <PrivateRoute path="/stripe" component={StripePortal} />
                       <PrivateRoute path="/library" component={LibraryScreen} />
+                      <PrivateRoute path="/sleep" component={SleepScreen} />
+                      <PrivateRoute
+                        path="/meditate"
+                        component={MeditateScreen}
+                      />
+                      <PrivateRoute path="/learn" component={LearnScreen} />
+                      <PrivateRoute path="/move" component={MoveScreen} />
                       <PrivateRoute
                         path="/language"
                         component={EditProfileScreen}
@@ -103,11 +114,8 @@ function App() {
                       />
                       <PrivateRoute path="/content" component={ContentScreen} />
                       <PrivateRoute path="/teacher" component={TeacherScreen} />
-                      <PrivateRoute path="/" component={HomeScreen} /> */}
 
-                      {Object.values(routes).map(route => {
-                        <Route route={route} />;
-                      })}
+                      <PrivateRoute path="/" component={HomeScreen} />
                     </Switch>
                     <Footer />
                   </Page>

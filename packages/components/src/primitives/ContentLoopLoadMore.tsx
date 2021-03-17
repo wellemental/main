@@ -80,7 +80,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({
               }}
               transparent={color === 'white' ? false : true}
               onPress={() =>
-                navigation.navigate('Profile', { defaultTab: 'Journey' })
+                navigation.navigate('Profile', { defaultTab: 'History' })
               }
             />
           </Box>

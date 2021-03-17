@@ -7,7 +7,7 @@ export type Timestamp = FirebaseFirestoreTypes.Timestamp;
 export type FieldValue = FirebaseFirestoreTypes.FieldValue;
 export type Query = FirebaseFirestoreTypes.Query;
 export type QueryDocumentSnapshot = FirebaseFirestoreTypes.QueryDocumentSnapshot;
-export type Translations = { [key: string]: string };
+export type Translation = { [key: string]: string };
 export type AuthorizationStatus = FirebaseMessagingTypes.AuthorizationStatus;
 
 enum SubStatus {

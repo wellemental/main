@@ -9,7 +9,7 @@ import {
   Box,
   LegalLinks,
 } from '../primitives';
-import { AuthScreenRouteProp, Translations } from '../types';
+import { AuthScreenRouteProp, Translation } from '../types';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +22,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   // Import and save language selection to AsyncStorage
   const navigation = useNavigation();
   const { language } = route.params;
-  const translation: Translations =
+  const translation: Translation =
     language === Languages.Es ? Español : English;
 
   // Manage State

@@ -31,6 +31,24 @@ export type RouteType = {
   tag?: Tags;
 };
 
+export const routes2: RouteType[] = [
+  {
+    label: 'Library',
+    slug: '/library',
+    pro: false,
+    loggedIn: true,
+    component: LibraryScreen,
+  },
+  {
+    label: 'Meditate',
+    slug: '/meditate',
+    pro: false,
+    loggedIn: true,
+    component: MeditateScreen,
+  },
+];
+
+// Build this so I could map it in app.tsx, but components were showing as undefined in the map
 const routes: { [key: string]: RouteType } = {
   Home: {
     label: 'Home',

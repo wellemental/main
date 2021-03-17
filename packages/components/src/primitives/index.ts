@@ -1,5 +1,5 @@
+export * from './typography';
 export { default as Button } from './Button';
-export { default as Paragraph } from './Paragraph';
 export { default as Container } from './Container';
 export { default as SearchBar } from './SearchBar';
 export { default as ContentCard } from './ContentCard';
@@ -14,7 +14,7 @@ export { default as Icon } from './Icon';
 export { default as NewContentLoop } from './NewContentLoop';
 export { default as AvyName } from './AvyName';
 export { default as LockOverlay } from './LockOverlay';
-export { default as Subheadline } from './Subheadline';
+
 export { default as ContentCardSmall } from './ContentCardSmall';
 export { default as ContentLoopSmall } from './ContentLoopSmall';
 export { default as ContentLoopLoadMore } from './ContentLoopLoadMore';
@@ -31,7 +31,7 @@ export { default as PageHeadingHome } from './PageHeadingHome';
 export { default as StatDisplay } from './StatDisplay';
 export { default as Download } from './Download';
 export { default as ScrollView } from './ScrollView';
-export { default as Headline } from './Headline';
+
 export { default as Link } from './Link';
 export { default as Spinner } from './Spinner';
 export { default as Image } from './Image';

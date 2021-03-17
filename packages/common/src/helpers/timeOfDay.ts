@@ -1,7 +1,7 @@
 import moment from 'moment';
-import { Translations, TimeOfDay, TimeOfDayObj } from '../types';
+import { Translation, TimeOfDay, TimeOfDayObj } from '../types';
 
-export const getTimeOfDay = (translation: Translations): TimeOfDayObj => {
+export const getTimeOfDay = (translation: Translation): TimeOfDayObj => {
   const today = moment();
 
   // Default to Morning

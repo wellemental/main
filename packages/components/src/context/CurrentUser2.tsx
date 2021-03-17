@@ -1,10 +1,10 @@
 import React from 'react';
 import { User } from 'services';
-import { Translations } from '../types';
+import { Translation } from '../types';
 
 export interface CurrentUserState {
   user: User;
-  translation: Translations;
+  translation: Translation;
 }
 
 export const CurrentUser2 = React.createContext({} as CurrentUserState);

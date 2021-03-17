@@ -45,7 +45,7 @@ export type RootStackParamList = {
   Teacher: { teacher: Teacher };
   'Edit Profile': undefined;
   'Save User': undefined;
-  'Forgot Password': { translation: Translations };
+  'Forgot Password': { translation: Translation };
   AuthStack: undefined;
   Upgrade: { version: VersionConfig };
   Plans: undefined;
@@ -95,4 +95,4 @@ export type TabsType = {
   [key: string]: ReactElement;
 };
 
-export type Translations = { [key: string]: string };
+export type Translation = { [key: string]: string };

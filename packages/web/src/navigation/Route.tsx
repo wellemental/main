@@ -10,7 +10,7 @@ type RouteProps = {
 const Route: React.FC<RouteProps> = ({ route }) => {
   const Link = route.loggedIn ? PrivateRoute : RrRoute;
 
-  return <Link path={route.slug} component={route.component} />;
+  return <RrRoute path={route.slug} component={route.component} />;
 };
 
 export default Route;
