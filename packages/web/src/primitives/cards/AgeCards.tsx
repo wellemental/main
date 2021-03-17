@@ -29,7 +29,7 @@ const AgeCards: React.FC = () => {
                   flex: 2,
                   alignItems: 'center',
                   justifyContent: 'space-around',
-                  padding: 15,
+                  paddingTop: 15,
                   paddingBottom: 15,
                 }}>
                 <Headline center>{group.title}</Headline>

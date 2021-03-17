@@ -15,7 +15,8 @@ const LearnScreen: React.FC = () => {
   return (
     <>
       <Container
-      // bg="Learn"
+        fullPage
+        // bg="Learn"
       >
         <PageHeading title={translation.Learn} />
 

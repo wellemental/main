@@ -11,6 +11,7 @@ export { default as SubscriptionScreen } from './SubscriptionScreen';
 export { default as EditProfileScreen } from './EditProfileScreen';
 export { default as SearchScreen } from './SearchScreen';
 export { default as TeacherScreen } from './TeacherScreen';
+export { default as TeachersScreen } from './TeachersScreen';
 export { default as CategoryScreen } from './CategoryScreen';
 export { default as CheckoutScreen } from './CheckoutScreen';
 export { default as ContentScreen } from './ContentScreen';

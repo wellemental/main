@@ -4,11 +4,11 @@ import AvyName from '../images/AvyName';
 import { useHistory } from '../../hooks';
 import Paragraph from '../typography/Paragraph';
 import CardTitle from './CardTitle';
-import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import CardImage from './CardImage';
+import CardItem from './CardItem';
+import Card from './Card';
+import CardBody from './CardBody';
+import Box from '../utils/Box';
 import { slugify } from 'common';
 
 interface Props {
@@ -20,10 +20,6 @@ const ContentCard: React.FC<Props> = ({ content }) => {
 
   const teacher = content.teacher;
 
-  if (!teacher) {
-    console.log('CONTENT', content);
-    console.log('TEACHER', teacher);
-  }
   return (
     <Card
       style={{
@@ -31,18 +27,11 @@ const ContentCard: React.FC<Props> = ({ content }) => {
         borderRadius: '20px',
         marginBottom: '15px',
       }}>
-      <CardActionArea
-        onClick={() => history.push(`/content/${slugify(content.title)}`)}>
+      <CardItem
+        onPress={() => history.push(`/content/${slugify(content.title)}`)}>
         <Box display="flex" flexDirection="row">
-          <CardMedia
-            component="img"
-            alt={content.title}
-            height="125px"
-            image={content.thumbnail}
-            title={content.title}
-            style={{ width: '125px', borderRadius: '20px' }}
-          />
-          <CardContent
+          <CardImage alt={content.title} src={content.thumbnail} width={125} />
+          <CardBody
             style={{ width: 'calc(100% - 125px)', padding: '10px 10px 5px' }}>
             <Paragraph size={14}>{content.length}</Paragraph>
             <CardTitle text={content.title} />
@@ -52,9 +41,9 @@ const ContentCard: React.FC<Props> = ({ content }) => {
               name={teacher.name}
               favoriteId={content.id}
             />
-          </CardContent>
+          </CardBody>
         </Box>
-      </CardActionArea>
+      </CardItem>
     </Card>
   );
 };

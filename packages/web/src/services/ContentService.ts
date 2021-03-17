@@ -34,11 +34,6 @@ class ContentService implements ContentServiceType {
     const tags: Tags[] = data.tags ? data.tags.split(', ') : [];
 
     if (this.teachers) {
-      if (!this.teachers[data.teacher]) {
-        console.log('!!!!!TEACHER', this.teachers);
-        console.log('CONTET ID', doc.id);
-        console.log('DATA.TEACHER', data.teacher);
-      }
       return {
         id: doc.id,
         title: data.title,

@@ -1,10 +1,12 @@
 import React from 'react';
-import { useHistory, useCurrentUser } from '../../hooks';
+import { useHistory, useCurrentUser, useNavigation } from '../../hooks';
 import Paragraph from '../typography/Paragraph';
 import Icon from '../icons/Icon';
 import Headline from '../typography/Headline';
 import Card from './Card';
-import { Category, Feature, IconTypes } from 'common';
+import CardBody from './CardBody';
+import CardItem from './CardItem';
+import { Category, Feature, IconTypes, slugify } from 'common';
 
 type Props = {
   color?: 'yellow' | 'blurple' | 'orange' | 'teal';
@@ -25,13 +27,17 @@ const CategoryButton: React.FC<Props> = ({
   redirect,
   category,
 }) => {
-  const history = useHistory();
-  const { translation } = useCurrentUser();
+  const navigation = useNavigation();
 
   const handlePress = category
-    ? () => history.push('Category', { category: category })
+    ? () =>
+        navigation.navigate(
+          `/category/${
+            category.slug ? category.slug : slugify(category.title)
+          }`,
+        )
     : redirect
-    ? () => history.push(redirect)
+    ? () => navigation.navigate(redirect)
     : undefined;
 
   return (
@@ -40,14 +46,12 @@ const CategoryButton: React.FC<Props> = ({
         borderWidth: 0,
         // borderColor: color ? colorPairings[color].main : undefined,
       }}>
-      {/* <CardItem
-        cardBody
-        button
-        style={{
-          backgroundColor: color ? colorPairings[color].main : undefined,
-        }}
+      <CardItem
+        // style={{
+        //   backgroundColor: color ? colorPairings[color].main : undefined,
+        // }}
         onPress={handlePress}>
-        <Body
+        <CardBody
           style={{
             flex: 2,
             justifyContent: 'space-around',
@@ -60,11 +64,11 @@ const CategoryButton: React.FC<Props> = ({
               color: color ? color : 'textPrimary',
               paddingTop: 5,
             }}>
-            {translation[title] ? translation[title] : title}
+            {title}
           </Headline>
           {description && <Paragraph>{description}</Paragraph>}
-        </Body>
-        <Right style={{ flex: 1, marginLeft: 10 }}>
+        </CardBody>
+        {/* <Right style={{ flex: 1, marginLeft: 10 }}>
           {icon && (
             <Icon
               name={icon}
@@ -77,8 +81,8 @@ const CategoryButton: React.FC<Props> = ({
               }}
             />
           )}
-        </Right>
-      </CardItem> */}
+        </Right> */}
+      </CardItem>
     </Card>
   );
 };

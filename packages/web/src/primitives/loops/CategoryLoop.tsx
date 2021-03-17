@@ -36,7 +36,7 @@ const CategoryLoop: React.FC<Props> = ({
         </Subheadline>
       )}
 
-      {/* {categories &&
+      {categories &&
         categories.map((category, idx) => (
           <CategoryButton
             key={category.title}
@@ -58,11 +58,11 @@ const CategoryLoop: React.FC<Props> = ({
             key={redirect.title}
             title={redirect.title}
             color={theColors[idx]}
-            redirect={redirect.page}
+            redirect={redirect.slug}
             icon={redirect.icon}
             iconType={redirect.iconType}
           />
-        ))} */}
+        ))}
     </>
   );
 };

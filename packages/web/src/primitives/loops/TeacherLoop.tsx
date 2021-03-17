@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import TeacherCard from '../cards/TeacherCard';
 import Loading from '../loaders/Loading';
 import Box from '../utils/Box';
-import { useContent, useCurrentUser, useQuery } from '../../hooks';
+import { useCurrentUser, useQuery } from '../../hooks';
 import ListEmpty from '../typography/ListEmpty';
 import { Teacher, AllTeachers } from 'common';
 import { TeacherService } from '../../services';
@@ -14,41 +14,40 @@ type Props = {
 
 const service = new TeacherService();
 
-const TeacherLoop: React.FC<Props> = ({ header, scrollEnabled }) => {
+const TeacherLoop: React.FC<Props> = () => {
   const { user } = useCurrentUser();
-  const { data: teachers, loading } = useQuery<AllTeachers>(service.getAll);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const { data, loading } = useQuery<AllTeachers>(service.getAll);
 
-  const renderTeachers = (): React.ReactElement[] => {
-    let arr: Teacher[] = [];
+  // This should def be handled somewhere else, improve later
+  const renderTeachers = (): void => {
+    let arr: Teacher[] = data ? Object.values(data) : [];
 
-    if (teachers) {
-      arr = Object.values(teachers);
+    if (data) {
       arr = arr.filter((item: Teacher) => item.language === user.language);
     }
-    return arr.map((teacher, idx) => (
-      <TeacherCard key={idx} teacher={teacher} />
-    ));
+
+    setTeachers(arr);
   };
 
-  // Filter by language
-  // if (user && user.language) {
-  //   filteredTeachers = filteredTeachers.filter(
-  //     (item: Teacher) => item.language === user.language,
-  //   );
-  // }
-
-  // const hasFilteredTeachers = filteredTeachers && filteredTeachers.length > 0;
+  useEffect(() => {
+    if (data) {
+      renderTeachers();
+    }
+  }, [data]);
 
   return (
     <Loading loading={loading}>
-      {!teachers ? (
+      {teachers ? (
         <Box
+          row
           style={{
             flexWrap: 'wrap',
-            flexDirection: 'row',
-            justifyContent: 'space-around',
+            justifyContent: 'space-between',
           }}>
-          {renderTeachers()}
+          {teachers.map((teacher, idx) => (
+            <TeacherCard key={idx} teacher={teacher} />
+          ))}
         </Box>
       ) : (
         <ListEmpty />

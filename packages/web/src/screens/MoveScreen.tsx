@@ -15,7 +15,8 @@ const MoveScreen: React.FC = () => {
   return (
     <>
       <Container
-      // scrollEnabled bg="Move"
+        fullPage
+        // scrollEnabled bg="Move"
       >
         <PageHeading
           // noHeader

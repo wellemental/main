@@ -22,7 +22,7 @@ const TeacherCard: React.FC<Props> = ({ teacher }) => {
         padding: '0px',
         borderRadius: '20px',
         marginBottom: '15px',
-        width: '50%',
+        width: 'calc(50% - 10px)',
         display: 'inline-block',
       }}>
       <CardActionArea

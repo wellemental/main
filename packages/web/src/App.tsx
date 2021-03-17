@@ -14,6 +14,7 @@ import {
   ContentScreen,
   ForgotPasswordScreen,
   SubscriptionScreen,
+  TeachersScreen,
   StripePortal,
   MeditateScreen,
   LearnScreen,
@@ -114,6 +115,10 @@ function App() {
                       />
                       <PrivateRoute path="/content" component={ContentScreen} />
                       <PrivateRoute path="/teacher" component={TeacherScreen} />
+                      <PrivateRoute
+                        path="/teachers"
+                        component={TeachersScreen}
+                      />
 
                       <PrivateRoute path="/" component={HomeScreen} />
                     </Switch>

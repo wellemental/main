@@ -4,19 +4,14 @@ import { useCurrentUser } from '../hooks';
 import { Tags } from 'common';
 
 const SleepScreen: React.FC = () => {
-  const { translation } = useCurrentUser();
-
   return (
     <>
       <Page
-      // bg="Evening"
+        fullPage
+        // bg="Evening"
       >
-        {/* <ContentLoop
-          // header={
-          //   <PageHeading noHeader title={translation.Sleep} color="white" />
-          // }
-          filter={Tags.Sleep}
-        /> */}
+        <PageHeading title="Sleep" color="white" />
+        <ContentLoop filter={Tags.Sleep} />
       </Page>
       <LockOverlay />
     </>

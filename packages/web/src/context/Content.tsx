@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from '../primitives';
 import { TeacherService, ContentService } from '../services';
-import { AllTeachers, ContentObj, Features } from 'common';
+import {
+  AllTeachers,
+  Categories,
+  ContentObj,
+  Features,
+  Content as ContentType,
+} from 'common';
 import { useConfig, useCurrentUser } from '../hooks';
 import logger from '../services/LoggerService';
 
@@ -13,6 +19,8 @@ interface ContentContext {
   features: Features | undefined;
   getDbContent?: () => void;
 }
+
+const contentService = new ContentService();
 
 export const Content = React.createContext<ContentContext>({
   content: {},
@@ -35,7 +43,6 @@ export const ContentProvider = ({
   const getDbContent = async () => {
     // Get teachers and content from firestore
     try {
-      const contentService = new ContentService();
       const dbContent = await contentService.getContent();
 
       // Update state with firestore data
