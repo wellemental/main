@@ -15,4 +15,7 @@ export { default as CategoryScreen } from './CategoryScreen';
 export { default as CheckoutScreen } from './CheckoutScreen';
 export { default as ContentScreen } from './ContentScreen';
 export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
-export { default as PrivateRoute } from './PrivateRoute';
+export { default as LearnScreen } from './LearnScreen';
+export { default as MeditateScreen } from './MeditateScreen';
+export { default as SleepScreen } from './SleepScreen';
+export { default as MoveScreen } from './MoveScreen';

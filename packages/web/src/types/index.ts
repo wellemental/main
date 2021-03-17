@@ -2,7 +2,7 @@ import defaultValues from '../services/RemoteConfigDefaults';
 import { firestore } from 'firebase/app';
 import FirebaseFirestoreTypes from '@firebase/firestore-types';
 
-export type Translations = { [key: string]: string };
+export type Translation = { [key: string]: string };
 export type Query = firestore.Query;
 export type Timestamp = firestore.Timestamp;
 export type FieldValue = firestore.FieldValue;

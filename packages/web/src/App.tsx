@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { theme } from './assets/styles/theme';
 import { createBrowserHistory } from 'history';
@@ -9,7 +9,6 @@ import {
   DownloadScreen,
   PromoCodeScreen,
   HomeScreen,
-  PrivateRoute,
   PlansScreen,
   CheckoutScreen,
   ContentScreen,
@@ -24,15 +23,16 @@ import {
   LibraryScreen,
   SettingsScreen,
 } from './screens';
-import Nav from './primitives/Nav';
-import Page from './primitives/Page';
-import Footer from './primitives/Footer';
+import Nav from './primitives/page/Nav';
+import Page from './primitives/page/Page';
+import Footer from './primitives/page/Footer';
 import { CurrentUserProvider } from './context/CurrentUser';
 import { LeadProvider } from './context/Lead';
 import { ServicesProvider } from './context/Services';
 import { ContentProvider } from './context/Content';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { routes, Route } from './navigation';
 
 let stripePromise: any = null;
 if (process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
@@ -53,7 +53,7 @@ function App() {
                   <Nav />
                   <Page fullPage background="general">
                     <Switch>
-                      <PrivateRoute
+                      {/* <PrivateRoute
                         path="/access"
                         component={PromoCodeScreen}
                       />
@@ -68,6 +68,7 @@ function App() {
                         component={CheckoutScreen}
                       />
                       <PrivateRoute path="/plans" component={PlansScreen} />
+
                       <PrivateRoute
                         path="/subscription"
                         component={SubscriptionScreen}
@@ -102,7 +103,11 @@ function App() {
                       />
                       <PrivateRoute path="/content" component={ContentScreen} />
                       <PrivateRoute path="/teacher" component={TeacherScreen} />
-                      <PrivateRoute path="/" component={HomeScreen} />
+                      <PrivateRoute path="/" component={HomeScreen} /> */}
+
+                      {Object.values(routes).map(route => {
+                        <Route route={route} />;
+                      })}
                     </Switch>
                     <Footer />
                   </Page>

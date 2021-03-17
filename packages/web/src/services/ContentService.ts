@@ -6,6 +6,7 @@ import {
   Content,
   ContentObj,
   ContentServiceType,
+  Categories,
 } from 'common';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
@@ -85,6 +86,15 @@ class ContentService implements ContentServiceType {
       logger.error(`Unable to get all content - ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
+  };
+
+  public getFeatures = (
+    category: Categories,
+    contentObj: ContentObj,
+  ): Content[] => {
+    return Object.values(contentObj).filter(
+      item => item.type === category && item.tags.includes(Tags.Featured),
+    );
   };
 
   public getLatestUpdate = async (): Promise<Date> => {

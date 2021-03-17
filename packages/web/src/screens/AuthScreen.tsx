@@ -11,7 +11,7 @@ import {
   Spinner,
 } from '../primitives';
 import AuthService from '../services/AuthService';
-import { Languages, Translations } from 'common';
+import { Languages, Translation } from 'common';
 import { useLocation, useCurrentUser } from '../hooks';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
@@ -40,7 +40,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
       ? location.state.from.pathname === '/access'
       : false;
 
-  const translation: Translations =
+  const translation: Translation =
     language && language === Languages.Es ? Español : English;
 
   const handleCheckEmail = async () => {
@@ -158,7 +158,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
                 value={password}
                 autoComplete="current-password"
                 onKeyPress={handleStep}
-                onChange={(e) => setPassword(e.target.value && e.target.value)}
+                onChange={e => setPassword(e.target.value && e.target.value)}
               />
             )}
           </Collapse>

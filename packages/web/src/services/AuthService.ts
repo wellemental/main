@@ -1,8 +1,6 @@
 import { AuthenticationError } from '../models/Errors';
-// import auth from '@react-native-firebase/auth';
 import firebase from '../base';
 import { NewAccount } from 'common';
-// import LocalStateService from './LocalStateService';
 import UpdateUserService from './UpdateUserService';
 import logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
@@ -65,7 +63,7 @@ class AuthService {
       await firebase
         .auth()
         .createUserWithEmailAndPassword(account.email, account.password)
-        .then(async (user) => {
+        .then(async user => {
           if (user && user.user && user.user.email) {
             try {
               await profileService.createProfile({
@@ -80,7 +78,7 @@ class AuthService {
             }
           }
         })
-        .catch((err) => {
+        .catch(err => {
           logger.error(`Error creating user and userDoc - ${err}`);
         });
       tracker.track(TrackingEvents.SignUp);
