@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Headline from '../typography/Headline';
 
 type Props = {
   text: string;
@@ -7,9 +7,9 @@ type Props = {
 
 const CardTitle: React.FC<Props> = ({ text }) => {
   return (
-    <Typography component="h3" variant="subtitle2" noWrap>
+    <Headline component="h3" variant="subtitle2" noWrap>
       {text}
-    </Typography>
+    </Headline>
   );
 };
 

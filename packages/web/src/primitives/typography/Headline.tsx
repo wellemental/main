@@ -4,6 +4,7 @@ import {
   default as MuiTypography,
   TypographyProps,
 } from '@material-ui/core/Typography';
+import { Colors, colors } from 'common';
 
 export interface HeadlineProps {
   gb?: number;
@@ -12,6 +13,7 @@ export interface HeadlineProps {
   size?: number;
   center?: boolean;
   small?: boolean;
+  theColor?: Colors;
   component?:
     | 'h1'
     | 'h2'
@@ -32,6 +34,7 @@ const Headline: React.FC<TypographyProps & HeadlineProps> = ({
   gv,
   center,
   small,
+  theColor,
   component,
   // color = 'brandPrimary',
   ...props
@@ -43,6 +46,10 @@ const Headline: React.FC<TypographyProps & HeadlineProps> = ({
       align={center || props.align === 'center' ? 'center' : 'inherit'}
       variant={small ? 'h5' : props.variant ? props.variant : 'h4'}
       gutterBottom={props.gutterBottom ? props.gutterBottom : false}
+      style={{
+        color: theColor ? colors[theColor] : colors.primary,
+        ...style,
+      }}
       {...props}>
       <TextTranslate>{children}</TextTranslate>
     </MuiTypography>

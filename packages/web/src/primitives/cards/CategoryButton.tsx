@@ -6,7 +6,7 @@ import Headline from '../typography/Headline';
 import Card from './Card';
 import CardBody from './CardBody';
 import CardItem from './CardItem';
-import { Category, Feature, IconTypes, slugify } from 'common';
+import { Category, Feature, IconTypes, slugify, colorPairings } from 'common';
 
 type Props = {
   color?: 'yellow' | 'blurple' | 'orange' | 'teal';
@@ -40,16 +40,18 @@ const CategoryButton: React.FC<Props> = ({
     ? () => navigation.navigate(redirect)
     : undefined;
 
+  console.log('COLORSSSS', color);
+
   return (
     <Card
       style={{
         borderWidth: 0,
-        // borderColor: color ? colorPairings[color].main : undefined,
+        borderColor: color ? colorPairings[color].main : 'white',
       }}>
       <CardItem
-        // style={{
-        //   backgroundColor: color ? colorPairings[color].main : undefined,
-        // }}
+        style={{
+          backgroundColor: color ? colorPairings[color].main : 'white',
+        }}
         onPress={handlePress}>
         <CardBody
           style={{
@@ -61,7 +63,7 @@ const CategoryButton: React.FC<Props> = ({
           <Headline
             small
             style={{
-              color: color ? color : 'textPrimary',
+              color: color ? colorPairings[color].text : 'textPrimary',
               paddingTop: 5,
             }}>
             {title}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Content } from 'common';
 import AvyName from '../images/AvyName';
-import { useHistory } from '../../hooks';
+import { useNavigation } from '../../hooks';
 import Paragraph from '../typography/Paragraph';
 import CardTitle from './CardTitle';
 import CardImage from './CardImage';
@@ -9,39 +9,49 @@ import CardItem from './CardItem';
 import Card from './Card';
 import CardBody from './CardBody';
 import Box from '../utils/Box';
-import { slugify } from 'common';
+import { slugify, theme } from 'common';
 
 interface Props {
   content: Content;
+  small?: boolean;
+  recentDate?: string;
 }
 
-const ContentCard: React.FC<Props> = ({ content }) => {
-  const history = useHistory();
-
+const ContentCard: React.FC<Props> = ({ content, small, recentDate }) => {
+  const navigation = useNavigation();
   const teacher = content.teacher;
 
   return (
-    <Card
-      style={{
-        padding: '0px',
-        borderRadius: '20px',
-        marginBottom: '15px',
-      }}>
+    <Card>
       <CardItem
-        onPress={() => history.push(`/content/${slugify(content.title)}`)}>
+        onPress={() =>
+          navigation.navigate(`/content/${slugify(content.title)}`)
+        }>
         <Box display="flex" flexDirection="row">
-          <CardImage alt={content.title} src={content.thumbnail} width={125} />
-          <CardBody
-            style={{ width: 'calc(100% - 125px)', padding: '10px 10px 5px' }}>
-            <Paragraph size={14}>{content.length}</Paragraph>
-            <CardTitle text={content.title} />
+          <Box width={small ? 1 / 4 : 3 / 10} maxWidth={small ? 75 : 'inherit'}>
+            <CardImage alt={content.title} src={content.thumbnail} />
+          </Box>
+          <Box width={small ? 3 / 4 : 7 / 10}>
+            <CardBody
+              style={{
+                alignSelf: 'center',
+                padding: `${theme.cardPadding}px ${theme.cardPadding}px`,
+                paddingBottom: '0px !important',
+              }}>
+              <CardTitle text={content.title} />
+              <Paragraph size={14}>
+                {recentDate ? recentDate : content.length}
+              </Paragraph>
 
-            <AvyName
-              source={teacher.photo}
-              name={teacher.name}
-              favoriteId={content.id}
-            />
-          </CardBody>
+              {!small && (
+                <AvyName
+                  source={teacher.photo}
+                  name={teacher.name}
+                  favoriteId={content.id}
+                />
+              )}
+            </CardBody>
+          </Box>
         </Box>
       </CardItem>
     </Card>

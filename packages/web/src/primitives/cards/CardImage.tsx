@@ -1,5 +1,6 @@
 import React from 'react';
 import CardMedia, { CardMediaProps } from '@material-ui/core/CardMedia';
+import { theme } from 'common';
 
 interface Props {
   src: string;
@@ -7,22 +8,19 @@ interface Props {
   alt?: string;
 }
 
-const ContentCard: React.FC<CardMediaProps & Props> = ({
-  src,
-  width,
-  alt,
-  ...props
-}) => {
+const CardImage: React.FC<CardMediaProps & Props> = ({ src, width, alt }) => {
   return (
     <CardMedia
       component="img"
       alt={alt ? alt : ''}
-      height={`${width ? width : 125}px`}
+      height="100%"
       image={src}
       title={alt ? alt : ''}
-      style={{ width: `${width ? width : 125}px`, borderRadius: '20px' }}
+      style={{
+        borderRadius: theme.borderRadiusBase,
+      }}
     />
   );
 };
 
-export default ContentCard;
+export default CardImage;

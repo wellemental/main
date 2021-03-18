@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ListEmpty, ContentCardSmall, Box } from '../';
+import { Button, ListEmpty, ContentCard, Box } from '../';
 import { Content } from 'common';
 import { convertTimestamp } from '../../services/helpers';
 
@@ -22,7 +22,8 @@ const ContentLoopSmall: React.FC<Props> = ({
         content
           .slice(0, limit)
           .map((item, idx: number) => (
-            <ContentCardSmall
+            <ContentCard
+              small
               key={idx}
               content={item}
               recentDate={

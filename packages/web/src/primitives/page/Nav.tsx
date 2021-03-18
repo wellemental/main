@@ -205,9 +205,9 @@ const Nav: React.FC<Props> = props => {
                     button
                     key={link.label}
                     onClick={() => handleClick(link.slug)}>
-                    <ListItemIcon className={classes.icon}>
+                    {/* <ListItemIcon className={classes.icon}>
                       <Icon name={link.icon} />
-                    </ListItemIcon>
+                    </ListItemIcon> */}
 
                     <ListItemText
                       primaryTypographyProps={{ style: { color: '#666' } }}

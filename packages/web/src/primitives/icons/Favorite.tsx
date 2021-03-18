@@ -9,7 +9,7 @@ import {
   Favorite as FavIcon,
   FavoriteBorder as FavBorder,
 } from '@material-ui/icons';
-import { brandColors } from '../../assets/styles/theme';
+import { colors } from 'common';
 import logger from '../../services/LoggerService';
 
 interface Props {
@@ -64,7 +64,7 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
           marginRight: 0,
           fontSize: onProfile ? 36 : 30,
           lineHeight: 40,
-          color: brandColors.brandLight,
+          color: colors.error,
         }}
         name={isFav ? 'heart' : 'heart-outline'}
       />

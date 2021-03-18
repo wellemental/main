@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ContentCard from '../cards/ContentCard';
-import { useContent, useCurrentUser } from '../../hooks';
+import { useContent, useCurrentUser, useMediaQuery } from '../../hooks';
 import { Content, Tags, Categories, TimeOfDay, Teachers } from 'common';
 import ListEmpty from '../typography/ListEmpty';
 import Error from '../typography/Error';
@@ -13,6 +13,7 @@ interface Props {
   teacher?: Teachers;
   scrollEnabled?: boolean;
   hasPadding?: boolean; // Apply horizontal margin for Library screen bc of tabs full width requirement
+  small?: boolean;
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -22,12 +23,15 @@ const ContentLoop: React.FC<Props> = ({
   teacher,
   scrollEnabled,
   hasPadding,
+  small,
 }) => {
   const { user, translation } = useCurrentUser();
   const { content, error } = useContent();
   let filteredContent: Content[] = content ? Object.values(content) : [];
-
   const [isLangFilter, setLangFilter] = useState(true);
+
+  // Calculate if
+  const isSmall = useMediaQuery('(max-width:444px)');
 
   // Filter by language
   if (
@@ -79,16 +83,9 @@ const ContentLoop: React.FC<Props> = ({
     <>
       <Error error={error} />
 
-      {content && scrollEnabled && hasFilteredContent && filteredContent ? (
-        // If tabs and header need to be able to scroll up with the list
-        <>
-          {filteredContent.map((item, idx) => (
-            <ContentCard key={idx} content={item} />
-          ))}
-        </>
-      ) : content && hasFilteredContent && filteredContent ? (
+      {content && hasFilteredContent && filteredContent ? (
         filteredContent.map((item, idx) => (
-          <ContentCard key={idx} content={item} />
+          <ContentCard small={small || isSmall} key={idx} content={item} />
         ))
       ) : favorites ? (
         <ListEmpty>

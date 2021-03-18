@@ -17,7 +17,6 @@ import {
   exploreRedirects,
 } from 'common';
 import { useCurrentUser, useContent } from '../hooks';
-import { ageGroups } from '../constants';
 
 const HomeScreen: React.FC = () => {
   const today = moment();
