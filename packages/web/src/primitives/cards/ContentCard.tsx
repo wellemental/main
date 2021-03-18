@@ -24,10 +24,8 @@ const ContentCard: React.FC<Props> = ({ content, small, recentDate }) => {
   return (
     <Card>
       <CardItem
-        onPress={() =>
-          navigation.navigate(`/content/${slugify(content.title)}`)
-        }>
-        <Box display="flex" flexDirection="row">
+        onPress={() => navigation.navigate('Content', { content: content })}>
+        <Box row>
           <Box width={small ? 1 / 4 : 3 / 10} maxWidth={small ? 75 : 'inherit'}>
             <CardImage alt={content.title} src={content.thumbnail} />
           </Box>

@@ -29,6 +29,7 @@ import {
   SettingsScreen,
 } from './screens';
 import Nav from './primitives/page/Nav';
+import ScrollToTop from './primitives/utils/ScrollToTop';
 import Page from './primitives/page/Page';
 import Footer from './primitives/page/Footer';
 import { CurrentUserProvider } from './context/CurrentUser';
@@ -55,6 +56,7 @@ function App() {
             <ServicesProvider>
               <Elements stripe={stripePromise}>
                 <Router history={history}>
+                  <ScrollToTop />
                   <Nav />
                   <Page fullPage background="general">
                     <Switch>

@@ -1,21 +1,20 @@
 import React from 'react';
-import { Content, Teacher } from 'common';
 import AvyName from '../images/AvyName';
-import { useHistory } from '../../hooks';
+import { useNavigation } from '../../hooks';
 import Paragraph from '../typography/Paragraph';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import { slugify } from 'common';
+import { Content, slugify } from 'common';
 
 interface Props {
   content: Content;
 }
 
 const ContentCardWide: React.FC<Props> = ({ content }) => {
-  const history = useHistory();
+  const navigation = useNavigation();
   const teacher = content.teacher;
 
   return (
@@ -26,7 +25,7 @@ const ContentCardWide: React.FC<Props> = ({ content }) => {
         marginBottom: '15px',
       }}>
       <CardActionArea
-        onClick={() => history.push(`/content/${slugify(content.title)}`)}>
+        onClick={() => navigation.navigate('Content', { content: content })}>
         <Box>
           <CardMedia
             component="img"

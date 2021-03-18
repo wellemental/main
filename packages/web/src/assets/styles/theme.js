@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import RecoletaAltTtf from '../fonts/RecoletaAlt-Medium.ttf';
 import InterTtf from '../fonts/Inter.ttf';
-import { theme as baseTheme, colors } from 'common';
+import { theme as base, colors } from 'common';
 
 export { colors } from 'common';
 
@@ -45,7 +45,7 @@ export const theme = createMuiTheme({
       main: colors.warning,
     },
     text: {
-      primary: colors.primary,
+      primary: colors.text,
     },
     inverse: {
       primary: 'white',
@@ -142,8 +142,8 @@ export const theme = createMuiTheme({
     MuiCard: {
       root: {
         // padding: '5%',
-        borderRadius: baseTheme.borderRadiusBase,
-        marginBottom: baseTheme.cardMargin,
+        borderRadius: base.borderRadiusBase,
+        marginBottom: base.cardMargin,
       },
     },
     MuiCardContent: {
@@ -160,7 +160,8 @@ export const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        // borderRadius: '0px',
+        borderRadius: base.borderRadiusBase,
+        textTransform: 'capitalize',
       },
       sizeLarge: {
         padding: '15px 25px',

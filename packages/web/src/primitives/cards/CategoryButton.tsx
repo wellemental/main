@@ -5,6 +5,7 @@ import Icon from '../icons/Icon';
 import Headline from '../typography/Headline';
 import Card from './Card';
 import CardBody from './CardBody';
+import Box from '../utils/Box';
 import CardItem from './CardItem';
 import { Category, Feature, IconTypes, slugify, colorPairings } from 'common';
 
@@ -21,7 +22,6 @@ type Props = {
 const CategoryButton: React.FC<Props> = ({
   title,
   icon,
-  iconType,
   description,
   color,
   redirect,
@@ -40,50 +40,42 @@ const CategoryButton: React.FC<Props> = ({
     ? () => navigation.navigate(redirect)
     : undefined;
 
-  console.log('COLORSSSS', color);
-
   return (
-    <Card
-      style={{
-        borderWidth: 0,
-        borderColor: color ? colorPairings[color].main : 'white',
-      }}>
+    <Card>
       <CardItem
         style={{
           backgroundColor: color ? colorPairings[color].main : 'white',
         }}
         onPress={handlePress}>
-        <CardBody
-          style={{
-            flex: 2,
-            justifyContent: 'space-around',
-            padding: 15,
-            paddingBottom: 15,
-          }}>
-          <Headline
-            small
-            style={{
-              color: color ? colorPairings[color].text : 'textPrimary',
-              paddingTop: 5,
-            }}>
-            {title}
-          </Headline>
-          {description && <Paragraph>{description}</Paragraph>}
+        <CardBody>
+          <Box row justifyContent="space-between" alignItems="center">
+            <Box>
+              <Headline
+                small
+                style={{
+                  color: color ? colorPairings[color].text : 'textPrimary',
+                  // paddingTop: 5,
+                }}>
+                {title}
+              </Headline>
+              {description && <Paragraph>{description}</Paragraph>}
+            </Box>
+            <Box>
+              {icon && (
+                <Icon
+                  name={icon}
+                  // type={iconType}
+                  style={{
+                    fontSize: 50,
+                    color: color ? colorPairings[color].light : undefined,
+                    // paddingHorizontal: 20,
+                    // paddingVertical: 10,
+                  }}
+                />
+              )}
+            </Box>
+          </Box>
         </CardBody>
-        {/* <Right style={{ flex: 1, marginLeft: 10 }}>
-          {icon && (
-            <Icon
-              name={icon}
-              type={iconType}
-              style={{
-                fontSize: 50,
-                color: color ? colorPairings[color].light : undefined,
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-              }}
-            />
-          )}
-        </Right> */}
       </CardItem>
     </Card>
   );

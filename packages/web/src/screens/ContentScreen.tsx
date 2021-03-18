@@ -198,7 +198,9 @@ const ContentScreen: React.FC = () => {
           {auth &&
             (auth.email === 'test@test.com' ||
               auth.email === 'mike.r.vosters@gmail.com') && (
-              <Paragraph fine>{content.id}</Paragraph>
+              <Box mb={2} mt={-1}>
+                <Paragraph fine>{content.id}</Paragraph>
+              </Box>
             )}
 
           <Paragraph gb={1}>

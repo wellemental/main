@@ -19,7 +19,6 @@ import {
 import { useCurrentUser, useContent } from '../hooks';
 
 const HomeScreen: React.FC = () => {
-  const today = moment();
   const { activePlan } = useCurrentUser();
   const { features } = useContent();
 
@@ -53,10 +52,6 @@ const HomeScreen: React.FC = () => {
           <Subheadline color={timeOfDayColor}>Featured</Subheadline>
           <ContentLoop filter={Tags.Featured} />
         </>
-      )}
-
-      {features && features.categories && (
-        <CategoryLoop title="Featured" categories={features.categories} />
       )}
     </>
   );

@@ -34,7 +34,6 @@ export const mobileMainMenu: Link[] = buildLinks([
 ]);
 
 export const desktopMainMenu: Link[] = buildLinks([
-  'Home',
   'Meditate',
   'Learn',
   'Move',

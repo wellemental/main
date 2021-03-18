@@ -11,13 +11,11 @@ import { Categories, meditationCategories } from 'common';
 const MeditateScreen: React.FC = () => {
   return (
     <>
-      <Container fullPage>
-        <PageHeading title="Meditate" />
+      <PageHeading title="Meditate" />
 
-        <FeaturedLoop category={Categories.Meditate} />
+      <FeaturedLoop category={Categories.Meditate} />
 
-        <CategoryLoop categories={meditationCategories} />
-      </Container>
+      <CategoryLoop categories={meditationCategories} />
       <LockOverlay />
     </>
   );

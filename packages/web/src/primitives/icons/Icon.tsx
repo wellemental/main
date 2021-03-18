@@ -14,6 +14,15 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { IconProps } from '@material-ui/core/Icon';
+import MehIcon from '@material-ui/icons/SentimentDissatisfied';
+import FocusIcon from '@material-ui/icons/TrackChanges';
+import TrendingUp from '@material-ui/icons/TrendingUp';
+import TrendingDown from '@material-ui/icons/TrendingDown';
+import BookIcon from '@material-ui/icons/ImportContacts';
+import HistoryIcon from '@material-ui/icons/History';
+import TimerIcon from '@material-ui/icons/Timer';
+import ClassesIcon from '@material-ui/icons/AccessibilityNew';
+import SchoolIcon from '@material-ui/icons/School';
 
 type Props = {
   name: Icons;
@@ -36,21 +45,37 @@ const icons: { [key: string]: Icon } = {
   support: { inactive: ContactSupportIcon },
   'chevron-right': { inactive: ChevronRight },
   contact: { active: EmailIcon, inactive: EmailOutlined },
+  stress: { inactive: MehIcon },
+  focus: { inactive: FocusIcon },
+  energize: { inactive: TrendingUp },
+  rest: { inactive: TrendingDown },
+  philosophy: { inactive: BookIcon },
+  history: { inactive: HistoryIcon },
+  breaks: { inactive: TimerIcon },
+  classes: { inactive: ClassesIcon },
+  school: { inactive: SchoolIcon },
 };
 
 type Icons = keyof typeof icons;
 
-const Icon: React.FC<Props> = ({ name, active }) => {
+const Icon: React.FC<Props & IconProps> = ({
+  name,
+  active,
+  style,
+  ...props
+}) => {
   // Get corresponding icon from icons list
   const iconSet = icons[name];
   // If icon object has active version, use that, if not use inactive
-  const Icon = active && iconSet.active ? iconSet.active : iconSet.inactive;
+  const Icon =
+    iconSet && active && iconSet.active
+      ? iconSet.active
+      : iconSet && iconSet.inactive
+      ? iconSet.inactive
+      : null;
 
-  return (
-    <>
-      <Icon />
-    </>
-  );
+  // @ts-ignore - not accepting style prop for some reason
+  return <>{Icon && <Icon style={style} />}</>;
 };
 
 export default Icon;

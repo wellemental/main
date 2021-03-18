@@ -15,6 +15,7 @@ export interface ParagraphProps {
   slim?: boolean;
   small?: boolean;
   bold?: boolean;
+  component?: 'p' | 'span' | 'li' | 'subtitle1' | 'subtitle2' | 'h6';
 }
 
 const Paragraph: React.FC<TypographyProps & ParagraphProps> = ({
@@ -26,6 +27,7 @@ const Paragraph: React.FC<TypographyProps & ParagraphProps> = ({
   gb,
   gv,
   center,
+  component,
   small,
   slim,
   bold,
@@ -33,6 +35,8 @@ const Paragraph: React.FC<TypographyProps & ParagraphProps> = ({
 }) => {
   return (
     <MuiTypography
+      // @ts-ignore - Material-UI Typescipt is a nightmare with type component prop for some reason
+      component={component ? component : 'p'}
       align={center ? 'center' : 'inherit'}
       style={{
         fontSize: fine ? 12 : small ? 15 : size ? size : '16px',

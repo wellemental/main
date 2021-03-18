@@ -43,7 +43,7 @@ const CategoryLoop: React.FC<Props> = ({
             title={category.title}
             color={theColors[idx]}
             category={category}
-            icon={category.icon}
+            icon={category.tag}
             iconType={
               category.icon === 'fist-raised'
                 ? 'FontAwesome5'
