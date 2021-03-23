@@ -17,9 +17,8 @@ import logger from '../services/LoggerService';
 import { fireFbEvent, fireGaEvent } from '../services/AnalyticsService';
 import { theme } from '../assets/styles/theme';
 // import { fireFbEvent, fireGaEvent } from '../services/AnalyticsService';
+import { Box, Card } from '../primitives';
 import {
-  Box,
-  Card,
   InputAdornment,
   Typography,
   IconButton,
@@ -96,7 +95,7 @@ const CheckoutScreen: React.FC = () => {
             plan: plan.stripeId,
             trial_period_days: trialLength,
           })
-          .then((res) => {
+          .then(res => {
             fireFbEvent('Purchase', {
               value: plan.price,
               currency: 'USD',
@@ -105,7 +104,7 @@ const CheckoutScreen: React.FC = () => {
             fireGaEvent('User', 'Purchase');
             history.push(`/download`);
           })
-          .catch((err) => {
+          .catch(err => {
             logger.error(`Error starting subscription - ${err}`);
             setError(
               translation[
@@ -196,51 +195,53 @@ const CheckoutScreen: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Card square>
-        {error && <Error error={error} />}
+      <Box mt={1}>
+        <Card padded square>
+          {error && <Error error={error} />}
 
-        <form onSubmit={handleSubmit}>
-          <Box mb={1}>
+          <form onSubmit={handleSubmit}>
             <Box mb={1}>
-              <Typography variant="subtitle2" component="span">
-                {translation['Enter payment info']}...
-              </Typography>
-              {stripeLoading && <CircularProgress size={18} />}
+              <Box mb={1}>
+                <Typography variant="subtitle2" component="span">
+                  {translation['Enter payment info']}...
+                </Typography>
+                {stripeLoading && <CircularProgress size={18} />}
+              </Box>
+              <CardElement
+                options={CARD_OPTIONS}
+                onReady={(element: StripeCardElement) => {
+                  setStripeLoading(false);
+                  element.focus();
+                }}
+                // onFocus={() => }
+              />
             </Box>
-            <CardElement
-              options={CARD_OPTIONS}
-              onReady={(element: StripeCardElement) => {
-                setStripeLoading(false);
-                element.focus();
-              }}
-              // onFocus={() => }
-            />
-          </Box>
-          <Box mt={3} mb={2}>
+            <Box mt={3} mb={2}>
+              <Button
+                onClick={e => handleSubmit(e)}
+                type="submit"
+                disabled={loading}
+                loading={loading}
+                variant="contained"
+                color="secondary"
+                fullWidth
+                text={translation.Subscribe}
+              />
+            </Box>
             <Button
-              onClick={(e) => handleSubmit(e)}
-              type="submit"
-              disabled={loading}
-              loading={loading}
-              variant="contained"
-              color="secondary"
+              onClick={() => setShowPromoCode(!showPromoCode)}
+              text={translation['Promo code?']}
+              size="small"
               fullWidth
-              text={translation.Subscribe}
+              variant="text"
             />
-          </Box>
-          <Button
-            onClick={() => setShowPromoCode(!showPromoCode)}
-            text={translation['Promo code?']}
-            size="small"
-            fullWidth
-            variant="text"
-          />
-        </form>
-      </Card>
+          </form>
+        </Card>
+      </Box>
 
       <Collapse in={showPromoCode} timeout="auto">
-        <Box mt={2}>
-          <Card square>
+        <Box mt={1}>
+          <Card padded square>
             <Typography variant="subtitle2" component="span">
               {translation['Enter promo code']}...
             </Typography>

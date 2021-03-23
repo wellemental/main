@@ -27,7 +27,7 @@ const LockOverlay: React.FC<Props> = ({ pb }) => {
             height: '100vh',
             width: '100%',
             background:
-              'linear-gradient(0deg, rgba(33,79,75,1) 0%, rgba(33,79,75,1) 30%, rgba(33,79,75,0.49763655462184875) 100%)',
+              'linear-gradient(0deg, rgba(33,79,75,1) 0%, rgba(33,79,75,1) 20%, rgba(33,79,75,0.49763655462184875) 100%)',
             flex: 1,
             alignContent: 'center',
             display: 'flex',
