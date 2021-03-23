@@ -7,7 +7,7 @@ type Props = {
   color?: MuiTypeColors | 'white';
 };
 
-const Subheadline: React.FC<Props> = ({ color = 'textPrimary', children }) => {
+const Subheadline: React.FC<Props> = ({ color = 'primary', children }) => {
   return (
     <Box pt={5} pb={1.5} px={1}>
       <Headline

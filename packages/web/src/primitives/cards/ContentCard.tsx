@@ -26,7 +26,10 @@ const ContentCard: React.FC<Props> = ({ content, small, recentDate }) => {
       <CardItem
         onPress={() => navigation.navigate('Content', { content: content })}>
         <Box row>
-          <Box width={small ? 1 / 4 : 3 / 10} maxWidth={small ? 75 : 'inherit'}>
+          <Box
+            width={small ? 1 / 4 : 3 / 10}
+            height={small ? 84 : 133}
+            maxWidth={small ? 75 : 'inherit'}>
             <CardImage alt={content.title} src={content.thumbnail} />
           </Box>
           <Box width={small ? 3 / 4 : 7 / 10}>
