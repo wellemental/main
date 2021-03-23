@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Card, CardContent, Collapse } from '@material-ui/core';
+import { Box, Collapse } from '@material-ui/core';
 import {
   Button,
+  Card,
+  CardBody,
   Input,
   Paragraph,
   Headline,
@@ -123,8 +125,8 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   ) : (
     <Box>
       <Logo linked={false} center mb={1} />
-      <Card>
-        <CardContent>
+      <Card padded>
+        <CardBody>
           <Headline center variant="h5" gutterBottom={!isFriends}>
             {headline}
           </Headline>
@@ -181,7 +183,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
             fullWidth
             text={translation['Forgot password?']}
           />
-        </CardContent>
+        </CardBody>
       </Card>
     </Box>
   );

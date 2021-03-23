@@ -12,55 +12,51 @@ const LockOverlay: React.FC<Props> = ({ pb }) => {
   const { translation, activePlan } = useCurrentUser();
   const navigation = useNavigation();
 
-  //   const insets = useSafeAreaInsets();
+  console.log('IS ACTIVE?', activePlan);
 
   return (
     <>
       {!activePlan && (
-        // <LinearGradient
-        //   colors={['rgba(33,79,75,.5)', 'rgba(33,79,75,1)']}
-        //   locations={[0, 0.75]}
-        //   style={{
-        //     position: 'absolute',
-        //     flex: 1,
-        //     width: deviceWidth,
-        //     height: deviceHeight,
-        //   }}>
         <Box
           px={3}
           pb={pb ? pb : 3.5}
           style={{
-            position: 'absolute',
-            // bottom: 60 + insets.bottom,
-            // width: deviceWidth,
+            position: 'fixed',
+            left: 0,
+            top: 0,
+            height: '100vh',
+            width: '100%',
+            background:
+              'linear-gradient(0deg, rgba(33,79,75,1) 0%, rgba(33,79,75,1) 30%, rgba(33,79,75,0.49763655462184875) 100%)',
             flex: 1,
+            alignContent: 'center',
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
           }}>
           <Headline
             center
+            style={{ color: 'white' }}
             //   color="white"
           >
-            {translation.Subscribe}
+            Subscribe
           </Headline>
           <Paragraph
             center
-            // color="white"
-            gt={0.5}
-            gb={1.5}
-            style={{ fontSize: 18 }}>
+            gutterBottom
+            style={{ fontSize: 18, color: 'white' }}>
             {
-              translation[
-                'Explore 100+ mindful practices from diverse teachers in english and spanish!'
-              ]
+              'Explore 100+ mindful practices from diverse teachers in english and spanish!'
             }
           </Paragraph>
           <Button
             // warning
-            text={translation['Learn More']}
-            // onPress={() => navigation.navigate('Plans')}
+            color="secondary"
+            text={'Learn More'}
+            onPress={() => navigation.navigate('/plans')}
           />
         </Box>
-        // </LinearGradient>
-        //</ImageBackground>
       )}
     </>
   );

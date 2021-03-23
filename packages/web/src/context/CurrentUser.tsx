@@ -28,7 +28,7 @@ export const CurrentUserProvider = ({ children }: any) => {
 
   useEffect(() => {
     // On mount, subscribe to auth and playerDoc listeners
-    const authUnsubscriber = firebase.auth().onAuthStateChanged((user) => {
+    const authUnsubscriber = firebase.auth().onAuthStateChanged(user => {
       setCurrentAuth(user);
 
       // Unsubscribe from previous userDoc listener if exists
@@ -152,7 +152,7 @@ export const CurrentUserProvider = ({ children }: any) => {
           !currentAuth || !currentUser
             ? false
             : currentUser &&
-              currentUser.plan &&
+              !!currentUser.plan &&
               (currentUser.plan.nextRenewalUnix > moment().unix() ||
                 currentUser.plan.type === 'promoCode'),
       }}>
