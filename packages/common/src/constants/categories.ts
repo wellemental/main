@@ -69,6 +69,7 @@ export const exploreRedirects: Redirect[] = [
     title: 'Teachers',
     icon: 'school',
     page: 'Teachers',
+    slug: '/teachers',
   },
-  { title: 'Search', icon: 'search', page: 'Search' },
+  { title: 'Search', icon: 'search', page: 'Search', slug: '/search' },
 ];

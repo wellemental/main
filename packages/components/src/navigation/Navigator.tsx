@@ -24,7 +24,7 @@ import { LockOverlay, Container } from '../primitives';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList, AuthStackParamList } from '../types';
 import { useCurrentUser } from '../hooks';
-import variables from '../assets/native-base-theme/variables/wellemental';
+import { colors } from 'common';
 
 const Stack = createStackNavigator<RootStackParamList>();
 // const ModalStack = createStackNavigator<ModalStackParamList>();
@@ -40,7 +40,7 @@ const AuthStackScreen: React.FC = () => {
           shadowOpacity: 0, // remove shadow on iOS,
         },
         headerTitle: '',
-        headerTintColor: variables.brandPrimary,
+        headerTintColor: colors.primary,
         headerLeftContainerStyle: { paddingLeft: 10, paddingTop: 10 },
       }}>
       <AuthStack.Screen name="Landing" component={LandingScreen} />
@@ -63,7 +63,7 @@ const Navigator: React.FC = () => {
             shadowOpacity: 0, // remove shadow on iOS,
           },
           headerTitle: '',
-          headerTintColor: variables.brandPrimary,
+          headerTintColor: colors.primary,
           headerLeftContainerStyle: {
             paddingLeft: 10,
             paddingTop: 10,

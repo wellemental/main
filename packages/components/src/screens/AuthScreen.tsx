@@ -112,17 +112,13 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
       />
 
       {auths && (
-        <>
-          <Input
-            autoFocus
-            secureTextEntry={true}
-            label={translation.Password}
-            value={password}
-            onChangeText={setPassword}
-          />
-
-          {auths && auths.length === 0 && <LegalLinks />}
-        </>
+        <Input
+          autoFocus
+          secureTextEntry={true}
+          label={translation.Password}
+          value={password}
+          onChangeText={setPassword}
+        />
       )}
       <Button
         warning={language === Languages.Es}
@@ -130,8 +126,10 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
         loading={loading}
         onPress={handleStep}
       />
-      <Box mt={2}>
+      <Box mt={3}>
+        {auths && auths.length === 0 && <LegalLinks />}
         <Button
+          small
           transparent
           text={translation['Forgot password?']}
           loading={loading}
@@ -140,6 +138,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
           }
         />
       </Box>
+
       <Error center error={error} />
     </Container>
   );

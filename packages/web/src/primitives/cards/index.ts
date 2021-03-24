@@ -7,3 +7,4 @@ export { default as ContentCard } from './ContentCard';
 export { default as CategoryButton } from './CategoryButton';
 export { default as CategoryCard } from './CategoryCard';
 export { default as ContentCardWide } from './ContentCardWide';
+export { default as TeacherCard } from './TeacherCard';

@@ -6,9 +6,9 @@ import {
   ContentLoop,
   CategoryLoop,
   Subheadline,
-  AgeCards,
   Paragraph,
   TabsNB,
+  AgeCards,
 } from '../primitives';
 import { VersionConfig } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
@@ -20,7 +20,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
   const { translation, activePlan } = useCurrentUser();
   const { features } = useContent();
 
-  const timeOfDay = getTimeOfDay(translation);
+  const timeOfDay = getTimeOfDay();
 
   // Upgrade Screen prompt
   const { data } = useConfig<VersionConfig>('version');
@@ -38,7 +38,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
   }
 
   const upgradeOnPress = (): void => {
-    Linking.openURL(data.iosUrl).catch((err) =>
+    Linking.openURL(data.iosUrl).catch(err =>
       console.error('An error occurred', err),
     );
   };

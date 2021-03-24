@@ -6,7 +6,7 @@ import {
   Categories,
   Content as ContentType,
 } from 'common';
-import Loading from '../primitives/Loading';
+import Loading from '../primitives/loaders/Loading';
 import { useConfig, useCurrentUser } from '../hooks';
 
 interface ContentContext {
@@ -96,14 +96,14 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
         if (dbContentLatest) {
           setUpdateAvailable(dbContentLatest > localUpdatedAt.current);
         } else {
-          setStatus((status) => [...status, 'Failed to get latest from db']);
+          setStatus(status => [...status, 'Failed to get latest from db']);
         }
       };
 
       const fetchContent = async (): Promise<void> => {
         // First, try to fetch from AsyncStorage
         try {
-          setStatus((status) => [...status, 'Fetching local data']);
+          setStatus(status => [...status, 'Fetching local data']);
 
           const localData = await localStateService.getContent();
 

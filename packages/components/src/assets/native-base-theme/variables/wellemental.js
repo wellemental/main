@@ -126,6 +126,18 @@ export default {
 
   // Color
   ...colors,
+  brandPrimary: colors.primary,
+  brandSecondary: colors.secondary,
+  brandDark: colors.secondary,
+  brandWarning: colors.warning,
+  brandInfo: colors.info,
+  brandSuccess: colors.success,
+  brandDanger: colors.danger,
+  brandLight: colors.light,
+  textColor: colors.text,
+  lightTextColor: colors.lightText,
+  darkTextColor: colors.darkText,
+  inverseTextColor: colors.inverse,
 
   // Content
   contentBgColor: colors.white,

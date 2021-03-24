@@ -16,7 +16,6 @@ import app from '../base';
 import logger from '../services/LoggerService';
 import { fireFbEvent, fireGaEvent } from '../services/AnalyticsService';
 import { theme } from '../assets/styles/theme';
-// import { fireFbEvent, fireGaEvent } from '../services/AnalyticsService';
 import { Box, Card } from '../primitives';
 import {
   InputAdornment,

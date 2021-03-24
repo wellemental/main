@@ -46,8 +46,8 @@ const Paragraph: React.FC<ParagraphProps & NativeBase.Text> = ({
       color: color
         ? brandColors[color]
         : fine
-        ? brandColors.lightTextColor
-        : brandColors.textColor,
+        ? brandColors.lightText
+        : brandColors.text,
       textAlign: center ? 'center' : undefined,
       alignSelf: center ? 'center' : 'flex-start',
       fontWeight: bold ? '700' : undefined,

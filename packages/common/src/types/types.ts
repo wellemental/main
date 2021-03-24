@@ -16,6 +16,7 @@ export type Redirect = {
   icon: string;
   iconType?: IconTypes;
   page?: string;
+  slug: string;
 };
 
 enum SubStatus {
@@ -204,6 +205,8 @@ export interface User {
 
 export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
 
+export type Filter = Tags | TimeOfDay | Categories;
+
 export interface Content {
   id: string;
   title: string;
@@ -213,7 +216,7 @@ export interface Content {
   description: string;
   teacher: Teacher;
   type: Categories;
-  tags: Tags[];
+  tags: Filter[];
   seconds: number;
   length: string;
   language: Languages;

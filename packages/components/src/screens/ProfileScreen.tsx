@@ -115,7 +115,6 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
           </Card>
           <Box mt={1.5}>
             <Button
-              warning
               iconName="cog"
               iconType="FontAwesome5"
               text={translation.Settings}

@@ -67,7 +67,7 @@ class ContentService implements ContentServiceType {
     contentObj: ContentObj,
   ): Content[] => {
     return Object.values(contentObj).filter(
-      (item) => item.type === category && item.tags.includes(Tags.Featured),
+      item => item.type === category && item.tags.includes(Tags.Featured),
     );
   };
 
@@ -89,9 +89,9 @@ class ContentService implements ContentServiceType {
 
       await query
         .get()
-        .then((snapshot) =>
+        .then(snapshot =>
           snapshot.docs.forEach(
-            (doc) => (content[doc.id] = this.buildContent(doc)),
+            doc => (content[doc.id] = this.buildContent(doc)),
           ),
         );
 
@@ -111,7 +111,7 @@ class ContentService implements ContentServiceType {
     try {
       const content = await query
         .get()
-        .then((snapshot) => snapshot.docs.map((doc) => doc.data()));
+        .then(snapshot => snapshot.docs.map(doc => doc.data()));
 
       return content[0].updated_at.toDate();
     } catch (err) {

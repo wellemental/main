@@ -1,10 +1,8 @@
 import React from 'react';
-import { StyleSheet, TextStyle, TextProps } from 'react-native';
-import { H1, H3 } from 'native-base';
-import { Colors, getTranslation } from 'common';
-import variables from '../../assets/native-base-theme/variables/wellemental';
+import { getTranslation } from 'common';
+import { useCurrentUser } from '../../hooks';
 
-const TextTranslate: React.FC = ({ children, ...props }) => {
+const TextTranslate: React.FC = ({ children }) => {
   const { translation } = useCurrentUser();
 
   return (

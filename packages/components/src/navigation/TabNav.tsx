@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '../types';
-import variables from '../assets/native-base-theme/variables/wellemental';
+import { colors } from 'common';
 import { useCurrentUser } from '../hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomeScreen from '../screens/HomeScreen';
@@ -47,7 +47,7 @@ const TabNav: React.FC = () => {
             <Icon
               name={iconName}
               style={{
-                color: variables.textColor,
+                color: colors.text,
                 opacity: focused ? 1 : 0.4,
               }}
             />
@@ -55,18 +55,18 @@ const TabNav: React.FC = () => {
         },
       })}
       tabBarOptions={{
-        inactiveBackgroundColor: variables.white,
-        activeBackgroundColor: variables.white,
-        inactiveTintColor: variables.lightTextColor,
-        activeTintColor: variables.textColor,
+        inactiveBackgroundColor: colors.base,
+        activeBackgroundColor: colors.base,
+        inactiveTintColor: colors.lightText,
+        activeTintColor: colors.text,
         style: {
-          backgroundColor: variables.white,
+          backgroundColor: colors.base,
           height: 60 + insets.bottom,
           paddingTop: 10,
           paddingBottom: 5 + insets.bottom,
           borderTopWidth: 1,
-          borderTopColor: variables.offWhite,
-          shadowColor: variables.lightGray,
+          borderTopColor: colors.neutral,
+          shadowColor: colors.lightText,
           borderTopWidth: 0,
           shadowOffset: {
             width: 0,
