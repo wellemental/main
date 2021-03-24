@@ -95,9 +95,7 @@ const SettingsScreen: React.FC = () => {
     const url =
       label === 'help' ? 'https://wellemental.zendesk.com/' : liveLink;
 
-    Linking.openURL(url).catch((err) =>
-      console.error('An error occurred', err),
-    );
+    Linking.openURL(url).catch(err => console.error('An error occurred', err));
   };
 
   const list: SettingsLink[] = [
@@ -111,13 +109,13 @@ const SettingsScreen: React.FC = () => {
       label: translation['Need help?'],
       onPress: () => linkExternally('help'),
       iconName: 'help-circle',
-      color: 'info',
+      color: 'warning',
     },
     {
       label: 'Notifications',
       onPress: () => handleNavigate('Notifications'),
       iconName: 'notifications',
-      color: 'warning',
+      color: 'info',
     },
     {
       label: 'Rate App',
