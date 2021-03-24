@@ -18,10 +18,9 @@ import RNIap, { requestSubscription } from 'react-native-iap';
 import { Platform } from 'react-native';
 import { PromoCodeService } from 'services';
 import styled from 'styled-components';
-import variables from '../assets/native-base-theme/variables/wellemental';
 import AskParentsScreen from './AskParentsScreen';
 import { deviceWidth } from 'services';
-import { brandColors } from '../assets/native-base-theme/variables/wellemental';
+import { colors } from 'common';
 
 const PlanSelect = styled(TouchableOpacity)`
   flex: 1;
@@ -36,7 +35,7 @@ const PlanSelect = styled(TouchableOpacity)`
 `;
 
 const Header2 = styled(H2)`
-  color: ${brandColors.brandPrimary};
+  color: ${colors.primary};
 `;
 
 // defining IAP SKUs by platform in `constants.ts`
@@ -147,12 +146,8 @@ const PlansScreen: React.FC = () => {
         <BackButton float="right" close plansScreen />
         <PageHeading
           plansScreen
-          title={translation['An inclusive space for kids to breathe.']}
-          subtitle={
-            translation[
-              'Spark a  mindful practice with the children in your life. Learn meditation and yoga with Wellemental.'
-            ]
-          }
+          title="An inclusive space for kids to breathe."
+          subtitle="Spark a  mindful practice with the children in your life. Learn meditation and yoga with Wellemental."
         />
 
         <Box mb={2}>
@@ -160,7 +155,7 @@ const PlansScreen: React.FC = () => {
             <Box row key={bullet} mb={0.5}>
               <Icon
                 name="ios-checkmark-sharp"
-                style={{ fontSize: 22, color: brandColors.brandWarning }}
+                style={{ fontSize: 22, color: colors.warning }}
               />
 
               <Paragraph style={{ paddingHorizontal: 5 }} key={bullet}>
@@ -179,8 +174,8 @@ const PlansScreen: React.FC = () => {
                   marginRight: 5,
                   borderColor:
                     selectedPlan === PlanId.Monthly
-                      ? variables.brandWarning
-                      : variables.lightTextColor,
+                      ? colors.warning
+                      : colors.lightText,
                 }}
                 onPress={() => setSelectedPlan(PlanId.Monthly)}>
                 <Header2>{translation.Monthly}</Header2>
@@ -199,8 +194,8 @@ const PlansScreen: React.FC = () => {
                   marginLeft: 5,
                   borderColor:
                     selectedPlan === PlanId.Yearly
-                      ? variables.brandWarning
-                      : variables.lightTextColor,
+                      ? colors.warning
+                      : colors.lightText,
                 }}
                 onPress={() => setSelectedPlan(PlanId.Yearly)}>
                 <Header2>{translation.Annual}</Header2>

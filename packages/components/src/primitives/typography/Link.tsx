@@ -1,6 +1,6 @@
 import React from 'react';
 import { Linking, Text } from 'react-native';
-import { brandColors } from '../../assets/native-base-theme/variables/wellemental';
+import { colors } from 'common';
 
 interface Props {
   url: string;
@@ -10,7 +10,7 @@ interface Props {
 const Link: React.FC<Props> = ({ url, text }) => {
   return (
     <Text
-      style={{ color: brandColors.brandPrimary, fontWeight: 'bold' }}
+      style={{ color: colors.primary, fontWeight: 'bold' }}
       onPress={() =>
         Linking.openURL(url).catch(err =>
           console.error('An error occurred', err),

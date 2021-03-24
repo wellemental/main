@@ -4,7 +4,7 @@ import { Button, Box, Container, Headline } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { useNavigation, useCurrentUser } from '../hooks';
-import { brandColors } from '../assets/native-base-theme/variables/wellemental';
+import { colors } from 'common';
 import { deviceWidth, rateApp } from 'services';
 
 type Props = {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flex: 1,
     top: 0,
     position: 'absolute',
-    backgroundColor: brandColors.skyBlue,
+    backgroundColor: colors.skyBlue,
   },
 });
 
@@ -41,7 +41,7 @@ const CelebrationScreen: React.FC<Props> = () => {
   const [showPoster, togglePoster] = useState(true);
   const localVideo = require('../assets/images/celebration_screen.mp4');
 
-  const onLoad = (data) => {
+  const onLoad = data => {
     togglePoster(false);
   };
 
@@ -58,7 +58,7 @@ const CelebrationScreen: React.FC<Props> = () => {
   return (
     <View
       style={{
-        backgroundColor: brandColors.skyBlue,
+        backgroundColor: colors.skyBlue,
         justifyContent: 'center',
         alignContent: 'center',
         flex: 1,
@@ -82,7 +82,7 @@ const CelebrationScreen: React.FC<Props> = () => {
         <Headline
           center
           style={{
-            color: brandColors.brandSecondary,
+            color: colors.secondary,
             fontSize: 60,
             height: 60,
             lineHeight: 70,

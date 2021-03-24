@@ -11,7 +11,7 @@ type Props = {
 };
 
 const DownloadRow: React.FC<Props> = ({ videoUrl }) => {
-  const { activePlan, translation } = useCurrentUser();
+  const { activePlan } = useCurrentUser();
 
   return (
     <Box
@@ -27,14 +27,14 @@ const DownloadRow: React.FC<Props> = ({ videoUrl }) => {
         borderColor: colors.offWhite,
       }}>
       <Box>
-        <Paragraph bold>{translation['Save for offline']}</Paragraph>
+        <Paragraph bold>Save for offline</Paragraph>
       </Box>
       {activePlan ? (
         <Download videoUrl={videoUrl} />
       ) : (
         <Icon
           name="lock-closed"
-          style={{ fontSize: 33, paddingVertical: 10 }}
+          style={{ fontSize: 33, paddingVertical: 10, color: colors.lightText }}
         />
       )}
     </Box>

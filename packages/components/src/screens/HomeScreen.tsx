@@ -13,8 +13,13 @@ import {
 import { VersionConfig } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { getVersion } from 'react-native-device-info';
-import variables from '../assets/native-base-theme/variables/wellemental';
-import { getTimeOfDay, Tags, TimeOfDay, exploreRedirects } from 'common';
+import {
+  getTimeOfDay,
+  colors,
+  Tags,
+  TimeOfDay,
+  exploreRedirects,
+} from 'common';
 
 const HomeScreen: React.FC = ({ navigation }) => {
   const { translation, activePlan } = useCurrentUser();
@@ -52,7 +57,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
         <TouchableOpacity
           onPress={upgradeOnPress}
           style={{
-            borderBottomColor: variables.brandDanger,
+            borderBottomColor: colors.danger,
             borderBottomWidth: 1,
             paddingTop: 5,
             paddingBottom: 15,

@@ -1,7 +1,7 @@
 import React from 'react';
 import Paragraph, { ParagraphProps } from './Paragraph';
 import { NativeBase } from 'native-base';
-import variables from '../../assets/native-base-theme/variables/wellemental';
+import { colors } from 'common';
 
 const ListEmpty: React.FC<ParagraphProps & NativeBase.Text> = ({
   children,
@@ -10,7 +10,7 @@ const ListEmpty: React.FC<ParagraphProps & NativeBase.Text> = ({
   <Paragraph
     gt={1}
     {...props}
-    style={{ color: variables.lightTextColor, paddingHorizontal: 5 }}>
+    style={{ color: colors.lightText, paddingHorizontal: 5 }}>
     {children ? children : 'No results'}
   </Paragraph>
 );
