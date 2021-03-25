@@ -9,6 +9,7 @@ import {
   DownloadScreen,
   PromoCodeScreen,
   HomeScreen,
+  ProfileScreen,
   PlansScreen,
   CheckoutScreen,
   ContentScreen,
@@ -98,6 +99,7 @@ function App() {
                         path="/search"
                         component={SearchScreen}
                       />
+                      <PrivateRoute path="/profile" component={ProfileScreen} />
                       <PrivateRoute
                         pro
                         path="/favorites"

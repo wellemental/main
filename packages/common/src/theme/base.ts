@@ -1,4 +1,5 @@
 // import { Palette } from './palette';
+import { colors } from './light';
 
 export type Theme = {
   //   bgMain: string;
@@ -13,6 +14,7 @@ export type Theme = {
   //   disabledColor: string;
   cardPadding: number;
   cardMargin: number;
+  boxShadow: string;
   //   shadow: {
   //     shadowColor: string;
   //     shadowOffset: { width: number; height: number };
@@ -37,6 +39,7 @@ export const theme: Theme = {
   // disabledColor: colors.neutral.main,
   cardMargin: 2 * spacing,
   cardPadding: 2 * spacing,
+  boxShadow: '1px 1px 5px 0px rgb(0 0 0 / 20%)',
   //   shadow: {
   //     shadowColor: colors.text.main,
   //     shadowOffset: { width: 2, height: 2 },

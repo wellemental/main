@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Tabs as MtTabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import { theme } from 'common';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,9 +47,13 @@ const Tabs: React.FC<Props> = ({ tabs, centered }) => {
     <>
       <AppBar
         position="static"
-        color="transparent"
-        elevation={0}
-        style={{ marginBottom: '16px' }}>
+        elevation={1}
+        style={{
+          marginBottom: '16px',
+          backgroundColor: 'white',
+          borderRadius: theme.borderRadiusBase,
+          padding: '0 7px',
+        }}>
         <MtTabs
           value={tab}
           onChange={handleTab}

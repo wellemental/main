@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import TextTranslate from '../typography/TextTranslate';
+import Icon, { Icons } from '../icons/Icon';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,6 +23,7 @@ type Props = {
   loading?: boolean;
   text?: string;
   onPress?: () => void;
+  iconName?: Icons;
 };
 
 const Button: React.FC<Props & ButtonProps> = ({
@@ -30,6 +32,7 @@ const Button: React.FC<Props & ButtonProps> = ({
   disabled = false,
   children,
   onPress,
+  iconName,
   ...props
 }) => {
   const classes = useStyles();
@@ -42,6 +45,7 @@ const Button: React.FC<Props & ButtonProps> = ({
       color={props.color ? props.color : 'primary'}
       disabled={loading || disabled}
       onClick={onPress ? onPress : props.onClick}
+      startIcon={iconName ? <Icon name={iconName} /> : undefined}
       {...props}>
       {loading ? (
         <CircularProgress size={26} />

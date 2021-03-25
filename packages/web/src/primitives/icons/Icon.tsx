@@ -41,6 +41,7 @@ const icons: { [key: string]: Icon } = {
   home: { active: HomeIcon, inactive: HomeOutlined },
   search: { inactive: SearchIcon },
   settings: { inactive: SettingsIcon },
+  cog: { inactive: SettingsIcon },
   logout: { inactive: LogoutIcon },
   support: { inactive: ContactSupportIcon },
   'chevron-right': { inactive: ChevronRight },
@@ -56,7 +57,7 @@ const icons: { [key: string]: Icon } = {
   school: { inactive: SchoolIcon },
 };
 
-type Icons = keyof typeof icons;
+export type Icons = keyof typeof icons;
 
 const Icon: React.FC<Props & IconProps> = ({
   name,

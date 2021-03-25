@@ -144,6 +144,7 @@ export const theme = createMuiTheme({
         // padding: '5%',
         borderRadius: base.borderRadiusBase,
         marginBottom: base.cardMargin,
+        boxShadow: base.boxShadow,
       },
     },
     MuiCardContent: {

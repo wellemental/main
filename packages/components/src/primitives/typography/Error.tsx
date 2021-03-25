@@ -33,6 +33,7 @@ const ErrorComponent: React.FC<Props> = ({ error, center, success }) => {
         paddingHorizontal: 5,
         alignSelf: center ? 'center' : 'flex-start',
         textAlign: center ? 'center' : 'left',
+        lineHeight: 22,
       }}>
       {text}
     </Paragraph>

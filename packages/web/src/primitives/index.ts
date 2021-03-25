@@ -2,6 +2,7 @@ export * from './typography';
 export * from './buttons';
 export * from './loaders';
 export * from './cards';
+export * from './components';
 export * from './loops';
 export * from './page';
 export * from './images';

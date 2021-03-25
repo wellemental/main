@@ -5,16 +5,17 @@ import {
   convertTimestamp,
   FavoritesService,
 } from 'services';
-// import { Card, CardItem } from 'native-base';
 import {
   Error,
   PageHeading,
   Container,
-  // StatDisplay,
+  Card,
+  CardBody,
+  StatDisplay,
   // ContentLoopLoadMore,
   Button,
   ListEmpty,
-  // TabsButtons,
+  Tabs,
   Box,
   Loading,
   // RecentlyPlayedLoop,
@@ -23,28 +24,49 @@ import { FavoritesServiceType, Languages, Tab } from 'common';
 import {
   useCurrentUser,
   useContent,
+  useLocation,
   useContainer,
-  // useNavigation,
+  useNavigation,
 } from '../hooks';
 // import useLoadMore from '../hooks/useLoadMore';
 // import { ProfileScreenRouteProp } from '../types';
 
-type Props = {
-  // route: ProfileScreenRouteProp;
-};
-
-const ProfileScreen: React.FC<Props> = () => {
+const ProfileScreen: React.FC = () => {
   const { translation, user } = useCurrentUser();
   const { content } = useContent();
   const [error, setError] = useState();
-  // const navigation = useNavigation();
-  // const defaultTab = route && route.params && route.params.defaultTab;
+  const navigation = useNavigation();
+  const { state } = useLocation();
+  const defaultTab = state && state.defaultTab;
 
-  const tabs: Tab[] = [
-    { label: 'Stats' },
-    { label: 'History' },
-    { label: 'Favorites' },
-  ];
+  // const tabs: Tab[] = [
+  //   { label: 'Stats' },
+  //   { label: 'History' },
+  //   { label: 'Favorites' },
+  // ];
+
+  const Stats = (
+    <>
+      <Card style={{ paddingTop: 0 }}>
+        <StatDisplay type="streak" />
+        <StatDisplay type="completed" />
+        <StatDisplay type="time" last />
+      </Card>
+      <Box mt={1.5}>
+        <Button
+          iconName="cog"
+          text="Settings"
+          onPress={() => navigation.navigate('Settings')}
+        />
+      </Box>
+    </>
+  );
+
+  const tabs: { [key: string]: JSX.Element } = {
+    [translation.Stats]: Stats,
+    [translation.History]: Stats,
+    [translation.Favorites]: Stats,
+  };
 
   // const [tab, setTab] = useState<string>(
   //   defaultTab ? defaultTab : tabs[0].label,
@@ -82,6 +104,29 @@ const ProfileScreen: React.FC<Props> = () => {
       />
 
       <Error error={error} />
+
+      <Tabs tabs={tabs} />
+
+      {/* 
+{tab === 'Favorites' && (
+        <ContentLoopLoadMore
+          items={favorites}
+          loading={favsLoading}
+          loadingMore={loadingMoreFavs}
+          loadMore={loadMoreFavs}
+          hasMore={hasMoreFavs}
+        />
+      )}
+      {tab === 'History' && (
+        <ContentLoopLoadMore
+          recentlyPlayed
+          loading={loading}
+          items={items}
+          hasMore={hasMore}
+          loadingMore={loadingMore}
+          loadMore={loadMore}
+        />
+      )} */}
     </Container>
   );
 };
