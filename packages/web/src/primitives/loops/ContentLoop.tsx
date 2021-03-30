@@ -5,15 +5,15 @@ import { Content, Tags, Categories, TimeOfDay, Teachers } from 'common';
 import ListEmpty from '../typography/ListEmpty';
 import Error from '../typography/Error';
 import Link from '@material-ui/core/Link';
-
+import Button from '../buttons/Button';
+import { Box } from '../utils';
 interface Props {
   filter?: Tags | TimeOfDay | Categories | string;
   favorites?: string[];
   search?: string;
   teacher?: Teachers;
-  scrollEnabled?: boolean;
-  hasPadding?: boolean; // Apply horizontal margin for Library screen bc of tabs full width requirement
   small?: boolean;
+  limit?: number;
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -21,16 +21,17 @@ const ContentLoop: React.FC<Props> = ({
   favorites,
   search,
   teacher,
-  scrollEnabled,
-  hasPadding,
   small,
+  limit,
 }) => {
   const { user, translation } = useCurrentUser();
   const { content, error } = useContent();
   let filteredContent: Content[] = content ? Object.values(content) : [];
   const [isLangFilter, setLangFilter] = useState(true);
+  const defaultLimit = 8;
+  const [theLimit, setLimit] = useState(limit ? limit : defaultLimit);
 
-  // Calculate if
+  // Calculate if screen size is mobile
   const isSmall = useMediaQuery('(max-width:444px)');
 
   // Filter by language
@@ -84,9 +85,20 @@ const ContentLoop: React.FC<Props> = ({
       <Error error={error} />
 
       {content && hasFilteredContent && filteredContent ? (
-        filteredContent.map((item, idx) => (
-          <ContentCard small={small || isSmall} key={idx} content={item} />
-        ))
+        <>
+          {filteredContent.slice(0, theLimit).map((item, idx) => (
+            <ContentCard small={small || isSmall} key={idx} content={item} />
+          ))}
+          {filteredContent.length >= defaultLimit &&
+            filteredContent.length > theLimit && (
+              <Button
+                fullWidth={true}
+                variant="text"
+                text="Load more"
+                onPress={() => setLimit(theLimit + defaultLimit)}
+              />
+            )}
+        </>
       ) : favorites ? (
         <ListEmpty>
           {translation['Tap the heart icon to favorite content']}

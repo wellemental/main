@@ -40,6 +40,16 @@ import { ContentProvider } from './context/Content';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { PrivateRoute } from './navigation';
+import {
+  Unsubscriber,
+  User,
+  Languages,
+  LoggedOutUser,
+  English,
+  Español,
+  DefaultState,
+} from 'common';
+import ObserveUserService from './services/ObserveUserService';
 
 let stripePromise: any = null;
 if (process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
@@ -48,13 +58,22 @@ if (process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
 
 const history = createBrowserHistory();
 
-function App() {
+const defaultState: DefaultState = {
+  user: undefined,
+  translation: English,
+  activePlan: false,
+  loading: true,
+};
+
+type Props = {};
+
+const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CurrentUserProvider>
         <LeadProvider>
-          <ContentProvider>
-            <ServicesProvider>
+          <ServicesProvider>
+            <ContentProvider>
               <Elements stripe={stripePromise}>
                 <Router history={history}>
                   <ScrollToTop />
@@ -109,10 +128,6 @@ function App() {
                         path="/category"
                         component={CategoryScreen}
                       />
-                      <Route
-                        path="/forgot-password"
-                        component={ForgotPasswordScreen}
-                      />
                       <PrivateRoute
                         path="/settings"
                         component={SettingsScreen}
@@ -123,19 +138,24 @@ function App() {
                         path="/teachers"
                         component={TeachersScreen}
                       />
-
+                      <Route path="/login" component={AuthScreen} />
+                      <Route path="/friends" component={AuthScreen} />
+                      <Route
+                        path="/forgot-password"
+                        component={ForgotPasswordScreen}
+                      />
                       <PrivateRoute path="/" component={HomeScreen} />
                     </Switch>
                     <Footer />
                   </Page>
                 </Router>
               </Elements>
-            </ServicesProvider>
-          </ContentProvider>
+            </ContentProvider>
+          </ServicesProvider>
         </LeadProvider>
       </CurrentUserProvider>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

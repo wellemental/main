@@ -12,8 +12,6 @@ const LockOverlay: React.FC<Props> = ({ pb }) => {
   const { translation, activePlan } = useCurrentUser();
   const navigation = useNavigation();
 
-  console.log('IS ACTIVE?', activePlan);
-
   return (
     <>
       {!activePlan && (

@@ -2,13 +2,11 @@ import React from 'react';
 import {
   PageHeadingHome,
   ContentLoop,
-  CategoryCard,
   CategoryLoop,
   Subheadline,
-  Spinner,
+  HomepageTabs,
   AgeCards,
 } from '../primitives';
-import moment from 'moment';
 import {
   getTimeOfDay,
   TimeOfDay,
@@ -32,7 +30,7 @@ const HomeScreen: React.FC = () => {
 
       {activePlan ? (
         <>
-          {/* <TabsNB color={timeOfDayColor} /> */}
+          <HomepageTabs color={timeOfDayColor} />
 
           {features && features.categories && (
             <CategoryLoop title="Featured" categories={features.categories} />

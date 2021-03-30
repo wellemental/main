@@ -8,7 +8,7 @@ type Props = {
   color: Colors;
 };
 
-const ContentLoopSmall: React.FC<Props> = ({ color }) => {
+const NewContentLoop: React.FC<Props> = ({ color }) => {
   const { translation } = useCurrentUser();
   const { loading, content } = useContent();
   const navigation = useNavigation();
@@ -45,4 +45,4 @@ const ContentLoopSmall: React.FC<Props> = ({ color }) => {
   );
 };
 
-export default ContentLoopSmall;
+export default NewContentLoop;

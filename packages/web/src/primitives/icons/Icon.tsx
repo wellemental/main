@@ -53,7 +53,9 @@ const icons: { [key: string]: Icon } = {
   philosophy: { inactive: BookIcon },
   history: { inactive: HistoryIcon },
   breaks: { inactive: TimerIcon },
-  classes: { inactive: ClassesIcon },
+  'yoga-breaks': { inactive: TimerIcon },
+  'yoga-classes': { inactive: ClassesIcon },
+  teach: { inactive: ClassesIcon },
   school: { inactive: SchoolIcon },
 };
 

@@ -18,9 +18,7 @@ interface Props {
 }
 
 const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
-  const { auth, user } = useCurrentUser();
   const [isFav, toggleFav] = useState(false);
-  const [error, setError] = useState<string | undefined>();
   const Icon = isFav ? FavIcon : FavBorder;
 
   // const [error, setError] = useState('');
@@ -50,11 +48,12 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
 
   return (
     <IconButton
-      disabled={loading}
+      disabled={loading || mutating}
       style={{
         padding: '5px',
-        height: '38px',
-        marginTop: onProfile ? '-1px' : '11px',
+        height: '45px',
+        width: '45px',
+        marginTop: onProfile ? '-4px' : '11px',
       }}
       onClick={handleFavorite}>
       <Icon
@@ -64,7 +63,7 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
           marginRight: 0,
           fontSize: onProfile ? 36 : 30,
           lineHeight: 40,
-          color: colors.error,
+          color: colors.pink,
         }}
         name={isFav ? 'heart' : 'heart-outline'}
       />

@@ -1,32 +1,23 @@
 // Pulled from 'firestore-pagination-hook' - https://github.com/bmcmahen/firestore-pagination-hook/blob/master/src/index.ts
-
 import { useReducer, useEffect } from 'react';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import firebase from '../base';
 
 type StateType = {
   hasMore: boolean;
-  items: FirebaseFirestoreTypes.DocumentData[];
-  after: FirebaseFirestoreTypes.QueryDocumentSnapshot | null;
-  lastLoaded: FirebaseFirestoreTypes.QueryDocumentSnapshot | null;
+  items: firebase.firestore.DocumentData[];
+  after: firebase.firestore.QueryDocumentSnapshot | null;
+  lastLoaded: firebase.firestore.QueryDocumentSnapshot | null;
   loadingMore: boolean;
-  loadMore: () => any; // Added this
   limit: number;
   loadingMoreError: null | Error;
   loading: boolean;
+  loadMore: () => any; // added this
   loadingError: null | Error;
 };
 
-type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V;
-
-export type ActionType =
-  | Action<'LOAD-MORE'>
-  | Action<
-      'LOADED',
-      {
-        value: FirebaseFirestoreTypes.QuerySnapshot;
-        limit: number;
-      }
-    >;
+const dummyLoadMore = () => {
+  return null;
+};
 
 const initialState = {
   hasMore: false,
@@ -37,9 +28,21 @@ const initialState = {
   loading: true,
   loadingError: null,
   loadingMore: false,
-  loadMore: null,
   loadingMoreError: null,
+  loadMore: dummyLoadMore,
 };
+
+type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V;
+
+export type ActionType =
+  | Action<'LOAD-MORE'>
+  | Action<
+      'LOADED',
+      {
+        value: firebase.firestore.QuerySnapshot;
+        limit: number;
+      }
+    >;
 
 function reducer(state: StateType, action: ActionType): StateType {
   switch (action.type) {
@@ -85,8 +88,8 @@ function reducer(state: StateType, action: ActionType): StateType {
 }
 
 function findIndexOfDocument(
-  doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
-  items: FirebaseFirestoreTypes.DocumentData[],
+  doc: firebase.firestore.QueryDocumentSnapshot,
+  items: firebase.firestore.DocumentData[],
 ) {
   return items.findIndex(item => {
     return item.id === doc.id;
@@ -94,24 +97,24 @@ function findIndexOfDocument(
 }
 
 function updateItem(
-  doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
-  items: FirebaseFirestoreTypes.DocumentData[],
+  doc: firebase.firestore.QueryDocumentSnapshot,
+  items: firebase.firestore.DocumentData[],
 ) {
   const i = findIndexOfDocument(doc, items);
   items[i] = doc;
 }
 
 function deleteItem(
-  doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
-  items: FirebaseFirestoreTypes.DocumentData[],
+  doc: firebase.firestore.QueryDocumentSnapshot,
+  items: firebase.firestore.DocumentData[],
 ) {
   const i = findIndexOfDocument(doc, items);
   items.splice(i, 1);
 }
 
 function addItem(
-  doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
-  items: FirebaseFirestoreTypes.DocumentData[],
+  doc: firebase.firestore.QueryDocumentSnapshot,
+  items: firebase.firestore.DocumentData[],
 ) {
   const i = findIndexOfDocument(doc, items);
   if (i === -1) {
@@ -125,7 +128,7 @@ interface PaginationOptions {
 }
 
 const useLoadMore = (
-  query: FirebaseFirestoreTypes.Query,
+  query: firebase.firestore.Query<firebase.firestore.DocumentData>,
   { limit = 10 }: PaginationOptions = {},
 ): StateType => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -156,6 +159,7 @@ const useLoadMore = (
     after: state.after,
     lastLoaded: state.lastLoaded,
     limit: state.limit,
+    // @ts-ignore
     loadMore,
   };
 };

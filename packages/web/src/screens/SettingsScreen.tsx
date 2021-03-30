@@ -19,7 +19,7 @@ type SettingsLink = {
 const service = new AuthService();
 
 const SettingsScreen: React.FC = () => {
-  const { auth, translation } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const [error, setError] = useState();
   const history = useHistory();
 
@@ -58,7 +58,7 @@ const SettingsScreen: React.FC = () => {
     <>
       <PageHeading
         title={translation.Account}
-        subtitle={auth ? auth.email : undefined}
+        subtitle={user ? user.email : undefined}
       />
       <Error error={error} />
       <List>

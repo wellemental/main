@@ -186,9 +186,12 @@ type ReceiptIap = {
   timestamp: number;
 };
 
+export interface LoggedOutUser {
+  language: Languages;
+}
 export interface User {
-  email?: string;
   id?: string;
+  email?: string;
   language: Languages;
   totalPlays: number | FieldValue;
   totalCompleted: number | FieldValue;
@@ -201,6 +204,12 @@ export interface User {
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;
   updated_at?: Date;
+}
+export interface DefaultState {
+  user?: User;
+  translation: Translation;
+  activePlan: boolean;
+  loading: boolean;
 }
 
 export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;

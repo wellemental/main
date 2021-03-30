@@ -25,7 +25,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Icon from '../icons/Icon';
 import {
-  routes,
   mobileMainMenu,
   desktopMainMenu,
   desktopRightMenu,
@@ -56,12 +55,17 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     mobileNavIcon: {
       display: 'flex',
+      width: '59px',
+      height: '59px',
+      marginLeft: '-17px',
+      marginRight: '3px',
       [theme.breakpoints.up('md')]: {
         display: 'none',
       },
     },
     desktopNav: {
       display: 'none',
+
       [theme.breakpoints.up('md')]: {
         display: 'flex',
       },
@@ -150,11 +154,28 @@ const Nav: React.FC<Props> = props => {
               button
               key={link.label}
               onClick={() => handleClick(link.slug)}>
-              <Box>
+              {/* <Box>
                 <ListItemIcon>
                   <Icon name={link.icon} />
                 </ListItemIcon>
-              </Box>
+              </Box> */}
+              <ListItemText primary={translation[link.label]} />
+            </ListItem>
+          ),
+        )}
+
+        <Divider />
+        {desktopRightMenu.map(link =>
+          link.pro && !activePlan ? null : (
+            <ListItem
+              button
+              key={link.label}
+              onClick={() => handleClick(link.slug)}>
+              {/* <Box>
+                <ListItemIcon>
+                  <Icon name={link.icon} />
+                </ListItemIcon>
+              </Box> */}
               <ListItemText primary={translation[link.label]} />
             </ListItem>
           ),
@@ -251,7 +272,7 @@ const Nav: React.FC<Props> = props => {
                 <ListItemIcon className={classes.icon}>
                   <Icon name={link.icon} />
                 </ListItemIcon>
-                {link.label}
+                {translation[link.label]}
               </MenuItem>
             ))}
           </Menu>

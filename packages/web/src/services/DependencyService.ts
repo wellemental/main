@@ -3,12 +3,9 @@ import { buildLogger } from './LoggerService';
 import { buildTracker } from './TrackerService';
 import UpdateUserService from './UpdateUserService';
 import { buildFirestore } from './FirebaseService';
-// import { buildNavigationService } from './navigationService';
-// import { Navigator } from './interfaces';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
 import FavoritesService from './FavoritesService';
-// import UpdateProfileService from './UpdateProfileService';
 
 interface DependencyDescriptor {
   dependencies: string[];
@@ -16,7 +13,7 @@ interface DependencyDescriptor {
   class?: new (...args: any) => any;
 }
 
-let dependenciesInstances: { [key: string]: any } = {};
+export let dependenciesInstances: { [key: string]: any } = {};
 
 const BASE_SERVICE_DEPENDENCIES = [
   'currentUser',

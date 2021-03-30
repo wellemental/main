@@ -35,7 +35,7 @@ const promoCodes = ['MMOVE', 'ZIA', 'BRANDON', 'YAHEL', 'FLOR', 'NICOLE'];
 
 const CheckoutScreen: React.FC = () => {
   const history = useHistory();
-  const { auth, translation } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { plan } = useLead();
@@ -142,9 +142,9 @@ const CheckoutScreen: React.FC = () => {
         <Paragraph small center color="textSecondary">
           {translation['100% Satisfaction Guarantee. Cancel anytime.']}
         </Paragraph>
-        {auth && auth.email && (
+        {user && user.email && (
           <Paragraph fine center color="textSecondary">
-            {auth.email}
+            {user.email}
           </Paragraph>
         )}
       </Box>

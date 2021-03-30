@@ -9,7 +9,7 @@ const PromoCodeScreen: React.FC = () => {
   const [error, setError] = useState('');
   const [promoCode, setPromoCode] = useState('');
   const [upgrading, setUpgrading] = useState(false);
-  const { auth, translation } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const history = useHistory();
 
   const handlePromoCode = async () => {
@@ -17,7 +17,7 @@ const PromoCodeScreen: React.FC = () => {
 
     try {
       setUpgrading(true);
-      await service.validateAndUpgrade(auth.uid, promoCode);
+      await service.validateAndUpgrade(user.id, promoCode);
       history.push('/download');
     } catch (err) {
       setError(err);
@@ -25,7 +25,7 @@ const PromoCodeScreen: React.FC = () => {
     }
   };
 
-  return !auth ? (
+  return !user ? (
     <Redirect
       to={{
         pathname: '/login',
@@ -35,9 +35,9 @@ const PromoCodeScreen: React.FC = () => {
     <Box>
       <Card>
         <CardContent>
-          {auth && (
+          {user && (
             <Paragraph align="center" color="textSecondary">
-              {auth.email}
+              {user.email}
             </Paragraph>
           )}
           <Headline align="center" variant="h5" gutterBottom>
@@ -53,7 +53,7 @@ const PromoCodeScreen: React.FC = () => {
             label={translation['Access code']}
             onKeyPress={handlePromoCode}
             value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value && e.target.value)}
+            onChange={e => setPromoCode(e.target.value && e.target.value)}
           />
 
           <Button

@@ -53,6 +53,12 @@ export const categories: CategoryObj = {
     icon: 'clock',
     iconType: 'Feather',
   },
+  New: {
+    title: 'New',
+    tag: undefined,
+    icon: 'clock',
+    iconType: 'Feather',
+  },
 };
 
 export const meditationCategories = [

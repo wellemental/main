@@ -6,19 +6,25 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     spinning: {
       textAlign: 'center',
-      height: '100vh',
     },
   }),
 );
 
 type Props = {
   text?: string;
+  fullPage?: boolean;
 };
 
-const Spinner: React.FC<Props> = ({ text }) => {
+const Spinner: React.FC<Props> = ({ text, fullPage }) => {
   const classes = useStyles();
   return (
-    <Grid container className={classes.spinning}>
+    <Grid
+      container
+      className={classes.spinning}
+      style={{
+        height: fullPage ? '100vh' : undefined,
+        margin: fullPage ? '20px 0' : 0,
+      }}>
       <Grid item xs={12}>
         {text && (
           <Typography variant="subtitle2" gutterBottom>

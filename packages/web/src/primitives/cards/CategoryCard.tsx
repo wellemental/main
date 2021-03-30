@@ -18,15 +18,9 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
 
   // If it's a feature, get the translation from the features object
   // Then if translation is possible - age groups have them, features don't currently
-  const title: string =
-    isFeature(category) && user.language === Languages.Es
-      ? category['title-es']
-      : category.title;
+  const title: string = category.title;
 
-  const description: string | undefined =
-    isFeature(category) && user.language === Languages.Es
-      ? category['description-es']
-      : category.description;
+  const description: string | undefined = category.description;
 
   return (
     <Card

@@ -7,6 +7,7 @@ import {
   ContentObj,
   Features,
   Content as ContentType,
+  User,
 } from 'common';
 import { useConfig, useCurrentUser } from '../hooks';
 import logger from '../services/LoggerService';
@@ -30,15 +31,11 @@ export const Content = React.createContext<ContentContext>({
   features: undefined,
 });
 
-export const ContentProvider = ({
-  children,
-}: {
-  children: any;
-}): JSX.Element => {
+export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   const [content, setContent] = useState<ContentObj | null>(null);
   const [error, setError] = useState('');
-  const { user } = useCurrentUser();
   const [loading, setLoading] = useState(!content ? true : false);
+  const { user } = useCurrentUser();
 
   const getDbContent = async () => {
     // Get teachers and content from firestore
@@ -72,8 +69,9 @@ export const ContentProvider = ({
   // Get Featured Content from Remote Config
   const { loading: rcLoading, data: rcData }: any = useConfig('featured');
 
+  // If user is logged in and content or remote config is still loading, show spinner
   if ((user && loading) || rcLoading) {
-    return <Spinner text="Loading Content..." />;
+    return <Spinner fullPage />;
   }
 
   return (

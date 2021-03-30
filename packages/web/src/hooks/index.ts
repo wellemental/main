@@ -6,6 +6,7 @@ export * from './useCurrentUser';
 export * from './useDepends';
 export { useHistory } from './useHistory';
 export * from './useLead';
+export { default as useLoadMore } from './useLoadMore';
 export * from './useLocation';
 export { useMediaQuery } from './useMediaQuery';
 export * from './useMutation';

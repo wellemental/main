@@ -24,6 +24,7 @@ export const Español = {
   Settings: 'Configuración',
   Loading: 'Descargando',
   Account: 'Tu Cuenta',
+  'Your Account': 'Tu Cuenta',
   Profile: 'Perfíl',
   Logout: 'Cerrar Sesión',
   'Yes, Logout': 'Si, cerrar sesión',
@@ -87,6 +88,7 @@ export const Español = {
   'Access code': 'Código de accesso',
   'No results': 'No hay resultados',
   'New account?': '¿Nueva cuenta?',
+  New: 'Nuevo',
   Subscribe: 'Subscribe',
   'Get unlimited access to our content with an annual or monthly subscription.':
     'Recibe accesso ilimitado a nuestro contenido con una subscripcion annual o mensual.',
@@ -204,6 +206,7 @@ export const Español = {
   'Friends & Family': 'Amigos y Familia',
   'Click below to get started.': 'Haga clic abajo para comenzar.',
   'Download iOS': 'Descargar iOS',
+  'Download Android': 'Descargar Android',
   'Go To Homepage': 'Ir a la página de inicio',
   'Back to Login': 'Volver',
   'Open the Settings app.': 'Abre la app Configuración.',

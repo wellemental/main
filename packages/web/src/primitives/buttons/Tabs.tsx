@@ -12,6 +12,7 @@ interface TabPanelProps {
 type Props = {
   centered?: boolean;
   tabs: { [key: string]: JSX.Element };
+  transparent?: boolean;
 };
 
 const TabPanel = (props: TabPanelProps) => {
@@ -36,7 +37,7 @@ const a11yProps = (index: any) => {
   };
 };
 
-const Tabs: React.FC<Props> = ({ tabs, centered }) => {
+const Tabs: React.FC<Props> = ({ tabs, centered, transparent }) => {
   // Tabs
   const [tab, setTab] = useState(0);
   const handleTab = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -47,12 +48,12 @@ const Tabs: React.FC<Props> = ({ tabs, centered }) => {
     <>
       <AppBar
         position="static"
-        elevation={1}
+        elevation={transparent ? 0 : 1}
         style={{
           marginBottom: '16px',
-          backgroundColor: 'white',
+          backgroundColor: transparent ? 'rgba(0,0,0,0)' : 'white',
           borderRadius: theme.borderRadiusBase,
-          padding: '0 7px',
+          padding: transparent ? 0 : '0 7px',
         }}>
         <MtTabs
           value={tab}

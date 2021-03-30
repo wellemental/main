@@ -78,7 +78,6 @@ export const usePageviews = (): void => {
       hotjar.initialize(996113, 6);
 
       if (!gaInit && process.env.REACT_APP_GA_ID) {
-        // console.log('INIT GA', gaInit);
         ReactGA.initialize(process.env.REACT_APP_GA_ID);
         ReactGA.send(['pageview', pathname]);
         gaInit = true;
@@ -100,7 +99,7 @@ export const usePageviews = (): void => {
                 zp: '',
               }
             : undefined;
-        // console.log('INIT FACEBOOK', user ? user.email : 'no user');
+
         ReactPixel.init(process.env.REACT_APP_FB_PIXEL, advancedMatching);
         fbInit = true;
       }
@@ -116,9 +115,8 @@ export const usePageviews = (): void => {
       // }
 
       // Set user tracking for GA
-      return app.auth().onAuthStateChanged((user) => {
+      return app.auth().onAuthStateChanged(user => {
         if (user && 'uid' in user && !gaUser) {
-          // console.log('INIT GA USER', user.uid);
           ReactGA.set({ userId: user.uid });
           gaUser = true;
         }
@@ -134,15 +132,13 @@ export const usePageviews = (): void => {
 
       if (fbEvents[pathname]) {
         const fbEvent = fbEvents[pathname];
-        fbEvent.map((event) => {
+        fbEvent.map(event => {
           if (!event.fired) {
-            // console.log('FIRE EVENT', event);
             ReactPixel.track(
               event.event.type,
               event.event.value ? event.event.value : {},
             );
             event.fired = true;
-            // console.log('fired', event.fired);
           }
         });
       }

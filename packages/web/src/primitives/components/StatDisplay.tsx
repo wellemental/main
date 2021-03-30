@@ -43,68 +43,8 @@ const StatDisplay: React.FC<Props> = ({ type, last }) => {
           bgColor: colors.secondary,
         };
 
-  const streakDisplay = (
-    <Box row justifyContent="center">
-      <Headline
-        style={{
-          color: typeObj.bgColor,
-          fontSize: '48px',
-          lineHeight: '59px',
-          marginRight: '3px',
-        }}>
-        {user.streak}
-      </Headline>
-      <Headline
-        style={{
-          color: typeObj.bgColor,
-          fontSize: '28px',
-          lineHeight: '66px',
-        }}>
-        days
-      </Headline>
-    </Box>
-  );
-
-  const totalTimeDisplay =
-    totalHours > 0 ? (
-      <Box row justifyContent="flex-end" alignItems="flex-end">
-        <Headline
-          style={{
-            color: typeObj.bgColor,
-            fontSize: 48,
-            lineHeight: 58,
-            marginRight: 3,
-          }}>
-          {totalHours}
-        </Headline>
-        <Headline
-          style={{
-            color: typeObj.bgColor,
-            fontSize: '28px',
-            marginRight: '15px',
-            lineHeight: '66px',
-          }}>
-          {hourLabel}
-        </Headline>
-        <Headline
-          style={{
-            color: typeObj.bgColor,
-            fontSize: '48px',
-            lineHeight: '58px',
-            marginRight: '3px',
-          }}>
-          {minuteRemainder}
-        </Headline>
-        <Headline
-          style={{
-            color: typeObj.bgColor,
-            fontSize: '28px',
-            lineHeight: '66px',
-          }}>
-          {minuteLabel}
-        </Headline>
-      </Box>
-    ) : (
+  const renderStreak = () =>
+    user ? (
       <Box row justifyContent="center">
         <Headline
           style={{
@@ -113,7 +53,7 @@ const StatDisplay: React.FC<Props> = ({ type, last }) => {
             lineHeight: '59px',
             marginRight: '3px',
           }}>
-          {minuteRemainder}
+          {user.streak}
         </Headline>
         <Headline
           style={{
@@ -121,10 +61,73 @@ const StatDisplay: React.FC<Props> = ({ type, last }) => {
             fontSize: '28px',
             lineHeight: '66px',
           }}>
-          {minuteLabel}
+          days
         </Headline>
       </Box>
-    );
+    ) : null;
+
+  const renderTotalTime = () =>
+    user ? (
+      totalHours > 0 ? (
+        <Box row justifyContent="flex-end" alignItems="flex-end">
+          <Headline
+            style={{
+              color: typeObj.bgColor,
+              fontSize: 48,
+              lineHeight: 58,
+              marginRight: 3,
+            }}>
+            {totalHours}
+          </Headline>
+          <Headline
+            style={{
+              color: typeObj.bgColor,
+              fontSize: '28px',
+              marginRight: '15px',
+              lineHeight: '66px',
+            }}>
+            {hourLabel}
+          </Headline>
+          <Headline
+            style={{
+              color: typeObj.bgColor,
+              fontSize: '48px',
+              lineHeight: '58px',
+              marginRight: '3px',
+            }}>
+            {minuteRemainder}
+          </Headline>
+          <Headline
+            style={{
+              color: typeObj.bgColor,
+              fontSize: '28px',
+              lineHeight: '66px',
+            }}>
+            {minuteLabel}
+          </Headline>
+        </Box>
+      ) : (
+        <Box row justifyContent="center">
+          <Headline
+            style={{
+              color: typeObj.bgColor,
+              fontSize: '48px',
+              lineHeight: '59px',
+              marginRight: '3px',
+            }}>
+            {minuteRemainder}
+          </Headline>
+          <Headline
+            style={{
+              color: typeObj.bgColor,
+              fontSize: '28px',
+              lineHeight: '66px',
+            }}>
+            {minuteLabel}
+          </Headline>
+        </Box>
+      )
+    ) : null;
 
   return (
     <Box
@@ -164,12 +167,12 @@ const StatDisplay: React.FC<Props> = ({ type, last }) => {
             fontSize: '48px',
             lineHeight: '56px',
           }}>
-          {user.totalCompleted}
+          {user && user.totalCompleted}
         </Headline>
       ) : type === 'streak' ? (
-        streakDisplay
+        renderStreak()
       ) : (
-        totalTimeDisplay
+        renderTotalTime()
       )}
     </Box>
   );

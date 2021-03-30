@@ -5,6 +5,7 @@ import { Category, categories, Tags } from 'common';
 import { slugify } from '../services/helpers';
 import { ageGroups } from '../constants';
 
+// This filter and matching is horrible and needs to be cleaned up eventually.
 const CategoryScreen: React.FC = () => {
   const { features } = useContent();
 
@@ -12,11 +13,18 @@ const CategoryScreen: React.FC = () => {
   const match = useRouteMatch();
   let category: Category | null = null;
 
-  // Try to match with an age group slug
-  category = ageGroups.filter(group => group.slug === match)[0];
+  // Unfiltered New category
+  if (match === 'new') {
+    category = {
+      tag: undefined,
+      title: 'New',
+    };
+  }
 
-  console.log('MATCH - ', match);
-  console.log('CATEGORY #1 - ', category);
+  // Try to match with an age group slug
+  if (!category) {
+    category = ageGroups.filter(group => group.slug === match)[0];
+  }
 
   // Match the category slug to the category from remote config
   // Only if it already isn't matching with an age group category
@@ -26,8 +34,10 @@ const CategoryScreen: React.FC = () => {
     )[0];
   }
 
+  // If not ageGroup or feature, match here
   if (!category) {
     category = Object.values(categories).filter(category => {
+      // Match tags that are different than their slugify
       if (category.tag === Tags.Stress && match === 'anxiety-and-stress') {
         return true;
       }

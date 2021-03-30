@@ -11,7 +11,7 @@ function Alert(props: AlertProps) {
 }
 
 const EditProfileScreen: React.FC = () => {
-  const { auth, user, translation } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const [language, setLanguage] = useState(
     user && user.language ? user.language : Languages.En,
   );
@@ -37,7 +37,7 @@ const EditProfileScreen: React.FC = () => {
   const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
 
   const { loading, error: mutateError, mutate } = useMutation(() =>
-    service.updateProfile(auth.uid, newProfile),
+    service.updateProfile(user.id, newProfile),
   );
 
   const handleUpdate = async () => {
