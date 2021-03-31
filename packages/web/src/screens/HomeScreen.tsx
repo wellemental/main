@@ -35,7 +35,11 @@ const HomeScreen: React.FC = () => {
           {features && features.categories && (
             <CategoryLoop title="Featured" categories={features.categories} />
           )}
-          <Subheadline color={timeOfDayColor}>Explore</Subheadline>
+          <Subheadline
+          //color={timeOfDayColor}
+          >
+            Explore
+          </Subheadline>
 
           <AgeCards />
 
@@ -47,7 +51,11 @@ const HomeScreen: React.FC = () => {
         </>
       ) : (
         <>
-          <Subheadline color={timeOfDayColor}>Featured</Subheadline>
+          <Subheadline
+          // color={timeOfDayColor}
+          >
+            Featured
+          </Subheadline>
           <ContentLoop filter={Tags.Featured} />
         </>
       )}
