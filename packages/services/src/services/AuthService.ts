@@ -30,7 +30,7 @@ class AuthService implements AuthServiceType {
     try {
       await auth().signInWithEmailAndPassword(email, password);
     } catch (err) {
-      logger.error('Error logging in');
+      // logger.error('Error logging in');
       return Promise.reject(this.checkError(err));
     }
     // tracker.track(TrackingEvents.Login);
@@ -63,7 +63,7 @@ class AuthService implements AuthServiceType {
 
       await auth()
         .createUserWithEmailAndPassword(account.email, account.password)
-        .then(async (user) => {
+        .then(async user => {
           try {
             await profileService.createProfile({
               id: user.user.uid,
@@ -76,7 +76,7 @@ class AuthService implements AuthServiceType {
             // logger.error(`Error creating user doc - ${err}`);
           }
         })
-        .catch((err) => {
+        .catch(err => {
           // logger.error(`Error creating user and userDoc - ${err}`);
         });
       // tracker.track(TrackingEvents.SignUp);
@@ -88,6 +88,11 @@ class AuthService implements AuthServiceType {
 
   public checkError(err: FirebaseError): Error {
     switch (err.code) {
+      case 'auth/network-request-failed': {
+        return new AuthenticationError(
+          'A network error has occurred, please check your internet connection and try again.',
+        );
+      }
       case 'auth/email-already-in-use': {
         return new AuthenticationError('Email already in use. Try signing in.');
       }

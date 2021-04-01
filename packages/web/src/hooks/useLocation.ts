@@ -1,5 +1,6 @@
+// Pulls parameter data from internal navigation
 import { useLocation as ogUseLocation } from 'react-router-dom';
-import { LocationState } from '../types';
+import { LocationState } from 'common';
 
 export const useLocation = () => {
   let location: any = ogUseLocation();

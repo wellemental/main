@@ -1,16 +1,15 @@
-// import { FirebaseFirestoreTypes } from '../base';
-// import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Logger } from './LoggerService';
 import { Tracker } from './TrackerService';
 import UpdateUserService from './UpdateUserService';
-import { User, FirestoreModule } from '../types';
+import { FirestoreModule } from '../types';
+import { User } from 'common';
 
 export type BaseServiceContructorOptions = {
   currentUser: User;
   logger: Logger;
   tracker: Tracker;
   updateUserService: UpdateUserService;
-  firestore: FirestoreModule; //FirebaseFirestoreTypes.Module;
+  firestore: FirestoreModule;
 };
 
 class BaseService {

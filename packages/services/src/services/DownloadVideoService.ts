@@ -1,12 +1,27 @@
 import { DownloadVideoServiceType } from '../types';
-// import logger from '../services/LoggerService';
-// import tracker, { TrackingEvents } from './TrackerService';
 import RNFS, { DownloadResult } from 'react-native-fs';
+
+export type DownloadProgressCallbackResult = RNFS.DownloadProgressCallbackResult;
 
 class DownloadVideoService implements DownloadVideoServiceType {
   private convertUrlToFileName = (videoUrl: string): string => {
     return videoUrl.substring(videoUrl.lastIndexOf('/') + 1, videoUrl.length);
   };
+
+  // Need to launch separate firebase instance for this
+  // https://rnfirebase.io/app/usage
+  // private getVideoSize = async (url: string) => {
+  //   const store = storage();
+  //   const storageRef = store.getReferce();
+  //   const assetRef = storageRef.child(url);
+
+  //   try {
+  //     const metadata = await assetRef.getMetadata();
+  //     return metadata.size;
+  //   } catch (err) {
+  //     return Promise.reject('Unable to get video size');
+  //   }
+  // };
 
   private createPathname = (filename: string): string => {
     return RNFS.DocumentDirectoryPath + '/' + filename;
@@ -16,7 +31,9 @@ class DownloadVideoService implements DownloadVideoServiceType {
     const filename = this.convertUrlToFileName(videoUrl);
     const path_name = this.createPathname(filename);
     try {
-      return await RNFS.exists(path_name);
+      const res = await RNFS.exists(path_name);
+      console.log('DOES IT EXIST?', res);
+      return res;
     } catch (err) {
       return Promise.reject(err);
     }
@@ -31,21 +48,21 @@ class DownloadVideoService implements DownloadVideoServiceType {
     const exists = await this.checkExists(videoUrl);
 
     if (exists) {
-      // logger.info('Already downloaded');
       return Promise.resolve();
     }
-
-    await RNFS.downloadFile({
+    RNFS.downloadFile({
       fromUrl: videoUrl,
       toFile: path_name.replace(/%20/g, '_'),
-      background: true,
+      discretionary: true,
+      cacheable: true,
     })
       .promise.then((res) => {
-        // tracker.track(TrackingEvents.DownloadVideo);
-        // logger.info(`File Downloaded: ${res}`);
+        // console.log('Response', res);
+        // return RNFS.readFile(path_name.replace(/%20/g, '_'), 'base64');
       })
       .catch((err) => {
-        // logger.error(`Err downloadFile: ${err}`);
+        // console.log('Error downloading video', err);
+        return Promise.reject(`Error downloading video - ${err}`);
       });
   }
 
@@ -61,7 +78,7 @@ class DownloadVideoService implements DownloadVideoServiceType {
         }
       });
     } catch (err) {
-      // logger.error(`Error getting video - ${err}`);
+      return Promise.reject('Error getting video');
     }
     return Promise.resolve(path_name);
   }
@@ -71,12 +88,10 @@ class DownloadVideoService implements DownloadVideoServiceType {
     const path_name = this.createPathname(filename);
 
     try {
-      const res = await RNFS.unlink(path_name);
-      // tracker.track(TrackingEvents.UndownloadVideo);
-      // logger.info(`File Deleted - ${res}`);
+      await RNFS.unlink(path_name);
+      console.log('deleting', res);
       return Promise.resolve();
     } catch (err) {
-      // logger.error('Error deleting video cache');
       return Promise.reject(err.message);
     }
   }

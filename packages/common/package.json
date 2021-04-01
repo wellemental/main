@@ -1,0 +1,22 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "echo \"no tests\" && true"
+  },
+  "description": "Common code for web and mobile project",
+  "dependencies": {
+    "moment": "^2.27.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.46",
+    "@typescript-eslint/eslint-plugin": "^3.9.1",
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.7"
+  }
+}

@@ -9,11 +9,9 @@ import RNIap, {
   purchaseErrorListener,
   purchaseUpdatedListener,
 } from 'react-native-iap';
-// import { setActivePlan } from '../actions';
 import functions from '@react-native-firebase/functions';
 import { LocalStateService } from 'services';
 import { useCurrentUser } from '../hooks';
-// import { PlanId } from '../screens/PlansScreen';
 
 export const IAPContext: React.Context<any> = React.createContext({
   processing: false,
@@ -22,29 +20,14 @@ export const IAPContext: React.Context<any> = React.createContext({
   error: '',
 });
 
-const localStateService = new LocalStateService();
-
 let purchaseUpdateSubscription;
 let purchaseErrorSubscription;
 
 export const IAPProvider = ({ children }: any) => {
-  const { user, updateUser } = useCurrentUser();
   const [processing, setProcessing] = useState(false);
   const [activePlan, setActivePlan] = useState('free');
   const [statuses, setStatus] = useState([]);
   const [error, setError] = useState<PurchaseError | string>('');
-
-  // const container = useContainer();
-  // const localStateService = container.getInstance<LocalStateServiceType>(
-  //   'localState',
-  // );
-
-  const storePlanAsync = async (planData: any) => {
-    await localStateService.setStorage('wmPlan', planData);
-  };
-
-  // const purchaseUpdateSubscription = useRef(null);
-  // const purchaseErrorSubscription = useRef(null);
 
   const processNewPurchase = async (
     purchase: InAppPurchase | SubscriptionPurchase,
@@ -77,14 +60,9 @@ export const IAPProvider = ({ children }: any) => {
           // logger.error('Error updating user state in local storage');
         }
 
-        // storePlanAsync({ planId: productId });
-
         setActivePlan(productId);
         setProcessing(false);
       } catch (err) {
-        // logger.error(
-        //   `Error Validating or updating - ${err.code} - ${err.message}`,
-        // );
         setProcessing(false);
       }
     } else {
@@ -123,13 +101,7 @@ export const IAPProvider = ({ children }: any) => {
 
               // If not consumable
               await finishTransaction(purchase, false);
-            } catch (err) {
-              // logger.error(
-              //   `Error Finishing or Processing Iap - ${
-              //     err && err.message ? err.message : err
-              //   }`,
-              // );
-            }
+            } catch (err) {}
           } else {
             // Retry / conclude the purchase is fraudulent, etc...
             setProcessing(false);
@@ -139,9 +111,7 @@ export const IAPProvider = ({ children }: any) => {
 
       purchaseErrorSubscription = purchaseErrorListener(
         (err: PurchaseError) => {
-          // logger.error(`purchaseErrorListener - ${error}`);
           setError(err);
-          // Alert.alert('purchase error', JSON.stringify(error));
         },
       );
     });

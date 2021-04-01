@@ -6,11 +6,12 @@ import {
   Input,
   Box,
   Paragraph,
+  Card,
+  CardBody,
   Logo,
 } from '../primitives';
 import { ForgotPasswordService } from '../services';
 import { useCurrentUser, useHistory } from '../hooks';
-import { Card, CardContent } from '@material-ui/core';
 
 const ForgotPasswordScreen: React.FC = () => {
   const { translation } = useCurrentUser();
@@ -41,8 +42,8 @@ const ForgotPasswordScreen: React.FC = () => {
   return (
     <Box>
       <Logo linked={false} center mb={1} />
-      <Card>
-        <CardContent>
+      <Card padded>
+        <CardBody>
           <Headline align="center" variant="h5" gutterBottom>
             {translation['Forgot password?']}
           </Headline>
@@ -82,7 +83,7 @@ const ForgotPasswordScreen: React.FC = () => {
               />
             </>
           )}
-        </CardContent>
+        </CardBody>
       </Card>
     </Box>
   );

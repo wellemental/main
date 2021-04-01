@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from '../primitives';
 import { TeacherService, ContentService } from '../services';
-import { AllTeachers, ContentObj, Features } from '../types';
+import {
+  AllTeachers,
+  Categories,
+  ContentObj,
+  Features,
+  Content as ContentType,
+  User,
+} from 'common';
 import { useConfig, useCurrentUser } from '../hooks';
 import logger from '../services/LoggerService';
 
 interface ContentContext {
   content: ContentObj | null;
-  teachers: AllTeachers | null;
   error: Error | string;
   loading: boolean;
   rcLoading?: boolean;
@@ -15,40 +21,29 @@ interface ContentContext {
   getDbContent?: () => void;
 }
 
+const contentService = new ContentService();
+
 export const Content = React.createContext<ContentContext>({
   content: {},
-  teachers: {},
   error: '',
   loading: false,
   rcLoading: false,
   features: undefined,
 });
 
-export const ContentProvider = ({
-  children,
-}: {
-  children: any;
-}): JSX.Element => {
+export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   const [content, setContent] = useState<ContentObj | null>(null);
-  const [teachers, setTeachers] = useState<AllTeachers | null>(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(!content ? true : false);
   const { user } = useCurrentUser();
-  const [loading, setLoading] = useState(
-    // !auth ? false : !content || !teachers ? true : false,
-    !content || !teachers ? true : false,
-  );
 
   const getDbContent = async () => {
     // Get teachers and content from firestore
     try {
-      const teacherService = new TeacherService();
-      const contentService = new ContentService();
-      const dbTeachers = await teacherService.getAllTeachers();
       const dbContent = await contentService.getContent();
 
       // Update state with firestore data
       setContent(dbContent);
-      setTeachers(dbTeachers);
     } catch (err) {
       setError(`Error fetching content from database - ${err}`);
       logger.error(`Error getting firestore content data - ${err}`);
@@ -67,8 +62,6 @@ export const ContentProvider = ({
         setLoading(false);
       };
 
-      if (!teachers || !content) {
-      }
       fetchContent();
     }
   }, []);
@@ -76,15 +69,15 @@ export const ContentProvider = ({
   // Get Featured Content from Remote Config
   const { loading: rcLoading, data: rcData }: any = useConfig('featured');
 
+  // If user is logged in and content or remote config is still loading, show spinner
   if ((user && loading) || rcLoading) {
-    return <Spinner text="Loading Content..." />;
+    return <Spinner fullPage />;
   }
 
   return (
     <Content.Provider
       value={{
         content,
-        teachers,
         features: rcData,
         loading: loading,
         rcLoading: rcLoading,

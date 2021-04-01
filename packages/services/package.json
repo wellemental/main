@@ -12,8 +12,8 @@
     "@react-native-firebase/firestore": "^7.5.3",
     "@react-native-firebase/functions": "^7.4.4",
     "@react-native-firebase/remote-config": "^8.2.1",
-    "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react": "17.0.1",
+    "react-native": "0.64.0",
     "react-native-fs": "^2.16.6"
   },
   "devDependencies": {

@@ -2,13 +2,12 @@ import defaultValues from '../services/RemoteConfigDefaults';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import { FirebaseError } from 'firebase';
-// import { firestore } from '../base';
 
 export type Timestamp = FirebaseFirestoreTypes.Timestamp;
 export type FieldValue = FirebaseFirestoreTypes.FieldValue;
 export type Query = FirebaseFirestoreTypes.Query;
 export type QueryDocumentSnapshot = FirebaseFirestoreTypes.QueryDocumentSnapshot;
-export type Translations = { [key: string]: string };
+export type Translation = { [key: string]: string };
 export type AuthorizationStatus = FirebaseMessagingTypes.AuthorizationStatus;
 
 enum SubStatus {

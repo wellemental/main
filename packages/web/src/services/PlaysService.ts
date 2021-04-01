@@ -4,11 +4,12 @@ import {
   User,
   PlaysServiceType,
   TrackingEvents,
-} from '../types';
+} from 'common';
 import { ApplicationError } from '../models/Errors';
 import BaseService from './BaseService';
 import { increment } from './helpers';
 import moment from 'moment';
+import { Platforms } from 'common';
 
 class PlaysService extends BaseService implements PlaysServiceType {
   userDoc = this.firestore.collection('users').doc(this.currentUser.id);
@@ -20,6 +21,7 @@ class PlaysService extends BaseService implements PlaysServiceType {
       // Add to the plays collection
       await this.collection.add({
         contentId: id,
+        platform: Platforms.Web,
         createdAt: new Date(),
       });
 
@@ -76,7 +78,7 @@ class PlaysService extends BaseService implements PlaysServiceType {
         .limit(1)
         .where('contentId', '==', id)
         .get()
-        .then((snapshots) => {
+        .then(snapshots => {
           const doc = snapshots.docs[0];
           doc.ref.update({ completed: true });
         });
@@ -94,8 +96,8 @@ class PlaysService extends BaseService implements PlaysServiceType {
       await this.query
         .limit(10)
         .get()
-        .then((snapshots) =>
-          snapshots.docs.forEach((doc) => {
+        .then(snapshots =>
+          snapshots.docs.forEach(doc => {
             const data = doc.data() as PlayEvent;
             plays[doc.id] = { ...data };
           }),

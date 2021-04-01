@@ -9,7 +9,7 @@ import {
   Box,
   LegalLinks,
 } from '../primitives';
-import { AuthScreenRouteProp, Translations } from '../types';
+import { AuthScreenRouteProp, Translation } from '../types';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +22,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   // Import and save language selection to AsyncStorage
   const navigation = useNavigation();
   const { language } = route.params;
-  const translation: Translations =
+  const translation: Translation =
     language === Languages.Es ? Español : English;
 
   // Manage State
@@ -112,17 +112,13 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
       />
 
       {auths && (
-        <>
-          <Input
-            autoFocus
-            secureTextEntry={true}
-            label={translation.Password}
-            value={password}
-            onChangeText={setPassword}
-          />
-
-          {auths && auths.length === 0 && <LegalLinks />}
-        </>
+        <Input
+          autoFocus
+          secureTextEntry={true}
+          label={translation.Password}
+          value={password}
+          onChangeText={setPassword}
+        />
       )}
       <Button
         warning={language === Languages.Es}
@@ -130,8 +126,10 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
         loading={loading}
         onPress={handleStep}
       />
-      <Box mt={2}>
+      <Box mt={3}>
+        {auths && auths.length === 0 && <LegalLinks />}
         <Button
+          small
           transparent
           text={translation['Forgot password?']}
           loading={loading}
@@ -140,6 +138,7 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
           }
         />
       </Box>
+
       <Error center error={error} />
     </Container>
   );

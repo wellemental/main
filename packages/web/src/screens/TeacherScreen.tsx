@@ -1,12 +1,14 @@
 import React from 'react';
 import { ContentLoop, PageHeading, Spinner } from '../primitives';
-import { useContent, useRouteMatch } from '../hooks';
+import { useContent, useRouteMatch, useQuery } from '../hooks';
 import { capitalize } from '../services/helpers';
-import { Teacher } from '../types';
+import { TeacherService } from '../services';
+import { Teacher, AllTeachers, Teachers } from 'common';
+const service = new TeacherService();
 
 const TeacherScreen: React.FC = () => {
-  const { teachers } = useContent();
-  const match = useRouteMatch();
+  const match: Teachers = useRouteMatch() as Teachers;
+  const { data: teachers, loading } = useQuery<AllTeachers>(service.getAll);
 
   let teacher: Teacher | null = null;
   if (teachers) {

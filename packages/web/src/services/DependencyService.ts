@@ -1,13 +1,11 @@
-import { User } from '../types';
+import { User } from 'common';
 import { buildLogger } from './LoggerService';
 import { buildTracker } from './TrackerService';
 import UpdateUserService from './UpdateUserService';
 import { buildFirestore } from './FirebaseService';
-// import { buildNavigationService } from './navigationService';
-// import { Navigator } from './interfaces';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
-// import UpdateProfileService from './UpdateProfileService';
+import FavoritesService from './FavoritesService';
 
 interface DependencyDescriptor {
   dependencies: string[];
@@ -15,7 +13,7 @@ interface DependencyDescriptor {
   class?: new (...args: any) => any;
 }
 
-let dependenciesInstances: { [key: string]: any } = {};
+export let dependenciesInstances: { [key: string]: any } = {};
 
 const BASE_SERVICE_DEPENDENCIES = [
   'currentUser',
@@ -49,6 +47,10 @@ const dependenciesDescriptors = {
   playsService: {
     class: PlaysService,
     dependencies: ['firestore', 'currentUser', 'logger', 'tracker'],
+  },
+  favoritesService: {
+    class: FavoritesService,
+    dependencies: ['firestore', 'currentUser'],
   },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;

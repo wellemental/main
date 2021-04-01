@@ -37,6 +37,7 @@ const initialState = {
   loading: true,
   loadingError: null,
   loadingMore: false,
+  loadMore: null,
   loadingMoreError: null,
 };
 
@@ -46,7 +47,7 @@ function reducer(state: StateType, action: ActionType): StateType {
       const items = [...state.items];
       let isAdding = false;
 
-      action.value.docChanges().forEach((change) => {
+      action.value.docChanges().forEach(change => {
         if (change.type === 'added') {
           isAdding = true;
           addItem(change.doc, items);
@@ -59,7 +60,7 @@ function reducer(state: StateType, action: ActionType): StateType {
 
       const nextLimit = items.length + action.limit;
 
-      let end = items.length < action.limit || nextLimit === state.limit;
+      const end = items.length < action.limit || nextLimit === state.limit;
 
       return {
         ...state,
@@ -87,7 +88,7 @@ function findIndexOfDocument(
   doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
   items: FirebaseFirestoreTypes.DocumentData[],
 ) {
-  return items.findIndex((item) => {
+  return items.findIndex(item => {
     return item.id === doc.id;
   });
 }
@@ -133,7 +134,7 @@ const useLoadMore = (
   useEffect(() => {
     const fn = query.limit(state.limit || limit);
 
-    const unsubscribe = fn.onSnapshot((snap) => {
+    const unsubscribe = fn.onSnapshot(snap => {
       dispatch({ type: 'LOADED', value: snap, limit });
     });
 
@@ -152,6 +153,9 @@ const useLoadMore = (
     loading: state.loading,
     hasMore: state.hasMore,
     items: state.items,
+    after: state.after,
+    lastLoaded: state.lastLoaded,
+    limit: state.limit,
     loadMore,
   };
 };

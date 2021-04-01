@@ -5,7 +5,7 @@ import {
   LocalContent,
   UserProfile,
   LocalStateServiceType,
-} from '../types';
+} from 'common';
 import firestore from '@react-native-firebase/firestore';
 // import logger from './LoggerService';
 
@@ -23,10 +23,7 @@ class LocalStateService implements LocalStateServiceType {
     return Promise.resolve();
   }
 
-  public async setStorage(
-    key: string,
-    value: string | { [key: string]: string } | LocalUser | UserProfile,
-  ): Promise<void> {
+  public async setStorage<T>(key: string, value: T): Promise<void> {
     try {
       if (typeof value === 'object') {
         value.updated_at = firestore.Timestamp.fromDate(new Date());

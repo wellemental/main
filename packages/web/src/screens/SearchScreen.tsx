@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { PageHeading, SearchBar, ContentLoop } from '../primitives';
+import { PageHeading, SearchBar, ContentLoop, Box } from '../primitives';
 import { useCurrentUser } from '../hooks';
 
+// Eventually need to add Trie search
 const SearchScreen: React.FC = () => {
   const { translation } = useCurrentUser();
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,7 +10,9 @@ const SearchScreen: React.FC = () => {
   return (
     <>
       <PageHeading title={translation.Search} />
-      <SearchBar value={searchTerm} setState={setSearchTerm} />
+      <Box mb={2}>
+        <SearchBar value={searchTerm} setState={setSearchTerm} />
+      </Box>
       <ContentLoop search={searchTerm} />
     </>
   );

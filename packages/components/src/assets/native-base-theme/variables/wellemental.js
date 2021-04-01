@@ -1,6 +1,9 @@
 // @flow
 import color from 'color';
 import { Dimensions, PixelRatio, Platform } from 'react-native';
+import { colors } from 'common';
+
+export const brandColors = colors;
 
 import { PLATFORM } from './commonColor';
 
@@ -14,24 +17,6 @@ const isIphoneX =
     deviceWidth === 812 ||
     deviceHeight === 896 ||
     deviceWidth === 896);
-
-export const brandColors = {
-  brandPrimary: '#214f4b',
-  brandSecondary: '#2A2968',
-  brandInfo: '#272a63', //'#9554C2',
-  brandSuccess: '#A3CEC9',
-  brandDanger: '#d9534f',
-  brandWarning: '#C78D36', //'#CAAB29',
-  brandLight: '#dfbead',
-  lightGray: '#838383',
-  offWhite: '#F4E6D0',
-  white: '#ffffff',
-  placeholderGray: '#dbdbdb',
-  textColor: '#333',
-  lightTextColor: 'rgba(0, 0, 0, 0.4)',
-  darkTextColor: 'rgba(0, 0, 0, 0.87)',
-  skyBlue: '#dde2e6',
-};
 
 export default {
   platformStyle,
@@ -64,13 +49,13 @@ export default {
   buttonUppercaseAndroidText: true,
 
   // Badge
-  badgeBg: brandColors.brandInfo,
+  badgeBg: colors.brandInfo,
   badgeColor: '#fff',
   badgePadding: 0,
 
   // Button
   buttonFontFamily: platform === PLATFORM.IOS ? 'Inter' : 'Inter',
-  buttonDisabledBg: brandColors.textColor,
+  buttonDisabledBg: colors.textColor,
   buttonPadding: 6,
   get buttonPrimaryBg() {
     return this.brandPrimary;
@@ -124,7 +109,7 @@ export default {
   // Card
   cardDefaultBg: '#fff',
   cardBorderColor: '#ccc',
-  cardBorderRadius: 20,
+  cardBorderRadius: 10,
   cardItemPadding: platform === PLATFORM.IOS ? 15 : 20,
 
   // CheckBox
@@ -140,17 +125,29 @@ export default {
   checkboxTickColor: '#fff',
 
   // Color
-  ...brandColors,
+  ...colors,
+  brandPrimary: colors.primary,
+  brandSecondary: colors.secondary,
+  brandDark: colors.secondary,
+  brandWarning: colors.warning,
+  brandInfo: colors.info,
+  brandSuccess: colors.success,
+  brandDanger: colors.danger,
+  brandLight: colors.light,
+  textColor: colors.text,
+  lightTextColor: colors.lightText,
+  darkTextColor: colors.darkText,
+  inverseTextColor: colors.inverse,
 
   // Content
-  contentBgColor: brandColors.white,
+  contentBgColor: colors.white,
 
   // Container
-  containerBgColor: brandColors.white,
-  inverseContainerBgColor: brandColors.brandPrimary,
+  containerBgColor: colors.white,
+  inverseContainerBgColor: colors.brandPrimary,
 
   // Date Picker
-  datePickerTextColor: brandColors.textColor,
+  datePickerTextColor: colors.textColor,
   datePickerBg: '#222', //'transparent',
 
   // FAB
@@ -167,7 +164,7 @@ export default {
     return this.fontSizeBase * 1.6;
   },
   get fontSizeH3() {
-    return this.fontSizeBase * 1.4;
+    return this.fontSizeBase * 1.5;
   },
 
   // Footer
@@ -186,7 +183,7 @@ export default {
 
   // Header
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: brandColors.brandPrimary,
+  toolbarDefaultBg: colors.brandPrimary,
   toolbarHeight: platform === PLATFORM.IOS ? 64 : 56,
   headerHeight: platform === PLATFORM.IOS ? 64 : 56,
   toolbarSearchIconSize: 23,
@@ -194,7 +191,7 @@ export default {
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 40 : 50,
   toolbarBtnTextColor: '#fff',
-  toolbarDefaultBorder: brandColors.textColor,
+  toolbarDefaultBorder: colors.textColor,
   iosStatusbar: 'light-content',
   get statusBarColor() {
     return color(this.toolbarDefaultBg).darken(0.2).hex();
@@ -214,7 +211,7 @@ export default {
   inputSuccessBorderColor: '#2b8339',
   inputErrorBorderColor: '#ed2f2f',
   inputHeightBase: 50,
-  inputColor: brandColors.textColor,
+  inputColor: colors.textColor,
   get inputColorPlaceholder() {
     return this.textColor;
   },
@@ -234,7 +231,7 @@ export default {
   listItemPadding: 12,
   listNoteColor: '#808080',
   listNoteSize: 13,
-  listItemSelected: brandColors.lightTextColor,
+  listItemSelected: colors.lightTextColor,
 
   // Progress Bar
   defaultProgressColor: '#E4202D',
@@ -250,10 +247,10 @@ export default {
 
   // Segment
   segmentBackgroundColor: 'rgba(0,0,0,0)',
-  segmentActiveBackgroundColor: brandColors.brandPrimary,
-  segmentTextColor: brandColors.brandPrimary,
-  segmentActiveTextColor: brandColors.white,
-  segmentBorderColor: brandColors.brandPrimary,
+  segmentActiveBackgroundColor: colors.brandPrimary,
+  segmentTextColor: colors.brandPrimary,
+  segmentActiveTextColor: colors.white,
+  segmentBorderColor: colors.brandPrimary,
   segmentBorderColorMain: 'rgba(0,0,0,0)',
 
   // Spinner
@@ -264,10 +261,10 @@ export default {
 
   // Tab
   tabDefaultBg: 'rgba(0,0,0,0)',
-  topTabBarTextColor: brandColors.lightTextColor,
-  topTabBarActiveTextColor: brandColors.brandPrimary,
+  topTabBarTextColor: colors.lightTextColor,
+  topTabBarActiveTextColor: colors.brandPrimary,
   topTabBarBorderColor: 'rgba(0,0,0,0)',
-  topTabBarActiveBorderColor: brandColors.brandPrimary,
+  topTabBarActiveBorderColor: colors.brandPrimary,
 
   // Tabs
   tabBgColor: 'rgba(0,0,0,0)',
@@ -276,9 +273,9 @@ export default {
   tabFontSize: 20,
 
   // Text
-  lightTextColor: brandColors.lightTextColor,
-  textColor: brandColors.textColor,
-  darkTextColor: brandColors.darkTextColor,
+  lightTextColor: colors.lightTextColor,
+  textColor: colors.textColor,
+  darkTextColor: colors.darkTextColor,
   inverseTextColor: '#fff',
   noteFontSize: 12,
   get defaultTextColor() {
@@ -306,7 +303,7 @@ export default {
   isIphoneX,
   inputGroupRoundedBorderRadius: 30,
   defaultShadow: {
-    shadowColor: brandColors.lightGray,
+    shadowColor: colors.lightGray,
     borderTopWidth: 0,
     shadowOffset: {
       width: 0,

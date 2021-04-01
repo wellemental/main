@@ -1,6 +1,6 @@
 import { English } from './en.js';
 import { Español } from './es.js';
-import { Languages } from '../types';
+import { Languages } from 'common';
 
 export const getTranslation = (
   language: Languages,

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
-  StatusBar,
   Platform,
   ImageBackground,
   Image,
@@ -12,9 +11,7 @@ import {
   AvyName,
   Box,
   Button,
-  Container,
-  Download,
-  VideoAndroid,
+  DownloadRow,
   ScrollView,
   Favorite,
   Headline,
@@ -22,17 +19,16 @@ import {
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
-import { DownloadVideoService, PlaysServiceType } from 'services';
+import { PlaysServiceType } from 'common';
 import FadeIn from 'react-native-fade-in-image';
 import { useContainer, useMutation, useCurrentUser } from '../hooks';
-import { deviceWidth, deviceHeight } from 'services';
+import { DownloadVideoService, deviceWidth, deviceHeight } from 'services';
 
 type Props = {
   route: ContentScreenRouteProp;
   navigation: ContentScreenNavigationProp;
 };
 
-// const deviceWidth = deviceWidthOg - 30;
 const videoHeight = deviceWidth * 0.56;
 
 const styles = StyleSheet.create({
@@ -62,7 +58,7 @@ const styles = StyleSheet.create({
 });
 
 const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
-  const { content, teacher } = route.params;
+  const { content } = route.params;
   const [video, setVideo] = useState(content.video);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(content.seconds);
@@ -105,7 +101,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const handleComplete = (): void => {
     if (!!player.current) {
-      console.log('DISMISSING', player.current.dismissFullscreenPlayer);
       player.current.dismissFullscreenPlayer();
     }
 
@@ -139,7 +134,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     if (androidOrPortrait) {
       navigation.navigate('Video', {
         content,
-        teacher,
         savedVideoPath: video,
         handleComplete: handleComplete,
       });
@@ -221,7 +215,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             onLoad={onLoad}
             onError={handleError}
             onProgress={onProgress}
-            ref={(ref) => (player.current = ref)}
+            ref={ref => (player.current = ref)}
           />
 
           {showPoster && isPaused && (
@@ -250,40 +244,49 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
       )}
       <ScrollView>
-        <Box row justifyContent="space-between" mt={2} mb={1}>
+        <Box row justifyContent="space-between" mt={2} mb={0.5}>
           <Headline style={{ flex: 4 }}>{content.title}</Headline>
-          <Box row>
-            <Favorite onProfile contentId={content.id} />
-            <Download videoUrl={content.video} />
-          </Box>
+
+          <Favorite onProfile contentId={content.id} />
         </Box>
 
-        <Paragraph gb={1}>
-          {content.type.toUpperCase()} | {content.length}
-        </Paragraph>
+        <Box row pb={1.5}>
+          <Paragraph bold>{content.type} </Paragraph>
+          <Paragraph>// {content.length}</Paragraph>
+        </Box>
 
         <Paragraph gb={1}>{content.description}</Paragraph>
+
+        <DownloadRow videoUrl={content.video} />
 
         <Button
           transparent
           onPress={(): void =>
             navigation.navigate('Teacher', {
-              teacher,
+              teacher: content.teacher,
             })
           }>
-          <AvyName source={teacher.photo} name={content.teacher} onProfile />
+          <AvyName
+            source={content.teacher.photo}
+            name={content.teacher.name}
+            onProfile
+          />
         </Button>
-        <Paragraph>{teacher.bio}</Paragraph>
+        <Paragraph gt={0.5} gb={3}>
+          {content.teacher.bio}
+        </Paragraph>
 
         {auth &&
           (auth.email === 'test@test.com' ||
             auth.email === 'mike.r.vosters@gmail.com') && (
-            <>
+            <Box mt={2}>
+              <Paragraph>{content.id}</Paragraph>
               <Paragraph>Current Time: {currentTime}</Paragraph>
               <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
               <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
               <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
-            </>
+              <Paragraph>Tags: {content.tags.toString()}</Paragraph>
+            </Box>
           )}
       </ScrollView>
     </>

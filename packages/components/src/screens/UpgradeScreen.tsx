@@ -9,7 +9,7 @@ type Props = {
   navigation: UpgradeScreenNavigationProp;
 };
 
-const UpgradeScreen: React.FC<Props> = ({ route, navigation }) => {
+const UpgradeScreen: React.FC<Props> = ({ route }) => {
   const { version } = route.params;
   const { translation } = useCurrentUser();
 
@@ -20,7 +20,7 @@ const UpgradeScreen: React.FC<Props> = ({ route, navigation }) => {
   };
 
   return (
-    <Container center>
+    <Container center proOnly={false}>
       <Box mb={1}>
         <Headline
           center>{`${translation['Upgrade App']} ${translation.Required}!`}</Headline>

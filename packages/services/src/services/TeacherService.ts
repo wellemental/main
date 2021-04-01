@@ -1,10 +1,8 @@
-// import { firestore, FirebaseFirestoreTypes } from '../base';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Teacher, AllTeachers, TeacherServiceType } from '../types';
+import { Teacher, AllTeachers, TeacherServiceType } from 'common';
 import { ApplicationError } from '../models/Errors';
-// import logger from './LoggerService';
 
 const COLLECTION = 'teachers';
 const teachersCollection = firestore().collection(COLLECTION);
@@ -43,7 +41,7 @@ class TeacherService implements TeacherServiceType {
     }
   };
 
-  public getAllTeachers = async (): Promise<AllTeachers> => {
+  public getAll = async (): Promise<AllTeachers> => {
     const query = teachersCollection;
     const teachers = {};
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, Typography, Divider } from '@material-ui/core';
-import { Button, Box, Headline, Paragraph } from '../primitives';
+import { Typography, Divider } from '@material-ui/core';
+import { Card, Button, Box, Headline, Paragraph } from '../primitives';
 import Link from '@material-ui/core/Link';
 import { useCurrentUser, useHistory } from '../hooks';
 import { Redirect } from 'react-router-dom';
@@ -11,7 +11,7 @@ const SubscriptionScreen: React.FC = () => {
 
   return user ? (
     <Box mt={4}>
-      <Card>
+      <Card padded>
         <Headline variant="h4" align="center" gutterBottom>
           {translation['Subscription']}
         </Headline>

@@ -1,6 +1,9 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import RecoletaAltTtf from '../fonts/RecoletaAlt-Medium.ttf';
 import InterTtf from '../fonts/Inter.ttf';
+import { theme as base, colors } from 'common';
+
+export { colors } from 'common';
 
 const recoleta = {
   fontFamily: 'RecoletaAlt',
@@ -30,37 +33,19 @@ const inter = {
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
 };
 
-export const brandColors = {
-  brandPrimary: '#214f4b',
-  brandSecondary: '#2A2968',
-  brandInfo: '#9554C2',
-  brandSuccess: '#A3CEC9',
-  brandDanger: '#d9534f',
-  brandWarning: '#CAAB29',
-  brandLight: '#dfbead',
-  lightGray: '#838383',
-  offWhite: '#F4E6D0',
-  white: '#ffffff',
-  placeholderGray: '#dbdbdb',
-  textColor: '#333',
-  lightTextColor: 'rgba(0, 0, 0, 0.4)',
-  darkTextColor: 'rgba(0, 0, 0, 0.87)',
-  skyBlue: '#dde2e6',
-};
-
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      main: brandColors.brandPrimary,
+      main: colors.primary,
     },
     secondary: {
-      main: brandColors.brandSecondary,
+      main: colors.secondary,
     },
     warning: {
-      main: brandColors.brandWarning,
+      main: colors.warning,
     },
     text: {
-      primary: brandColors.brandPrimary,
+      primary: colors.text,
     },
     inverse: {
       primary: 'white',
@@ -82,51 +67,51 @@ export const theme = createMuiTheme({
       'sans-serif',
     ].join(','),
     body1: {
-      color: brandColors.textColor,
+      color: colors.textColor,
       lineHeight: 1.625,
     },
     body2: {
-      color: brandColors.textColor,
+      color: colors.textColor,
     },
     subtitle1: {
-      color: brandColors.textColor,
+      color: colors.textColor,
     },
     subtitle2: {
       fontFamily: 'RecoletaAlt',
-      color: brandColors.brandPrimary,
-      fontWeight: '700',
+      color: colors.primary,
+      fontWeight: '600',
       fontSize: '1.2rem',
     },
     h1: {
       fontFamily: 'RecoletaAlt',
       fontWeight: '500',
-      color: brandColors.brandPrimary,
+      color: colors.primary,
     },
     h2: {
       fontFamily: 'RecoletaAlt',
       fontWeight: '500',
       lineHeight: 1.425,
-      color: brandColors.brandPrimary,
+      color: colors.primary,
     },
     h3: {
       fontFamily: 'RecoletaAlt',
       fontWeight: '500',
-      color: brandColors.brandPrimary,
+      color: colors.primary,
     },
     h4: {
       fontFamily: 'RecoletaAlt',
       fontWeight: '500',
-      color: brandColors.brandPrimary,
+      color: colors.primary,
     },
     h5: {
       fontFamily: 'RecoletaAlt',
       fontWeight: '500',
-      color: brandColors.brandPrimary,
+      color: colors.primary,
     },
     h6: {
       fontFamily: 'RecoletaAlt',
       fontWeight: '900',
-      color: brandColors.brandPrimary,
+      color: colors.primary,
     },
   },
   overrides: {
@@ -141,6 +126,9 @@ export const theme = createMuiTheme({
       root: {
         position: 'relative',
       },
+      maxWidthXs: {
+        maxWidth: '500px !important',
+      },
     },
     MuiGrid: {
       // spacing: '8',
@@ -153,19 +141,28 @@ export const theme = createMuiTheme({
     },
     MuiCard: {
       root: {
-        padding: '5%',
+        // padding: '5%',
+        borderRadius: base.borderRadiusBase,
+        marginBottom: base.cardMargin,
+        boxShadow: base.boxShadow,
+      },
+    },
+    MuiCardContent: {
+      root: {
+        flex: 1,
       },
     },
     MuiCardHeader: {
       title: {
         fontWeight: '500',
         fontSize: 24,
-        color: brandColors.brandPrimary,
+        color: colors.primary,
       },
     },
     MuiButton: {
       root: {
-        // borderRadius: '0px',
+        borderRadius: base.borderRadiusBase,
+        textTransform: 'capitalize',
       },
       sizeLarge: {
         padding: '15px 25px',
@@ -181,7 +178,7 @@ export const theme = createMuiTheme({
       root: {},
     },
     'Mui-selected': {
-      color: brandColors.brandPrimary,
+      color: colors.primary,
     },
   },
 });

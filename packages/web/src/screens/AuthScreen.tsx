@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Card, CardContent, Collapse } from '@material-ui/core';
+import { Box, Collapse } from '@material-ui/core';
 import {
   Button,
+  Card,
+  CardBody,
   Input,
   Paragraph,
   Headline,
@@ -11,7 +13,7 @@ import {
   Spinner,
 } from '../primitives';
 import AuthService from '../services/AuthService';
-import { Languages, Translations } from '../types';
+import { Languages, Translation } from 'common';
 import { useLocation, useCurrentUser } from '../hooks';
 import { English } from '../translations/en.js';
 import { Español } from '../translations/es.js';
@@ -40,7 +42,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
       ? location.state.from.pathname === '/access'
       : false;
 
-  const translation: Translations =
+  const translation: Translation =
     language && language === Languages.Es ? Español : English;
 
   const handleCheckEmail = async () => {
@@ -123,8 +125,8 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
   ) : (
     <Box>
       <Logo linked={false} center mb={1} />
-      <Card>
-        <CardContent>
+      <Card padded>
+        <CardBody>
           <Headline center variant="h5" gutterBottom={!isFriends}>
             {headline}
           </Headline>
@@ -158,7 +160,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
                 value={password}
                 autoComplete="current-password"
                 onKeyPress={handleStep}
-                onChange={(e) => setPassword(e.target.value && e.target.value)}
+                onChange={e => setPassword(e.target.value && e.target.value)}
               />
             )}
           </Collapse>
@@ -181,7 +183,7 @@ const AuthScreen: React.FC<Props> = ({ redirect, raised }) => {
             fullWidth
             text={translation['Forgot password?']}
           />
-        </CardContent>
+        </CardBody>
       </Card>
     </Box>
   );

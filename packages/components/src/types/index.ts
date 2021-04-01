@@ -9,15 +9,16 @@ import {
   Category,
   Tags,
   VersionConfig,
-} from 'services';
+} from 'common';
 import { ReactElement } from 'react';
 
 export type TabParamList = {
-  Library: { default: string };
+  Learn: undefined; //{ default: string };
   Home: undefined;
-  Favorites: undefined;
-  Search: undefined;
-  Profile: undefined;
+  Meditate: undefined;
+  Sleep: undefined;
+  Move: undefined;
+  Profile: { defaultTab: string };
 };
 
 export type MenuItem = {
@@ -29,7 +30,11 @@ export type Unsubscriber = () => void;
 
 export type RootStackParamList = {
   TabNav: undefined;
-  Content: { content: Content; teacher: Teacher };
+  Library: undefined;
+  Search: undefined;
+  Settings: undefined;
+  Teachers: undefined;
+  Content: { content: Content };
   Category: { category: Category };
   Video: {
     content: Content;
@@ -40,7 +45,7 @@ export type RootStackParamList = {
   Teacher: { teacher: Teacher };
   'Edit Profile': undefined;
   'Save User': undefined;
-  'Forgot Password': { translation: Translations };
+  'Forgot Password': { translation: Translation };
   AuthStack: undefined;
   Upgrade: { version: VersionConfig };
   Plans: undefined;
@@ -80,6 +85,7 @@ export type TeacherScreenRouteProp = RouteProp<RootStackParamList, 'Teacher'>;
 export type AuthScreenRouteProp = RouteProp<AuthStackParamList, 'Auth'>;
 export type LibraryScreenRouteProp = RouteProp<TabParamList, 'Library'>;
 export type CategoryScreenRouteProp = RouteProp<RootStackParamList, 'Category'>;
+export type ProfileScreenRouteProp = RouteProp<TabParamList, 'Profile'>;
 export type ForgotPasswordScreenRouteProp = RouteProp<
   RootStackParamList,
   'Forgot Password'
@@ -89,4 +95,4 @@ export type TabsType = {
   [key: string]: ReactElement;
 };
 
-export type Translations = { [key: string]: string };
+export type Translation = { [key: string]: string };

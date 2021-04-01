@@ -15,19 +15,26 @@ const CategoryScreen: React.FC<Props> = ({ route }) => {
   const isAgeGroup = defaultAgeGroups.includes(category);
 
   return (
-    <Container scrollEnabled>
-      <PageHeading
-        title={
-          isAgeGroup ? `${category.title} ${translation.years}` : category.title
-        }
-        subtitle={
-          translation[category.description]
-            ? translation[category.description]
-            : category.description // ? translation[category.description] : undefined
+    <Container>
+      <ContentLoop
+        filter={category.tag}
+        header={
+          <PageHeading
+            title={
+              isAgeGroup
+                ? `${category.title} ${translation.years}`
+                : translation[category.title]
+                ? translation[category.title]
+                : category.title
+            }
+            subtitle={
+              translation[category.description]
+                ? translation[category.description]
+                : category.description // ? translation[category.description] : undefined
+            }
+          />
         }
       />
-
-      <ContentLoop filter={category.tag} />
     </Container>
   );
 };

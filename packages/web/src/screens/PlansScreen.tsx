@@ -15,7 +15,7 @@ import Link from '@material-ui/core/Link';
 import { Check as CheckIcon } from '@material-ui/icons';
 import { useCurrentUser } from '../hooks';
 import { PromoCodeService } from '../services';
-import { brandColors } from '../assets/styles/theme';
+import { colors } from 'common';
 
 export enum PlanId {
   Monthly = 'wellemental_pro',
@@ -25,7 +25,7 @@ export enum PlanId {
 }
 
 const PlansScreen: React.FC = () => {
-  const { auth, translation, activePlan } = useCurrentUser();
+  const { user, translation, activePlan } = useCurrentUser();
   const [error, setError] = useState('');
 
   // Plan Selection
@@ -76,7 +76,7 @@ const PlansScreen: React.FC = () => {
   const handlePromoCode = async () => {
     const service = new PromoCodeService();
     try {
-      await service.validateAndUpgrade(auth.uid, promoCode);
+      await service.validateAndUpgrade(user.id, promoCode);
       setUpgrading(true);
     } catch (err) {
       setError(err);
@@ -118,10 +118,10 @@ const PlansScreen: React.FC = () => {
         />
 
         <Box mb={2}>
-          {bullets.map((bullet) => (
+          {bullets.map(bullet => (
             <Box display="flex" flexDirection="row" key={bullet} mb={0.5}>
               <CheckIcon
-                style={{ color: brandColors.brandWarning, marginRight: '5px' }}
+                style={{ color: colors.warning, marginRight: '5px' }}
               />
 
               <Paragraph key={bullet}>{bullet}</Paragraph>
@@ -145,8 +145,8 @@ const PlansScreen: React.FC = () => {
                   marginRight: 5,
                   borderColor:
                     pickedPlan === 'monthly'
-                      ? brandColors.brandWarning
-                      : brandColors.lightTextColor,
+                      ? colors.warning
+                      : colors.lightText,
                   borderWidth: '3px',
                   borderStyle: 'solid',
                   borderRadius: '6px',
@@ -175,9 +175,7 @@ const PlansScreen: React.FC = () => {
                 }
                 style={{
                   borderColor:
-                    pickedPlan === 'yearly'
-                      ? brandColors.brandWarning
-                      : brandColors.lightTextColor,
+                    pickedPlan === 'yearly' ? colors.warning : colors.lightText,
                   borderWidth: '3px',
                   borderStyle: 'solid',
                   borderRadius: '6px',

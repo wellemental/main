@@ -6,7 +6,7 @@ import {
   Box,
   TeacherLoop,
 } from '../primitives';
-import { Tags } from '../types';
+import { Tags } from 'common';
 import { Redirect } from 'react-router-dom';
 import { useCurrentUser } from '../hooks';
 

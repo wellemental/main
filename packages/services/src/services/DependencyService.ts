@@ -7,6 +7,8 @@ import { buildFirestore } from './FirebaseService';
 // import { Navigator } from './interfaces';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
+import FavoritesService from './FavoritesService';
+import TeacherService from './TeacherService';
 import ObserveNotifications from './ObserveNotifications';
 // import LocalStateService from './LocalStateService';
 // import AuthService from './AuthService';
@@ -20,12 +22,7 @@ interface DependencyDescriptor {
 
 let dependenciesInstances: { [key: string]: any } = {};
 
-const BASE_SERVICE_DEPENDENCIES = [
-  'currentUser',
-  // 'logger',
-  // 'tracker',
-  'firestore',
-];
+const BASE_SERVICE_DEPENDENCIES = ['currentUser', 'firestore'];
 
 const dependenciesDescriptors = {
   firestore: {
@@ -51,6 +48,14 @@ const dependenciesDescriptors = {
   playsService: {
     class: PlaysService,
     dependencies: ['firestore', 'currentUser'],
+  },
+  favoritesService: {
+    class: FavoritesService,
+    dependencies: BASE_SERVICE_DEPENDENCIES,
+  },
+  teacherService: {
+    class: TeacherService,
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   observeNotifications: {
     class: ObserveNotifications,

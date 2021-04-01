@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
-import { View, Platform } from 'react-native';
-import { PlaysServiceType, PlayEvent, convertTimestamp } from 'services';
+import {
+  PlaysServiceType,
+  PlayEvent,
+  convertTimestamp,
+  FavoritesService,
+} from 'services';
+import { Card, CardItem } from 'native-base';
 import {
   Error,
   PageHeading,
   Container,
   StatDisplay,
+  ContentLoopLoadMore,
   Button,
   ListEmpty,
-  Tabs,
+  TabsButtons,
   Box,
-  Headline,
-  Spinner,
+  Loading,
   ContentCardSmall,
-  Paragraph,
+  RecentlyPlayedLoop,
 } from '../primitives';
 import { List } from 'native-base';
-import { MenuItem } from '../types';
+import { FavoritesServiceType, Languages, Tab } from 'common';
 import {
   useCurrentUser,
   useContent,
@@ -24,24 +29,34 @@ import {
   useNavigation,
 } from '../hooks';
 import useLoadMore from '../hooks/useLoadMore';
-import SettingsScreen from '../screens/SettingsScreen';
+import { ProfileScreenRouteProp } from '../types';
 
-const ProfileScreen: React.FC = () => {
+type Props = {
+  route: ProfileScreenRouteProp;
+};
+
+const ProfileScreen: React.FC<Props> = ({ route }) => {
   const { translation, user } = useCurrentUser();
-  const { content, teachers } = useContent();
+  const { content } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
+  const defaultTab = route && route.params && route.params.defaultTab;
 
-  const tabs: MenuItem[] = [
+  const tabs: Tab[] = [
     { label: 'Stats' },
-    { label: 'Journey' },
-    // { label: 'Settings' },
+    { label: 'History' },
+    { label: 'Favorites' },
   ];
 
-  const [tab, setTab] = useState(tabs[0]);
+  const [tab, setTab] = useState<string>(
+    defaultTab ? defaultTab : tabs[0].label,
+  );
 
   const container = useContainer();
   const service = container.getInstance<PlaysServiceType>('playsService');
+  const favsService = container.getInstance<FavoritesServiceType>(
+    'favoritesService',
+  );
 
   const {
     items,
@@ -51,78 +66,73 @@ const ProfileScreen: React.FC = () => {
     hasMore,
   } = useLoadMore(service.query, { limit: 7 });
 
+  const {
+    items: favorites,
+    loading: favsLoading,
+    loadMore: loadMoreFavs,
+    loadingMore: loadingMoreFavs,
+    hasMore: hasMoreFavs,
+  } = useLoadMore(favsService.query, { limit: 7 });
+
   return (
-    <Container scrollEnabled>
+    <Container scrollEnabled bg="Profile">
       <PageHeading noHeader title={translation.Profile} />
 
       <Error error={error} />
 
-      <Tabs tabs={tabs} active={tab} setTab={setTab} />
-      {tab.label === 'Stats' && (
+      <Card>
+        <CardItem
+          style={{
+            paddingBottom: 0,
+            paddingTop: 0,
+            paddingLeft: 7,
+            paddingRight: 7,
+          }}>
+          <TabsButtons
+            full={user.language === Languages.En}
+            tabs={tabs}
+            active={tab}
+            setState={setTab}
+          />
+        </CardItem>
+      </Card>
+      {tab === 'Favorites' && (
+        <ContentLoopLoadMore
+          items={favorites}
+          loading={favsLoading}
+          loadingMore={loadingMoreFavs}
+          loadMore={loadMoreFavs}
+          hasMore={hasMoreFavs}
+        />
+      )}
+
+      {tab === 'Stats' && (
         <>
-          <StatDisplay type="streak" />
-          <StatDisplay type="completed" />
-          <StatDisplay type="time" />
-          <Box mt={2}>
+          <Card style={{ paddingTop: 0 }}>
+            <StatDisplay type="streak" />
+            <StatDisplay type="completed" />
+            <StatDisplay type="time" last />
+          </Card>
+          <Box mt={1.5}>
             <Button
-              bordered
-              warning
+              iconName="cog"
+              iconType="FontAwesome5"
               text={translation.Settings}
               onPress={() => navigation.navigate('Settings')}
             />
           </Box>
         </>
       )}
-      {tab.label === 'Journey' &&
-        (loading || !content || !teachers ? (
-          <Spinner />
-        ) : (
-          <>
-            <List
-              style={{ marginHorizontal: Platform.OS === 'android' ? 0 : 5 }}>
-              {items && items.length > 0 ? (
-                items.map((item, idx: number) => {
-                  const data = item.data() as PlayEvent;
-                  const contentMatch =
-                    data && data.contentId && content[data.contentId];
-                  const teacherMatch =
-                    data &&
-                    data.contentId &&
-                    content[data.contentId] &&
-                    teachers[content[data.contentId].teacher];
-
-                  return contentMatch && teacherMatch ? (
-                    <ContentCardSmall
-                      key={idx}
-                      content={contentMatch}
-                      teacher={teacherMatch}
-                      recentDate={convertTimestamp(data.createdAt).format(
-                        'MMM DD, YYYY',
-                      )}
-                    />
-                  ) : null;
-                })
-              ) : (
-                <ListEmpty>
-                  {
-                    translation[
-                      'Your recently played videos will appear here. Get started!'
-                    ]
-                  }
-                </ListEmpty>
-              )}
-              {hasMore && (
-                <Button
-                  transparent
-                  disabled={loadingMore}
-                  text={translation['Load More']}
-                  onPress={loadMore}
-                />
-              )}
-            </List>
-          </>
-        ))}
-      {tab.label === 'Settings' && <SettingsScreen />}
+      {tab === 'History' && (
+        <ContentLoopLoadMore
+          recentlyPlayed
+          loading={loading}
+          items={items}
+          hasMore={hasMore}
+          loadingMore={loadingMore}
+          loadMore={loadMore}
+        />
+      )}
     </Container>
   );
 };

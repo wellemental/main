@@ -4,9 +4,8 @@ import { firestore, auth } from 'services';
 import { Unsubscriber } from '../types';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { English } from '../translations/en.js';
-import { Español } from '../translations/es.js';
-import { Spinner } from '../primitives';
+import { English } from 'common';
+import { Español } from 'common';
 import moment from 'moment';
 import { convertTimestamp } from 'services';
 
@@ -25,7 +24,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   );
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [creatingUser, setCreatingUser] = useState(false);
 
   // const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
   //   null,
@@ -124,40 +122,6 @@ export const CurrentUserProvider = ({ children }: any) => {
       .collection('users')
       .doc(user.uid)
       .onSnapshot((snapshot: FirebaseFirestoreTypes.DocumentSnapshot) => {
-        // If user just signed up, save their user data to database
-        // if (!snapshot.exists) {
-        //   setCreatingUser(true);
-
-        //   const newDoc: User = {
-        //     id: currentAuth.uid,
-        //     email: currentAuth.email,
-        //     birthday: '',
-        //     name: '',
-        //     language: Languages.En,
-        //     onboardingComplete: false,
-        //   };
-
-        //   try {
-        //     const localUser = await localStateService.getUser();
-        //     if (localUser) {
-        //       console.log('LOCAL USER', localUser);
-
-        //       newDoc.birthday = localUser.birthday;
-        //       newDoc.language = localUser.language;
-        //       newDoc.name = localUser.name;
-        //       newDoc.onboardingComplete = true;
-        //     }
-        //   } catch (err) {
-        //     logger.error(`Error getting local user - ${err}`);
-        //   }
-
-        //   console.log('AUTH***', currentAuth);
-        //   await profileService.createProfile(newDoc);
-
-        //   // Set onboardingComplete locally so this doesn't run after first load
-        //   setCreatingUser(false);
-        // }
-
         // If user isn't logged in or doc doesn't exist
         if (!user.email) {
           return Promise.resolve();
@@ -225,10 +189,6 @@ export const CurrentUserProvider = ({ children }: any) => {
     //   getLocaluser();
     // }
   }, [currentUser]);
-
-  if (creatingUser) {
-    return <Spinner text="Creating account..." />;
-  }
 
   return (
     <CurrentUser.Provider

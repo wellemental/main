@@ -1,40 +1,31 @@
 import React from 'react';
 import { TouchableOpacity, Linking } from 'react-native';
 import {
-  PageHeading,
+  PageHeadingHome,
   Container,
   ContentLoop,
-  CategoryCard,
-  AgeCards,
-  Spinner,
-  TabsNB,
+  CategoryLoop,
+  Subheadline,
   Paragraph,
+  TabsNB,
+  AgeCards,
 } from '../primitives';
-import moment from 'moment';
-import { TimeOfDay, VersionConfig } from 'services';
+import { VersionConfig } from 'services';
 import { useCurrentUser, useContent, useConfig } from '../hooks';
 import { getVersion } from 'react-native-device-info';
-import variables from '../assets/native-base-theme/variables/wellemental';
+import {
+  getTimeOfDay,
+  colors,
+  Tags,
+  TimeOfDay,
+  exploreRedirects,
+} from 'common';
 
 const HomeScreen: React.FC = ({ navigation }) => {
-  const today = moment();
-  const { translation, activePlan, user } = useCurrentUser();
+  const { translation, activePlan } = useCurrentUser();
   const { features } = useContent();
 
-  // Determine Time of Day for header customization
-  let timeOfDay: TimeOfDay = TimeOfDay.Morning;
-  let tagline = translation['Start the day with some morning stretches'];
-  if (
-    today.isAfter(moment().hour(19), 'hour') ||
-    today.isBefore(moment().hour(4), 'hour')
-  ) {
-    timeOfDay = TimeOfDay.Evening;
-    tagline =
-      translation['Get ready for bedtime with these soothing practices.'];
-  } else if (today.isAfter(moment().hour(12), 'hour')) {
-    timeOfDay = TimeOfDay.Afternoon;
-    tagline = translation['Shake out the day with some fun movement.'];
-  }
+  const timeOfDay = getTimeOfDay();
 
   // Upgrade Screen prompt
   const { data } = useConfig<VersionConfig>('version');
@@ -52,62 +43,59 @@ const HomeScreen: React.FC = ({ navigation }) => {
   }
 
   const upgradeOnPress = (): void => {
-    Linking.openURL(data.iosUrl).catch((err) =>
+    Linking.openURL(data.iosUrl).catch(err =>
       console.error('An error occurred', err),
     );
   };
 
+  const timeOfDayColor =
+    timeOfDay.name === TimeOfDay.Evening ? 'white' : undefined;
+
   return (
-    <Container scrollEnabled color="#fff">
+    <Container scrollEnabled bg={timeOfDay.name} proOnly={false}>
       {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}
           style={{
-            borderBottomColor: variables.brandDanger,
+            borderBottomColor: colors.danger,
             borderBottomWidth: 1,
             paddingTop: 5,
             paddingBottom: 15,
             marginBottom: -10,
           }}>
-          <Paragraph center style={{ color: variables.brandDanger }}>
+          <Paragraph center>
             {translation['Tap to download the latest Wellemental update.']}
           </Paragraph>
         </TouchableOpacity>
       )}
 
-      <PageHeading
-        noHeader
-        title={`${translation[`Good ${timeOfDay.toLowerCase()}`]}`}
-        subtitle={tagline}
-      />
-      <ContentLoop filter={timeOfDay} />
+      <PageHeadingHome timeOfDay={timeOfDay} color={timeOfDayColor} />
 
-      {/* {user && <TabsNB />} */}
-
-      {features && features.categories ? (
+      {activePlan ? (
         <>
-          <PageHeading subheader title={translation.Featured} />
+          <TabsNB color={timeOfDayColor} />
 
-          {features.categories.map((item, idx) => (
-            <CategoryCard key={idx} category={item} />
-          ))}
-        </>
-      ) : (
-        <Spinner />
-      )}
-
-      {activePlan && (
-        <>
-          <PageHeading
-            subheader
-            title={`${translation['Explore by age range']}`}
-          />
+          {features && features.categories && (
+            <CategoryLoop title="Featured" categories={features.categories} />
+          )}
+          <Subheadline color={timeOfDayColor}>
+            {translation.Explore}
+          </Subheadline>
 
           <AgeCards />
 
-          {/* {ageGroups.map((item, idx) => (
-            <CategoryCard key={idx} category={item} />
-          ))} */}
+          <CategoryLoop
+            hideTitle
+            redirects={exploreRedirects}
+            colors={['orange', 'teal']}
+          />
+        </>
+      ) : (
+        <>
+          <Subheadline color={timeOfDayColor}>
+            {translation.Featured}
+          </Subheadline>
+          <ContentLoop filter={Tags.Featured} />
         </>
       )}
     </Container>
