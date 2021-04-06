@@ -21,6 +21,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { AnalyticsServiceType, Week, TotalStats, TotalsMap } from 'common';
 import { useContainer, useQuery, useMutation } from '../hooks';
+import moment from 'moment';
 
 const useStyles = makeStyles({
   table: {
@@ -57,13 +58,15 @@ const AnalyticsScreen: React.FC = () => {
     'startDate',
     'endDate',
     'signups',
-    // 'activeSubs',
     'newSubs',
     'cancellations',
     'plays',
     'completions',
     'favs',
   ];
+
+  const recentEndDate = data && moment(data[0].endDate);
+  const hasAnotherWeek = recentEndDate && recentEndDate < moment();
 
   return (
     <>
@@ -100,14 +103,25 @@ const AnalyticsScreen: React.FC = () => {
         </Table>
       </TableContainer>
 
-      <Subheadline>Weekly</Subheadline>
+      <Box row justifyContent="space-between">
+        <Subheadline>Weekly</Subheadline>
+        {hasAnotherWeek && (
+          <Button
+            text="add week (refresh after)"
+            size="small"
+            variant="text"
+            onPress={handleUpdate}
+            disabled={mutateLoading}
+          />
+        )}
+      </Box>
 
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
               {columns.map((key: string) => {
-                return <TableCell>{key}</TableCell>;
+                return <TableCell key={key}>{key}</TableCell>;
               })}
             </TableRow>
           </TableHead>
@@ -118,7 +132,7 @@ const AnalyticsScreen: React.FC = () => {
                   {columns.map((key: string) => {
                     // @ts-ignore
                     return !!row[key] ? (
-                      <TableCell>
+                      <TableCell key={key}>
                         {
                           // @ts-ignore
                           typeof row[key] === 'string' ||

@@ -84,13 +84,13 @@ class ObserveUserService implements ObserveUserServiceType {
         this.user = {
           id: userData.id,
           email: snapshot.exists ? userData.email : undefined,
-          isAdmin: userData.isAdmin,
           language:
             userData && userData.language ? userData.language : Languages.En,
           favorites: userData && userData.favorites ? userData.favorites : {},
           stripeId:
             userData && userData.stripeId ? userData.stripeId : undefined,
           plan: userData && userData.plan ? userData.plan : undefined,
+          isAdmin: userData && userData.isAdmin ? userData.isAdmin : false,
           totalCompleted:
             userData && userData.totalCompleted ? userData.totalCompleted : 0,
           totalPlays: userData && userData.totalPlays ? userData.totalPlays : 0,

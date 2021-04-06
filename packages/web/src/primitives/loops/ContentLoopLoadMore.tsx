@@ -1,6 +1,5 @@
 import React from 'react';
-import { PlayEvent, Colors } from 'common';
-import { convertTimestamp } from '../../services/helpers';
+import { PlayEvent, Colors, convertTimestamp } from 'common';
 import { Button, ListEmpty, Loading, ContentCard, Box } from '..';
 import { List } from '@material-ui/core';
 import { useCurrentUser, useNavigation, useContent } from '../../hooks';

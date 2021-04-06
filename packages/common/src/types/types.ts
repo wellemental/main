@@ -1,6 +1,14 @@
 import moment from 'moment';
-import React from 'react';
 import { configDefaults } from '../constants/remoteConfigDefaults';
+import { firestore } from 'firebase/app';
+import FirebaseFirestoreTypes from '@firebase/firestore-types';
+
+export type Query = firestore.Query;
+export type Timestamp = firestore.Timestamp;
+export type FieldValue = firestore.FieldValue;
+export type QueryDocumentSnapshot = firestore.QueryDocumentSnapshot;
+export type FirestoreModule = FirebaseFirestoreTypes.FirebaseFirestore;
+export type Moment = moment.Moment;
 
 export type StringObj = {
   [key: string]: string;
@@ -160,15 +168,27 @@ export enum PlanId {
   Free = 'free',
 }
 
-export type UserPlan = {
-  type: 'iosIap' | 'promoCode';
+type UserPlanBase = {
+  type: 'iosIap' | 'promoCode' | 'android' | 'stripe';
   auto_renew_status: boolean;
   nextRenewalDate: string; // Just storing so humans can easily read it in database
   nextRenewalUnix: number; // unix timestamp
   canceledAtUnix?: number;
   planId: string;
   status: 'canceled' | 'active' | 'trialing' | 'pending';
+  stripeEvents?: string[];
+  orderId?: string;
 };
+
+// For use when saving to Firebase
+export interface UserPlan extends UserPlanBase {
+  createdAt: Date;
+}
+
+// For use when getting from Firebase
+export interface FbUserPlan extends UserPlanBase {
+  createdAt: Timestamp;
+}
 
 type Product = {
   bundleId: string;
@@ -203,9 +223,10 @@ export interface User {
   stripeId?: string;
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
-  plan?: UserPlan;
+  plan?: UserPlan | FbUserPlan;
   isAdmin?: boolean;
   updated_at?: Date;
+  platform?: Platforms;
 }
 export interface DefaultState {
   user?: User;
@@ -437,7 +458,7 @@ export interface TrackingService {
   track(name: TrackingEvents, params?: { [key: string]: any }): void;
 }
 
-export type RemoteConfigValues = keyof typeof defaultValues;
+export type RemoteConfigValues = keyof typeof configDefaults;
 export interface RemoteConfigService {
   getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }
@@ -487,11 +508,11 @@ export type PlatformStat = {
   web: number;
 };
 
-export type StatObj = { [key: string]: PlatformStat };
-
 export interface SubsStat extends PlatformStat {
   promoCode: number;
 }
+
+export type StatObj = { [key: string]: PlatformStat | SubsStat };
 
 export type TotalStats = {
   users: number;
@@ -516,11 +537,9 @@ export interface Week {
   startDate: string;
   endDate: string;
   signups: number;
-  activeSubs: number;
   newSubs: number;
   cancellations: number;
   plays: PlatformStat;
   completions: PlatformStat;
-  seconds: PlatformStat;
   favs: PlatformStat;
 }

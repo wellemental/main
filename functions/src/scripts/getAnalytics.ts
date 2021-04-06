@@ -34,7 +34,6 @@ const run = async (): Promise<void> => {
   const completions: StatObj = {};
   const favorites: StatObj = {};
   const signups: StatObj = {};
-  // const activeSubs: StatObj = {};
   const cancelledSubs: StatObj = {};
   const newSubs: StatObj = {};
 
@@ -47,10 +46,10 @@ const run = async (): Promise<void> => {
     sundayStr: string | undefined,
     statObj: StatObj,
     platform: Platforms,
-    // shouldIncrement?: boolean,
+    shouldIncrement?: boolean,
   ) => {
     // Increment if shouldIncrement is undefined or false
-    // const willIncrement = !shouldIncrement ? false : true;
+    const willIncrement = !shouldIncrement ? false : true;
 
     if (sundayStr) {
       // Create PlatformStat object for the week if it doesn't already exist
@@ -58,21 +57,21 @@ const run = async (): Promise<void> => {
         statObj[sundayStr] = { ...defaultPlatformStat };
       }
 
-      // if (willIncrement) {
-      // Increment Totals
-      statObj[sundayStr].total++;
+      if (willIncrement) {
+        // Increment Totals
+        statObj[sundayStr].total++;
 
-      // Increment Platforms
-      if (platform === Platforms.iOS) {
-        statObj[sundayStr].ios++;
+        // Increment Platforms
+        if (platform === Platforms.iOS) {
+          statObj[sundayStr].ios++;
+        }
+        if (platform === Platforms.Android) {
+          statObj[sundayStr].android++;
+        }
+        if (platform === Platforms.Web) {
+          statObj[sundayStr].web++;
+        }
       }
-      if (platform === Platforms.Android) {
-        statObj[sundayStr].android++;
-      }
-      if (platform === Platforms.Web) {
-        statObj[sundayStr].web++;
-      }
-      // }
     }
   };
 
@@ -116,12 +115,6 @@ const run = async (): Promise<void> => {
     return sunday;
   };
 
-  // const isPlanActive = (plan?: UserPlan): boolean => {
-  //   return !plan
-  //     ? false
-  //     : plan.nextRenewalUnix > moment().unix() || plan.type === 'promoCode';
-  // };
-
   //*********************************
   // GET PLAYS AND COMPLETIONS
   //*********************************
@@ -135,52 +128,52 @@ const run = async (): Promise<void> => {
           const thisSundayStr = getSundayString(data.createdAt);
 
           // Increment Plays
-          // incrementPlatform(thisSundayStr, plays, data.platform);
+          incrementPlatform(thisSundayStr, plays, data.platform);
 
-          // // Increment Completions
-          // incrementPlatform(
-          //   thisSundayStr,
-          //   completions,
-          //   data.platform,
-          //   !!data.completed,
-          // );
+          // Increment Completions
+          incrementPlatform(
+            thisSundayStr,
+            completions,
+            data.platform,
+            !!data.completed,
+          );
 
-          if (!plays[thisSundayStr]) {
-            plays[thisSundayStr] = { ...defaultPlatformStat };
-          }
+          // if (!plays[thisSundayStr]) {
+          //   plays[thisSundayStr] = { ...defaultPlatformStat };
+          // }
 
-          if (!completions[thisSundayStr]) {
-            completions[thisSundayStr] = { ...defaultPlatformStat };
-          }
+          // if (!completions[thisSundayStr]) {
+          //   completions[thisSundayStr] = { ...defaultPlatformStat };
+          // }
 
-          // Increment Totals
-          plays[thisSundayStr].total++;
-          if (!!data.completed) {
-            completions[thisSundayStr].total++;
-          }
+          // // Increment Totals
+          // plays[thisSundayStr].total++;
+          // if (!!data.completed) {
+          //   completions[thisSundayStr].total++;
+          // }
 
-          // Increment Platforms
-          if (data.platform === Platforms.iOS) {
-            plays[thisSundayStr].ios++;
+          // // Increment Platforms
+          // if (data.platform === Platforms.iOS) {
+          //   plays[thisSundayStr].ios++;
 
-            if (!!data.completed) {
-              completions[thisSundayStr].ios++;
-            }
-          }
-          if (data.platform === Platforms.Android) {
-            plays[thisSundayStr].android++;
+          //   if (!!data.completed) {
+          //     completions[thisSundayStr].ios++;
+          //   }
+          // }
+          // if (data.platform === Platforms.Android) {
+          //   plays[thisSundayStr].android++;
 
-            if (!!data.completed) {
-              completions[thisSundayStr].android++;
-            }
-          }
-          if (data.platform === Platforms.Web) {
-            plays[thisSundayStr].web++;
+          //   if (!!data.completed) {
+          //     completions[thisSundayStr].android++;
+          //   }
+          // }
+          // if (data.platform === Platforms.Web) {
+          //   plays[thisSundayStr].web++;
 
-            if (!!data.completed) {
-              completions[thisSundayStr].web++;
-            }
-          }
+          //   if (!!data.completed) {
+          //     completions[thisSundayStr].web++;
+          //   }
+          // }
           return;
         }),
       );
@@ -204,25 +197,13 @@ const run = async (): Promise<void> => {
           const data = doc.data() as Favorite;
           const thisSundayStr = getSundayString(data.createdAt);
 
-          if (!favorites[thisSundayStr]) {
-            favorites[thisSundayStr] = { ...defaultPlatformStat };
-          }
-
-          // Increment Totals
-          if (!!data.favorited) {
-            favorites[thisSundayStr].total++;
-
-            // Increment Platforms
-            if (data.platform === Platforms.iOS) {
-              favorites[thisSundayStr].ios++;
-            }
-            if (data.platform === Platforms.Android) {
-              favorites[thisSundayStr].android++;
-            }
-            if (data.platform === Platforms.Web) {
-              favorites[thisSundayStr].web++;
-            }
-          }
+          // Increment Completions
+          incrementPlatform(
+            thisSundayStr,
+            favorites,
+            data.platform,
+            !!data.favorited,
+          );
 
           return Promise.resolve();
         }),
