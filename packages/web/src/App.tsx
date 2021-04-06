@@ -13,6 +13,7 @@ import {
   PlansScreen,
   CheckoutScreen,
   ContentScreen,
+  AnalyticsScreen,
   ForgotPasswordScreen,
   SubscriptionScreen,
   TeachersScreen,
@@ -102,6 +103,10 @@ const App = () => {
                       />
                       <PrivateRoute path="/stripe" component={StripePortal} />
                       <PrivateRoute path="/library" component={LibraryScreen} />
+                      <PrivateRoute
+                        path="/analytics"
+                        component={AnalyticsScreen}
+                      />
                       <PrivateRoute path="/sleep" component={SleepScreen} />
                       <PrivateRoute
                         path="/meditate"

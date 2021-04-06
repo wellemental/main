@@ -3,6 +3,29 @@ import * as firebase from 'firebase-admin';
 export type Timestamp = firebase.firestore.Timestamp;
 export type FieldValue = firebase.firestore.FieldValue;
 
+export type PlatformStat = {
+  total: number;
+  ios: number;
+  android: number;
+  web: number;
+};
+
+export interface Week {
+  id: string;
+  year: number;
+  isoWeek: number;
+  startDate: string;
+  endDate: string;
+  // signups: number;
+  // activeSubs: number;
+  // newSubs: number;
+  // cancellations: number;
+  plays: PlatformStat;
+  completions: PlatformStat;
+  // seconds: PlatformStat;
+  favs: PlatformStat;
+}
+
 export type IapValidate = {
   receipt: any;
   productId: string;
@@ -82,12 +105,6 @@ export type StripeEvent = {
   pricePaid: number;
   trialPeriodLength: number;
   trial_end: string | null;
-};
-
-export type PlayEvent = {
-  contentId: string;
-  completed?: boolean;
-  createdAt: Timestamp;
 };
 
 export type McTags = 'Pro' | 'Lead';
@@ -170,9 +187,25 @@ export interface Content {
   created_at: Timestamp; //typeof Timestamp;
 }
 
+export enum Platforms {
+  Android = 'android',
+  iOS = 'ios',
+  Web = 'web',
+  Mac = 'macos',
+  Windows = 'windows',
+}
+
+export type PlayEvent = {
+  contentId: string;
+  completed?: boolean;
+  platform: Platforms;
+  createdAt: Timestamp;
+};
+
 export type Favorite = {
   contentId: string;
   favorited: boolean;
+  platform: Platforms;
   createdAt: Timestamp;
   updatedAt: Date;
 };

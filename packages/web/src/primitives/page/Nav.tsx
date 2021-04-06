@@ -92,6 +92,8 @@ const Nav: React.FC<Props> = props => {
     right: false,
   });
 
+  const isAdmin = user.isAdmin;
+
   const anchor = 'left';
 
   const toggleDrawer = (anchor: Anchor, open: boolean) => (
@@ -275,6 +277,13 @@ const Nav: React.FC<Props> = props => {
                 {translation[link.label]}
               </MenuItem>
             ))}
+            {isAdmin && (
+              <MenuItem
+                onClick={() => handleClick('/analytics', true)}
+                key={'analytics'}>
+                Analytics
+              </MenuItem>
+            )}
           </Menu>
           {/* </Slide> */}
         </Toolbar>

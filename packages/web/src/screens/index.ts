@@ -9,6 +9,7 @@ export { default as SettingsScreen } from './SettingsScreen';
 export { default as StripePortal } from './StripePortal';
 export { default as SubscriptionScreen } from './SubscriptionScreen';
 export { default as EditProfileScreen } from './EditProfileScreen';
+export { default as AnalyticsScreen } from './AnalyticsScreen';
 export { default as ProfileScreen } from './ProfileScreen';
 export { default as SearchScreen } from './SearchScreen';
 export { default as TeacherScreen } from './TeacherScreen';

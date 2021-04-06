@@ -9,10 +9,13 @@ import {
   ContentLoopLoadMore,
   Tabs,
 } from '../primitives';
-import { FavoritesServiceType } from 'common';
+import { FavoritesServiceType, PlayEvent } from 'common';
 import { useCurrentUser, useContainer } from '../hooks';
 import useLoadMore from '../hooks/useLoadMore';
 // import { ProfileScreenRouteProp } from '../types';
+import { convertTimestamp } from '../services/helpers';
+import { Timestamp } from '../types';
+import moment from 'moment';
 
 const ProfileScreen: React.FC = () => {
   const { translation, user } = useCurrentUser();
@@ -40,6 +43,14 @@ const ProfileScreen: React.FC = () => {
     hasMore,
     // @ts-ignore
   } = useLoadMore(service.query, { limit: 7 });
+
+  const play = items && items[0] && (items[0].data() as PlayEvent);
+  const momentDate = moment('2022-03-05').toDate();
+  if (play && play.createdAt) {
+    console.log('CREATED AT', play.createdAt.toDate(), 'DATE', momentDate);
+
+    console.log('GREATER', play.createdAt < momentDate);
+  }
 
   const {
     items: favorites,

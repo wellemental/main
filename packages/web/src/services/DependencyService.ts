@@ -6,6 +6,7 @@ import { buildFirestore } from './FirebaseService';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
 import FavoritesService from './FavoritesService';
+import AnalyticsService from './AnalyticsService';
 
 interface DependencyDescriptor {
   dependencies: string[];
@@ -51,6 +52,10 @@ const dependenciesDescriptors = {
   favoritesService: {
     class: FavoritesService,
     dependencies: ['firestore', 'currentUser'],
+  },
+  analyticsService: {
+    class: AnalyticsService,
+    dependencies: ['firestore', 'logger'],
   },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;

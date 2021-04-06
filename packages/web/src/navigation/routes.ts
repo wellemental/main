@@ -95,7 +95,7 @@ const routes: { [key: string]: RouteType } = {
   Profile: {
     label: 'Profile',
     slug: '/profile',
-    pro: true,
+    pro: false,
     loggedIn: true,
     component: ProfileScreen,
   },

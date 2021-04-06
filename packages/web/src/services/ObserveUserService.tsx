@@ -63,7 +63,6 @@ class ObserveUserService implements ObserveUserServiceType {
   }
 
   public unsubscribe(): void {
-    console.log('THIS IS UNSUBSCRIBING?', this.authUnsubscriber);
     if (this.authUnsubscriber) this.authUnsubscriber();
     if (this.userUnsubscriber) this.userUnsubscriber();
   }
@@ -85,6 +84,7 @@ class ObserveUserService implements ObserveUserServiceType {
         this.user = {
           id: userData.id,
           email: snapshot.exists ? userData.email : undefined,
+          isAdmin: userData.isAdmin,
           language:
             userData && userData.language ? userData.language : Languages.En,
           favorites: userData && userData.favorites ? userData.favorites : {},

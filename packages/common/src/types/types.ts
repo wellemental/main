@@ -203,6 +203,7 @@ export interface User {
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
   plan?: UserPlan;
+  isAdmin?: boolean;
   updated_at?: Date;
 }
 export interface DefaultState {
@@ -339,6 +340,14 @@ export interface FavoritesServiceType {
   import(favs: FavoritesObjPartial): Promise<void>;
 }
 
+export interface AnalyticsServiceType {
+  get(): Promise<Week[]>;
+  // getPlays(): Promise<{
+  //   plays: PlatformStat;
+  //   completions: PlatformStat;
+  // }>;
+}
+
 export interface PlaysServiceType {
   query: Query;
   add(id: string): Promise<void>;
@@ -467,4 +476,26 @@ export interface ConfigDefaults {
 // WEB ONLY
 export interface LocationState {
   [key: string]: any;
+}
+
+export type PlatformStat = {
+  total: number;
+  ios: number;
+  android: number;
+  web: number;
+};
+export interface Week {
+  id: string;
+  year: number;
+  isoWeek: number;
+  startDate: string;
+  endDate: string;
+  signups: number;
+  activeSubs: number;
+  newSubs: number;
+  cancellations: number;
+  plays: PlatformStat;
+  completions: PlatformStat;
+  seconds: PlatformStat;
+  favs: PlatformStat;
 }
