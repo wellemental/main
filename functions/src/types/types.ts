@@ -16,10 +16,10 @@ export interface Week {
   isoWeek: number;
   startDate: string;
   endDate: string;
-  // signups: number;
+  signups: PlatformStat;
   // activeSubs: number;
-  // newSubs: number;
-  // cancellations: number;
+  newSubs: PlatformStat;
+  cancellations: PlatformStat;
   plays: PlatformStat;
   completions: PlatformStat;
   // seconds: PlatformStat;
@@ -43,7 +43,7 @@ export enum PlanId {
   Free = 'free',
 }
 
-export type UserPlan = {
+type UserPlanBase = {
   type: 'iosIap' | 'promoCode' | 'android' | 'stripe';
   auto_renew_status: boolean;
   nextRenewalDate: string; // Just storing so humans can easily read it in database
@@ -51,13 +51,24 @@ export type UserPlan = {
   canceledAtUnix?: number;
   planId: string;
   status: 'canceled' | 'active' | 'trialing' | 'pending';
-  createdAt: Date;
   stripeEvents?: string[];
   orderId?: string;
 };
 
+// For use when saving to Firebase
+export interface UserPlan extends UserPlanBase {
+  createdAt: Date;
+}
+
+// For use when getting from Firebase
+export interface FbUserPlan extends UserPlanBase {
+  createdAt: Timestamp;
+}
+
 export interface User {
-  plan: UserPlan;
+  plan: UserPlan | FbUserPlan;
+  created_at: Timestamp;
+  platform: Platforms;
 }
 
 export type Product = {

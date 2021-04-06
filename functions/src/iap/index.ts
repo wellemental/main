@@ -42,7 +42,7 @@ export const validateIap = async (
       // persist in database
       // add to user doc in db
       try {
-        const userPlan: User = {
+        const userPlan: Partial<User> = {
           plan: {
             type: 'iosIap',
             auto_renew_status: true,

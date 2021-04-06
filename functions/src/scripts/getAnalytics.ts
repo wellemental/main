@@ -1,8 +1,20 @@
+// Script to backfill all the analytics weeks from the beginning
 import { initializeFirebase } from './initialize';
 import * as firebase from 'firebase-admin';
-import { PlayEvent, Platforms, Favorite, PlatformStat, Week } from '../types';
+import {
+  PlayEvent,
+  Platforms,
+  // UserPlan,
+  Favorite,
+  PlatformStat,
+  Week,
+  FbUserPlan,
+  User,
+} from '../types';
 import * as moment from 'moment';
 import { firestore } from 'firebase-admin';
+
+type StatObj = { [key: string]: PlatformStat };
 
 const run = async (): Promise<void> => {
   const app = initializeFirebase();
@@ -18,28 +30,102 @@ const run = async (): Promise<void> => {
   };
 
   const dateFormat = 'YYYY-MM-DD';
-  const plays: { [key: string]: PlatformStat } = {};
-  const completions: { [key: string]: PlatformStat } = {};
-  const favorites: { [key: string]: PlatformStat } = {};
+  const plays: StatObj = {};
+  const completions: StatObj = {};
+  const favorites: StatObj = {};
+  const signups: StatObj = {};
+  // const activeSubs: StatObj = {};
+  const cancelledSubs: StatObj = {};
+  const newSubs: StatObj = {};
 
   // Determine if play is the same isoWeek
   //   const isThisWeek = (docDate: moment.Moment, currWeek: number) => {
   //     return docDate.isoWeek() === currWeek ? true : false;
   //   };
 
+  const incrementPlatform = (
+    sundayStr: string | undefined,
+    statObj: StatObj,
+    platform: Platforms,
+    // shouldIncrement?: boolean,
+  ) => {
+    // Increment if shouldIncrement is undefined or false
+    // const willIncrement = !shouldIncrement ? false : true;
+
+    if (sundayStr) {
+      // Create PlatformStat object for the week if it doesn't already exist
+      if (!statObj[sundayStr]) {
+        statObj[sundayStr] = { ...defaultPlatformStat };
+      }
+
+      // if (willIncrement) {
+      // Increment Totals
+      statObj[sundayStr].total++;
+
+      // Increment Platforms
+      if (platform === Platforms.iOS) {
+        statObj[sundayStr].ios++;
+      }
+      if (platform === Platforms.Android) {
+        statObj[sundayStr].android++;
+      }
+      if (platform === Platforms.Web) {
+        statObj[sundayStr].web++;
+      }
+      // }
+    }
+  };
+
+  const incrementSubs = (
+    sundayStr: string | undefined,
+    statObj: StatObj,
+    type: 'iosIap' | 'android' | 'stripe' | 'promoCode',
+  ) => {
+    if (!!sundayStr) {
+      // Create PlatformStat object for the week if it doesn't already exist
+      if (!statObj[sundayStr]) {
+        statObj[sundayStr] = { ...defaultPlatformStat };
+      }
+
+      // Increment stat total
+      statObj[sundayStr].total++;
+
+      // Increment New Subscription Platforms
+      if (type === 'iosIap') {
+        statObj[sundayStr].ios++;
+      }
+      if (type === 'android') {
+        statObj[sundayStr].android++;
+      }
+      if (type === 'stripe') {
+        statObj[sundayStr].web++;
+      }
+    }
+  };
+
   // Get Sunday date string
   const getSundayString = (createdAt: firestore.Timestamp): string => {
     const createdAtMoment = moment(createdAt.toDate());
-    return createdAtMoment.isoWeekday(7).format(dateFormat);
+    const sunday = createdAtMoment.isoWeekday(7).format(dateFormat);
+    return sunday;
   };
+
+  const getSundayFromUnix = (unix: number): string => {
+    const createdAtMoment = moment.unix(unix);
+    const sunday = createdAtMoment.isoWeekday(7).format(dateFormat);
+    return sunday;
+  };
+
+  // const isPlanActive = (plan?: UserPlan): boolean => {
+  //   return !plan
+  //     ? false
+  //     : plan.nextRenewalUnix > moment().unix() || plan.type === 'promoCode';
+  // };
 
   //*********************************
   // GET PLAYS AND COMPLETIONS
   //*********************************
   const getPlays = async (): Promise<void> => {
-    // const plays = { ...defaultPlatformStat };
-    // const completions = { ...defaultPlatformStat };
-
     try {
       const collection = firebase.firestore().collectionGroup('plays');
 
@@ -48,6 +134,17 @@ const run = async (): Promise<void> => {
           const data = doc.data() as PlayEvent;
           const thisSundayStr = getSundayString(data.createdAt);
 
+          // Increment Plays
+          // incrementPlatform(thisSundayStr, plays, data.platform);
+
+          // // Increment Completions
+          // incrementPlatform(
+          //   thisSundayStr,
+          //   completions,
+          //   data.platform,
+          //   !!data.completed,
+          // );
+
           if (!plays[thisSundayStr]) {
             plays[thisSundayStr] = { ...defaultPlatformStat };
           }
@@ -55,13 +152,6 @@ const run = async (): Promise<void> => {
           if (!completions[thisSundayStr]) {
             completions[thisSundayStr] = { ...defaultPlatformStat };
           }
-          // Convert createdAt timestamp to moment
-          //   const createdAtMoment = moment(data.createdAt.toDate());
-
-          // If the play wasn't in the same week, return and don't increment anything
-          //   if (!isThisWeek(createdAtMoment, week)) {
-          //     return Promise.reject();
-          //   }
 
           // Increment Totals
           plays[thisSundayStr].total++;
@@ -118,11 +208,6 @@ const run = async (): Promise<void> => {
             favorites[thisSundayStr] = { ...defaultPlatformStat };
           }
 
-          // If the play wasn't in the same week, return and don't increment anything
-          //   if (!isThisWeek(createdAtMoment, week)) {
-          //     return Promise.reject();
-          //   }
-
           // Increment Totals
           if (!!data.favorited) {
             favorites[thisSundayStr].total++;
@@ -151,6 +236,52 @@ const run = async (): Promise<void> => {
   };
 
   //*********************************
+  // GET ALL SIGNUPS AND SUBSCRIPTIONS
+  //*********************************
+  const getSignups = async (): Promise<void> => {
+    try {
+      const collection = firebase.firestore().collection('users');
+
+      await collection.get().then(snapshots =>
+        snapshots.docs.forEach(doc => {
+          const data = doc.data() as User;
+          // Early account didn't have created_at field it seems
+          const thisSundayStr =
+            data.created_at && getSundayString(data.created_at);
+
+          incrementPlatform(thisSundayStr, signups, data.platform);
+
+          // Increment Subscription Totals
+          if (!!data.plan) {
+            const plan = data.plan as FbUserPlan;
+
+            const subSundayStr =
+              plan.createdAt && getSundayString(plan.createdAt);
+
+            // Increment New Subscriptions
+            incrementSubs(subSundayStr, newSubs, plan.type);
+
+            // Increment Cancelled Subscriptions
+            const subCancelSundayStr = !!plan.canceledAtUnix
+              ? getSundayFromUnix(plan.canceledAtUnix)
+              : undefined;
+
+            incrementSubs(subCancelSundayStr, cancelledSubs, plan.type);
+          }
+
+          return Promise.resolve();
+        }),
+      );
+      console.log('GET Signups', signups);
+      console.log('GET newSubs', newSubs);
+      return Promise.resolve();
+    } catch (error) {
+      console.log('Error getting weekly signup analytics', error);
+      return Promise.reject();
+    }
+  };
+
+  //*********************************
   // ADD ANALYTICS TO FIRESTORE
   //*********************************
   const addWeek = async (date: moment.Moment): Promise<void> => {
@@ -172,10 +303,19 @@ const run = async (): Promise<void> => {
         favs: favorites[sundayStr]
           ? favorites[sundayStr]
           : { ...defaultPlatformStat },
+        signups: signups[sundayStr]
+          ? signups[sundayStr]
+          : { ...defaultPlatformStat },
+        newSubs: newSubs[sundayStr]
+          ? newSubs[sundayStr]
+          : { ...defaultPlatformStat },
+        cancellations: cancelledSubs[sundayStr]
+          ? cancelledSubs[sundayStr]
+          : { ...defaultPlatformStat },
       };
       await firebase
         .firestore()
-        .collection('analytics-weekly')
+        .collection('analytics/weekly/weeks')
         .doc(sundayStr)
         .set(thisWeek);
 
@@ -190,17 +330,50 @@ const run = async (): Promise<void> => {
     try {
       await getPlays();
       await getFavs();
+      await getSignups();
     } catch (error) {
       console.log('GET ALL ERROR', error);
     }
 
-    let sun = moment().isoWeekday(7);
+    // This didn't work for some reason, kept subtracting 13-14 days each loop
+    // let sun = moment('2021-04-04');
+    // while (sun.isAfter('2020-10-12')) {
+    //   console.log('WHILE SUNDAY', sun);
+    //   sun.subtract(7, 'days');
+    // }
 
-    while (sun.isAfter('2020-10-12')) {
-      console.log('WHILE SUNDAY', sun);
-      addWeek(sun);
-      sun = sun.subtract(7, 'days');
-    }
+    // Manual hack to backfill bc moment while loop wasn't working
+    let weeks: string[] = [
+      '2021-04-04',
+      '2021-03-28',
+      '2021-03-21',
+      '2021-03-14',
+      '2021-03-07',
+      '2021-02-28',
+      '2021-02-21',
+      '2021-02-14',
+      '2021-02-07',
+      '2021-01-31',
+      '2021-01-24',
+      '2021-01-17',
+      '2021-01-10',
+      '2021-01-03',
+      '2020-12-27',
+      '2020-12-20',
+      '2020-12-13',
+      '2020-12-06',
+      '2020-11-29',
+      '2020-11-22',
+      '2020-11-15',
+      '2020-11-08',
+      '2020-11-01',
+      '2020-10-25',
+      '2020-10-18',
+    ];
+
+    weeks.forEach(async week => {
+      await addWeek(moment(week));
+    });
   };
 
   await getAll();

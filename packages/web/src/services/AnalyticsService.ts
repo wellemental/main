@@ -2,8 +2,15 @@ import {
   AnalyticsServiceType,
   Week,
   PlatformStat,
+  User,
   PlayEvent,
+  SubsStat,
+  TotalsMap,
   Platforms,
+  UserPlan,
+  isPlanActive,
+  StatObj,
+  TotalStats,
 } from 'common';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
@@ -22,86 +29,121 @@ const columns: string[] = [
   'seconds',
   'favs',
 ];
+
 class AnalyticsService extends BaseService implements AnalyticsServiceType {
-  static dateFormat = 'YYYY-MM-DD';
-  public defaultPlatformStat: PlatformStat = {
+  private totalsDoc = this.firestore.collection('analytics').doc('total');
+  private dateFormat = 'YYYY-MM-DD';
+  private defaultPlatformStat: PlatformStat = {
     android: 0,
     ios: 0,
     web: 0,
     total: 0,
   };
-  //   static sunday = moment().isoWeekday(1);
-  //   static sundayStr = sunday.format(dateFormat);
 
-  // Determine if play is the same isoWeek
-  //   public isThisWeek = (date: moment.Moment, isoWeek) => {
-  //     return date.isoWeek() === sunday.isoWeek() ? true : false;
-  //   };
+  private defaultSubsStat: SubsStat = {
+    ...this.defaultPlatformStat,
+    promoCode: 0,
+  };
 
-  //   public getPlays = async (
-  //     date: string,
-  //   ): Promise<{
-  //     plays: PlatformStat;
-  //     completions: PlatformStat;
-  //   }> => {
-  //     const plays = this.defaultPlatformStat;
-  //     const completions = this.defaultPlatformStat;
+  private incrementSubs = (
+    statObj: SubsStat,
+    type: 'iosIap' | 'android' | 'stripe' | 'promoCode',
+  ) => {
+    // Increment stat total
+    statObj.total++;
 
-  //     try {
-  //       const collection = this.firestore.collectionGroup('plays');
+    // Increment New Subscription Platforms
+    if (type === 'iosIap') {
+      statObj.ios++;
+    }
+    if (type === 'android') {
+      statObj.android++;
+    }
+    if (type === 'stripe') {
+      statObj.web++;
+    }
 
-  //       await collection.get().then(snapshots =>
-  //         snapshots.docs.forEach(doc => {
-  //           const data = doc.data() as PlayEvent;
-  //           // Convert createdAt timestamp to moment
-  //           const createdAtMoment = moment(data.createdAt.toDate());
+    if (type === 'promoCode') {
+      statObj.promoCode++;
+    }
+  };
 
-  //           // If the play wasn't in the same week, return and don't increment anything
-  //           if (!this.isThisWeek(createdAtMoment)) {
-  //             return;
-  //           }
+  public updateTotals = async (): Promise<void> => {
+    const collection = this.firestore.collection('users');
+    let users = 0;
+    const activeSubs = this.defaultSubsStat;
+    try {
+      await collection.get().then(snapshots =>
+        snapshots.docs.forEach(doc => {
+          const data = doc.data() as User;
 
-  //           // Increment Totals
-  //           plays.total++;
-  //           if (!!data.completed) {
-  //             completions.total++;
-  //           }
+          // Increment total users
+          users++;
 
-  //           // Increment Platforms
-  //           if (data.platform === Platforms.iOS) {
-  //             plays.ios++;
+          // Increment ActiveSubs if plan exists and is active
+          if (!!data.plan && isPlanActive(data.plan)) {
+            const plan = data.plan as UserPlan;
+            this.incrementSubs(activeSubs, plan.type);
+          }
+        }),
+      );
 
-  //             if (!!data.completed) {
-  //               completions.ios++;
-  //             }
-  //           }
-  //           if (data.platform === Platforms.Android) {
-  //             plays.android++;
+      await this.totalsDoc.set({
+        users,
+        activeSubs,
+        updatedAt: new Date(),
+      });
 
-  //             if (!!data.completed) {
-  //               completions.android++;
-  //             }
-  //           }
-  //           if (data.platform === Platforms.Web) {
-  //             plays.web++;
+      return Promise.resolve();
+    } catch (error) {
+      console.log('Error updating total analytics', error);
+      return Promise.reject();
+    }
+  };
 
-  //             if (!!data.completed) {
-  //               completions.web++;
-  //             }
-  //           }
-  //           return;
-  //         }),
-  //       );
-  //       console.log('GET PLAYS', plays, completions);
-  //     } catch (error) {
-  //       console.log('Error getting weekly plays analytics', error);
-  //       return Promise.reject();
-  //     }
-  //   };
+  public buildTotalsMap = (totals: TotalStats): TotalsMap => {
+    const totalsMap: TotalsMap = {
+      users: totals.users,
+      totalActive: totals.activeSubs.total,
+      totalPaid: totals.activeSubs.total - totals.activeSubs.promoCode,
+      ios: totals.activeSubs.ios,
+      android: totals.activeSubs.android,
+      web: totals.activeSubs.web,
+      promoCode: totals.activeSubs.promoCode,
+      updatedAt: moment(totals.updatedAt.toDate()).fromNow(),
+    };
+
+    return totalsMap;
+  };
+
+  public getTotals = async (): Promise<TotalsMap> => {
+    try {
+      const doc = await this.totalsDoc.get();
+      const data = doc.data() as TotalStats;
+
+      const totals = this.buildTotalsMap(data);
+
+      return totals;
+    } catch (error) {
+      console.log('Error getting totals', error);
+      return Promise.reject('Error getting totals');
+    }
+  };
+
+  public getNew = async (): Promise<void> => {
+    const docRef = this.firestore.collection('analytics').doc('total');
+    const doc = await docRef.get();
+    const data = doc.data();
+
+    const start = new Date();
+    const collection = this.firestore
+      .collectionGroup('plays')
+      .where('createdAt', '>', start);
+  };
 
   public get = async (): Promise<Week[]> => {
     const collection = this.firestore
-      .collection('analytics-weekly')
+      .collection('analytics/weekly/weeks')
       .orderBy('endDate', 'desc');
 
     try {

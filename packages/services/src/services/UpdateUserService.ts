@@ -1,7 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
-// import { firestore } from '../base';
 import { ApplicationError } from '../models/Errors';
-import { UserProfile, UpdateUserServiceType, InitialUserDoc } from '../types';
+import { UserProfile, UpdateUserServiceType, InitialUserDoc } from 'common';
 // import logger from './LoggerService';
 // import tracker, { TrackingEvents } from './TrackerService';
 

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { configDefaults } from '../constants/remoteConfigDefaults';
 
@@ -274,9 +275,8 @@ export interface NewAccount {
 export interface InitialUserDoc {
   id: string;
   email: string;
-  // name: string;
-  // birthday: string;
   language: Languages | string;
+  platform: Platforms;
 }
 
 export type DownloadResult = {
@@ -341,6 +341,8 @@ export interface FavoritesServiceType {
 }
 
 export interface AnalyticsServiceType {
+  getTotals(): Promise<TotalsMap>;
+  updateTotals(): Promise<void>;
   get(): Promise<Week[]>;
   // getPlays(): Promise<{
   //   plays: PlatformStat;
@@ -483,6 +485,29 @@ export type PlatformStat = {
   ios: number;
   android: number;
   web: number;
+};
+
+export type StatObj = { [key: string]: PlatformStat };
+
+export interface SubsStat extends PlatformStat {
+  promoCode: number;
+}
+
+export type TotalStats = {
+  users: number;
+  activeSubs: SubsStat;
+  updatedAt: Timestamp;
+};
+
+export type TotalsMap = {
+  users: number;
+  totalActive: number;
+  totalPaid: number;
+  ios: number;
+  android: number;
+  web: number;
+  promoCode: number;
+  updatedAt: string;
 };
 export interface Week {
   id: string;

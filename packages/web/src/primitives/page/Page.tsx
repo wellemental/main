@@ -44,6 +44,8 @@ const Page: React.FC<Props & ContainerProps> = ({
     location.pathname === '/login' ||
     location.pathname === '/access';
 
+  const containerWidth = location.pathname === '/analytics' ? 'xl' : 'xs';
+
   const bgStyle = background
     ? {
         backgroundImage:
@@ -61,7 +63,7 @@ const Page: React.FC<Props & ContainerProps> = ({
   return (
     <div style={bgStyle}>
       <CssBaseline />
-      <Container maxWidth="xs" component="main" {...props}>
+      <Container maxWidth={containerWidth} component="main" {...props}>
         <Grid
           container
           className={`${fullPage ? '' : classes.center}`}

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   FeaturedLoop,
   PageHeading,
   Subheadline,
   Page,
+  Button,
+  Error,
+  Box,
   LockOverlay,
   CategoryLoop,
 } from '../primitives';
@@ -16,9 +19,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import moment from 'moment';
-import { AnalyticsServiceType, Week } from 'common';
-import { useContainer, useQuery } from '../hooks';
+import { AnalyticsServiceType, Week, TotalStats, TotalsMap } from 'common';
+import { useContainer, useQuery, useMutation } from '../hooks';
 
 const useStyles = makeStyles({
   table: {
@@ -35,25 +37,70 @@ const AnalyticsScreen: React.FC = () => {
   );
 
   const { data, error, loading } = useQuery<Week[]>(service.get);
+  const {
+    data: totals,
+    error: totalsError,
+    loading: totalsLoading,
+    fetch: fetchTotals,
+  } = useQuery<TotalsMap>(service.getTotals);
+
+  const { loading: mutateLoading, error: mutateError, mutate } = useMutation(
+    service.updateTotals,
+  );
+
+  const handleUpdate = () => {
+    mutate();
+    fetchTotals();
+  };
 
   const columns = [
-    // 'isoWeek',
     'startDate',
     'endDate',
-    // 'signups',
+    'signups',
     // 'activeSubs',
-    // 'newSubs',
-    // 'cancellations',
+    'newSubs',
+    'cancellations',
     'plays',
     'completions',
-    // 'seconds',
     'favs',
   ];
 
   return (
     <>
       <PageHeading title="Analytics" />
-      {/* <Subheadline>Stats</Subheadline> */}
+      <Box row justifyContent="space-between">
+        <Subheadline>Total</Subheadline>
+        <Button
+          text="update (refresh after)"
+          size="small"
+          variant="text"
+          onPress={handleUpdate}
+          disabled={mutateLoading}
+        />
+      </Box>
+
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {totals &&
+                Object.keys(totals).map((key: string) => {
+                  return <TableCell key={key}>{key}</TableCell>;
+                })}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              {totals &&
+                Object.values(totals).map(stat => (
+                  <TableCell>{stat}</TableCell>
+                ))}
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Subheadline>Weekly</Subheadline>
 
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">

@@ -31,3 +31,7 @@ I'm using the 'firebase' javascript SDK for web and 'react-native-firebase' for 
 
 1. Run 'yarn install' in the root directory
 1. Run 'cd packages/mobile' and then 'yarn pods'
+
+## Tracking & Logging
+
+We had to remove all logging and tracking services from the mobile app. Since we are in the Kids Category, Apply doesn't allow any third-party analytics and therefore shut down our app. I simply commented most of the code out in case we can find a work-around.

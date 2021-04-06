@@ -53,7 +53,7 @@ export const validateAndroidSubscription = async (
       console.log('expiryTimeMillis', expiryTimeMillis);
 
       try {
-        const userPlan: User = {
+        const userPlan: Partial<User> = {
           plan: {
             type: 'android',
             auto_renew_status: autoRenewing ? autoRenewing : true,

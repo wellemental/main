@@ -44,12 +44,17 @@ const ProfileScreen: React.FC = () => {
     // @ts-ignore
   } = useLoadMore(service.query, { limit: 7 });
 
+  // Only here to help debug queries
   const play = items && items[0] && (items[0].data() as PlayEvent);
   const momentDate = moment('2022-03-05').toDate();
   if (play && play.createdAt) {
     console.log('CREATED AT', play.createdAt.toDate(), 'DATE', momentDate);
+    const createdAtMoment = moment(play.createdAt.toDate());
+    const thatSunday = createdAtMoment.isoWeekday(7).format('YYYY-MM-DD');
+    console.log('MOMENT CREATED', createdAtMoment);
+    console.log('CREATED SUNDAY', thatSunday);
 
-    console.log('GREATER', play.createdAt < momentDate);
+    // console.log('GREATER', play.createdAt < new Date());
   }
 
   const {

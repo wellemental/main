@@ -1,6 +1,6 @@
 import { AuthenticationError } from '../models/Errors';
 import firebase from '../base';
-import { NewAccount } from 'common';
+import { NewAccount, Platforms } from 'common';
 import UpdateUserService from './UpdateUserService';
 import logger from './LoggerService';
 import tracker, { TrackingEvents } from './TrackerService';
@@ -69,9 +69,8 @@ class AuthService {
               await profileService.createProfile({
                 id: user.user.uid,
                 email: user.user.email,
-                // name: account.name,
-                // birthday: account.birthday,
                 language: account.language,
+                platform: Platforms.Web,
               });
             } catch (err) {
               logger.error(`Error creating user doc - ${err}`);
