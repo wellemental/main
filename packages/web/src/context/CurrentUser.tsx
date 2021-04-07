@@ -30,6 +30,7 @@ export const CurrentUserProvider = ({ children }: any) => {
         loading,
         translation: setTranslation(!user ? undefined : user.language),
         activePlan: isPlanActive(!user ? undefined : user.plan),
+        isAdmin: user ? !!user.isAdmin : false,
       }}>
       {children}
     </CurrentUser.Provider>

@@ -82,7 +82,7 @@ type Anchor = 'top' | 'left' | 'bottom' | 'right';
 const Nav: React.FC<Props> = props => {
   usePageviews();
   const classes = useStyles();
-  const { user, auth, activePlan, translation } = useCurrentUser();
+  const { user, auth, activePlan, isAdmin, translation } = useCurrentUser();
   const history = useHistory();
   // const trigger = useScrollTrigger();
   const [state, setState] = useState({
@@ -91,8 +91,6 @@ const Nav: React.FC<Props> = props => {
     bottom: false,
     right: false,
   });
-
-  const isAdmin = user && user.isAdmin ? user.isAdmin : false;
 
   const anchor = 'left';
 
@@ -164,6 +162,12 @@ const Nav: React.FC<Props> = props => {
               <ListItemText primary={translation[link.label]} />
             </ListItem>
           ),
+        )}
+
+        {isAdmin && (
+          <ListItem button onClick={() => handleClick('/analytics', true)}>
+            <ListItemText primary="Analytics" />
+          </ListItem>
         )}
 
         <Divider />
