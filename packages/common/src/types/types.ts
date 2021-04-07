@@ -364,11 +364,8 @@ export interface FavoritesServiceType {
 export interface AnalyticsServiceType {
   getTotals(): Promise<TotalsMap>;
   updateTotals(): Promise<void>;
+  addWeek(dateStr: string): Promise<void>;
   get(): Promise<Week[]>;
-  // getPlays(): Promise<{
-  //   plays: PlatformStat;
-  //   completions: PlatformStat;
-  // }>;
 }
 
 export interface PlaysServiceType {
@@ -536,9 +533,9 @@ export interface Week {
   isoWeek: number;
   startDate: string;
   endDate: string;
-  signups: number;
-  newSubs: number;
-  cancellations: number;
+  signups: PlatformStat;
+  newSubs: SubsStat;
+  cancellations: SubsStat;
   plays: PlatformStat;
   completions: PlatformStat;
   favs: PlatformStat;

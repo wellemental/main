@@ -49,6 +49,13 @@ const AnalyticsScreen: React.FC = () => {
     service.updateTotals,
   );
 
+  const nextEndMoment = data
+    ? moment(data[0].endDate).add(7, 'days')
+    : undefined;
+
+  let hasAnotherWeek = false;
+
+  // Handle Totals Update
   const handleUpdate = () => {
     mutate();
     fetchTotals();
@@ -64,9 +71,6 @@ const AnalyticsScreen: React.FC = () => {
     'completions',
     'favs',
   ];
-
-  const recentEndDate = data && moment(data[0].endDate);
-  const hasAnotherWeek = recentEndDate && recentEndDate < moment();
 
   return (
     <>
@@ -95,8 +99,8 @@ const AnalyticsScreen: React.FC = () => {
           <TableBody>
             <TableRow>
               {totals &&
-                Object.values(totals).map(stat => (
-                  <TableCell>{stat}</TableCell>
+                Object.values(totals).map((stat, idx) => (
+                  <TableCell key={idx}>{stat}</TableCell>
                 ))}
             </TableRow>
           </TableBody>
@@ -110,8 +114,12 @@ const AnalyticsScreen: React.FC = () => {
             text="add week (refresh after)"
             size="small"
             variant="text"
-            onPress={handleUpdate}
-            disabled={mutateLoading}
+            onPress={() => {
+              if (nextEndMoment) {
+                service.addWeek(nextEndMoment.format('YYYY-MM-DD'));
+              }
+            }}
+            disabled={!hasAnotherWeek}
           />
         )}
       </Box>

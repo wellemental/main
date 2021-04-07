@@ -49,7 +49,8 @@ const run = async (): Promise<void> => {
     shouldIncrement?: boolean,
   ) => {
     // Increment if shouldIncrement is undefined or false
-    const willIncrement = !shouldIncrement ? false : true;
+    const willIncrement =
+      shouldIncrement === undefined ? true : shouldIncrement;
 
     if (sundayStr) {
       // Create PlatformStat object for the week if it doesn't already exist
@@ -325,6 +326,7 @@ const run = async (): Promise<void> => {
 
     // Manual hack to backfill bc moment while loop wasn't working
     let weeks: string[] = [
+      '2021-04-11',
       '2021-04-04',
       '2021-03-28',
       '2021-03-21',

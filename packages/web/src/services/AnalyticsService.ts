@@ -1,3 +1,4 @@
+import { LensTwoTone } from '@material-ui/icons';
 import {
   AnalyticsServiceType,
   Week,
@@ -15,6 +16,7 @@ import {
   StatObj,
   TotalStats,
   convertToTimestamp,
+  convertTimestamp,
 } from 'common';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
@@ -48,13 +50,17 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
     return sunday;
   };
 
+  private shouldIncrement = (condition?: boolean) => {
+    return condition === undefined ? true : condition;
+  };
+
   private incrementSubs = (
     statObj: SubsStat,
     type: 'iosIap' | 'android' | 'stripe' | 'promoCode',
     shouldIncrement?: boolean,
   ) => {
     // Increment if shouldIncrement is undefined or false
-    const willIncrement = !shouldIncrement ? false : true;
+    const willIncrement = this.shouldIncrement(shouldIncrement);
 
     if (willIncrement) {
       // Increment stat total
@@ -82,7 +88,7 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
     shouldIncrement?: boolean,
   ) => {
     // Increment if shouldIncrement is undefined or false
-    const willIncrement = !shouldIncrement ? false : true;
+    const willIncrement = this.shouldIncrement(shouldIncrement);
 
     // Create PlatformStat object if it doesn't already exist
     if (!statObj) {
@@ -109,8 +115,8 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
   };
 
   private getSignups = async (
-    startTimestamp: Timestamp,
-    endTimestamp: Timestamp,
+    startDate: Date,
+    endDate: Date,
   ): Promise<PlatformStat> => {
     const signups: PlatformStat = { ...this.defaultSubsStat };
 
@@ -118,14 +124,13 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
     try {
       const collection = this.firestore
         .collection('users')
-        .where('created_at', '>', startTimestamp)
-        .where('created_at', '<', endTimestamp);
+        .where('created_at', '>', startDate)
+        .where('created_at', '<', endDate);
 
       await collection.get().then(snapshots =>
         snapshots.docs.forEach(doc => {
           const data = doc.data() as User;
           // Early account didn't have created_at field it seems
-
           this.incrementPlatform(signups, data.platform);
           return Promise.resolve();
         }),
@@ -138,14 +143,14 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
   };
 
   private getSubStats = async (
-    startTimestamp: Timestamp,
-    endTimestamp: Timestamp,
+    startDate: Date,
+    endDate: Date,
   ): Promise<{
     newSubs: SubsStat;
-    cancelled: SubsStat;
+    cancellations: SubsStat;
   }> => {
     const newSubs: SubsStat = { ...this.defaultSubsStat };
-    const cancelled: SubsStat = { ...this.defaultSubsStat };
+    const cancellations: SubsStat = { ...this.defaultSubsStat };
 
     try {
       // Can't do where query by subproperty
@@ -159,14 +164,27 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
 
           if (!!data.plan) {
             const plan = data.plan as FbUserPlan;
+            const startTimestamp = convertToTimestamp(startDate);
 
             // Only increment new subcribers if createdAt field is within the range
             const shouldIncrement =
-              plan.createdAt &&
-              plan.createdAt < endTimestamp &&
-              plan.createdAt > startTimestamp;
+              !!plan.createdAt &&
+              convertTimestamp(plan.createdAt).toDate() < endDate &&
+              convertTimestamp(plan.createdAt).toDate() > startDate;
 
             this.incrementSubs(newSubs, plan.type, shouldIncrement);
+
+            // Only increment cancelled subcribers if cancelAtUnix matches startTimestamp
+            const shouldIncrementCancelled =
+              !!plan.canceledAtUnix &&
+              this.getSundayFromUnix(plan.canceledAtUnix) ===
+                this.getSundayString(startTimestamp);
+
+            this.incrementSubs(
+              cancellations,
+              plan.type,
+              shouldIncrementCancelled,
+            );
           }
           return Promise.resolve();
         }),
@@ -176,22 +194,22 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
       return Promise.reject();
     }
 
-    return { newSubs, cancelled };
+    return { newSubs, cancellations };
   };
 
   private getFavs = async (
-    startTimestamp: Timestamp,
-    endTimestamp: Timestamp,
+    startDate: Date,
+    endDate: Date,
   ): Promise<PlatformStat> => {
     const favorites: PlatformStat = { ...this.defaultPlatformStat };
     try {
       const collection = this.firestore
         .collectionGroup('favorites')
-        .where('createdAt', '>', startTimestamp)
-        .where('createdAt', '<', endTimestamp);
+        .where('createdAt', '>', startDate)
+        .where('createdAt', '<', endDate);
 
       await collection.get().then(snapshots =>
-        snapshots.docs.forEach(doc => {
+        snapshots.docs.forEach((doc, idx) => {
           const data = doc.data() as Favorite;
 
           // Increment Completions
@@ -202,13 +220,13 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
       );
       return favorites;
     } catch (error) {
-      return Promise.reject(error);
+      return Promise.reject(`Error getting favorites stats ${error}`);
     }
   };
 
   private getPlays = async (
-    startTimestamp: Timestamp,
-    endTimestamp: Timestamp,
+    startDate: Date,
+    endDate: Date,
   ): Promise<{ plays: PlatformStat; completions: PlatformStat }> => {
     const plays: PlatformStat = { ...this.defaultPlatformStat };
     const completions: PlatformStat = { ...this.defaultPlatformStat };
@@ -216,12 +234,13 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
     try {
       const collection = this.firestore
         .collectionGroup('plays')
-        .where('createdAt', '>', startTimestamp)
-        .where('createdAt', '<', endTimestamp);
+        .where('createdAt', '>', startDate)
+        .where('createdAt', '<', endDate);
 
       await collection.get().then(snapshots =>
-        snapshots.docs.forEach(doc => {
+        snapshots.docs.forEach((doc, idx) => {
           const data = doc.data() as PlayEvent;
+
           // Increment Plays
           this.incrementPlatform(plays, data.platform);
 
@@ -233,52 +252,59 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
       );
       return { plays, completions };
     } catch (error) {
-      return Promise.reject('Error getting weekly plays analytics');
+      return Promise.reject(`Error getting weekly plays analytics - ${error}`);
     }
   };
 
-  public addWeek = async (dateStr: string): Promise<void> => {
+  public addWeek = async (weekEndDate: string): Promise<void> => {
     // dateStr passed in is the final day of the previous week
     // So add 8 days so that the end timestamp is at midnight of day after end date for following week
     // And add 1 days so the start timestamp is at midnight of the proper startDate
-    const docMoment = moment(dateStr).add(7, 'days');
+
+    const docMoment = moment(weekEndDate);
     const docId = docMoment.format(this.dateFormat);
-    const endMoment = moment(dateStr).add(8, 'days');
-    const startMoment = moment(dateStr).add(1, 'days');
-    const endTimestamp = convertToTimestamp(endMoment.toDate());
-    const startTimestamp = convertToTimestamp(startMoment.toDate());
+    const endMoment = moment(weekEndDate).add(1, 'days');
+    const startMoment = moment(weekEndDate).subtract(6, 'days');
+    const endDate = endMoment.toDate();
+    const startDate = startMoment.toDate();
 
-    const { plays, completions } = await this.getPlays(
-      startTimestamp,
-      endTimestamp,
-    );
+    try {
+      const { plays, completions } = await this.getPlays(startDate, endDate);
+      const favorites = await this.getFavs(startDate, endDate);
+      const signups = await this.getSignups(startDate, endDate);
+      const { newSubs, cancellations } = await this.getSubStats(
+        startDate,
+        endDate,
+      );
 
-    const favorites = await this.getFavs(startTimestamp, endTimestamp);
-    const signups = await this.getSignups(startTimestamp, endTimestamp);
-    const { newSubs, cancellations } = await this.getSubStats(
-      startTimestamp,
-      endTimestamp,
-    );
+      const thisWeek: Week = {
+        id: docId,
+        year: docMoment.year(),
+        isoWeek: docMoment.isoWeek(),
+        startDate: startMoment.format(this.dateFormat),
+        endDate: docId,
+        plays: plays ? plays : { ...this.defaultPlatformStat },
+        completions: completions
+          ? completions
+          : { ...this.defaultPlatformStat },
+        favs: favorites,
+        signups: signups,
+        newSubs: newSubs,
+        cancellations: cancellations,
+      };
 
-    const thisWeek: Week = {
-      id: docId,
-      year: docMoment.year(),
-      isoWeek: docMoment.isoWeek(),
-      startDate: startMoment.format(this.dateFormat),
-      endDate: docId,
-      plays: plays ? plays : { ...this.defaultPlatformStat },
-      completions: completions ? completions : { ...this.defaultPlatformStat },
-      favs: favorites ? favorites : { ...this.defaultPlatformStat },
-      signups: signups ? signups : { ...this.defaultPlatformStat },
-      newSubs: newSubs ? newSubs : { ...this.defaultPlatformStat },
-      cancellations: cancellations
-        ? cancellations
-        : { ...this.defaultPlatformStat },
-    };
-    await this.firestore
-      .collection('analytics/weekly/weeks')
-      .doc(docId)
-      .set(thisWeek);
+      try {
+        await this.firestore
+          .collection('analytics/weekly/weeks')
+          .doc(docId)
+          .set(thisWeek);
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject('Error saving new week to database');
+      }
+    } catch (error) {
+      return Promise.reject(`Error getting new weeks stats - ${error}`);
+    }
   };
 
   public updateTotals = async (): Promise<void> => {
@@ -309,8 +335,7 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
 
       return Promise.resolve();
     } catch (error) {
-      console.log('Error updating total analytics', error);
-      return Promise.reject();
+      return Promise.reject(`Error updating total analytics ${error}`);
     }
   };
 
@@ -338,8 +363,7 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
 
       return totals;
     } catch (error) {
-      console.log('Error getting totals', error);
-      return Promise.reject('Error getting totals');
+      return Promise.reject(`Error getting totals - ${error}`);
     }
   };
 
@@ -352,6 +376,29 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
     const collection = this.firestore
       .collectionGroup('plays')
       .where('createdAt', '>', start);
+  };
+
+  private checkToAddNextWeek = async (): Promise<void> => {
+    // Get the Sunday from the week before
+    const lastSunday = moment()
+      .subtract(7, 'days') // Move to week prior
+      .isoWeekday(7) // Set it to Sunday of that week
+      .format(this.dateFormat);
+
+    // Check if the weekly doc exists yet and add it if it doesn't
+    this.firestore
+      .collection('analytics/weekly/weeks')
+      .doc(lastSunday)
+      .get()
+      .then(docSnapshot => {
+        if (docSnapshot.exists) {
+          return Promise.resolve();
+        } else {
+          this.addWeek(lastSunday);
+          return Promise.resolve();
+        }
+      })
+      .catch(err => Promise.reject(err));
   };
 
   public get = async (): Promise<Week[]> => {
@@ -371,7 +418,7 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
 
       return weeks;
     } catch (error) {
-      console.log('Error getting weekly analytics', error);
+      console.log(error);
       throw new ApplicationError('Error getting weekly analytics');
     }
   };
