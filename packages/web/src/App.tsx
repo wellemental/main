@@ -104,6 +104,7 @@ const App = () => {
                       <PrivateRoute path="/stripe" component={StripePortal} />
                       <PrivateRoute path="/library" component={LibraryScreen} />
                       <PrivateRoute
+                        admin
                         path="/analytics"
                         component={AnalyticsScreen}
                       />

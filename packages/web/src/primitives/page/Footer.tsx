@@ -14,7 +14,7 @@ const Footer = () => {
           {translation['Need help?']}
         </Link>
       </Paragraph>
-      {user.isAdmin && (
+      {user && user.isAdmin && (
         <Paragraph fine center color="textSecondary">
           {user.email} - {user.id}
         </Paragraph>

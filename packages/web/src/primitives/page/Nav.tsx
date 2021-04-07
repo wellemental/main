@@ -92,7 +92,7 @@ const Nav: React.FC<Props> = props => {
     right: false,
   });
 
-  const isAdmin = user.isAdmin;
+  const isAdmin = user && user.isAdmin ? user.isAdmin : false;
 
   const anchor = 'left';
 

@@ -7,6 +7,7 @@ const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
   const { user, activePlan, loading } = useCurrentUser();
 
   const pro = rest.pro;
+  const admin = rest.admin;
   const loggedIn = !!user;
 
   // Need to wait until CurrentUser is done loading before it decides where to redirect
@@ -23,6 +24,8 @@ const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
               state: { from: location },
             }}
           />
+        ) : admin && !user.isAdmin ? (
+          <Redirect to="/" />
         ) : pro && activePlan ? (
           <RouteComponent />
         ) : pro && !activePlan ? (
