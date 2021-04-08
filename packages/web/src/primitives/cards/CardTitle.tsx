@@ -7,7 +7,11 @@ type Props = {
 
 const CardTitle: React.FC<Props> = ({ text }) => {
   return (
-    <Headline component="h3" variant="subtitle2" noWrap>
+    <Headline
+      component="h3"
+      variant="subtitle2"
+      noWrap
+      style={{ textAlign: 'left' }}>
       {text}
     </Headline>
   );

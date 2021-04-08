@@ -12,13 +12,11 @@ export interface ObserveUserServiceType {
 // NOT CURRENTLY USING, KEPT IT ALL IN CURRENT USER CONTEXT
 
 class ObserveUserService implements ObserveUserServiceType {
-  //   private language: Languages | null = null;
-  //   private setLanguage: React.SetStateAction<Languages>;
   private auth: FbUser | null = null;
   private authUnsubscriber?: () => void;
   private user?: User;
   private userUnsubscriber?: () => void;
-  private setUser: React.Dispatch<React.SetStateAction<User | null>>; //React.Dispatch<(prevState: undefined) => undefined>;
+  private setUser: React.Dispatch<React.SetStateAction<User | null>>;
   private setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 
   constructor(

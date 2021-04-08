@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Subheadline from '../typography/Subheadline';
 import ContentLoopSmall from './ContentLoopSmall';
-import { useCurrentUser, useContent } from '../../hooks';
-import { Categories, Content } from 'common';
+import { useCurrentUser, useContent, useContainer } from '../../hooks';
+import { Categories, Content, ContentServiceType } from 'common';
 import { ContentService } from '../../services/';
 
 type Props = {
@@ -11,11 +11,12 @@ type Props = {
 const FeaturedLoop: React.FC<Props> = ({ category }) => {
   const { translation, user } = useCurrentUser();
   const { content } = useContent();
-  const service = useRef(new ContentService());
+  const container = useContainer();
+  const service = container.getInstance<ContentServiceType>('contentService');
 
   const [features, setFeatures] = useState<Content[]>([]);
 
-  const data = content ? service.current.getFeatures(category, content) : [];
+  const data = content ? service.getFeatures(category, content) : [];
 
   // Temporary hack to get features to updated upon language switch
   const filterLanguage = () => {

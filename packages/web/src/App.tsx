@@ -59,15 +59,6 @@ if (process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
 
 const history = createBrowserHistory();
 
-const defaultState: DefaultState = {
-  user: undefined,
-  translation: English,
-  activePlan: false,
-  loading: true,
-};
-
-type Props = {};
-
 const App = () => {
   return (
     <ThemeProvider theme={theme}>

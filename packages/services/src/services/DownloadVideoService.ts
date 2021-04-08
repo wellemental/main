@@ -32,7 +32,6 @@ class DownloadVideoService implements DownloadVideoServiceType {
     const path_name = this.createPathname(filename);
     try {
       const res = await RNFS.exists(path_name);
-      console.log('DOES IT EXIST?', res);
       return res;
     } catch (err) {
       return Promise.reject(err);
@@ -56,11 +55,11 @@ class DownloadVideoService implements DownloadVideoServiceType {
       discretionary: true,
       cacheable: true,
     })
-      .promise.then((res) => {
+      .promise.then(res => {
         // console.log('Response', res);
         // return RNFS.readFile(path_name.replace(/%20/g, '_'), 'base64');
       })
-      .catch((err) => {
+      .catch(err => {
         // console.log('Error downloading video', err);
         return Promise.reject(`Error downloading video - ${err}`);
       });
@@ -72,7 +71,7 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
     try {
       const result = await RNFS.readDir(RNFS.DocumentDirectoryPath);
-      result.forEach((element) => {
+      result.forEach(element => {
         if (element.name === filename) {
           path_name = element.path;
         }

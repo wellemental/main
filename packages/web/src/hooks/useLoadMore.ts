@@ -2,7 +2,7 @@
 import { useReducer, useEffect } from 'react';
 import firebase from '../base';
 
-type StateType = {
+export type StateType = {
   hasMore: boolean;
   items: firebase.firestore.DocumentData[];
   after: firebase.firestore.QueryDocumentSnapshot | null;

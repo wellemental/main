@@ -86,8 +86,8 @@ class FavoritesService extends BaseService implements FavoritesServiceType {
       await this.query
         .limit(10)
         .get()
-        .then((snapshots) =>
-          snapshots.docs.forEach((doc) => {
+        .then(snapshots =>
+          snapshots.docs.forEach(doc => {
             const data = doc.data() as Favorite;
             favs[doc.id] = { ...data };
           }),

@@ -7,6 +7,7 @@ import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
 import FavoritesService from './FavoritesService';
 import AnalyticsService from './AnalyticsService';
+import ContentService from './ContentService';
 
 interface DependencyDescriptor {
   dependencies: string[];
@@ -55,6 +56,10 @@ const dependenciesDescriptors = {
   },
   analyticsService: {
     class: AnalyticsService,
+    dependencies: ['firestore', 'logger'],
+  },
+  contentService: {
+    class: ContentService,
     dependencies: ['firestore', 'logger'],
   },
 };

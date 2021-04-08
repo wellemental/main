@@ -15,8 +15,8 @@ const CardTitle: React.FC<ParagraphProps & NativeBase.Text> = ({
         {
           fontSize: 20,
           lineHeight: 24,
+          height: 24,
           fontWeight: '500',
-          marginBottom: 5,
           marginBottom: 3,
         },
         style,
