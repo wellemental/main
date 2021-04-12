@@ -1,14 +1,12 @@
 import React from 'react';
 import Paragraph, { ParagraphProps } from './Paragraph';
-import { useCurrentUser } from '../../hooks';
+import Box from '../utils/Box';
 
 const ListEmpty: React.FC<ParagraphProps> = ({ children, ...props }) => {
-  const { translation } = useCurrentUser();
-
   return (
-    <Paragraph gt={1} {...props}>
-      {children ? children : translation['No results']}
-    </Paragraph>
+    <Box px={1} mt={1}>
+      <Paragraph {...props}>{children ? children : 'No results'}</Paragraph>
+    </Box>
   );
 };
 

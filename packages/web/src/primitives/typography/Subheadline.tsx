@@ -12,7 +12,7 @@ const Subheadline: React.FC<Props> = ({ color = 'primary', children }) => {
     <Box pt={5} pb={1.5} px={1}>
       <Headline
         small
-        color={color === 'white' ? undefined : color}
+        theColor={color === 'white' ? undefined : color}
         style={{ color: color === 'white' ? 'white' : undefined }}>
         {children}
       </Headline>

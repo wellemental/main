@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Container,
   LockOverlay,
   FeaturedLoop,
   PageHeading,
@@ -14,19 +13,12 @@ const MoveScreen: React.FC = () => {
 
   return (
     <>
-      <Container
-        fullPage
-        // scrollEnabled bg="Move"
-      >
-        <PageHeading
-          // noHeader
-          title={translation.Move}
-        />
+      <PageHeading title={translation.Move} />
 
-        <FeaturedLoop category={Categories.Move} />
+      <FeaturedLoop category={Categories.Move} />
 
-        <CategoryLoop categories={moveCategories} colors={['orange', 'teal']} />
-      </Container>
+      <CategoryLoop categories={moveCategories} colors={['orange', 'teal']} />
+
       <LockOverlay />
     </>
   );

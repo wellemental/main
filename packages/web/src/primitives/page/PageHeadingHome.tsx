@@ -57,8 +57,13 @@ const PageHeadingHome: React.FC<Props> = ({ timeOfDay, color }) => {
       <Box mt={0.5} textAlign="center">
         <Button
           fullWidth={false}
-          // light={timeOfDay.name === TimeOfDay.Evening}
-          // warning={timeOfDay.name === TimeOfDay.Morning}
+          color={
+            timeOfDay.name === TimeOfDay.Morning
+              ? 'warning'
+              : timeOfDay.name === TimeOfDay.Evening
+              ? 'light'
+              : 'primary'
+          }
           text={timeOfDay.btnText}
           loading={loading}
           style={{ justifyContent: 'center' }}

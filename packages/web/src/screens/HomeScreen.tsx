@@ -33,13 +33,13 @@ const HomeScreen: React.FC = () => {
           <HomepageTabs color={timeOfDayColor} />
 
           {features && features.categories && (
-            <CategoryLoop title="Featured" categories={features.categories} />
+            <CategoryLoop
+              title="Featured"
+              categories={features.categories}
+              color={timeOfDayColor}
+            />
           )}
-          <Subheadline
-          //color={timeOfDayColor}
-          >
-            Explore
-          </Subheadline>
+          <Subheadline color={timeOfDayColor}>Explore</Subheadline>
 
           <AgeCards />
 

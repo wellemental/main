@@ -14,6 +14,7 @@ interface Props {
   teacher?: Teachers;
   small?: boolean;
   limit?: number;
+  noLoadMore?: boolean;
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -23,6 +24,7 @@ const ContentLoop: React.FC<Props> = ({
   teacher,
   small,
   limit,
+  noLoadMore,
 }) => {
   const { user, translation } = useCurrentUser();
   const { content, error } = useContent();
@@ -89,7 +91,8 @@ const ContentLoop: React.FC<Props> = ({
           {filteredContent.slice(0, theLimit).map((item, idx) => (
             <ContentCard small={small || isSmall} key={idx} content={item} />
           ))}
-          {filteredContent.length >= defaultLimit &&
+          {!noLoadMore &&
+            filteredContent.length >= defaultLimit &&
             filteredContent.length > theLimit && (
               <Button
                 fullWidth={true}

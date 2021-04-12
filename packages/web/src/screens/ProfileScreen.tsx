@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 import { PlaysServiceType } from 'services';
-import { firestore } from 'firebase/app';
 import {
   Error,
   PageHeading,
-  Container,
   Card,
   StatDisplay,
   ContentLoopLoadMore,
   Tabs,
 } from '../primitives';
-import { FavoritesServiceType, PlayEvent } from 'common';
-import { useCurrentUser, useContainer } from '../hooks';
+import { FavoritesServiceType } from 'common';
+import { useCurrentUser, useContainer, useLocation } from '../hooks';
 import useLoadMore from '../hooks/useLoadMore';
-// import { ProfileScreenRouteProp } from '../types';
-import { convertTimestamp } from '../services/helpers';
-import { Timestamp } from '../types';
-import moment from 'moment';
 
 const ProfileScreen: React.FC = () => {
-  const { translation, user } = useCurrentUser();
+  const { translation } = useCurrentUser();
   const [error, setError] = useState();
+  const { state } = useLocation();
+
+  const activeTab = state && state.defaultTab === 'History' ? 1 : 0;
 
   const Stats = (
     <Card style={{ paddingTop: 0 }}>
@@ -77,15 +74,13 @@ const ProfileScreen: React.FC = () => {
   };
 
   return (
-    <Container
-    // bg="Profile"
-    >
+    <>
       <PageHeading title={translation.Profile} />
 
       <Error error={error} />
 
-      <Tabs tabs={tabs} />
-    </Container>
+      <Tabs tabs={tabs} value={activeTab} />
+    </>
   );
 };
 

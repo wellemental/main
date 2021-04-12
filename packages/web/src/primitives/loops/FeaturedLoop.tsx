@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Subheadline from '../typography/Subheadline';
 import ContentLoopSmall from './ContentLoopSmall';
 import { useCurrentUser, useContent, useContainer } from '../../hooks';
 import { Categories, Content, ContentServiceType } from 'common';
-import { ContentService } from '../../services/';
 
 type Props = {
   category: Categories;

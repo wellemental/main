@@ -21,6 +21,7 @@ const PageHeading: React.FC<Props> = ({
   avatar,
   center,
   withLogo,
+  color,
 }) => {
   return (
     <div
@@ -43,10 +44,7 @@ const PageHeading: React.FC<Props> = ({
           />
         </Box>
       )}
-      <Headline
-        center={center ? center : false}
-        // color={color ? color : undefined}
-      >
+      <Headline center={center ? center : false} theColor={color}>
         {title}
       </Headline>
       {subtitle && (
@@ -54,8 +52,7 @@ const PageHeading: React.FC<Props> = ({
           style={{ paddingTop: 5 }}
           gt={0.5}
           center={center ? center : false}
-          // color={color ? color : undefined}
-        >
+          theColor={color ? color : undefined}>
           {subtitle}
         </Paragraph>
       )}

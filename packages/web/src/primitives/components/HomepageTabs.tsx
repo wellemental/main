@@ -16,7 +16,7 @@ import { PlaysServiceType } from 'services';
 import { Colors, Tab } from 'common';
 
 type Props = {
-  color?: Colors;
+  color?: 'white' | undefined;
 };
 
 const TabsNB: React.FC<Props> = ({ color }) => {
@@ -37,66 +37,60 @@ const TabsNB: React.FC<Props> = ({ color }) => {
 
   const tabs: { [key: string]: JSX.Element } = {
     [translation.History]: (
-      <ContentLoopLoadMore
-        recentlyPlayed
-        loading={loading}
-        items={items}
-        hasMore={hasMore}
-        loadingMore={loadingMore}
-        loadMore={loadMore}
-      />
-    ),
-    [translation.New]: (
       <>
-        <ContentLoop small limit={2} />
-        <Box mt={1}>
+        <ContentLoopLoadMore
+          recentlyPlayed
+          loading={loading}
+          items={items}
+          hasMore={hasMore}
+          loadingMore={loadingMore}
+          loadMore={loadMore}
+        />
+        <Box mt={-1}>
           <Button
             size="small"
+            fullWidth={true}
             text={translation['See all']}
+            disableElevation={color === 'white'}
             style={{
-              backgroundColor: 'rgba(0,0,0,0',
+              backgroundColor: 'rgba(0,0,0,0)',
             }}
             variant={color === 'white' ? 'contained' : 'text'}
             onPress={() =>
-              navigation.navigate('Category', {
-                category: { title: 'New', tag: undefined },
+              navigation.navigate('Profile', {
+                defaultTab: 'History',
               })
             }
           />
         </Box>
       </>
     ),
+    [translation.New]: (
+      <>
+        <ContentLoop small limit={2} noLoadMore />
+        <Button
+          size="small"
+          fullWidth={true}
+          text={translation['See all']}
+          disableElevation={color === 'white'}
+          style={{
+            backgroundColor: 'rgba(0,0,0,0)',
+          }}
+          variant={color === 'white' ? 'contained' : 'text'}
+          onPress={() =>
+            navigation.navigate('Category', {
+              category: { title: 'New', tag: undefined },
+            })
+          }
+        />
+      </>
+    ),
   };
 
   return (
     <Box mt={5}>
-      <Tabs transparent tabs={tabs} />
+      <Tabs transparent tabs={tabs} color={color} />
     </Box>
-    // <>
-    //   <Box row pt={5} pb={1}>
-    //     <TabsButtons
-    //       color={color}
-    //       tabs={tabs}
-    //       setState={setTab}
-    //       active={tab}
-    //       small
-    //     />
-    //   </Box>
-    //   {tab === 'History' && (
-    //     <ContentLoopLoadMore
-    //       recentlyPlayed
-    //       homepage
-    //       loading={loading}
-    //       content={content}
-    //       loadingMore={loadingMore}
-    //       loadMore={loadMore}
-    //       items={items}
-    //       hasMore={hasMore}
-    //       color={color}
-    //     />
-    //   )}
-    //   {tab === 'New' && <NewContentLoop color={color} />}
-    // </>
   );
 };
 
