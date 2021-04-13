@@ -10,7 +10,7 @@ export const getTimeOfDay = (): TimeOfDayObj => {
 
   // Between 7pm and 4am
   const isEvening =
-    today.isAfter(moment().hour(19), 'hour') ||
+    today.isAfter(moment().hour(15), 'hour') ||
     today.isBefore(moment().hour(4), 'hour');
 
   // After 12pm noon

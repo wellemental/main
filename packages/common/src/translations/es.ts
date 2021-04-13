@@ -155,6 +155,7 @@ export const Español = {
   Stats: 'Estadísticos',
   Journey: 'Historia',
   'Load More': 'Cargar más',
+  'Load more': 'Cargar más',
   'Total Hours': 'Horas',
   Streak: 'Días consecutivos',
   'Sessions Completed': 'Sesiones completadas',

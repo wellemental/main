@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     containedWarning: {
       backgroundColor: theme.palette.warning.main,
-      color: theme.palette.warning.contrastText,
+      color: 'white',
       '&:hover': {
         backgroundColor: theme.palette.warning.dark,
       },

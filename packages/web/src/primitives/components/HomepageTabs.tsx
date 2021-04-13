@@ -33,13 +33,14 @@ const TabsNB: React.FC<Props> = ({ color }) => {
     loadingMore,
     hasMore,
     // @ts-ignore
-  } = useLoadMore(service.query, { limit: 2 });
+  } = useLoadMore(service.query, { limit: 10 });
 
   const tabs: { [key: string]: JSX.Element } = {
     [translation.History]: (
       <>
         <ContentLoopLoadMore
           recentlyPlayed
+          homepage
           loading={loading}
           items={items}
           hasMore={hasMore}

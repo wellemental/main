@@ -63,8 +63,8 @@ export const imageDir: ImageDirectory = {
   bgLearn: {
     alt: 'Learn Background',
     source: {
-      webp: require('../assets/images/wm_bg_Learn.webp'),
-      safari: require('../assets/images/wm_bg_Learn.jpg'),
+      webp: require('../assets/images/wm_bg_learn.webp'),
+      safari: require('../assets/images/wm_bg_learn.jpg'),
     },
   },
   bgMove: {

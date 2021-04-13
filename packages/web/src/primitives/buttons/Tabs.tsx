@@ -52,7 +52,6 @@ const Tabs: React.FC<Props> = ({
     setTab(newValue);
   };
 
-  console.log('TAB COLOR!!!!', color);
   return (
     <>
       <AppBar

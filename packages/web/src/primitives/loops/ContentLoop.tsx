@@ -6,7 +6,6 @@ import ListEmpty from '../typography/ListEmpty';
 import Error from '../typography/Error';
 import Link from '@material-ui/core/Link';
 import Button from '../buttons/Button';
-import { Box } from '../utils';
 interface Props {
   filter?: Tags | TimeOfDay | Categories | string;
   favorites?: string[];

@@ -15,7 +15,7 @@ export const slugify = (str: string) => {
     .toString()
     .toLowerCase()
     .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
+    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
     .replace(/&/g, '-and-') // Replace & with 'and'
     .replace(/[^\w\-]+/g, '') // Remove all non-word characters
     .replace(/\-\-+/g, '-') // Replace multiple - with single -
@@ -30,8 +30,4 @@ export const capitalize = (s: any) => {
 
 export const isFeature = (obj: Feature | Category): obj is Feature => {
   return (<Feature>obj)['title-es'] !== undefined;
-};
-
-export const getRandomInt = (max) => {
-  return Math.floor(Math.random() * Math.floor(max));
 };
