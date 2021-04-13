@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PlayEvent, Colors, convertTimestamp, Content } from 'common';
 import { Button, ListEmpty, Loading, ContentCard, Box } from '..';
 import { List } from '@material-ui/core';
-import { useCurrentUser, useNavigation, useContent } from '../../hooks';
-import firebase from '../../base';
+import { useContent } from '../../hooks';
 
 type Props = {
   homepage?: boolean;
@@ -13,7 +12,6 @@ type Props = {
   hasMore: boolean;
   items: firebase.firestore.DocumentData[];
   recentlyPlayed?: boolean;
-  color?: Colors;
 };
 
 const ContentLoopLoadMore: React.FC<Props> = ({
@@ -23,19 +21,12 @@ const ContentLoopLoadMore: React.FC<Props> = ({
   hasMore,
   loadingMore,
   loadMore,
-  color,
   recentlyPlayed,
 }) => {
-  const { translation } = useCurrentUser();
   const { content } = useContent();
-  const navigation = useNavigation();
   const [contentArr, setContentArr] = useState<any[]>([]);
 
   const hasContent = !!content && items.length > 0;
-
-  // If loop is for homepage (only requires two items) and is longer than two, set empty array
-  // const contentArr = isHomepage ? [] : items;
-  const contentArrLength = contentArr.length;
 
   const hasContentMatch = (theItem: PlayEvent): boolean => {
     return (
@@ -122,12 +113,8 @@ const ContentLoopLoadMore: React.FC<Props> = ({
         ) : (
           <ListEmpty center>
             {recentlyPlayed
-              ? translation[
-                  'Your recently played videos will appear here. Get started!'
-                ]
-              : translation[
-                  'Your favorite videos will appear here. Get started!'
-                ]}
+              ? 'Your recently played videos will appear here. Get started!'
+              : 'Your favorite videos will appear here. Get started!'}
           </ListEmpty>
         )}
 
@@ -137,7 +124,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({
               fullWidth={true}
               size="small"
               disabled={loadingMore}
-              text={translation['Load More']}
+              text="Load More"
               onPress={loadMore}
             />
           </Box>

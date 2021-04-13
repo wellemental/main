@@ -52,9 +52,9 @@ export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   // Subscribe to favorites and rebuild with content on each change
   // Subscribe to history and rebuild with content on each change
   // const [error, setError] = useState('');
-  // const [loading, setLoading] = useState(!content ? true : false);
   const { user } = useCurrentUser();
   const [content, setContent] = useState<ContentObj | null>(null);
+  const [loading, setLoading] = useState(!content ? true : false);
   // const [plays, setPlays] = useState<ContentType[] | null>(null);
   // const [favs, setFavs] = useState<ContentType[] | null>(null);
 
@@ -67,11 +67,13 @@ export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   // );
 
   // Load all the content by default
-  const { data, error, loading } = useQuery(service.getContent);
+  // ISSUE: Gets content every time user is updated
+  const { data, error, loading: getLoading } = useQuery(service.getContent);
 
   // Set default content state
   useEffect(() => {
     setContent(data);
+    setLoading(false);
   }, [data]);
 
   // Get batch of Plays
@@ -114,7 +116,7 @@ export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   return (
     <Content.Provider
       value={{
-        content: data,
+        content: content,
         features: rcData,
         // plays,
         // favs,

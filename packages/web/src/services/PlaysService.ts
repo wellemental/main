@@ -27,13 +27,12 @@ class PlaysService extends BaseService implements PlaysServiceType {
 
       // Increment the users totalPlays stat
       const newUpdate: Partial<User> = { totalPlays: increment() };
-
       if (!this.currentUser.firstPlay) {
         newUpdate.firstPlay = new Date();
       }
-
       await this.userDoc.update(newUpdate);
 
+      // Send tracking event to Firebase
       this.tracker.track(TrackingEvents.PlayVideo);
     } catch (err) {
       this.logger.error(err);

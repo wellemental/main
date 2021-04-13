@@ -58,6 +58,7 @@ class ContentService extends BaseService implements ContentServiceType {
   };
 
   public getContent = async (): Promise<ContentObj> => {
+    // console.log('***** GETTING CONTENT');
     // With no tags passed, get all Content
     const query: any = this.collection.orderBy('updated_at', 'desc');
 

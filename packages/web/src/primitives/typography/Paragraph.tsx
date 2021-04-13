@@ -45,7 +45,7 @@ const Paragraph: React.FC<TypographyProps & ParagraphProps> = ({
         fontSize: fine ? 12 : small ? 15 : size ? size : '16px',
         lineHeight: small ? '20px' : 1.625,
         fontWeight: bold ? 'bold' : 'normal',
-        color: theColor ? colors[theColor] : colors.primary,
+        color: theColor ? colors[theColor] : colors.text,
         ...style,
       }}
       {...props}>

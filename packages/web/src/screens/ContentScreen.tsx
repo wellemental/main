@@ -23,7 +23,6 @@ import {
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { PlayArrow as PlayIcon } from '@material-ui/icons';
 import { slugify } from '../services/helpers';
-import logger from '../services/LoggerService';
 import { Card, CardContent } from '@material-ui/core';
 
 const Video = ReactPlayer;
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ContentScreen: React.FC = () => {
   const classes = useStyles();
-  const { translation, auth } = useCurrentUser();
+  const { translation, user } = useCurrentUser();
   const history = useHistory();
   const { content: allContent } = useContent();
   const match = useRouteMatch();
@@ -78,6 +77,7 @@ const ContentScreen: React.FC = () => {
   }, [content]);
 
   const handleError = (err: any) => {
+    console.log('ERR', err);
     setError(err);
     // logger.error('Error loading video');
   };
@@ -122,7 +122,7 @@ const ContentScreen: React.FC = () => {
   }, [isOver]);
 
   // Add to user's recently played when they tap the play button
-  const { mutate: addPlayCount } = useMutation(() =>
+  const { mutate: addPlayCount, error: addPlayError } = useMutation(() =>
     playsService.add(content ? content.id : ''),
   );
 
@@ -174,7 +174,7 @@ const ContentScreen: React.FC = () => {
               playing={!isPaused}
               // file={{ forceVideo: true }}
               light={content.thumbnail}
-              // onError={handleError} // Callback when video cannot be loaded
+              onError={handleError} // Callback when video cannot be loaded
               // onProgress={onProgress}
             />
           </div>
@@ -195,9 +195,9 @@ const ContentScreen: React.FC = () => {
             </Box>
           </Box>
 
-          {auth &&
-            (auth.email === 'test@test.com' ||
-              auth.email === 'mike.r.vosters@gmail.com') && (
+          {user &&
+            (user.email === 'test@test.com' ||
+              user.email === 'mike.r.vosters@gmail.com') && (
               <Box mb={2} mt={-1}>
                 <Paragraph fine>{content.id}</Paragraph>
               </Box>

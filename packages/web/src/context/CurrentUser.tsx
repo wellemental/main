@@ -7,7 +7,7 @@ export const CurrentUser = React.createContext<any>({});
 
 export const CurrentUserProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const observeUser = useRef(new ObserveUserService(setUser, setLoading));
 

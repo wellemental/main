@@ -41,16 +41,6 @@ import { ContentProvider } from './context/Content';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { PrivateRoute } from './navigation';
-import {
-  Unsubscriber,
-  User,
-  Languages,
-  LoggedOutUser,
-  English,
-  Español,
-  DefaultState,
-} from 'common';
-import ObserveUserService from './services/ObserveUserService';
 
 let stripePromise: any = null;
 if (process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
