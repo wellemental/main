@@ -69,7 +69,7 @@ const AvyName: React.FC<Props> = ({
             style={{
               lineHeight: '40px',
               marginLeft: '10px',
-              fontSize: '19px',
+              fontSize: onProfile ? '19px' : undefined,
             }}>
             {name}
           </Paragraph>

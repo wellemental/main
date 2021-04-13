@@ -43,8 +43,10 @@ export enum PlanId {
   Free = 'free',
 }
 
+export type PlanTypes = 'iosIap' | 'promoCode' | 'android' | 'stripe';
+
 type UserPlanBase = {
-  type: 'iosIap' | 'promoCode' | 'android' | 'stripe';
+  type: PlanTypes;
   auto_renew_status: boolean;
   nextRenewalDate: string; // Just storing so humans can easily read it in database
   nextRenewalUnix: number; // unix timestamp
@@ -53,6 +55,7 @@ type UserPlanBase = {
   status: 'canceled' | 'active' | 'trialing' | 'pending';
   stripeEvents?: string[];
   orderId?: string;
+  code?: string;
 };
 
 // For use when saving to Firebase
@@ -66,6 +69,7 @@ export interface FbUserPlan extends UserPlanBase {
 }
 
 export interface User {
+  email: string;
   plan: UserPlan | FbUserPlan;
   created_at: Timestamp;
   platform: Platforms;

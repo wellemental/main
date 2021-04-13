@@ -12,7 +12,6 @@ import {
   User,
 } from '../types';
 import * as moment from 'moment';
-import { firestore } from 'firebase-admin';
 
 type StatObj = { [key: string]: PlatformStat };
 
@@ -104,7 +103,7 @@ const run = async (): Promise<void> => {
   };
 
   // Get Sunday date string
-  const getSundayString = (createdAt: firestore.Timestamp): string => {
+  const getSundayString = (createdAt: firebase.firestore.Timestamp): string => {
     const createdAtMoment = moment(createdAt.toDate());
     const sunday = createdAtMoment.isoWeekday(7).format(dateFormat);
     return sunday;
@@ -325,7 +324,7 @@ const run = async (): Promise<void> => {
     // }
 
     // Manual hack to backfill bc moment while loop wasn't working
-    let weeks: string[] = [
+    const weeks: string[] = [
       '2021-04-11',
       '2021-04-04',
       '2021-03-28',

@@ -119,7 +119,9 @@ export const startSubscription = async (
   return Promise.resolve();
 };
 
-// Needs to be tested. Wouldn't deploy to cloud functions.
+// No longer using this cancellation function
+// This is to cancel a subscription with a cancel button of our own
+// We're now using Stripe's subscription management portal ('getBillingPortal') and the cancellation events are processed via Stripe's webhook events in 'onAddStripeEvent'
 export const cancelSubscription = async (
   data: any,
   context: functions.https.CallableContext,

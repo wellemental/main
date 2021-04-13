@@ -12,6 +12,7 @@ type Props = {
   hasMore: boolean;
   items: firebase.firestore.DocumentData[];
   recentlyPlayed?: boolean;
+  color?: Colors;
 };
 
 const ContentLoopLoadMore: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({
   loadingMore,
   loadMore,
   recentlyPlayed,
+  color,
 }) => {
   const { content } = useContent();
   const [contentArr, setContentArr] = useState<any[]>([]);
@@ -111,7 +113,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({
             ) : null;
           })
         ) : (
-          <ListEmpty center>
+          <ListEmpty center color={color}>
             {recentlyPlayed
               ? 'Your recently played videos will appear here. Get started!'
               : 'Your favorite videos will appear here. Get started!'}

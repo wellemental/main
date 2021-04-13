@@ -1,11 +1,18 @@
 import React from 'react';
 import Paragraph, { ParagraphProps } from './Paragraph';
 import Box from '../utils/Box';
+import { Colors } from 'common';
 
-const ListEmpty: React.FC<ParagraphProps> = ({ children, ...props }) => {
+interface Props extends ParagraphProps {
+  color?: Colors;
+}
+
+const ListEmpty: React.FC<Props> = ({ color, children, ...props }) => {
   return (
     <Box px={1} mt={1}>
-      <Paragraph {...props}>{children ? children : 'No results'}</Paragraph>
+      <Paragraph theColor={color} {...props}>
+        {children ? children : 'No results'}
+      </Paragraph>
     </Box>
   );
 };

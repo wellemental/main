@@ -51,11 +51,7 @@ const HomeScreen: React.FC = () => {
         </>
       ) : (
         <>
-          <Subheadline
-          // color={timeOfDayColor}
-          >
-            Featured
-          </Subheadline>
+          <Subheadline color={timeOfDayColor}>Featured</Subheadline>
           <ContentLoop filter={Tags.Featured} />
         </>
       )}

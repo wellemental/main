@@ -46,24 +46,27 @@ const TabsNB: React.FC<Props> = ({ color }) => {
           hasMore={hasMore}
           loadingMore={loadingMore}
           loadMore={loadMore}
+          color={color}
         />
-        <Box mt={-1}>
-          <Button
-            size="small"
-            fullWidth={true}
-            text={translation['See all']}
-            disableElevation={color === 'white'}
-            style={{
-              backgroundColor: 'rgba(0,0,0,0)',
-            }}
-            variant={color === 'white' ? 'contained' : 'text'}
-            onPress={() =>
-              navigation.navigate('Profile', {
-                defaultTab: 'History',
-              })
-            }
-          />
-        </Box>
+        {items.length > 0 && (
+          <Box mt={-1}>
+            <Button
+              size="small"
+              fullWidth={true}
+              text={translation['See all']}
+              disableElevation={color === 'white'}
+              style={{
+                backgroundColor: 'rgba(0,0,0,0)',
+              }}
+              variant={color === 'white' ? 'contained' : 'text'}
+              onPress={() =>
+                navigation.navigate('Profile', {
+                  defaultTab: 'History',
+                })
+              }
+            />
+          </Box>
+        )}
       </>
     ),
     [translation.New]: (

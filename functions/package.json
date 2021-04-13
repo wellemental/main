@@ -40,6 +40,7 @@
     "md5": "^2.3.0",
     "moment": "^2.27.0",
     "node-apple-receipt-verify": "^1.7.4",
+    "node-klaviyo": "^1.0.3",
     "stripe": "^8.90.0"
   },
   "devDependencies": {

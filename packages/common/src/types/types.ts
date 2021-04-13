@@ -168,8 +168,10 @@ export enum PlanId {
   Free = 'free',
 }
 
+export type PlanTypes = 'iosIap' | 'promoCode' | 'android' | 'stripe';
+
 type UserPlanBase = {
-  type: 'iosIap' | 'promoCode' | 'android' | 'stripe';
+  type: PlanTypes;
   auto_renew_status: boolean;
   nextRenewalDate: string; // Just storing so humans can easily read it in database
   nextRenewalUnix: number; // unix timestamp
