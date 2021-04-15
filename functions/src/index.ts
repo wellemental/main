@@ -11,7 +11,6 @@ import { validateIap, renewOrCancelSubscriptions } from './iap';
 import { validateAndroidSubscription } from './android';
 import { addToList, updateKlaviyoPlan } from './klaviyo';
 import { StripeEvent, PlayEvent, FieldValue, Favorite, User } from './types';
-import { compareObjects } from './helpers';
 
 // Initialize Firebase
 firebase.initializeApp();
@@ -43,16 +42,12 @@ const onUserUpdate = functions.firestore
   .document('users/{userId}')
   .onUpdate(async change => {
     if (change.after.exists && change.before.exists) {
-      const userBefore = change.before.data() as User;
       const userAfter = change.after.data() as User;
 
-      // Only update in Klaviyo if the user's plan has changed
-      if (!compareObjects(userBefore.plan, userAfter.plan)) {
-        try {
-          await updateKlaviyoPlan(userAfter);
-        } catch (error) {
-          console.log(error);
-        }
+      try {
+        await updateKlaviyoPlan(userAfter);
+      } catch (error) {
+        console.log(error);
       }
     }
     return Promise.resolve();

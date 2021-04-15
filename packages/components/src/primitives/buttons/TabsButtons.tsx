@@ -13,6 +13,7 @@ interface Props {
   center?: boolean;
   full?: boolean;
   color?: Colors;
+  iconsOnly?: boolean;
 }
 
 const TabsButtons: React.FC<Props> = ({
@@ -23,6 +24,7 @@ const TabsButtons: React.FC<Props> = ({
   center,
   color,
   full,
+  iconsOnly,
   ...props
 }) => {
   const { translation } = useCurrentUser();
@@ -39,8 +41,8 @@ const TabsButtons: React.FC<Props> = ({
         return (
           <Button
             key={tab.label}
-            text={label}
-            iconName={tab.icon ? tab.icon : undefined}
+            text={iconsOnly ? undefined : label}
+            icon={tab.icon ? tab.icon : undefined}
             small={small}
             style={{
               flex: full ? 1 : undefined,

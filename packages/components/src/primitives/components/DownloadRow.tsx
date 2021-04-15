@@ -33,7 +33,7 @@ const DownloadRow: React.FC<Props> = ({ videoUrl }) => {
         <Download videoUrl={videoUrl} />
       ) : (
         <Icon
-          name="lock-closed"
+          icon="lock"
           style={{ fontSize: 33, paddingVertical: 10, color: colors.lightText }}
         />
       )}

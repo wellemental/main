@@ -73,6 +73,14 @@ export interface User {
   plan: UserPlan | FbUserPlan;
   created_at: Timestamp;
   platform: Platforms;
+  language: Languages;
+  totalPlays: number | FieldValue;
+  totalCompleted: number | FieldValue;
+  totalSeconds: number | FieldValue;
+  streak: number | FieldValue;
+  firstPlay?: Date;
+  lastPlay?: Date;
+  isAdmin?: boolean;
 }
 
 export type Product = {

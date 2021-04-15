@@ -9,7 +9,7 @@ interface Props extends ParagraphProps {
 
 const ListEmpty: React.FC<Props> = ({ color, children, ...props }) => {
   return (
-    <Box px={1} mt={1}>
+    <Box px={1.5} mt={1}>
       <Paragraph theColor={color} {...props}>
         {children ? children : 'No results'}
       </Paragraph>

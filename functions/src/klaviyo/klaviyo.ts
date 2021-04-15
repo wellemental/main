@@ -1,5 +1,14 @@
-import * as functions from 'firebase-functions';
-import { PlanId, PlanTypes, SubStatus, User, Timestamp } from '../types';
+// import * as functions from 'firebase-functions';
+import {
+  PlanId,
+  PlanTypes,
+  SubStatus,
+  User,
+  Timestamp,
+  Platforms,
+  Languages,
+  FieldValue,
+} from '../types';
 import { isPlanActive } from '../helpers';
 import * as moment from 'moment';
 
@@ -7,19 +16,29 @@ import * as moment from 'moment';
 // DOCS: https://www.npmjs.com/package/node-klaviyo
 const Klaviyo = require('node-klaviyo');
 export const klaviyo = new Klaviyo({
-  publicToken: functions.config().klaviyo.public,
-  privateToken: functions.config().klaviyo.private,
+  publicToken: 'Tau2rS', //functions.config().klaviyo.public,
+  privateToken: 'pk_d1309ae143991d63d70a59a3c71604a738', // functions.config().klaviyo.private,
 });
 
 type KlaviyoProperties = {
   planStatus?: SubStatus;
-  planType?: PlanTypes;
+  planType?: PlanTypes | 'accessCode';
   planActive?: boolean;
   planId?: PlanId;
   planRenewal?: Date;
   planCreated?: Date;
   planCanceled?: Date;
   accessCode?: string;
+  platform?: Platforms;
+  totalPlays?: number | FieldValue;
+  totalCompleted?: number | FieldValue;
+  totalSeconds?: number | FieldValue;
+  streak?: number | FieldValue;
+  firstPlay?: Date;
+  lastPlay?: Date;
+  isAdmin?: boolean;
+  language?: Languages;
+  appImport?: boolean;
 };
 
 type KlaviyoProfile = {
@@ -57,7 +76,7 @@ export const addToList = async (email: string): Promise<void> => {
     try {
       // Ignores past opt-out status - although there shouldn't be one since they're just joining
       await klaviyo.lists.addMembersToList({
-        listId: functions.config().klaviyo.list,
+        listId: 'VtgG55', //'RTd3N2',//functions.config().klaviyo.list,
         profiles: [{ email }],
       });
       console.log('User successfully added to Klaviyo list');
@@ -74,45 +93,83 @@ export const addToList = async (email: string): Promise<void> => {
 // If user has a new plan, update their Klaviyo profile
 // Doesn't cover if plan field is deleted, but that is only possible manually by an admin
 export const updateKlaviyoPlan = async (userAfter: User): Promise<void> => {
-  if (userAfter.plan) {
-    const properties: Partial<KlaviyoProperties> = {};
+  const properties: Partial<KlaviyoProperties> = {
+    platform: userAfter.platform,
+    language: userAfter.language,
+    appImport: true,
+  };
 
-    const plan = userAfter.plan;
+  if (userAfter.firstPlay) {
+    // @ts-ignore - Need to cleanup Typescript - Firestore stores it as Timestamp but we turn it into a Date on load
+    const firstPlay = userAfter.firstPlay as Timestamp;
+    properties.firstPlay = firstPlay.toDate();
+  }
 
-    if (plan) {
-      properties.planActive = isPlanActive(plan) ? true : false;
-      properties.planType = plan.type;
+  if (userAfter.lastPlay) {
+    // @ts-ignore - Need to cleanup Typescript - Firestore stores it as Timestamp but we turn it into a Date on load
+    const lastPlay = userAfter.lastPlay as Timestamp;
+    properties.lastPlay = lastPlay.toDate();
+  }
 
-      if (plan.planId) {
-        properties.planId = plan.planId as PlanId;
-      }
+  if (userAfter.platform) {
+    properties.platform = userAfter.platform;
+  }
 
-      if (plan.status) {
-        properties.planStatus = plan.status as SubStatus;
-      }
+  if (userAfter.totalPlays) {
+    properties.totalPlays = userAfter.totalPlays;
+  }
 
-      if (plan.nextRenewalDate) {
-        properties.planRenewal = moment(plan.nextRenewalDate).toDate();
-      }
+  if (userAfter.totalCompleted) {
+    properties.totalCompleted = userAfter.totalCompleted;
+  }
 
-      if (plan.code) {
-        properties.accessCode = plan.code;
-      }
+  if (userAfter.totalSeconds) {
+    properties.totalSeconds = userAfter.totalSeconds;
+  }
 
-      if (plan.createdAt) {
-        const timestamp = plan.createdAt as Timestamp;
-        properties.planCreated = timestamp.toDate();
-      }
+  if (userAfter.streak) {
+    properties.streak = userAfter.streak;
+  }
 
-      if (plan.canceledAtUnix) {
-        properties.planCanceled = moment(plan.canceledAtUnix).toDate();
-      }
+  if (userAfter.isAdmin) {
+    properties.isAdmin = userAfter.isAdmin;
+  }
 
-      try {
-        await addOrUpdateKlaviyoProfile(userAfter.email, properties);
-      } catch (error) {
-        console.log(error);
-      }
+  const plan = userAfter.plan;
+
+  if (plan) {
+    properties.planActive = isPlanActive(plan) ? true : false;
+    // Adding plan to start of plan property names to make them easier to understand in Klaviyo
+    properties.planType = plan.type === 'promoCode' ? 'accessCode' : plan.type;
+
+    if (plan.planId) {
+      properties.planId = plan.planId as PlanId;
     }
+
+    if (plan.status) {
+      properties.planStatus = plan.status as SubStatus;
+    }
+
+    if (plan.nextRenewalDate) {
+      properties.planRenewal = moment(plan.nextRenewalDate).toDate();
+    }
+
+    if (plan.code) {
+      properties.accessCode = plan.code;
+    }
+
+    if (plan.createdAt) {
+      const timestamp = plan.createdAt as Timestamp;
+      properties.planCreated = timestamp.toDate();
+    }
+
+    if (plan.canceledAtUnix) {
+      properties.planCanceled = moment(plan.canceledAtUnix).toDate();
+    }
+  }
+  try {
+    await addOrUpdateKlaviyoProfile(userAfter.email, properties);
+  } catch (error) {
+    console.log(error);
   }
 };

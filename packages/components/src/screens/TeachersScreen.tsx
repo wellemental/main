@@ -1,15 +1,10 @@
 import React from 'react';
 import { Container, PageHeading, TeacherLoop } from '../primitives';
-import { useCurrentUser } from '../hooks';
 
 const TeachersScreen: React.FC = () => {
-  const { translation } = useCurrentUser();
-
   return (
-    <Container scrollEnabled noPadding="horizontal">
-      <PageHeading title={translation.Teachers} />
-
-      <TeacherLoop scrollEnabled />
+    <Container noPadding="vertical">
+      <TeacherLoop scrollEnabled header={<PageHeading title="Teachers" />} />
     </Container>
   );
 };

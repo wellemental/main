@@ -95,11 +95,11 @@ export enum Tags {
   'Yoga Classes' = 'yoga-classes',
   Philosophy = 'philosophy',
   History = 'history',
-  Morning = 'Morning',
-  Afternoon = 'Afternoon',
-  Evening = 'Evening',
-  Meditate = 'Meditate',
-  Move = 'Move',
+  Morning = 'morning',
+  Afternoon = 'afternoon',
+  Evening = 'evening',
+  Meditate = 'meditate',
+  Move = 'move',
   Learn = 'Learn',
   Black = 'black',
   Study = 'study',
@@ -112,7 +112,29 @@ export enum Tags {
 //export type Tags = keyof typeof Tags;
 // export type Tags = ValueOf<tags>;
 
-export type IconTypes = 'Feather' | 'FontAwesome5' | 'MaterialCommunityIcons';
+export type IconTypes =
+  | 'Feather'
+  | 'FontAwesome5'
+  | 'MaterialCommunityIcons'
+  | 'FontAwesome5'
+  | 'AntDesign'
+  | 'Entypo'
+  | 'EvilIcons'
+  | 'Feather'
+  | 'FontAwesome'
+  | 'Foundation'
+  | 'Ionicons'
+  | 'MaterialCommunityIcons'
+  | 'MaterialIcons'
+  | 'Octicons'
+  | 'SimpleLineIcons'
+  | 'Zocial';
+
+export type Icon = {
+  type: IconTypes;
+  active?: string;
+  inactive: string;
+};
 
 export type Tab = {
   label: string;
@@ -230,6 +252,7 @@ export interface User {
   updated_at?: Date;
   platform?: Platforms;
 }
+
 export interface DefaultState {
   user?: User;
   translation: Translation;
@@ -255,7 +278,7 @@ export interface Content {
   length: string;
   language: Languages;
   status: ContentStatus;
-  priority?: number;
+  priority?: string;
   totalPlays?: number | FieldValue;
   totalCompleted?: number | FieldValue;
   totalFavorites?: number | FieldValue;
@@ -381,7 +404,7 @@ export interface AuthServiceType {
   checkExistingLogins(email: string): Promise<string[]>;
   login(email: string, password: string): Promise<void>;
   signup(account: NewAccount): Promise<void>;
-  checkError(err: FirebaseError): Error;
+  checkError(err: firebase.FirebaseError): Error;
   logout(): Promise<void>;
 }
 

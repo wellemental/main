@@ -20,7 +20,7 @@ export const English = {
   Library: 'Library',
   Back: 'Back',
   Search: 'Search',
-  Favorites: 'Favs',
+  Favorites: 'Favorites',
   Settings: 'Settings',
   Loading: 'Loading',
   Account: 'Your Account',

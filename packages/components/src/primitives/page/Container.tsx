@@ -21,7 +21,7 @@ const backgrounds = {
   Night: require('../../assets/images/wm_bg_evening.jpg'),
   Sleep: require('../../assets/images/wm_bg_sleep.jpg'),
   Move: require('../../assets/images/wm_bg_move.jpg'),
-  Learn: require('../../assets/images/wm_bg_meditate.jpg'),
+  Learn: require('../../assets/images/wm_bg_learn_solid.jpg'),
   Meditate: require('../../assets/images/wm_bg_sky.jpg'),
   Plans: require('../../assets/images/wm_bg_sky.jpg'),
   Profile: require('../../assets/images/wm_bg_tree.jpg'),

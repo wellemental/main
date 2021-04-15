@@ -7,7 +7,7 @@ import {
   CategoryLoop,
   Subheadline,
   Paragraph,
-  TabsNB,
+  HomepageTabs,
   AgeCards,
 } from '../primitives';
 import { VersionConfig } from 'services';
@@ -73,7 +73,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
 
       {activePlan ? (
         <>
-          <TabsNB color={timeOfDayColor} />
+          <HomepageTabs color={timeOfDayColor} />
 
           {features && features.categories && (
             <CategoryLoop title="Featured" categories={features.categories} />

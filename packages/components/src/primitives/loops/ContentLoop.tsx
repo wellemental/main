@@ -1,12 +1,10 @@
-import React from 'react';
-import { View, ScrollView, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, FlatList } from 'react-native';
 import ContentCard from '../cards/ContentCard';
 import { useContent } from '../../hooks';
 import { Content, Tags, Teachers, TimeOfDay, Categories } from 'common';
 import ListEmpty from '../typography/ListEmpty';
 import Error from '../typography/Error';
-import Paragraph from '../typography/Paragraph';
-import Loading from '../loaders/Loading';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 
 interface Props {
@@ -16,6 +14,9 @@ interface Props {
   scrollEnabled?: boolean;
   header?: React.ReactElement;
   hasPadding?: boolean; // Apply horizontal margin for Library screen bc of tabs full width requirement
+  small?: boolean;
+  limit?: number;
+  noLoadMore?: boolean;
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -25,10 +26,15 @@ const ContentLoop: React.FC<Props> = ({
   header,
   scrollEnabled,
   hasPadding,
+  small,
+  limit,
+  noLoadMore,
   ...props
 }) => {
   const { user } = useCurrentUser();
   const { content, error } = useContent();
+  const defaultLimit = 8;
+  const [theLimit, setLimit] = useState(limit ? limit : defaultLimit);
 
   let filteredContent: Content[] = content ? Object.values(content) : [];
 
@@ -62,43 +68,42 @@ const ContentLoop: React.FC<Props> = ({
   }
 
   // Sort by priority
+  // Items with priority field set go above those with no priority
   filteredContent = filteredContent.sort((a, b) =>
-    a.priority > b.priority ? 1 : -1,
+    !a.priority ? 1 : !b.priority ? -1 : a.priority > b.priority ? 1 : -1,
   );
 
-  const hasFilteredContent = filteredContent && filteredContent.length > 0;
+  filteredContent = filteredContent.slice(0, theLimit);
 
   return (
-    <Loading
-      loading={content && scrollEnabled && hasFilteredContent}
-      fullPage={false}>
-      <View style={{ marginHorizontal: hasPadding ? 15 : 0 }}>
-        <Error error={error} />
+    <View style={{ marginHorizontal: hasPadding ? 15 : 0 }}>
+      <Error error={error} />
 
-        {content && scrollEnabled && hasFilteredContent ? (
-          // If tabs and header need to be able to scroll up with the list
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {filteredContent.map((item, idx) => (
-              <ContentCard key={idx} content={item} />
-            ))}
-          </ScrollView>
-        ) : (
-          content && (
-            <FlatList
-              data={filteredContent}
-              initialNumToRender={10}
-              ListHeaderComponent={header}
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item, idx }) => (
-                <ContentCard key={idx} content={item} />
-              )}
-              ListEmptyComponent={<ListEmpty />}
-              {...props}
-            />
-          )
-        )}
-      </View>
-    </Loading>
+      {content && scrollEnabled ? (
+        // If tabs and header need to be able to scroll up with the list
+        // <ScrollView showsVerticalScrollIndicator={false}>
+        //   {filteredContent.map((item, idx) => (
+        //     <ContentCard key={idx} content={item} />
+        //   ))}
+        // </ScrollView>
+        <FlatList
+          data={filteredContent}
+          initialNumToRender={10}
+          ListHeaderComponent={header}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <ContentCard small={small} content={item} />
+          )}
+          ListEmptyComponent={<ListEmpty />}
+          {...props}
+        />
+      ) : (
+        content &&
+        filteredContent.map((item, idx: number) => (
+          <ContentCard small={small} key={idx} content={item} />
+        ))
+      )}
+    </View>
   );
 };
 

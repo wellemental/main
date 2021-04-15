@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import ContentCard from '../cards/ContentCard';
 import { useContent, useCurrentUser, useMediaQuery } from '../../hooks';
-import { Content, Tags, Categories, TimeOfDay, Teachers } from 'common';
+import {
+  Content,
+  Tags,
+  Categories,
+  TimeOfDay,
+  Teachers,
+  convertTimestamp,
+} from 'common';
 import ListEmpty from '../typography/ListEmpty';
 import Error from '../typography/Error';
 import Link from '@material-ui/core/Link';
@@ -79,6 +86,12 @@ const ContentLoop: React.FC<Props> = ({
     );
   }
 
+  // Sort by priority
+  // Items with priority field set go above those with no priority
+  filteredContent = filteredContent.sort((a, b) =>
+    !a.priority ? 1 : !b.priority ? -1 : a.priority > b.priority ? 1 : -1,
+  );
+
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (
@@ -88,7 +101,16 @@ const ContentLoop: React.FC<Props> = ({
       {content && hasFilteredContent && filteredContent ? (
         <>
           {filteredContent.slice(0, theLimit).map((item, idx) => (
-            <ContentCard small={small || isSmall} key={idx} content={item} />
+            <ContentCard
+              small={small || isSmall}
+              key={idx}
+              content={item}
+              recentDate={
+                type === 'recent'
+                  ? convertTimestamp(item.created_at).format('MMM DD, YYYY')
+                  : undefined
+              }
+            />
           ))}
           {!noLoadMore &&
             filteredContent.length >= defaultLimit &&

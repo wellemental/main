@@ -1,10 +1,16 @@
 // Tabs on Homepage
 import React, { useState } from 'react';
-import NewContentLoop from '../loops/NewContentLoop';
+import ContentLoop from '../loops/ContentLoop';
+import Button from './Button';
 import Box from '../utils/Box';
 import TabsButtons from './TabsButtons';
 import ContentLoopLoadMore from '../loops/ContentLoopLoadMore';
-import { useLoadMore, useContainer, useContent } from '../../hooks';
+import {
+  useLoadMore,
+  useContainer,
+  useContent,
+  useNavigation,
+} from '../../hooks';
 import { PlaysServiceType } from 'services';
 import { Colors, Tab } from 'common';
 
@@ -12,8 +18,9 @@ type Props = {
   color?: Colors;
 };
 
-const TabsNB: React.FC<Props> = ({ color }) => {
+const HomepageTabs: React.FC<Props> = ({ color }) => {
   const tabs: Tab[] = [{ label: 'History' }, { label: 'New' }];
+  const navigation = useNavigation();
 
   const [tab, setTab] = useState(tabs[0].label);
 
@@ -54,9 +61,27 @@ const TabsNB: React.FC<Props> = ({ color }) => {
           color={color}
         />
       )}
-      {tab === 'New' && <NewContentLoop color={color} />}
+      {tab === 'New' && (
+        <>
+          <ContentLoop small limit={2} noLoadMore />
+          <Button
+            small
+            full
+            text="See all"
+            style={{
+              backgroundColor: 'rgba(0,0,0,0)',
+            }}
+            transparent={color !== 'white'}
+            onPress={() =>
+              navigation.navigate('Category', {
+                category: { title: 'New', tag: undefined },
+              })
+            }
+          />
+        </>
+      )}
     </>
   );
 };
 
-export default TabsNB;
+export default HomepageTabs;

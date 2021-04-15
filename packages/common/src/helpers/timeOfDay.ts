@@ -8,13 +8,13 @@ export const getTimeOfDay = (): TimeOfDayObj => {
   let timeOfDay: TimeOfDay = TimeOfDay.Morning;
   let tagline = 'Start the day with some morning stretches';
 
-  // Between 7pm and 4am
+  // Between 6pm and 4am
   const isEvening =
-    today.isAfter(moment().hour(15), 'hour') ||
+    today.isSameOrAfter(moment().hour(18), 'hour') ||
     today.isBefore(moment().hour(4), 'hour');
 
-  // After 12pm noon
-  const isAfternoon = today.isAfter(moment().hour(12), 'hour');
+  // After 11am (to 6pm)
+  const isAfternoon = today.isSameOrAfter(moment().hour(11).minute(0), 'hours');
 
   // Set variables accordingly
   if (isEvening) {

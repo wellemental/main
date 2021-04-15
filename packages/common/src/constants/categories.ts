@@ -4,18 +4,14 @@ export const categories: CategoryObj = {
   Focus: {
     title: 'Focus',
     tag: Tags.Focus,
-    // icon: 'target',
-    // iconType: 'Feather',
     icon: 'image-filter-center-focus',
     iconType: 'MaterialCommunityIcons',
   },
   Stress: {
     title: 'Anxiety & Stress',
     tag: Tags.Stress,
-    // icon: 'cloud-sun',
     iconType: 'FontAwesome5',
     icon: 'meh',
-    // iconType: 'Feather',
   },
   Energize: {
     title: 'Energize',

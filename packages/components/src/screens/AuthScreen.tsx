@@ -10,8 +10,7 @@ import {
   LegalLinks,
 } from '../primitives';
 import { AuthScreenRouteProp, Translation } from '../types';
-import { English } from '../translations/en.js';
-import { Español } from '../translations/es.js';
+import { English, Español } from 'common';
 import { useNavigation } from '@react-navigation/native';
 
 type Props = {
