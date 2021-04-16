@@ -2,7 +2,7 @@ import React from 'react';
 import { Subheadline } from '../typography';
 import CategoryButton from '../cards/CategoryButton';
 import { useCurrentUser } from '../../hooks';
-import { Category, Redirect } from 'common';
+import { Category, MuiTypeColors, Redirect } from 'common';
 
 const categoryColors = ['yellow', 'blurple', 'orange', 'teal'] as const;
 export type CategoryColors = typeof categoryColors[number];
@@ -13,6 +13,7 @@ type Props = {
   hideTitle?: boolean;
   redirects?: Redirect[];
   colors?: CategoryColors[];
+  color?: MuiTypeColors | 'white';
 };
 
 const CategoryLoop: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const CategoryLoop: React.FC<Props> = ({
   hideTitle,
   redirects,
   colors,
+  color,
 }) => {
   const { translation } = useCurrentUser();
 
@@ -29,7 +31,7 @@ const CategoryLoop: React.FC<Props> = ({
   return (
     <>
       {!hideTitle && (
-        <Subheadline>
+        <Subheadline color={color}>
           {title && translation[title]
             ? translation[title]
             : translation.Categories}

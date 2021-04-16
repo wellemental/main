@@ -119,7 +119,9 @@ export const startSubscription = async (
   return Promise.resolve();
 };
 
-// Needs to be tested. Wouldn't deploy to cloud functions.
+// No longer using this cancellation function
+// This is to cancel a subscription with a cancel button of our own
+// We're now using Stripe's subscription management portal ('getBillingPortal') and the cancellation events are processed via Stripe's webhook events in 'onAddStripeEvent'
 export const cancelSubscription = async (
   data: any,
   context: functions.https.CallableContext,
@@ -160,13 +162,14 @@ export const cancelSubscription = async (
           return userDoc
             .update({
               subStatus: 'canceled',
+              canceledAtUnix: moment().unix(),
             })
             .then(() => {
               // Add firebase custom claims to control app access
               return admin
                 .auth()
                 .getUser(userId)
-                .then((userRecord) => {
+                .then(userRecord => {
                   if (userRecord.customClaims) {
                     console.log(
                       'Downgrade custom claims2',
@@ -176,7 +179,7 @@ export const cancelSubscription = async (
                   }
                 });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log('Error updating userDoc or Claims', error);
               return Promise.reject();
             })
@@ -272,7 +275,7 @@ export const webhookListen = functions.https.onRequest(
       .collection('stripe-events')
       .doc(event.id)
       .set(formattedEvent) // Add the event to the database
-      .then((snapshot) => {
+      .then(snapshot => {
         // Return a successful response to acknowledge the event was processed successfully
         // tslint:disable-next-line
         return response.json({
@@ -280,7 +283,7 @@ export const webhookListen = functions.https.onRequest(
           ref: snapshot.toString(),
         });
       })
-      .catch((err) => {
+      .catch(err => {
         console.error('Failed to add to database', err); // Catch any errors saving to the database
         // tslint:disable-next-line
         return response.status(500).end();

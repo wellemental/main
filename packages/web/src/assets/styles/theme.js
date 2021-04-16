@@ -44,6 +44,16 @@ export const theme = createMuiTheme({
     warning: {
       main: colors.warning,
     },
+    info: {
+      // Using light instead of info bc we needed it for a button color and typescript wasn't allowing light
+      main: colors.light,
+    },
+    danger: {
+      main: colors.danger,
+    },
+    success: {
+      main: colors.success,
+    },
     text: {
       primary: colors.text,
     },

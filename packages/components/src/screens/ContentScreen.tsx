@@ -6,7 +6,7 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
-import { Button as NBButton, Icon } from 'native-base';
+import { Button as NBButton } from 'native-base';
 import {
   AvyName,
   Box,
@@ -16,6 +16,7 @@ import {
   Favorite,
   Headline,
   Paragraph,
+  Icon,
 } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
@@ -193,7 +194,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
                 width: 60,
                 alignSelf: 'center',
               }}>
-              <Icon name="play" style={{ fontSize: 30 }} />
+              <Icon icon="play" style={{ fontSize: 30 }} />
             </NBButton>
           </ImageBackground>
         </View>
@@ -231,7 +232,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
                   alignSelf: 'center',
                   justifyContent: 'center',
                 }}>
-                <Icon name="play" style={{ fontSize: 30 }} />
+                <Icon icon="play" style={{ fontSize: 30 }} />
               </NBButton>
               <FadeIn style={styles.videoPoster}>
                 <Image

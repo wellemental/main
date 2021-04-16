@@ -12,13 +12,11 @@ export interface ObserveUserServiceType {
 // NOT CURRENTLY USING, KEPT IT ALL IN CURRENT USER CONTEXT
 
 class ObserveUserService implements ObserveUserServiceType {
-  //   private language: Languages | null = null;
-  //   private setLanguage: React.SetStateAction<Languages>;
   private auth: FbUser | null = null;
   private authUnsubscriber?: () => void;
   private user?: User;
   private userUnsubscriber?: () => void;
-  private setUser: React.Dispatch<React.SetStateAction<User | null>>; //React.Dispatch<(prevState: undefined) => undefined>;
+  private setUser: React.Dispatch<React.SetStateAction<User | null>>;
   private setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 
   constructor(
@@ -63,7 +61,6 @@ class ObserveUserService implements ObserveUserServiceType {
   }
 
   public unsubscribe(): void {
-    console.log('THIS IS UNSUBSCRIBING?', this.authUnsubscriber);
     if (this.authUnsubscriber) this.authUnsubscriber();
     if (this.userUnsubscriber) this.userUnsubscriber();
   }
@@ -91,6 +88,7 @@ class ObserveUserService implements ObserveUserServiceType {
           stripeId:
             userData && userData.stripeId ? userData.stripeId : undefined,
           plan: userData && userData.plan ? userData.plan : undefined,
+          isAdmin: userData && userData.isAdmin ? userData.isAdmin : false,
           totalCompleted:
             userData && userData.totalCompleted ? userData.totalCompleted : 0,
           totalPlays: userData && userData.totalPlays ? userData.totalPlays : 0,

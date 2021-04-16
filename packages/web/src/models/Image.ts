@@ -32,4 +32,46 @@ export const imageDir: ImageDirectory = {
       safari: require('../assets/images/bg-general.jpg'),
     },
   },
+  bgSleep: {
+    alt: 'Sleep Background',
+    source: {
+      webp: require('../assets/images/wm_bg_sleep.webp'),
+      safari: require('../assets/images/wm_bg_sleep.jpg'),
+    },
+  },
+  bgMorning: {
+    alt: 'Morning Background',
+    source: {
+      webp: require('../assets/images/wm_bg_morning.webp'),
+      safari: require('../assets/images/wm_bg_morning.jpg'),
+    },
+  },
+  bgAfternoon: {
+    alt: 'Afternoon Background',
+    source: {
+      webp: require('../assets/images/wm_bg_afternoon.webp'),
+      safari: require('../assets/images/wm_bg_afternoon.jpg'),
+    },
+  },
+  bgNight: {
+    alt: 'Night Background',
+    source: {
+      webp: require('../assets/images/wm_bg_sleep.webp'),
+      safari: require('../assets/images/wm_bg_sleep.jpg'),
+    },
+  },
+  bgLearn: {
+    alt: 'Learn Background',
+    source: {
+      webp: require('../assets/images/wm_bg_learn.webp'),
+      safari: require('../assets/images/wm_bg_learn.jpg'),
+    },
+  },
+  bgMove: {
+    alt: 'Move Background',
+    source: {
+      webp: require('../assets/images/wm_bg_move.webp'),
+      safari: require('../assets/images/wm_bg_move.jpg'),
+    },
+  },
 };

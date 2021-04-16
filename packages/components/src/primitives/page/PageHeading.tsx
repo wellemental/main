@@ -61,7 +61,7 @@ const PageHeading: React.FC<PageHeadingProps> = ({
           <LogoIcon width={100} />
         </Box>
       )}
-      {avatar && <Avatar source={avatar} size={200} mb={30} />}
+      {avatar && <Avatar source={avatar} size={200} mb={20} />}
       <Headline
         center={center ? center : false}
         color={color ? color : undefined}>

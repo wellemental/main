@@ -9,7 +9,8 @@ import {
 import { updateUserPlan } from './user';
 import { validateIap, renewOrCancelSubscriptions } from './iap';
 import { validateAndroidSubscription } from './android';
-import { StripeEvent, PlayEvent, FieldValue, Favorite } from './types';
+import { addToList, updateKlaviyoPlan } from './klaviyo';
+import { StripeEvent, PlayEvent, FieldValue, Favorite, User } from './types';
 
 // Initialize Firebase
 firebase.initializeApp();
@@ -18,6 +19,39 @@ const onWebhookListen = webhookListen;
 const onStartSubscription = functions.https.onCall(startSubscription);
 const onGetBillingPortal = functions.https.onCall(getBillingPortal);
 const onCancelSubscription = functions.https.onCall(cancelSubscription);
+
+// Sync user to Klaviyo when their account is created
+const onUserCreate = functions.firestore
+  .document('users/{userId}')
+  .onCreate(async doc => {
+    // Pull email from the new user document
+    const userData = doc.data() as Pick<User, 'email'>;
+    const userEmail = userData.email;
+
+    try {
+      await addToList(userEmail);
+      return Promise.resolve();
+    } catch (error) {
+      console.log(error);
+      return Promise.reject();
+    }
+  });
+
+// Update Klaviyo profile when user plan changes
+const onUserUpdate = functions.firestore
+  .document('users/{userId}')
+  .onUpdate(async change => {
+    if (change.after.exists && change.before.exists) {
+      const userAfter = change.after.data() as User;
+
+      try {
+        await updateKlaviyoPlan(userAfter);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    return Promise.resolve();
+  });
 
 const onAddStripeEvent = functions.firestore
   .document('stripe-events/{eventId}')
@@ -71,7 +105,7 @@ export const decrement = (amount?: number): FieldValue => {
 // Increment content stat for totalPlays when created
 const onPlayAdd = functions.firestore
   .document('users/{userId}/plays/{playId}')
-  .onCreate(async (doc) => {
+  .onCreate(async doc => {
     // Pull contentId from the new play document
     const playData = doc.data() as PlayEvent;
     const contentId = playData.contentId;
@@ -89,7 +123,7 @@ const onPlayAdd = functions.firestore
 // Update content stat for totalCompleted when play is updated
 const onPlayUpdate = functions.firestore
   .document('users/{userId}/plays/{playId}')
-  .onUpdate(async (change) => {
+  .onUpdate(async change => {
     if (change.after.exists && change.before.exists) {
       const playBefore = change.before.data() as PlayEvent;
       const playAfter = change.after.data() as PlayEvent;
@@ -111,7 +145,7 @@ const onPlayUpdate = functions.firestore
 // Update content stat for totalCompleted when play is updated
 const onFavUpdate = functions.firestore
   .document('users/{userId}/favorites/{contentId}')
-  .onUpdate(async (change) => {
+  .onUpdate(async change => {
     if (change.after.exists) {
       const favAfter = change.after.data() as Favorite;
 
@@ -148,4 +182,6 @@ export {
   onPlayAdd,
   onPlayUpdate,
   onFavUpdate,
+  onUserCreate,
+  onUserUpdate,
 };

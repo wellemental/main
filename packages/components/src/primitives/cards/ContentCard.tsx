@@ -11,9 +11,11 @@ import variables from '../../assets/native-base-theme/variables/wellemental';
 
 interface Props {
   content: Content;
+  small?: boolean;
+  recentDate?: string;
 }
 
-const ContentCard: React.FC<Props> = ({ content }) => {
+const ContentCard: React.FC<Props> = ({ content, small, recentDate }) => {
   const navigation = useNavigation();
   const teacher = content.teacher;
 
@@ -33,8 +35,7 @@ const ContentCard: React.FC<Props> = ({ content }) => {
               uri: content.thumbnail,
             }}
             style={{
-              height: 126,
-              width: 100,
+              height: small ? 84 : 125,
               flex: 1,
               borderRadius: variables.cardBorderRadius,
               marginLeft: -1,
@@ -45,17 +46,19 @@ const ContentCard: React.FC<Props> = ({ content }) => {
         </Left>
         <Body
           style={{
-            flex: 2,
+            flex: small ? 3 : 2,
             justifyContent: 'space-between',
             paddingHorizontal: 15,
             paddingBottom: 5,
-            paddingTop: 12,
+            paddingTop: 10,
           }}>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
             <CardTitle>{content.title}</CardTitle>
-            <Paragraph size={16}>{content.length}</Paragraph>
+            <Paragraph color="lightText" size={16}>
+              {recentDate ? recentDate : content.length}
+            </Paragraph>
           </View>
-          {teacher && (
+          {!small && teacher && (
             <AvyName
               source={teacher.photo}
               name={teacher.name}

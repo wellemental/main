@@ -1,17 +1,28 @@
 import React from 'react';
 import { ContentLoop, PageHeading, Spinner } from '../primitives';
 import { useContent, useRouteMatch, useCurrentUser } from '../hooks';
-import { Category, categories, Tags } from 'common';
+import {
+  Category,
+  categories,
+  Tags,
+  Feature,
+  isFeature,
+  Languages,
+} from 'common';
 import { slugify } from '../services/helpers';
 import { ageGroups } from '../constants';
 
 // This filter and matching is horrible and needs to be cleaned up eventually.
 const CategoryScreen: React.FC = () => {
   const { features } = useContent();
+  const { translation, user } = useCurrentUser();
 
   // Get category slug from URL
   const match = useRouteMatch();
   let category: Category | null = null;
+  let feature: Feature | null = null;
+  const isAgeGroup = !!category && ageGroups.includes(category);
+  const isSpanish = user.language === Languages.Es;
 
   // Unfiltered New category
   if (match === 'new') {
@@ -29,13 +40,13 @@ const CategoryScreen: React.FC = () => {
   // Match the category slug to the category from remote config
   // Only if it already isn't matching with an age group category
   if (!category && features) {
-    category = features.categories.filter(
+    feature = features.categories.filter(
       category => slugify(category.title) === match,
     )[0];
   }
 
   // If not ageGroup or feature, match here
-  if (!category) {
+  if (!category && !feature) {
     category = Object.values(categories).filter(category => {
       // Match tags that are different than their slugify
       if (category.tag === Tags.Stress && match === 'anxiety-and-stress') {
@@ -61,9 +72,22 @@ const CategoryScreen: React.FC = () => {
     <Spinner />
   ) : (
     <>
-      <PageHeading title={category.title} subtitle={category.description} />
-      {/* @ts-ignore */}
-      <ContentLoop filter={category.tag} />
+      <PageHeading
+        title={
+          feature && isSpanish // Remote config features won't have built-in translation since they're set by admins
+            ? feature['title-es']
+            : isAgeGroup
+            ? `${category.title} ${translation.years}`
+            : category.title
+        }
+        subtitle={
+          feature && isSpanish
+            ? feature['description-es']
+            : category.description
+        }
+      />
+
+      <ContentLoop filter={feature ? feature.tag : category.tag} />
     </>
   );
 };

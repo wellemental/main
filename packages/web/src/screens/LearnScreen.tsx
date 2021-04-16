@@ -14,19 +14,15 @@ const LearnScreen: React.FC = () => {
 
   return (
     <>
-      <Container
-        fullPage
-        // bg="Learn"
-      >
-        <PageHeading title={translation.Learn} />
+      <PageHeading title={translation.Learn} />
 
-        <FeaturedLoop category={Categories.Learn} />
+      <FeaturedLoop category={Categories.Learn} />
 
-        <CategoryLoop
-          categories={learnCategories}
-          colors={['yellow', 'blurple']}
-        />
-      </Container>
+      <CategoryLoop
+        categories={learnCategories}
+        colors={['yellow', 'blurple']}
+      />
+
       <LockOverlay />
     </>
   );

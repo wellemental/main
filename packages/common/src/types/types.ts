@@ -1,5 +1,15 @@
 import React from 'react';
+import moment from 'moment';
 import { configDefaults } from '../constants/remoteConfigDefaults';
+import { firestore } from 'firebase/app';
+import FirebaseFirestoreTypes from '@firebase/firestore-types';
+
+export type Query = firestore.Query;
+export type Timestamp = firestore.Timestamp;
+export type FieldValue = firestore.FieldValue;
+export type QueryDocumentSnapshot = firestore.QueryDocumentSnapshot;
+export type FirestoreModule = FirebaseFirestoreTypes.FirebaseFirestore;
+export type Moment = moment.Moment;
 
 export type StringObj = {
   [key: string]: string;
@@ -8,6 +18,15 @@ export type StringObj = {
 export type Translation = StringObj;
 
 type ValueOf<T> = T[keyof T];
+
+export type MenuItem = {
+  label: string;
+  filter?: Tags | 'All';
+};
+
+export type TabsType = {
+  [key: string]: React.ReactElement;
+};
 
 export type Unsubscriber = () => void;
 
@@ -18,6 +37,13 @@ export type Redirect = {
   page?: string;
   slug: string;
 };
+
+export enum AuthorizationStatus {
+  NOT_DETERMINED = -1,
+  DENIED = 0,
+  AUTHORIZED = 1,
+  PROVISIONAL = 2,
+}
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -86,11 +112,11 @@ export enum Tags {
   'Yoga Classes' = 'yoga-classes',
   Philosophy = 'philosophy',
   History = 'history',
-  Morning = 'Morning',
-  Afternoon = 'Afternoon',
-  Evening = 'Evening',
-  Meditate = 'Meditate',
-  Move = 'Move',
+  Morning = 'morning',
+  Afternoon = 'afternoon',
+  Evening = 'evening',
+  Meditate = 'meditate',
+  Move = 'move',
   Learn = 'Learn',
   Black = 'black',
   Study = 'study',
@@ -103,7 +129,29 @@ export enum Tags {
 //export type Tags = keyof typeof Tags;
 // export type Tags = ValueOf<tags>;
 
-export type IconTypes = 'Feather' | 'FontAwesome5' | 'MaterialCommunityIcons';
+export type IconTypes =
+  | 'Feather'
+  | 'FontAwesome5'
+  | 'MaterialCommunityIcons'
+  | 'FontAwesome5'
+  | 'AntDesign'
+  | 'Entypo'
+  | 'EvilIcons'
+  | 'Feather'
+  | 'FontAwesome'
+  | 'Foundation'
+  | 'Ionicons'
+  | 'MaterialCommunityIcons'
+  | 'MaterialIcons'
+  | 'Octicons'
+  | 'SimpleLineIcons'
+  | 'Zocial';
+
+export type Icon = {
+  type: IconTypes;
+  active?: string;
+  inactive: string;
+};
 
 export type Tab = {
   label: string;
@@ -159,15 +207,29 @@ export enum PlanId {
   Free = 'free',
 }
 
-export type UserPlan = {
-  type: 'iosIap' | 'promoCode';
+export type PlanTypes = 'iosIap' | 'promoCode' | 'android' | 'stripe';
+
+type UserPlanBase = {
+  type: PlanTypes;
   auto_renew_status: boolean;
   nextRenewalDate: string; // Just storing so humans can easily read it in database
   nextRenewalUnix: number; // unix timestamp
   canceledAtUnix?: number;
   planId: string;
   status: 'canceled' | 'active' | 'trialing' | 'pending';
+  stripeEvents?: string[];
+  orderId?: string;
 };
+
+// For use when saving to Firebase
+export interface UserPlan extends UserPlanBase {
+  createdAt: Date;
+}
+
+// For use when getting from Firebase
+export interface FbUserPlan extends UserPlanBase {
+  createdAt: Timestamp;
+}
 
 type Product = {
   bundleId: string;
@@ -202,9 +264,13 @@ export interface User {
   stripeId?: string;
   subStatus?: SubStatus;
   favorites?: { [key: string]: Favorite };
-  plan?: UserPlan;
+  plan?: UserPlan | FbUserPlan;
+  isAdmin?: boolean;
   updated_at?: Date;
+  platform?: Platforms;
+  promptedNotification?: boolean;
 }
+
 export interface DefaultState {
   user?: User;
   translation: Translation;
@@ -230,7 +296,7 @@ export interface Content {
   length: string;
   language: Languages;
   status: ContentStatus;
-  priority?: number;
+  priority?: string;
   totalPlays?: number | FieldValue;
   totalCompleted?: number | FieldValue;
   totalFavorites?: number | FieldValue;
@@ -256,26 +322,22 @@ export interface AllTeachers {
 }
 
 export interface UserProfile {
-  // name?: string;
-  // birthday?: string;
   language?: Languages;
+  promptedNotification: boolean;
   updated_at?: Timestamp;
 }
 
 export interface NewAccount {
   email: string;
   password: string;
-  // name: string;
-  // birthday: string;
   language: Languages;
 }
 
 export interface InitialUserDoc {
   id: string;
   email: string;
-  // name: string;
-  // birthday: string;
   language: Languages | string;
+  platform: Platforms;
 }
 
 export type DownloadResult = {
@@ -314,6 +376,7 @@ export interface ObserveNotificationsType {
   saveTokenToDatabase(token: string): Promise<void>;
   subscribe(): Promise<void>;
   unsubscribe(): void;
+  setNotificationPrompted(): Promise<void>;
 }
 
 export type Favorite = {
@@ -339,6 +402,13 @@ export interface FavoritesServiceType {
   import(favs: FavoritesObjPartial): Promise<void>;
 }
 
+export interface AnalyticsServiceType {
+  getTotals(): Promise<TotalsMap>;
+  updateTotals(): Promise<void>;
+  addWeek(dateStr: string): Promise<void>;
+  get(): Promise<Week[]>;
+}
+
 export interface PlaysServiceType {
   query: Query;
   add(id: string): Promise<void>;
@@ -350,7 +420,7 @@ export interface AuthServiceType {
   checkExistingLogins(email: string): Promise<string[]>;
   login(email: string, password: string): Promise<void>;
   signup(account: NewAccount): Promise<void>;
-  checkError(err: FirebaseError): Error;
+  checkError(err: firebase.FirebaseError): Error;
   logout(): Promise<void>;
 }
 
@@ -426,7 +496,7 @@ export interface TrackingService {
   track(name: TrackingEvents, params?: { [key: string]: any }): void;
 }
 
-export type RemoteConfigValues = keyof typeof defaultValues;
+export type RemoteConfigValues = keyof typeof configDefaults;
 export interface RemoteConfigService {
   getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }
@@ -467,4 +537,47 @@ export interface ConfigDefaults {
 // WEB ONLY
 export interface LocationState {
   [key: string]: any;
+}
+
+export type PlatformStat = {
+  total: number;
+  ios: number;
+  android: number;
+  web: number;
+};
+
+export interface SubsStat extends PlatformStat {
+  promoCode: number;
+}
+
+export type StatObj = { [key: string]: PlatformStat | SubsStat };
+
+export type TotalStats = {
+  users: number;
+  activeSubs: SubsStat;
+  updatedAt: Timestamp;
+};
+
+export type TotalsMap = {
+  users: number;
+  totalActive: number;
+  totalPaid: number;
+  ios: number;
+  android: number;
+  web: number;
+  promoCode: number;
+  updatedAt: string;
+};
+export interface Week {
+  id: string;
+  year: number;
+  isoWeek: number;
+  startDate: string;
+  endDate: string;
+  signups: PlatformStat;
+  newSubs: SubsStat;
+  cancellations: SubsStat;
+  plays: PlatformStat;
+  completions: PlatformStat;
+  favs: PlatformStat;
 }

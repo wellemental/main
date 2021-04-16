@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Tabs as MtTabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import { theme } from 'common';
+import { colors, theme } from 'common';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -13,6 +13,8 @@ type Props = {
   centered?: boolean;
   tabs: { [key: string]: JSX.Element };
   transparent?: boolean;
+  color?: 'white' | undefined;
+  value?: number;
 };
 
 const TabPanel = (props: TabPanelProps) => {
@@ -37,9 +39,15 @@ const a11yProps = (index: any) => {
   };
 };
 
-const Tabs: React.FC<Props> = ({ tabs, centered, transparent }) => {
+const Tabs: React.FC<Props> = ({
+  tabs,
+  centered,
+  transparent,
+  color,
+  value,
+}) => {
   // Tabs
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(value ? value : 0);
   const handleTab = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
   };
@@ -59,8 +67,8 @@ const Tabs: React.FC<Props> = ({ tabs, centered, transparent }) => {
           value={tab}
           onChange={handleTab}
           aria-label="Team tabs"
-          indicatorColor="primary"
-          textColor="primary"
+          style={{ color: color === 'white' ? 'white' : colors.primary }}
+          indicatorColor={color === 'white' ? 'secondary' : 'primary'}
           variant="scrollable"
           // scrollButtons="off"
           scrollButtons="auto"
@@ -85,62 +93,3 @@ const Tabs: React.FC<Props> = ({ tabs, centered, transparent }) => {
 };
 
 export default Tabs;
-
-// import React from 'react';
-// import Paragraph from './Paragraph';
-// import { MenuItem } from 'common';
-
-// type Props = {
-//   tabs: MenuItem[];
-//   active: MenuItem;
-//   setTab: React.Dispatch<MenuItem>;
-//   // filters: string[];
-// };
-
-// const Tabs: React.FC<Props> = ({ tabs, active, setTab }) => {
-//   return (
-//     <FlatList
-//       horizontal
-//       showsHorizontalScrollIndicator={false}
-//       data={tabs}
-//       keyExtractor={(item) => item.label}
-//       renderItem={({ item, index }) => (
-//         <TouchableOpacity
-//           style={{
-//             marginLeft: index === 0 ? 15 : 0,
-//             marginBottom: 15,
-//             paddingHorizontal: 15,
-//             minWidth: 50,
-//             borderBottomColor:
-//               active.label === item.label
-//                 ? variables.brandPrimary
-//                 : 'rgba(0,0,0,0)',
-//             borderBottomWidth: 4,
-//             height: 40,
-//             justifyContent: 'center',
-//             alignContent: 'center',
-//           }}
-//           onPress={() => setTab(item)}
-//           key={item.label}>
-//           <Paragraph
-//             style={{
-//               fontSize: 20,
-//               fontFamily: 'Inter',
-//               marginLeft: 7,
-//               marginRight: 7,
-//               fontWeight: active.label === item.label ? '600' : '400',
-//               color:
-//                 active.label === item.label
-//                   ? variables.brandPrimary
-//                   : variables.lightTextColor,
-//             }}
-//             key={item.label}>
-//             {item.label}
-//           </Paragraph>
-//         </TouchableOpacity>
-//       )}
-//     />
-//   );
-// };
-
-// export default Tabs;

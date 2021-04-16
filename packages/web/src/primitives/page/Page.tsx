@@ -8,6 +8,7 @@ import {
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { imageDir } from '../../models/Image';
 import { useLocation } from '../../hooks';
+import { getTimeOfDay } from 'common';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,6 +25,17 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+const backgrounds: { [key: string]: string } = {
+  sleep: `url(${imageDir.bgSleep.source.safari})`,
+  night: `url(${imageDir.bgSleep.source.safari})`,
+  evening: `url(${imageDir.bgSleep.source.safari})`,
+  learn: `url(${imageDir.bgLearn.source.safari})`,
+  move: `url(${imageDir.bgMove.source.safari})`,
+  afternoon: `url(${imageDir.bgAfternoon.source.safari})`,
+  morning: `url(${imageDir.bgMorning.source.safari})`,
+  general: `url(${imageDir.bgGeneral.source.safari})`,
+};
+
 interface Props {
   children: ReactNode | HTMLCollection;
   fullPage?: boolean;
@@ -38,18 +50,23 @@ const Page: React.FC<Props & ContainerProps> = ({
 }) => {
   const classes = useStyles();
   const { location } = useLocation();
+  const timeOfDay = getTimeOfDay();
 
   const noNav =
     location.pathname === '/forgot-password' ||
     location.pathname === '/login' ||
     location.pathname === '/access';
 
+  const containerWidth = location.pathname === '/analytics' ? 'xl' : 'xs';
+
   const bgStyle = background
     ? {
         backgroundImage:
-          background === 'general'
-            ? `url(${imageDir.bgGeneral.source.safari})`
-            : `url(${imageDir.bgGrass.source.safari})`,
+          location.pathname === '/'
+            ? backgrounds[timeOfDay.name.toLowerCase()] // Set background to morning, afternoon, or night
+            : backgrounds[location.pathname.substring(1)]
+            ? backgrounds[location.pathname.substring(1)] // Set background for main category pages
+            : `url(${imageDir.bgGeneral.source.safari})`, // General background for everything else
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: 'fixed',
         backgroundSize: 'cover',
@@ -61,7 +78,7 @@ const Page: React.FC<Props & ContainerProps> = ({
   return (
     <div style={bgStyle}>
       <CssBaseline />
-      <Container maxWidth="xs" component="main" {...props}>
+      <Container maxWidth={containerWidth} component="main" {...props}>
         <Grid
           container
           className={`${fullPage ? '' : classes.center}`}

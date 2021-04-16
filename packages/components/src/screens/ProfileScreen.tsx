@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  PlaysServiceType,
-  PlayEvent,
-  convertTimestamp,
-  FavoritesService,
-} from 'services';
+import { PlaysServiceType } from 'services';
 import { Card, CardItem } from 'native-base';
 import {
   Error,
@@ -13,21 +8,11 @@ import {
   StatDisplay,
   ContentLoopLoadMore,
   Button,
-  ListEmpty,
   TabsButtons,
   Box,
-  Loading,
-  ContentCardSmall,
-  RecentlyPlayedLoop,
 } from '../primitives';
-import { List } from 'native-base';
-import { FavoritesServiceType, Languages, Tab } from 'common';
-import {
-  useCurrentUser,
-  useContent,
-  useContainer,
-  useNavigation,
-} from '../hooks';
+import { FavoritesServiceType, Tab } from 'common';
+import { useCurrentUser, useContainer, useNavigation } from '../hooks';
 import useLoadMore from '../hooks/useLoadMore';
 import { ProfileScreenRouteProp } from '../types';
 
@@ -36,16 +21,15 @@ type Props = {
 };
 
 const ProfileScreen: React.FC<Props> = ({ route }) => {
-  const { translation, user } = useCurrentUser();
-  const { content } = useContent();
+  const { translation } = useCurrentUser();
   const [error, setError] = useState();
   const navigation = useNavigation();
   const defaultTab = route && route.params && route.params.defaultTab;
 
   const tabs: Tab[] = [
-    { label: 'Stats' },
-    { label: 'History' },
-    { label: 'Favorites' },
+    { label: 'Stats', icon: 'stats' },
+    { label: 'History', icon: 'history' },
+    { label: 'Favorites', icon: 'favorite' },
   ];
 
   const [tab, setTab] = useState<string>(
@@ -89,7 +73,8 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
             paddingRight: 7,
           }}>
           <TabsButtons
-            full={user.language === Languages.En}
+            iconsOnly
+            full={true}
             tabs={tabs}
             active={tab}
             setState={setTab}
@@ -115,8 +100,7 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
           </Card>
           <Box mt={1.5}>
             <Button
-              iconName="cog"
-              iconType="FontAwesome5"
+              icon="settings"
               text={translation.Settings}
               onPress={() => navigation.navigate('Settings')}
             />

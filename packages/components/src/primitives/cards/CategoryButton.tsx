@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardItem, Right, Body } from 'native-base';
 import { useNavigation, useCurrentUser } from '../../hooks';
 import Paragraph from '../typography/Paragraph';
-import Icon from '../icons/Icon';
+import Icon, { Icons } from '../icons/Icon';
 import Headline from '../typography/Headline';
 import {
   Category,
@@ -15,8 +15,8 @@ import variables from '../../assets/native-base-theme/variables/wellemental';
 
 type Props = {
   color?: ColorPairings;
-  icon: string;
-  iconType?: IconTypes;
+  icon: Icons;
+  iconType: IconTypes;
   title: string;
   description?: string;
   category?: Category | Feature;
@@ -74,6 +74,7 @@ const CategoryButton: React.FC<Props> = ({
         <Right style={{ flex: 1, marginLeft: 10 }}>
           {icon && (
             <Icon
+              icon={icon}
               name={icon}
               type={iconType}
               style={{

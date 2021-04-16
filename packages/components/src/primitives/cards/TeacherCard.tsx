@@ -31,7 +31,12 @@ const TeacherCard: React.FC<Props> = ({ teacher }) => {
           flexDirection: 'column',
         }}>
         <Image
-          style={{ height: deviceWidth, width: deviceWidth, borderRadius: 100 }}
+          style={{
+            height: deviceWidth,
+            width: deviceWidth,
+            borderRadius: 100,
+            marginBottom: 10,
+          }}
           source={{ uri: teacher.photo }}
         />
         <Headline center small>

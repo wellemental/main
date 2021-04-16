@@ -1,31 +1,13 @@
 import React, { ReactNode } from 'react';
-import {
-  Button as NBButton,
-  Icon,
-  Spinner,
-  NativeBase,
-  Text,
-} from 'native-base';
+import { Button as NBButton, Spinner, NativeBase, Text } from 'native-base';
 import variables from '../../assets/native-base-theme/variables/wellemental';
+import Icon from '../icons/Icon';
+import { TextTranslate } from '../typography';
 
 interface Props {
   loading?: boolean;
   text?: string;
-  iconName?: string;
-  iconType?:
-    | 'FontAwesome5'
-    | 'AntDesign'
-    | 'Entypo'
-    | 'EvilIcons'
-    | 'Feather'
-    | 'FontAwesome'
-    | 'Foundation'
-    | 'Ionicons'
-    | 'MaterialCommunityIcons'
-    | 'MaterialIcons'
-    | 'Octicons'
-    | 'SimpleLineIcons'
-    | 'Zocial';
+  icon?: string;
 }
 
 const Button: React.FC<Props & NativeBase.Button> = ({
@@ -33,8 +15,7 @@ const Button: React.FC<Props & NativeBase.Button> = ({
   disabled = false,
   text,
   children,
-  iconName,
-  iconType,
+  icon,
   full = false,
   ...props
 }) => {
@@ -44,17 +25,20 @@ const Button: React.FC<Props & NativeBase.Button> = ({
   }
 
   function renderChildren(): ReactNode {
-    if (typeof children === 'string' || text || iconName) {
+    if (typeof children === 'string' || text || icon) {
       return (
         <>
-          {iconName && (
+          {icon && (
             <Icon
-              type={iconType ? iconType : 'Ionicons'}
-              name={iconName}
-              style={{ paddingRight: 0, marginRight: -5 }}
+              icon={icon}
+              style={{ paddingRight: 0, marginRight: !text ? 15 : -5 }}
             />
           )}
-          {text && <Text>{text}</Text>}
+          {text && (
+            <Text>
+              <TextTranslate>{text}</TextTranslate>
+            </Text>
+          )}
         </>
       );
     } else {

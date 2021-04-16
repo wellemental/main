@@ -6,7 +6,7 @@ import { useCurrentUser, useHistory } from '../hooks';
 import { Redirect } from 'react-router-dom';
 
 const SubscriptionScreen: React.FC = () => {
-  const { user, auth, translation, activePlan } = useCurrentUser();
+  const { user, translation, activePlan } = useCurrentUser();
   const history = useHistory();
 
   return user ? (
@@ -37,7 +37,7 @@ const SubscriptionScreen: React.FC = () => {
         ) : (
           <>
             <Paragraph>
-              <b>{translation.Email}:</b> {auth.email}
+              <b>{translation.Email}:</b> {user.email}
             </Paragraph>
             <Paragraph>
               <b>{translation['Payment Type']}:</b>{' '}

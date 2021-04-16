@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Languages, User, UserProfile, LocalStateService } from 'services';
-import { firestore, auth } from 'services';
-import { Unsubscriber } from '../types';
+import { Languages, User, UserProfile } from 'common';
+import { firestore, auth, LocalStateService } from 'services';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { English } from 'common';
-import { Español } from 'common';
+import { English, Español, Unsubscriber } from 'common';
 import moment from 'moment';
 import { convertTimestamp } from 'services';
+import Loading from '../primitives/loaders/Loading';
 
 const localStateService = new LocalStateService();
 
@@ -25,12 +24,6 @@ export const CurrentUserProvider = ({ children }: any) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // const userDocUnsubscriber: React.MutableRefObject<Unsubscriber | null> = useRef(
-  //   null,
-  // );
-
-  // localStateService.resetStorage();
-
   // If no AsyncStorage user, get from firestore
   const getDbUser = async (userId): Promise<void> => {
     const userSnap = await firestore().collection('users').doc(userId).get();
@@ -38,9 +31,7 @@ export const CurrentUserProvider = ({ children }: any) => {
 
     const newUser = {
       id: userId,
-      // name: userData.name,
       language: userData.language ? userData.language : Languages.En,
-      // birthday: userData.birthday,
       favorites: userData.favorites,
       plan: userData.plan,
     };
@@ -90,7 +81,7 @@ export const CurrentUserProvider = ({ children }: any) => {
 
   useEffect(() => {
     // On mount, subscribe to auth listener
-    const authUnsubscriber = auth().onAuthStateChanged((user) => {
+    const authUnsubscriber = auth().onAuthStateChanged(user => {
       setCurrentAuth(user);
 
       // Unsubscribe from previous userDoc listener if exists
@@ -155,6 +146,9 @@ export const CurrentUserProvider = ({ children }: any) => {
             lastPlay: userData.lastPlay
               ? convertTimestamp(userData.lastPlay).toDate()
               : undefined,
+            promptedNotification: userData.promptedNotification
+              ? userData.promptedNotification
+              : false,
           };
 
           setCurrentUser(userDoc);
@@ -191,29 +185,31 @@ export const CurrentUserProvider = ({ children }: any) => {
   }, [currentUser]);
 
   return (
-    <CurrentUser.Provider
-      value={{
-        currentAuth,
-        currentUser,
-        loading,
-        translation:
-          currentUser &&
-          currentUser.language &&
-          currentUser.language === 'Español'
-            ? Español
-            : English,
-        updateUser,
-        updateFavorites,
-        getDbUser,
-        activePlan:
-          !auth || !currentUser
-            ? false
-            : currentUser &&
-              currentUser.plan &&
-              (currentUser.plan.nextRenewalUnix > moment().unix() ||
-                currentUser.plan.type === 'promoCode'),
-      }}>
-      {children}
-    </CurrentUser.Provider>
+    <Loading fullPage loading={loading}>
+      <CurrentUser.Provider
+        value={{
+          currentAuth,
+          currentUser,
+          loading,
+          translation:
+            currentUser &&
+            currentUser.language &&
+            currentUser.language === 'Español'
+              ? Español
+              : English,
+          updateUser,
+          updateFavorites,
+          getDbUser,
+          activePlan:
+            !auth || !currentUser
+              ? false
+              : currentUser &&
+                currentUser.plan &&
+                (currentUser.plan.nextRenewalUnix > moment().unix() ||
+                  currentUser.plan.type === 'promoCode'),
+        }}>
+        {children}
+      </CurrentUser.Provider>
+    </Loading>
   );
 };

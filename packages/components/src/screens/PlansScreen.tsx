@@ -243,7 +243,7 @@ const PlansScreen: React.FC = () => {
           position: 'absolute',
           left: -3,
           right: 0,
-          bottom: 0,
+          bottom: -5,
           width: deviceWidth + 3,
           height: deviceWidth * 0.16,
         }}

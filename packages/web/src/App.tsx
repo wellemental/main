@@ -13,6 +13,7 @@ import {
   PlansScreen,
   CheckoutScreen,
   ContentScreen,
+  AnalyticsScreen,
   ForgotPasswordScreen,
   SubscriptionScreen,
   TeachersScreen,
@@ -40,16 +41,6 @@ import { ContentProvider } from './context/Content';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { PrivateRoute } from './navigation';
-import {
-  Unsubscriber,
-  User,
-  Languages,
-  LoggedOutUser,
-  English,
-  Español,
-  DefaultState,
-} from 'common';
-import ObserveUserService from './services/ObserveUserService';
 
 let stripePromise: any = null;
 if (process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
@@ -57,15 +48,6 @@ if (process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
 }
 
 const history = createBrowserHistory();
-
-const defaultState: DefaultState = {
-  user: undefined,
-  translation: English,
-  activePlan: false,
-  loading: true,
-};
-
-type Props = {};
 
 const App = () => {
   return (
@@ -102,6 +84,11 @@ const App = () => {
                       />
                       <PrivateRoute path="/stripe" component={StripePortal} />
                       <PrivateRoute path="/library" component={LibraryScreen} />
+                      <PrivateRoute
+                        admin
+                        path="/analytics"
+                        component={AnalyticsScreen}
+                      />
                       <PrivateRoute path="/sleep" component={SleepScreen} />
                       <PrivateRoute
                         path="/meditate"

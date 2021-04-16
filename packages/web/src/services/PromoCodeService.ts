@@ -14,6 +14,7 @@ class PromoCodeService implements PromoCodeServiceType {
       type: 'promoCode',
       code,
       status: 'active',
+      createdAt: new Date(),
     };
 
     try {

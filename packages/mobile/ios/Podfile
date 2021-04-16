@@ -8,7 +8,7 @@ target 'wellemental' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-  # use_react_native!(:path => '../../../node_modules/react-native',
+    # use_react_native!(:path => '../../../node_modules/react-native',
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
   )
@@ -30,7 +30,7 @@ target 'wellemental' do
 end
   
   
-#   REMOVED TO UPDATE FROM RN 0.64.0 to 0.63.4
+#   REMOVED TO UPDATE TO RN 0.64.0 FROM 0.63.4
 #   use_flipper!
 #   post_install do |installer|
 #     installer.pods_project.build_configurations.each do |config|

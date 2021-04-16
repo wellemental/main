@@ -1,7 +1,7 @@
 import moment from 'moment';
-import { UserPlan } from '../types';
+import { FbUserPlan, UserPlan } from '../types';
 
-export const isPlanActive = (plan?: UserPlan): boolean => {
+export const isPlanActive = (plan?: UserPlan | FbUserPlan): boolean => {
   return !plan
     ? false
     : plan.nextRenewalUnix > moment().unix() || plan.type === 'promoCode';

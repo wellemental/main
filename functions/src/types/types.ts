@@ -3,6 +3,29 @@ import * as firebase from 'firebase-admin';
 export type Timestamp = firebase.firestore.Timestamp;
 export type FieldValue = firebase.firestore.FieldValue;
 
+export type PlatformStat = {
+  total: number;
+  ios: number;
+  android: number;
+  web: number;
+};
+
+export interface Week {
+  id: string;
+  year: number;
+  isoWeek: number;
+  startDate: string;
+  endDate: string;
+  signups: PlatformStat;
+  // activeSubs: number;
+  newSubs: PlatformStat;
+  cancellations: PlatformStat;
+  plays: PlatformStat;
+  completions: PlatformStat;
+  // seconds: PlatformStat;
+  favs: PlatformStat;
+}
+
 export type IapValidate = {
   receipt: any;
   productId: string;
@@ -20,21 +43,44 @@ export enum PlanId {
   Free = 'free',
 }
 
-export type UserPlan = {
-  type: 'iosIap' | 'promoCode' | 'android' | 'stripe';
+export type PlanTypes = 'iosIap' | 'promoCode' | 'android' | 'stripe';
+
+type UserPlanBase = {
+  type: PlanTypes;
   auto_renew_status: boolean;
   nextRenewalDate: string; // Just storing so humans can easily read it in database
   nextRenewalUnix: number; // unix timestamp
   canceledAtUnix?: number;
   planId: string;
   status: 'canceled' | 'active' | 'trialing' | 'pending';
-  createdAt: Date;
   stripeEvents?: string[];
   orderId?: string;
+  code?: string;
 };
 
+// For use when saving to Firebase
+export interface UserPlan extends UserPlanBase {
+  createdAt: Date;
+}
+
+// For use when getting from Firebase
+export interface FbUserPlan extends UserPlanBase {
+  createdAt: Timestamp;
+}
+
 export interface User {
-  plan: UserPlan;
+  email: string;
+  plan: UserPlan | FbUserPlan;
+  created_at: Timestamp;
+  platform: Platforms;
+  language: Languages;
+  totalPlays: number | FieldValue;
+  totalCompleted: number | FieldValue;
+  totalSeconds: number | FieldValue;
+  streak: number | FieldValue;
+  firstPlay?: Date;
+  lastPlay?: Date;
+  isAdmin?: boolean;
 }
 
 export type Product = {
@@ -82,12 +128,6 @@ export type StripeEvent = {
   pricePaid: number;
   trialPeriodLength: number;
   trial_end: string | null;
-};
-
-export type PlayEvent = {
-  contentId: string;
-  completed?: boolean;
-  createdAt: Timestamp;
 };
 
 export type McTags = 'Pro' | 'Lead';
@@ -170,9 +210,25 @@ export interface Content {
   created_at: Timestamp; //typeof Timestamp;
 }
 
+export enum Platforms {
+  Android = 'android',
+  iOS = 'ios',
+  Web = 'web',
+  Mac = 'macos',
+  Windows = 'windows',
+}
+
+export type PlayEvent = {
+  contentId: string;
+  completed?: boolean;
+  platform: Platforms;
+  createdAt: Timestamp;
+};
+
 export type Favorite = {
   contentId: string;
   favorited: boolean;
+  platform: Platforms;
   createdAt: Timestamp;
   updatedAt: Date;
 };

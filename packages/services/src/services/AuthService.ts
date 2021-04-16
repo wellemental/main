@@ -1,11 +1,10 @@
 import auth from '@react-native-firebase/auth';
+import { Platform } from 'react-native';
 import { AuthenticationError } from '../models/Errors';
-import { NewAccount, AuthServiceType } from '../types';
+import { NewAccount, AuthServiceType, Platforms } from 'common';
 import LocalStateService from './LocalStateService';
 import UpdateUserService from './UpdateUserService';
-// import tracker, { TrackingEvents } from './TrackerService';
 import { FirebaseError } from 'firebase';
-// import logger from './LoggerService';
 
 const profileService = new UpdateUserService();
 const localStateService = new LocalStateService();
@@ -46,21 +45,6 @@ class AuthService implements AuthServiceType {
         return Promise.reject(err);
       }
 
-      // // Create base local user for Async Storage, not storing sensitive info
-      // const localUser: LocalUser = {
-      //   name: account.name,
-      //   birthday: account.birthday,
-      //   language: account.language,
-      //   onboardingComplete: false,
-      // };
-
-      // // Save extra login info to LocalStorage so we can save to database on redirect
-      // try {
-      //   await localStateService.setStorage('wmUser', localUser);
-      // } catch (err) {
-      //   logger.error(`Failed to set async storage for new account: ${err}`);
-      // }
-
       await auth()
         .createUserWithEmailAndPassword(account.email, account.password)
         .then(async user => {
@@ -68,9 +52,8 @@ class AuthService implements AuthServiceType {
             await profileService.createProfile({
               id: user.user.uid,
               email: user.user.email,
-              // name: account.name,
-              // birthday: account.birthday,
               language: account.language,
+              platform: Platform.OS as Platforms,
             });
           } catch (err) {
             // logger.error(`Error creating user doc - ${err}`);

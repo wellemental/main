@@ -38,6 +38,7 @@ const TeacherLoop: React.FC<Props> = ({ header, scrollEnabled }) => {
           ListHeaderComponent={header}
           numColumns={2}
           data={renderTeachers()}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <TeacherCard teacher={item} />}
         />
       ) : teachers ? (

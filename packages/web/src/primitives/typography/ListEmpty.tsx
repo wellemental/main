@@ -1,14 +1,19 @@
 import React from 'react';
 import Paragraph, { ParagraphProps } from './Paragraph';
-import { useCurrentUser } from '../../hooks';
+import Box from '../utils/Box';
+import { Colors } from 'common';
 
-const ListEmpty: React.FC<ParagraphProps> = ({ children, ...props }) => {
-  const { translation } = useCurrentUser();
+interface Props extends ParagraphProps {
+  color?: Colors;
+}
 
+const ListEmpty: React.FC<Props> = ({ color, children, ...props }) => {
   return (
-    <Paragraph gt={1} {...props}>
-      {children ? children : translation['No results']}
-    </Paragraph>
+    <Box px={1.5} mt={1}>
+      <Paragraph theColor={color} {...props}>
+        {children ? children : 'No results'}
+      </Paragraph>
+    </Box>
   );
 };
 

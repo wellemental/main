@@ -1,17 +1,24 @@
 import React, { useEffect } from 'react';
-import { ObserveNotifications, ObserveNotificationsType } from 'services';
-import { useContainer } from '../hooks';
+import { ObserveNotifications } from 'services';
+import { ObserveNotificationsType } from 'common';
+import { useContainer, useCurrentUser } from '../hooks';
 
-export const NotificationContext = React.createContext<ObserveNotificationsType>(
-  new ObserveNotifications(),
+export const NotificationContext = React.createContext(
+  {} as ObserveNotificationsType,
 );
 
-const service = new ObserveNotifications();
-
 export const NotificationProvider = ({ children }: any) => {
+  const container = useContainer();
+  const { user } = useCurrentUser();
+  const service = container.getInstance<ObserveNotificationsType>(
+    'observeNotifications',
+  );
+
   useEffect(() => {
-    service.subscribe();
-    return service.unsubscribe();
+    if (user) {
+      service.subscribe();
+      return service.unsubscribe();
+    }
   }, []);
 
   return (

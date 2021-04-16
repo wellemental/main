@@ -1,4 +1,4 @@
-import firebase, { QueryDocumentSnapshot } from '../base';
+import { QueryDocumentSnapshot } from '../base';
 import {
   AllTeachers,
   Tags,
@@ -10,20 +10,19 @@ import {
 } from 'common';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
-import logger from './LoggerService';
 import TeacherService from './TeacherService';
+import BaseService, { BaseServiceContructorOptions } from './BaseService';
 
-const COLLECTION = 'content';
-const collection = firebase.firestore().collection(COLLECTION);
-
-class ContentService implements ContentServiceType {
+class ContentService extends BaseService implements ContentServiceType {
   private teachers: AllTeachers | undefined;
   private teacherService: TeacherServiceType;
   private content: ContentObj;
+  private COLLECTION = 'content';
+  private collection = this.firestore.collection(this.COLLECTION);
 
-  constructor() {
+  constructor(options: BaseServiceContructorOptions) {
+    super(options);
     this.teacherService = new TeacherService();
-
     this.teachers = undefined;
     this.content = {};
   }
@@ -59,8 +58,9 @@ class ContentService implements ContentServiceType {
   };
 
   public getContent = async (): Promise<ContentObj> => {
+    // console.log('***** GETTING CONTENT');
     // With no tags passed, get all Content
-    const query: any = collection.orderBy('updated_at', 'desc');
+    const query: any = this.collection.orderBy('updated_at', 'desc');
 
     try {
       const content: ContentObj = {};
@@ -78,7 +78,7 @@ class ContentService implements ContentServiceType {
 
       return content;
     } catch (err) {
-      logger.error(`Unable to get all content - ${err}`);
+      this.logger.error(`Unable to get all content - ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
   };
@@ -93,7 +93,7 @@ class ContentService implements ContentServiceType {
   };
 
   public getLatestUpdate = async (): Promise<Date> => {
-    const query: any = collection.orderBy('updated_at', 'desc').limit(1);
+    const query: any = this.collection.orderBy('updated_at', 'desc').limit(1);
 
     try {
       const content = await query
@@ -106,7 +106,7 @@ class ContentService implements ContentServiceType {
 
       return content[0].updated_at.toDate();
     } catch (err) {
-      logger.error('Unable to get latest content update');
+      this.logger.error('Unable to get latest content update');
       return Promise.reject(new ApplicationError(err));
     }
   };

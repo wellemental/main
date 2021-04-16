@@ -7,11 +7,17 @@ import {
   CategoryLoop,
   Subheadline,
   Paragraph,
-  TabsNB,
+  HomepageTabs,
   AgeCards,
 } from '../primitives';
 import { VersionConfig } from 'services';
-import { useCurrentUser, useContent, useConfig } from '../hooks';
+import {
+  useCurrentUser,
+  useContent,
+  useConfig,
+  useContainer,
+  useQuery,
+} from '../hooks';
 import { getVersion } from 'react-native-device-info';
 import {
   getTimeOfDay,
@@ -19,13 +25,35 @@ import {
   Tags,
   TimeOfDay,
   exploreRedirects,
+  AuthorizationStatus,
+  ObserveNotificationsType,
 } from 'common';
+import { MainNavigationProp } from '../types';
 
-const HomeScreen: React.FC = ({ navigation }) => {
-  const { translation, activePlan } = useCurrentUser();
+type Props = {
+  navigation: MainNavigationProp;
+};
+
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
+  const { activePlan, user } = useCurrentUser();
   const { features } = useContent();
 
-  const timeOfDay = getTimeOfDay();
+  // Prompt to activate notifications if they haven't already been asked
+  const container = useContainer();
+  const service = container.getInstance<ObserveNotificationsType>(
+    'observeNotifications',
+  );
+
+  const { data: notifPermission } = useQuery<AuthorizationStatus>(
+    service.checkPermissions,
+  );
+
+  if (
+    !user.promptedNotification &&
+    notifPermission === AuthorizationStatus.NOT_DETERMINED
+  ) {
+    navigation.navigate('Notifications', { prompt: true });
+  }
 
   // Upgrade Screen prompt
   const { data } = useConfig<VersionConfig>('version');
@@ -48,11 +76,14 @@ const HomeScreen: React.FC = ({ navigation }) => {
     );
   };
 
+  // Calculate time of day to determine bg and featured content
+  const timeOfDay = getTimeOfDay();
+
   const timeOfDayColor =
     timeOfDay.name === TimeOfDay.Evening ? 'white' : undefined;
 
   return (
-    <Container scrollEnabled bg={timeOfDay.name} proOnly={false}>
+    <Container scrollEnabled bg={timeOfDay.name}>
       {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}
@@ -64,7 +95,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
             marginBottom: -10,
           }}>
           <Paragraph center>
-            {translation['Tap to download the latest Wellemental update.']}
+            Tap to download the latest Wellemental update.
           </Paragraph>
         </TouchableOpacity>
       )}
@@ -73,14 +104,12 @@ const HomeScreen: React.FC = ({ navigation }) => {
 
       {activePlan ? (
         <>
-          <TabsNB color={timeOfDayColor} />
+          <HomepageTabs color={timeOfDayColor} />
 
           {features && features.categories && (
             <CategoryLoop title="Featured" categories={features.categories} />
           )}
-          <Subheadline color={timeOfDayColor}>
-            {translation.Explore}
-          </Subheadline>
+          <Subheadline color={timeOfDayColor}>Explore</Subheadline>
 
           <AgeCards />
 
@@ -92,9 +121,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
         </>
       ) : (
         <>
-          <Subheadline color={timeOfDayColor}>
-            {translation.Featured}
-          </Subheadline>
+          <Subheadline color={timeOfDayColor}>Featured</Subheadline>
           <ContentLoop filter={Tags.Featured} />
         </>
       )}

@@ -14,7 +14,7 @@ import { scrollToTop } from '../services/helpers';
 import { useCurrentUser, useHistory, useLead } from '../hooks';
 import app from '../base';
 import logger from '../services/LoggerService';
-import { fireFbEvent, fireGaEvent } from '../services/AnalyticsService';
+import { fireFbEvent, fireGaEvent } from '../services/PixelEventService';
 import { theme } from '../assets/styles/theme';
 import { Box, Card } from '../primitives';
 import {

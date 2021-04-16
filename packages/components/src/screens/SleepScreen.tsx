@@ -5,19 +5,15 @@ import {
   PageHeading,
   LockOverlay,
 } from '../primitives';
-import { useCurrentUser } from '../hooks';
 import { Tags } from 'common';
 
 const SleepScreen: React.FC = () => {
-  const { translation } = useCurrentUser();
-
   return (
     <>
-      <Container scrollEnabled={false} bg="Evening">
+      <Container scrollEnabled={false} noPadding="vertical" bg="Evening">
         <ContentLoop
-          header={
-            <PageHeading noHeader title={translation.Sleep} color="white" />
-          }
+          scrollEnabled
+          header={<PageHeading noHeader title="Sleep" color="white" />}
           filter={Tags.Sleep}
         />
       </Container>

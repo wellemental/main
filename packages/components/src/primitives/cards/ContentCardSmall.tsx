@@ -46,7 +46,7 @@ const ContentCardSmall: React.FC<Props> = ({ content, recentDate }) => {
             paddingBottom: 5,
           }}>
           <CardTitle>{content.title}</CardTitle>
-          <Paragraph color="lightText">
+          <Paragraph color="lightText" size={16}>
             {recentDate ? recentDate : content.length}
           </Paragraph>
         </Body>

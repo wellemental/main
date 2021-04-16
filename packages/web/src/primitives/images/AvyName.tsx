@@ -64,8 +64,13 @@ const AvyName: React.FC<Props> = ({
           <Avatar source={source} mb={mb} size={size} />
 
           <Paragraph
+            theColor="primary"
             variant={onProfile ? 'subtitle2' : 'body1'}
-            style={{ lineHeight: '40px', marginLeft: '10px' }}>
+            style={{
+              lineHeight: '40px',
+              marginLeft: '10px',
+              fontSize: onProfile ? '19px' : undefined,
+            }}>
             {name}
           </Paragraph>
         </Box>

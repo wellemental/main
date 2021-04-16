@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Typography } from '@material-ui/core';
-import { Button, Error, Spinner, Page } from '../primitives';
+import { Button, Error, Loading, Page } from '../primitives';
 import app from '../base';
 import logger from '../services/LoggerService';
 import { useCurrentUser } from '../hooks';
@@ -22,10 +22,10 @@ const StripePortal: React.FC<Props> = ({ history }) => {
       await app
         .functions()
         .httpsCallable('onGetBillingPortal')()
-        .then((res) => {
+        .then(res => {
           window.location.href = res.data.url;
         })
-        .catch((err) => {
+        .catch(err => {
           logger.error(`Error getting billing portal`);
 
           setError(
@@ -38,7 +38,7 @@ const StripePortal: React.FC<Props> = ({ history }) => {
   }, []);
 
   return redirecting ? (
-    <Spinner text={translation['One moment...']} />
+    <Loading fullPage loading={true} text={translation['One moment...']} />
   ) : error ? (
     <Page>
       <Card>
