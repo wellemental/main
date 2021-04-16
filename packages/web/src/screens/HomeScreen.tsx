@@ -32,10 +32,10 @@ const HomeScreen: React.FC = () => {
         <>
           <HomepageTabs color={timeOfDayColor} />
 
-          {features && features.categories && (
+          {features && features && (
             <CategoryLoop
               title="Featured"
-              categories={features.categories}
+              categories={features}
               color={timeOfDayColor}
             />
           )}

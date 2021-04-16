@@ -25,7 +25,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({
   recentlyPlayed,
   color,
 }) => {
-  const { content } = useContent();
+  const { allContent: content } = useContent();
   const [contentArr, setContentArr] = useState<any[]>([]);
 
   const hasContent = !!content && items.length > 0;

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { PlaysServiceType } from 'services';
 import {
   Error,
   PageHeading,
@@ -8,7 +7,7 @@ import {
   ContentLoopLoadMore,
   Tabs,
 } from '../primitives';
-import { FavoritesServiceType } from 'common';
+import { FavoritesServiceType, PlaysServiceType } from 'common';
 import { useCurrentUser, useContainer, useLocation } from '../hooks';
 import useLoadMore from '../hooks/useLoadMore';
 

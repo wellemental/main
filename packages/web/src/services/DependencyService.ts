@@ -8,6 +8,7 @@ import PlaysService from './PlaysService';
 import FavoritesService from './FavoritesService';
 import AnalyticsService from './AnalyticsService';
 import ContentService from './ContentService';
+import TeacherService from './TeacherService';
 
 interface DependencyDescriptor {
   dependencies: string[];
@@ -44,7 +45,7 @@ const dependenciesDescriptors = {
   },
   remoteConfig: {
     class: RemoteConfig,
-    dependencies: BASE_SERVICE_DEPENDENCIES,
+    dependencies: [],
   },
   playsService: {
     class: PlaysService,
@@ -60,6 +61,10 @@ const dependenciesDescriptors = {
   },
   contentService: {
     class: ContentService,
+    dependencies: ['firestore', 'logger'],
+  },
+  teacherService: {
+    class: TeacherService,
     dependencies: ['firestore', 'logger'],
   },
 };

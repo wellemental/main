@@ -1,9 +1,34 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { User, isPlanActive, setTranslation } from 'common';
+import {
+  User,
+  isPlanActive,
+  setTranslation,
+  Languages,
+  English,
+  Translation,
+} from 'common';
 import { Spinner } from '../primitives';
 import ObserveUserService from '../services/ObserveUserService';
 
-export const CurrentUser = React.createContext<any>({});
+// export interface UserContext {
+//   user: User | null;
+//   loading: boolean;
+//   language: Languages;
+//   translation: Translation;
+//   activePlan: boolean;
+//   isAdmin: boolean;
+// }
+
+const initialState = {
+  user: null,
+  loading: true,
+  language: Languages.En,
+  translation: English,
+  activePlan: false,
+  isAdmin: false,
+};
+
+export const CurrentUser = React.createContext<any>(initialState);
 
 export const CurrentUserProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | null>(null);
@@ -28,6 +53,7 @@ export const CurrentUserProvider = ({ children }: any) => {
       value={{
         user: user,
         loading,
+        language: user && user.language ? user.language : Languages.En,
         translation: setTranslation(!user ? undefined : user.language),
         activePlan: isPlanActive(!user ? undefined : user.plan),
         isAdmin: user ? !!user.isAdmin : false,

@@ -2,39 +2,33 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import TeacherCard from '../cards/TeacherCard';
 import Loading from '../loaders/Loading';
 import Box from '../utils/Box';
-import { useCurrentUser, useQuery } from '../../hooks';
+import { useCurrentUser, useQuery, useContainer } from '../../hooks';
 import ListEmpty from '../typography/ListEmpty';
-import { Teacher, AllTeachers } from 'common';
-import { TeacherService } from '../../services';
+import { Teacher, AllTeachers, TeacherServiceType } from 'common';
 
 type Props = {
   scrollEnabled?: boolean;
   header?: ReactElement;
 };
 
-const service = new TeacherService();
-
 const TeacherLoop: React.FC<Props> = () => {
-  const { user } = useCurrentUser();
+  const { language } = useCurrentUser();
   const [teachers, setTeachers] = useState<Teacher[]>([]);
+
+  const container = useContainer();
+  const service = container.getInstance<TeacherServiceType>('teacherService');
   const { data, loading } = useQuery<AllTeachers>(service.getAll);
 
-  // This should def be handled somewhere else, improve later
-  const renderTeachers = (): void => {
-    let arr: Teacher[] = data ? Object.values(data) : [];
-
-    if (data) {
-      arr = arr.filter((item: Teacher) => item.language === user.language);
-    }
-
-    setTeachers(arr);
-  };
-
+  // Filter teachers by language
   useEffect(() => {
     if (data) {
-      renderTeachers();
+      setTeachers(
+        Object.values(data).filter(
+          (item: Teacher) => item.language === language,
+        ),
+      );
     }
-  }, [data]);
+  }, [data, language]);
 
   return (
     <Loading loading={loading}>

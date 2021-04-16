@@ -64,12 +64,12 @@ const AvyName: React.FC<Props> = ({
           <Avatar source={source} mb={mb} size={size} />
 
           <Paragraph
-            theColor="primary"
-            variant={onProfile ? 'subtitle2' : 'body1'}
+            theColor={onProfile ? 'primary' : 'text'}
+            variant={onProfile ? 'subtitle2' : undefined}
             style={{
               lineHeight: '40px',
               marginLeft: '10px',
-              fontSize: onProfile ? '19px' : undefined,
+              fontSize: onProfile ? '19px' : '16px',
             }}>
             {name}
           </Paragraph>

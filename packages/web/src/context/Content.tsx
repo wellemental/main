@@ -1,133 +1,155 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import { Spinner } from '../primitives';
-import { TeacherService, ContentService } from '../services';
-import { StateType } from '../hooks/useLoadMore';
 import {
-  AllTeachers,
-  Categories,
   ContentObj,
   Content as ContentType,
-  Features,
   ContentServiceType,
-  User,
-  PlaysServiceType,
-  FavoritesServiceType,
-  PlayEvent,
-  Favorite,
+  Features,
+  Feature,
+  RemoteConfigServiceType,
+  Languages,
+  Tags,
+  Categories,
 } from 'common';
-import {
-  useConfig,
-  useCurrentUser,
-  useContainer,
-  useQuery,
-  useLoadMore,
-} from '../hooks';
+import { useContainer, useCurrentUser, useLocation } from '../hooks';
 
 type BuildContent<T> = T;
-interface ContentContext {
-  content: ContentObj | null;
-  error: Error | string;
-  // plays: ContentType[];
-  // favs: ContentType[];
-  // playsMore?: StateType;
-  // favsMore?: StateType;
+
+export type StateType = {
   loading: boolean;
-  rcLoading?: boolean;
-  features: Features | undefined;
-  getDbContent?: () => void;
+  error: string | null;
+  allContent: ContentObj;
+  features: Feature[];
+  content: ContentType[];
+};
+
+export interface ContentContext {
+  state: StateType;
+  dispatch: React.Dispatch<ActionType>;
 }
 
+const initialState = {
+  loading: true,
+  error: null,
+  allContent: {},
+  features: [],
+  content: [],
+};
+
 export const Content = React.createContext<ContentContext>({
-  content: {},
-  error: '',
-  // plays: [],
-  // favs: [],
-  loading: false,
-  rcLoading: false,
-  features: undefined,
+  state: initialState,
+  dispatch: () => null,
 });
+
+type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V;
+
+export type ActionType =
+  //   | Action<'LOAD-MORE'>
+  | Action<
+      'LOADED',
+      {
+        value: ContentObj;
+        language: Languages;
+      }
+    >
+  | Action<
+      'LOADED_FEATURES',
+      {
+        value: Feature[];
+      }
+    >
+  // | Action<'FILTER_LANGUAGE', { language: Languages }>
+  // | Action<'REMOVE_FILTER_LANGUAGE'>
+  | Action<'GET_FEATURED', { category: Categories; limit?: number }>;
+
+const contentReducer = (state: StateType, action: ActionType): StateType => {
+  const contentArr = Object.values(state.allContent);
+
+  switch (action.type) {
+    case 'LOADED': {
+      const contentObj = action.value;
+      const filtered = Object.values(contentObj);
+
+      return {
+        ...state,
+        allContent: contentObj,
+        content: filtered,
+        loading: false,
+      };
+    }
+    case 'LOADED_FEATURES': {
+      return { ...state, features: action.value };
+    }
+    // case 'FILTER_LANGUAGE': {
+    //   return { ...state, content: filterLanguage(contentArr, action.language) };
+    // }
+    // case 'REMOVE_FILTER_LANGUAGE': {
+    //   return { ...state, content: filterLanguage(contentArr) };
+    // }
+    case 'GET_FEATURED': {
+      const limit = action.limit ? action.limit : 2;
+
+      const features = contentArr
+        .filter(
+          item =>
+            item.type === action.category && item.tags.includes(Tags.Featured),
+        )
+        .slice(0, limit);
+
+      return { ...state, content: features };
+    }
+  }
+};
+
+// const filterLanguage = (items: ContentType[], language?: Languages) => {
+//   return items.filter((item: ContentType) =>
+//     // If no language param, then just return everything
+//     language ? item.language === language : item,
+//   );
+// };
 
 export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   // Load all content
   // Subscribe to favorites and rebuild with content on each change
   // Subscribe to history and rebuild with content on each change
   // const [error, setError] = useState('');
-  const { user } = useCurrentUser();
-  const [content, setContent] = useState<ContentObj | null>(null);
-  const [loading, setLoading] = useState(!content ? true : false);
-  // const [plays, setPlays] = useState<ContentType[] | null>(null);
-  // const [favs, setFavs] = useState<ContentType[] | null>(null);
+  const { user, language } = useCurrentUser();
+  const [state, dispatch] = useReducer(contentReducer, initialState);
 
-  // Load all the content
   const container = useContainer();
   const service = container.getInstance<ContentServiceType>('contentService');
-  // const playsService = container.getInstance<PlaysServiceType>('playsService');
-  // const favsService = container.getInstance<FavoritesServiceType>(
-  //   'favoritesService',
-  // );
+  const remoteConfig = container.getInstance<RemoteConfigServiceType>(
+    'remoteConfig',
+  );
 
-  // Load all the content by default
-  // ISSUE: Gets content every time user is updated
-  const { data, error, loading: getLoading } = useQuery(service.getContent);
-
-  // Set default content state
   useEffect(() => {
-    setContent(data);
-    setLoading(false);
-  }, [data]);
+    if (user) {
+      console.log('CONTENT OCNTEXT RUNNING!!!');
+      service.getContent().then(items => {
+        dispatch({ type: 'LOADED', value: items, language: language });
+      });
 
-  // Get batch of Plays
-  // const playsMore = useLoadMore(playsService.query, { limit: 7 });
-  // const playItems = playsMore.items;
+      remoteConfig
+        .getValue<Features>('featured')
+        .then(feature =>
+          dispatch({ type: 'LOADED_FEATURES', value: feature.categories }),
+        );
+    }
+  }, []);
 
-  // Match Favs and Plays with Content Items
-  // const buildContent = (
-  //   items: firebase.firestore.DocumentData[],
-  // ): ContentType[] => {
-  //   return items.map(item => {
-  //     const data = item.data();
-  //     const matchedContent: ContentType =
-  //       content && content[data.contentId] && content[data.contentId];
-
-  //     return matchedContent;
-  //   });
-  // };
-
+  // Reset language filter whenever user changes their langauge
   // useEffect(() => {
-  //   setPlays(buildContent(playItems));
-  // }, [playItems, content]);
+  //   if (user) {
+  //     dispatch({
+  //       type: 'FILTER_LANGUAGE',
+  //       language: language,
+  //     });
+  //   }
+  // }, [user]);
 
-  // Get batch of Favs
-  // const favsMore = useLoadMore(favsService.query, { limit: 7 });
-  // const favItems = favsMore.items;
-
-  // useEffect(() => {
-  //   setFavs(buildContent(favItems));
-  // }, [favItems, content]);
-
-  // Get Featured Content from Remote Config
-  const { loading: rcLoading, data: rcData }: any = useConfig('featured');
-
-  // If user is logged in and content or remote config is still loading, show spinner
-  if (loading || rcLoading) {
-    return <Spinner fullPage />;
-  }
+  console.log('STATE NEW', state);
 
   return (
-    <Content.Provider
-      value={{
-        content: content,
-        features: rcData,
-        // plays,
-        // favs,
-        // playsMore,
-        // favsMore,
-        loading: loading,
-        rcLoading: rcLoading,
-        error,
-        // getDbContent,
-      }}>
-      {children}
-    </Content.Provider>
+    <Content.Provider value={{ state, dispatch }}>{children}</Content.Provider>
   );
 };

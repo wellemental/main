@@ -3,7 +3,7 @@ import Paragraph from './Paragraph';
 import { ApplicationError, ModelError } from '../../models/Errors';
 
 interface Props {
-  error?: Error | string;
+  error?: Error | string | null;
   center?: boolean;
 }
 

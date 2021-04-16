@@ -4,12 +4,13 @@ import defaultValues from './RemoteConfigDefaults';
 import { RemoteConfigService } from 'common';
 import { ApplicationError } from '../models/Errors';
 import logger from '../services/LoggerService';
+import BaseService from './BaseService';
 
-class RemoteConfig implements RemoteConfigService {
+class RemoteConfig extends BaseService implements RemoteConfigService {
   private remoteConfig: any;
   private initialization: Promise<void>;
-  constructor() {
-    // super(args);
+  constructor(args) {
+    super(args);
     this.remoteConfig = firebase.remoteConfig();
     this.initialization = this.init();
   }

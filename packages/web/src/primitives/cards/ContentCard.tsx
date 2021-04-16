@@ -9,7 +9,7 @@ import CardItem from './CardItem';
 import Card from './Card';
 import CardBody from './CardBody';
 import Box from '../utils/Box';
-import { slugify, theme } from 'common';
+import { theme } from 'common';
 
 interface Props {
   content: Content;
@@ -41,7 +41,7 @@ const ContentCard: React.FC<Props> = ({ content, small, recentDate }) => {
               }}>
               <CardTitle text={content.title} />
               <Paragraph size={14} style={{ textAlign: 'left' }}>
-                {recentDate ? recentDate : content.length}
+                {recentDate ? recentDate : content.length} - {content.language}
               </Paragraph>
 
               {!small && (

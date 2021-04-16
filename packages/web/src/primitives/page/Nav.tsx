@@ -82,7 +82,7 @@ type Anchor = 'top' | 'left' | 'bottom' | 'right';
 const Nav: React.FC<Props> = props => {
   usePageviews();
   const classes = useStyles();
-  const { user, auth, activePlan, isAdmin, translation } = useCurrentUser();
+  const { user, activePlan, isAdmin, translation } = useCurrentUser();
   const history = useHistory();
   // const trigger = useScrollTrigger();
   const [state, setState] = useState({
@@ -140,7 +140,7 @@ const Nav: React.FC<Props> = props => {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}>
       <List>
-        {!user && !!auth && (
+        {!user && (
           <ListItemLink
             to="/login"
             primary={translation.Login}

@@ -13,20 +13,23 @@ import {
   ContentServiceType,
   Categories,
   Tags,
+  QueryDocumentSnapshot,
 } from 'common';
 import LocalStateService from './LocalStateService';
 import TeacherService from './TeacherService';
+import BaseService, { BaseServiceContructorOptions } from './BaseService';
 
 const COLLECTION = 'content';
 const collection = firestore().collection(COLLECTION);
 
-class ContentService implements ContentServiceType {
+class ContentService extends BaseService implements ContentServiceType {
   private teachers: AllTeachers | undefined;
   private localStorage: LocalStateServiceType;
   private teacherService: TeacherServiceType;
   private content: ContentObj;
 
-  constructor() {
+  constructor(args: BaseServiceContructorOptions) {
+    super(args);
     this.localStorage = new LocalStateService();
     this.teacherService = new TeacherService();
 
@@ -34,9 +37,7 @@ class ContentService implements ContentServiceType {
     this.content = {};
   }
 
-  public buildContent = (
-    doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
-  ): Content => {
+  public buildContent = (doc: QueryDocumentSnapshot): Content => {
     const data = doc.data();
     const tags: Tags[] = data.tags ? data.tags.split(', ') : [];
 

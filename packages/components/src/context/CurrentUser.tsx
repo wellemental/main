@@ -200,6 +200,7 @@ export const CurrentUserProvider = ({ children }: any) => {
           updateUser,
           updateFavorites,
           getDbUser,
+          // activePlan: isPlanActive(!user ? undefined : user.plan),
           activePlan:
             !auth || !currentUser
               ? false

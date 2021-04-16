@@ -46,7 +46,7 @@ const SubscriptionScreen: React.FC = () => {
                 : user.plan.type === 'stripe'
                 ? `${translation.Website} (Stripe)`
                 : user.plan.type === 'promoCode'
-                ? translation['Promo Code']
+                ? translation['Access code']
                 : 'N/A'}
             </Paragraph>
             {user.plan.planId && (
@@ -57,7 +57,7 @@ const SubscriptionScreen: React.FC = () => {
 
             {user.plan.code && (
               <Paragraph>
-                <b>{translation['Promo Code']}</b>: {user.plan.code}
+                <b>{translation['Access code']}</b>: {user.plan.code}
               </Paragraph>
             )}
 

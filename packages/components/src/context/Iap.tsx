@@ -10,8 +10,6 @@ import RNIap, {
   purchaseUpdatedListener,
 } from 'react-native-iap';
 import functions from '@react-native-firebase/functions';
-import { LocalStateService } from 'services';
-import { useCurrentUser } from '../hooks';
 
 export const IAPContext: React.Context<any> = React.createContext({
   processing: false,
@@ -66,7 +64,7 @@ export const IAPProvider = ({ children }: any) => {
         setProcessing(false);
       }
     } else {
-      setStatus((status) => [...status, `ERROR - NO TRANSACTION RECEIPT`]);
+      setStatus(status => [...status, `ERROR - NO TRANSACTION RECEIPT`]);
       setProcessing(false);
     }
   };

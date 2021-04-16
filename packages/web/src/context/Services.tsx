@@ -18,7 +18,7 @@ export const ServicesProvider: React.FC = ({ children }) => {
   useEffect(() => {
     setContainer(
       buildDependencies({
-        currentUser: user,
+        currentUser: user ? user : undefined,
       }),
     );
     setLoading(false);

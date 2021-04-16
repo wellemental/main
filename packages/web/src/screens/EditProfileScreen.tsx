@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Error, Box, PageHeading, Button, ToggleButtons } from '../primitives';
 import { useCurrentUser, useMutation } from '../hooks';
 import { UpdateUserService } from '../services';
-import { UserProfile, Languages } from 'common';
+import { User, Languages } from 'common';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
@@ -11,10 +11,8 @@ function Alert(props: AlertProps) {
 }
 
 const EditProfileScreen: React.FC = () => {
-  const { user, translation } = useCurrentUser();
-  const [language, setLanguage] = useState(
-    user && user.language ? user.language : Languages.En,
-  );
+  const { user, translation, language } = useCurrentUser();
+  const [currLanguage, setLanguage] = useState(language);
 
   // Snackbar alert
   const [snack, setSnack] = React.useState<'success' | 'error' | undefined>();
@@ -28,16 +26,16 @@ const EditProfileScreen: React.FC = () => {
   };
 
   // Only submit what's changed upon saving
-  const newProfile: UserProfile = {};
+  const newProfile: Partial<User> = {};
 
-  if (user && language !== user.language) {
-    newProfile.language = language;
+  if (user && currLanguage !== language) {
+    newProfile.language = currLanguage;
   }
 
   const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
 
   const { loading, error: mutateError, mutate } = useMutation(() =>
-    service.updateProfile(user.id, newProfile),
+    service.updateProfile(user ? user.id : '', newProfile),
   );
 
   const handleUpdate = async () => {
@@ -53,7 +51,7 @@ const EditProfileScreen: React.FC = () => {
       <Box>
         <ToggleButtons
           buttons={[Languages.En, Languages.Es]}
-          state={language && language}
+          state={currLanguage && currLanguage}
           setState={setLanguage}
         />
 
@@ -62,7 +60,7 @@ const EditProfileScreen: React.FC = () => {
             fullWidth
             onClick={handleUpdate}
             loading={loading}
-            disabled={!language}
+            disabled={!currLanguage}
             text={translation['Save Changes']}
           />
         </Box>

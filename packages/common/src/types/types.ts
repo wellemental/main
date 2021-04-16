@@ -282,6 +282,23 @@ export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
 
 export type Filter = Tags | TimeOfDay | Categories;
 
+export interface Filters {
+  tags?: Filter[];
+  teacher?: Teachers;
+  language?: Languages;
+  search?: string;
+  type?: Categories;
+}
+
+export type Sortings =
+  | 'chron'
+  | 'reverseChron'
+  | 'priority'
+  | 'length'
+  | 'reverseLength'
+  | 'mostFavorited'
+  | 'popular';
+
 export interface Content {
   id: string;
   title: string;
@@ -497,7 +514,7 @@ export interface TrackingService {
 }
 
 export type RemoteConfigValues = keyof typeof configDefaults;
-export interface RemoteConfigService {
+export interface RemoteConfigServiceType {
   getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }
 

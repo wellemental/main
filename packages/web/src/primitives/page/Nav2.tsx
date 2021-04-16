@@ -1,3 +1,4 @@
+// Playing around with the responsive drawer on the left
 import React, { useState } from 'react';
 import {
   createStyles,
@@ -134,7 +135,7 @@ type Link = {
 
 const Nav: React.FC<Props> = props => {
   const classes = useStyles();
-  const { user, auth, activePlan, translation } = useCurrentUser();
+  const { user, activePlan, translation } = useCurrentUser();
   const history = useHistory();
   // const trigger = useScrollTrigger();
   const [state, setState] = useState({

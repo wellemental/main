@@ -12,8 +12,7 @@ import {
   useNavigation,
   useCurrentUser,
 } from '../../hooks';
-import { PlaysServiceType } from 'services';
-import { Colors, Tab } from 'common';
+import { PlaysServiceType } from 'common';
 
 type Props = {
   color?: 'white' | undefined;

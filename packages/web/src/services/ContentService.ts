@@ -22,7 +22,7 @@ class ContentService extends BaseService implements ContentServiceType {
 
   constructor(options: BaseServiceContructorOptions) {
     super(options);
-    this.teacherService = new TeacherService();
+    this.teacherService = new TeacherService(options);
     this.teachers = undefined;
     this.content = {};
   }

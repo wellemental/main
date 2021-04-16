@@ -1,7 +1,6 @@
 import React from 'react';
 import { Subheadline } from '../typography';
 import CategoryButton from '../cards/CategoryButton';
-import { useCurrentUser } from '../../hooks';
 import { Category, MuiTypeColors, Redirect } from 'common';
 
 const categoryColors = ['yellow', 'blurple', 'orange', 'teal'] as const;
@@ -24,18 +23,12 @@ const CategoryLoop: React.FC<Props> = ({
   colors,
   color,
 }) => {
-  const { translation } = useCurrentUser();
-
   const theColors = colors ? colors : categoryColors;
 
   return (
     <>
       {!hideTitle && (
-        <Subheadline color={color}>
-          {title && translation[title]
-            ? translation[title]
-            : translation.Categories}
-        </Subheadline>
+        <Subheadline color={color}>{title ? title : 'Categories'}</Subheadline>
       )}
 
       {categories &&

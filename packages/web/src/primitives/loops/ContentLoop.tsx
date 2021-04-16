@@ -3,24 +3,34 @@ import ContentCard from '../cards/ContentCard';
 import { useContent, useCurrentUser, useMediaQuery } from '../../hooks';
 import {
   Content,
-  Tags,
+  Sortings,
   Categories,
-  TimeOfDay,
+  Filter,
+  Filters,
   Teachers,
+  filterContent,
+  sortContent,
   convertTimestamp,
+  getTwoRandomInt,
+  getRandomInt,
 } from 'common';
 import ListEmpty from '../typography/ListEmpty';
+import TextBox from '../utils/TextBox';
 import Error from '../typography/Error';
 import Link from '@material-ui/core/Link';
 import Button from '../buttons/Button';
 interface Props {
-  filter?: Tags | TimeOfDay | Categories | string;
+  filter?: Filter;
+  type?: Categories;
   favorites?: string[];
   search?: string;
   teacher?: Teachers;
   small?: boolean;
   limit?: number;
   noLoadMore?: boolean;
+  recentDate?: boolean;
+  sort?: Sortings;
+  random?: 1 | 2; // Used to get two random items for featured modules
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -31,39 +41,52 @@ const ContentLoop: React.FC<Props> = ({
   small,
   limit,
   noLoadMore,
+  type,
+  sort,
+  recentDate,
+  random,
+  ...props
 }) => {
-  const { user, translation } = useCurrentUser();
-  const { content, error } = useContent();
-  let filteredContent: Content[] = content ? Object.values(content) : [];
-  const [isLangFilter, setLangFilter] = useState(true);
+  const { language, translation } = useCurrentUser();
+  const { content, error, dispatch } = useContent();
+  let filteredContent: Content[] = content;
+  const [hasLangFilter, setLangFilter] = useState(true);
+  const [sorting, setSort] = useState<Sortings | undefined>(sort);
   const defaultLimit = 8;
   const [theLimit, setLimit] = useState(limit ? limit : defaultLimit);
 
   // Calculate if screen size is mobile
   const isSmall = useMediaQuery('(max-width:444px)');
 
-  // Filter by language
-  if (
-    isLangFilter &&
-    user &&
-    user.language &&
-    filteredContent &&
-    favorites === undefined
-  ) {
-    filteredContent = filteredContent.filter(
-      (item: Content) => item.language === user.language,
-    );
+  const filters: Filters = {};
+
+  // Filter language
+  if (hasLangFilter) {
+    console.log('FILTERING LANGUAGE', language);
+    filters.language = language;
+  }
+
+  // Filter types
+  if (type) {
+    filters.type = type;
   }
 
   // Filter by tag or category
-  if (!!filter && filteredContent) {
-    filteredContent = filteredContent.filter((item: Content) => {
-      if (item && item.tags) {
-        return item.tags.includes(filter.toLowerCase() as Tags);
-      }
-      return item;
-    });
+  if (filter) {
+    filters.tags = [filter];
   }
+
+  // Filter by teacher name
+  if (teacher) {
+    filters.teacher = teacher;
+  }
+
+  // Filter by search term
+  if (search) {
+    filters.search = search;
+  }
+
+  filteredContent = filterContent(content, filters);
 
   // Filter by favorites
   if (favorites && filteredContent) {
@@ -72,26 +95,25 @@ const ContentLoop: React.FC<Props> = ({
     );
   }
 
-  // Filter by teacher
-  if (teacher && filteredContent) {
-    filteredContent = filteredContent.filter(
-      (item: Content) => item.teacher.name === teacher,
-    );
+  // Sort - defaults to 'priority' which falls back to most recent
+  if (sorting) {
+    filteredContent = sortContent(filteredContent, sorting);
   }
 
-  // Filter by search term
-  if (search && filteredContent) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      item.title.toLowerCase().includes(search.toLowerCase()),
-    );
+  // Get 1 or 2 random items from the contentArr
+  // Used for featured loops
+  if (random && filteredContent.length > random) {
+    // Use diff function for getting 1 or 2 random items
+    if (random === 2) {
+      filteredContent = getTwoRandomInt(filteredContent.length).map(
+        (idx: number) => filteredContent[idx],
+      );
+    } else {
+      filteredContent = [filteredContent[getRandomInt(filteredContent.length)]];
+    }
   }
 
-  // Sort by priority
-  // Items with priority field set go above those with no priority
-  filteredContent = filteredContent.sort((a, b) =>
-    !a.priority ? 1 : !b.priority ? -1 : a.priority > b.priority ? 1 : -1,
-  );
-
+  // Check to see if there's any content
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (
@@ -106,7 +128,7 @@ const ContentLoop: React.FC<Props> = ({
               key={idx}
               content={item}
               recentDate={
-                type === 'recent'
+                recentDate
                   ? convertTimestamp(item.created_at).format('MMM DD, YYYY')
                   : undefined
               }
@@ -124,16 +146,20 @@ const ContentLoop: React.FC<Props> = ({
             )}
         </>
       ) : favorites ? (
-        <ListEmpty>
-          {translation['Tap the heart icon to favorite content']}
-        </ListEmpty>
+        <ListEmpty>Tap the heart icon to favorite content</ListEmpty>
       ) : (
         <>
           <ListEmpty />
-          {isLangFilter && (
-            <Link color="secondary" onClick={() => setLangFilter(false)}>
-              {translation['See all languages']} ›
-            </Link>
+          {hasLangFilter && (
+            <TextBox>
+              <Link
+                color="secondary"
+                onClick={() => setLangFilter(false)}
+                // onClick={() => dispatch({ type: 'REMOVE_FILTER_LANGUAGE' })}
+              >
+                {translation['See all languages']} ›
+              </Link>
+            </TextBox>
           )}
         </>
       )}
