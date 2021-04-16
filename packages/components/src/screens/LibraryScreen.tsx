@@ -4,17 +4,13 @@ import {
   Container,
   ContentLoop,
   PageHeading,
-  Box,
   TeacherLoop,
 } from '../primitives';
 import { PlansScreen } from '../screens';
 import { Tags } from 'services';
 import { useCurrentUser } from '../hooks';
-import { LibraryScreenRouteProp, MenuItem } from '../types';
+import { MenuItem } from 'common';
 
-type Props = {
-  route: LibraryScreenRouteProp;
-};
 const LibraryScreen: React.FC = () => {
   const { translation, activePlan } = useCurrentUser();
 

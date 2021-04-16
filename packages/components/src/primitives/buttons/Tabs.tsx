@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import Paragraph from '../typography/Paragraph';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { MenuItem } from '../../types';
+import { MenuItem } from 'common';
 import variables from '../../assets/native-base-theme/variables/wellemental';
 
 type Props = {

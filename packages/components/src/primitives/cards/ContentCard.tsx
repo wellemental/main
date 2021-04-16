@@ -54,7 +54,7 @@ const ContentCard: React.FC<Props> = ({ content, small, recentDate }) => {
           }}>
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <CardTitle>{content.title}</CardTitle>
-            <Paragraph size={16}>
+            <Paragraph color="lightText" size={16}>
               {recentDate ? recentDate : content.length}
             </Paragraph>
           </View>

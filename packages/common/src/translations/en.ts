@@ -245,4 +245,5 @@ export const English = {
   'Full-Length Yoga Classes': 'Full-Length Yoga Classes',
   'Account upgraded! Close this page and wait a few seconds for the app to update.':
     'Account upgraded! Close this page and wait a few seconds for the app to update.',
+  "Don't ask again": "Don't ask again",
 };

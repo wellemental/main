@@ -1,3 +1,4 @@
+import React from 'react';
 import moment from 'moment';
 import { configDefaults } from '../constants/remoteConfigDefaults';
 import { firestore } from 'firebase/app';
@@ -18,6 +19,15 @@ export type Translation = StringObj;
 
 type ValueOf<T> = T[keyof T];
 
+export type MenuItem = {
+  label: string;
+  filter?: Tags | 'All';
+};
+
+export type TabsType = {
+  [key: string]: React.ReactElement;
+};
+
 export type Unsubscriber = () => void;
 
 export type Redirect = {
@@ -27,6 +37,13 @@ export type Redirect = {
   page?: string;
   slug: string;
 };
+
+export enum AuthorizationStatus {
+  NOT_DETERMINED = -1,
+  DENIED = 0,
+  AUTHORIZED = 1,
+  PROVISIONAL = 2,
+}
 
 enum SubStatus {
   Canceled = 'canceled',
@@ -251,6 +268,7 @@ export interface User {
   isAdmin?: boolean;
   updated_at?: Date;
   platform?: Platforms;
+  promptedNotification?: boolean;
 }
 
 export interface DefaultState {
@@ -304,17 +322,14 @@ export interface AllTeachers {
 }
 
 export interface UserProfile {
-  // name?: string;
-  // birthday?: string;
   language?: Languages;
+  promptedNotification: boolean;
   updated_at?: Timestamp;
 }
 
 export interface NewAccount {
   email: string;
   password: string;
-  // name: string;
-  // birthday: string;
   language: Languages;
 }
 
@@ -361,6 +376,7 @@ export interface ObserveNotificationsType {
   saveTokenToDatabase(token: string): Promise<void>;
   subscribe(): Promise<void>;
   unsubscribe(): void;
+  setNotificationPrompted(): Promise<void>;
 }
 
 export type Favorite = {

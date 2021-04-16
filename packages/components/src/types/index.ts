@@ -1,3 +1,4 @@
+// Types that have to do with navigation, all other are in 'common' package
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
@@ -7,26 +8,18 @@ import {
   Teacher,
   Languages,
   Category,
-  Tags,
   VersionConfig,
+  Translation,
 } from 'common';
-import { ReactElement } from 'react';
 
 export type TabParamList = {
-  Learn: undefined; //{ default: string };
   Home: undefined;
+  Learn: undefined;
   Meditate: undefined;
   Sleep: undefined;
   Move: undefined;
   Profile: { defaultTab: string };
 };
-
-export type MenuItem = {
-  label: string;
-  filter?: Tags;
-};
-
-export type Unsubscriber = () => void;
 
 export type RootStackParamList = {
   TabNav: undefined;
@@ -50,7 +43,7 @@ export type RootStackParamList = {
   Upgrade: { version: VersionConfig };
   Plans: undefined;
   Celebration: undefined;
-  Notifications: undefined;
+  Notifications: { prompt: boolean };
 };
 
 export type AuthStackParamList = {
@@ -58,9 +51,14 @@ export type AuthStackParamList = {
   Landing: undefined;
 };
 
-export type HomeScreenNavigationProp = CompositeNavigationProp<
+export type MainNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabParamList>,
   StackNavigationProp<RootStackParamList>
+>;
+
+export type HomeScreenNavigationProp = StackNavigationProp<
+  TabParamList,
+  'Home'
 >;
 
 export type ContentScreenNavigationProp = StackNavigationProp<
@@ -78,21 +76,24 @@ export type VideoScreenNavigationProp = StackNavigationProp<
   'Video'
 >;
 
+export type NotificationScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Notifications'
+>;
+
 export type UpgradeScreenRouteProp = RouteProp<RootStackParamList, 'Upgrade'>;
 export type ContentScreenRouteProp = RouteProp<RootStackParamList, 'Content'>;
 export type VideoScreenRouteProp = RouteProp<RootStackParamList, 'Video'>;
+export type NotificationScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'Notifications'
+>;
 export type TeacherScreenRouteProp = RouteProp<RootStackParamList, 'Teacher'>;
 export type AuthScreenRouteProp = RouteProp<AuthStackParamList, 'Auth'>;
-export type LibraryScreenRouteProp = RouteProp<TabParamList, 'Library'>;
+export type LibraryScreenRouteProp = RouteProp<RootStackParamList, 'Library'>;
 export type CategoryScreenRouteProp = RouteProp<RootStackParamList, 'Category'>;
 export type ProfileScreenRouteProp = RouteProp<TabParamList, 'Profile'>;
 export type ForgotPasswordScreenRouteProp = RouteProp<
   RootStackParamList,
   'Forgot Password'
 >;
-
-export type TabsType = {
-  [key: string]: ReactElement;
-};
-
-export type Translation = { [key: string]: string };

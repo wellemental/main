@@ -5,22 +5,29 @@ import messaging, {
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { Alert } from 'react-native';
-import { ObserveNotificationsType } from '../types';
+import {
+  ObserveNotificationsType,
+  Unsubscriber,
+  UpdateUserServiceType,
+} from 'common';
 import { ApplicationError } from '../models/Errors';
-// import logger from './LoggerService';
 import PushNotification from 'react-native-push-notification';
+import UpdateUserService from './UpdateUserService';
+import BaseService from './BaseService';
 
-type UnsubscribeFunction = () => void;
+class ObserveNotifications
+  extends BaseService
+  implements ObserveNotificationsType {
+  private notificationUnsubscriber?: Unsubscriber;
+  private tokenUnsubscriber?: Unsubscriber;
 
-class ObserveNotifications implements ObserveNotificationsType {
-  private notificationUnsubscriber?: UnsubscribeFunction;
-  private tokenUnsubscriber?: UnsubscribeFunction;
-
-  // Types of AuthorizationStatus
-  // NOT_DETERMINED = -1,
-  // DENIED = 0,
-  // AUTHORIZED = 1,
-  // PROVISIONAL = 2,
+  // Set promptedNotification to true so user doesn't get prompt when they login again
+  public setNotificationPrompted = async (): Promise<void> => {
+    const service: UpdateUserServiceType = new UpdateUserService();
+    await service.updateProfile(this.currentUser.id, {
+      promptedNotification: true,
+    });
+  };
 
   public checkPermissions = async (): Promise<FirebaseMessagingTypes.AuthorizationStatus> => {
     return await messaging().hasPermission();
@@ -67,12 +74,12 @@ class ObserveNotifications implements ObserveNotificationsType {
       // Get and save the device token
       messaging()
         .getToken()
-        .then((token) => {
+        .then(token => {
           return this.saveTokenToDatabase(token);
         });
 
       // Listen for token refresh
-      this.tokenUnsubscriber = messaging().onTokenRefresh((token) => {
+      this.tokenUnsubscriber = messaging().onTokenRefresh(token => {
         this.saveTokenToDatabase(token);
       });
     }

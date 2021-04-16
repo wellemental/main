@@ -3,7 +3,6 @@ import Spinner from './Spinner';
 import Paragraph from '../typography/Paragraph';
 import ConditionalWrapper from '../utils/ConditionalWrapper';
 import Container from '../page/Container';
-import { useCurrentUser } from '../../hooks';
 
 interface Props {
   loading: boolean;
@@ -22,7 +21,6 @@ const Loading: React.FC<Props> = ({
   const [isSimulatingLoading, setSimulatedLoading] = useState(
     fullPage ? true : false,
   );
-  const { translation } = useCurrentUser();
 
   setTimeout(() => {
     setSimulatedLoading(false);
@@ -43,11 +41,7 @@ const Loading: React.FC<Props> = ({
           {spinner}
         </Container>
       )}>
-      {fullPage && (
-        <Paragraph center>
-          {text ? text : translation['One moment...']}
-        </Paragraph>
-      )}
+      {fullPage && text && <Paragraph center>{text}</Paragraph>}
       <Spinner />
     </ConditionalWrapper>
   ) : (
