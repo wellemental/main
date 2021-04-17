@@ -9,6 +9,7 @@ export type Timestamp = firestore.Timestamp;
 export type FieldValue = firestore.FieldValue;
 export type QueryDocumentSnapshot = firestore.QueryDocumentSnapshot;
 export type DocumentReference = firestore.DocumentReference;
+export type DocumentData = firestore.DocumentData;
 export type FirestoreModule = FirebaseFirestoreTypes.FirebaseFirestore;
 export type Moment = moment.Moment;
 
@@ -292,13 +293,15 @@ export interface Filters {
 }
 
 export type Sortings =
-  | 'chron'
-  | 'reverseChron'
+  | 'oldest'
+  | 'newest'
   | 'priority'
-  | 'length'
-  | 'reverseLength'
+  | 'shortest'
+  | 'longest'
   | 'mostFavorited'
-  | 'popular';
+  | 'popular'
+  | 'alphabetical'
+  | 'alphabeticalReverse';
 
 export interface Content {
   id: string;
@@ -402,9 +405,17 @@ export interface ObserveUserServiceType {
   unsubscribe(): void;
 }
 
+export interface UserContent {
+  favs?: Favorite[];
+  history?: PlayEvent[];
+}
+
+export type SetUserContent = (userContent: UserContent) => void;
 export interface ObserveContentServiceType {
-  subscribe(): void;
-  unsubscribe(): void;
+  // subscribe(userId: string): void;
+  // unsubscribe(): void;
+  playsQuery: Query;
+  favsQuery: Query;
 }
 
 export type Favorite = {

@@ -1,138 +1,122 @@
-import React, { useEffect, useState } from 'react';
-import { PlayEvent, Colors, convertTimestamp, Content } from 'common';
-import { Button, ListEmpty, Loading, ContentCard, Box } from '..';
+import React from 'react';
+import { Colors, convertTimestamp, Content } from 'common';
+import { Button, ListEmpty, ContentCard, Box } from '..';
 import { List } from '@material-ui/core';
-import { useContent } from '../../hooks';
+import { useContent, useNavigation } from '../../hooks';
 
 type Props = {
   homepage?: boolean;
-  loading: boolean;
-  loadingMore: boolean;
-  loadMore: () => any;
-  hasMore: boolean;
-  items: firebase.firestore.DocumentData[];
-  recentlyPlayed?: boolean;
+  type: 'history' | 'favorites';
   color?: Colors;
 };
 
-const ContentLoopLoadMore: React.FC<Props> = ({
-  homepage,
-  loading,
-  items,
-  hasMore,
-  loadingMore,
-  loadMore,
-  recentlyPlayed,
-  color,
-}) => {
-  const { allContent: content } = useContent();
-  const [contentArr, setContentArr] = useState<any[]>([]);
+const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
+  const { favsMore, favorites, history, historyMore } = useContent();
+  const navigation = useNavigation();
 
-  const hasContent = !!content && items.length > 0;
-
-  const hasContentMatch = (theItem: PlayEvent): boolean => {
-    return (
-      !!content &&
-      !!theItem &&
-      !!theItem.contentId &&
-      !!content[theItem.contentId]
-    );
-  };
-
-  const matchContent = (theItem: PlayEvent): Content | null => {
-    return !!content && hasContentMatch(theItem)
-      ? content[theItem.contentId]
-      : null;
-  };
+  // Change which content arr we're using
+  const actions = type === 'history' ? historyMore : favsMore;
+  const content = type === 'history' ? history : favorites;
+  let filtered = [...content];
+  const hasContent = !!content && content.length > 0;
 
   // Pull first two unique values if is a homepage history loop
-  const getTwoUnique = () => {
+  const getTwoUnique = (): Content[] => {
     // Make copy of Arr so idx doesn't change as items get pushed into contentArr
     const arr = [];
     let idx = 0;
 
     // Add unique items to contentArr until there's two items or it's looped through all items
     do {
-      const data = items[idx].data();
-      const hasMatch = hasContentMatch(data);
-
-      // Play must have a matched Content Id, failsafe in case content gets deleted or input incorrectly in database
-      if (hasMatch) {
-        // Automatically add first item into array
-        if (arr.length === 0) {
-          arr.push(data);
-        } else {
-          // If contentId is unique, add it to the array
-          if (data.contentId !== arr[0].contentId) {
-            arr.push(data);
-          }
+      const item = content[idx];
+      // Automatically add first item into array
+      if (arr.length === 0) {
+        arr.push(item);
+      } else {
+        // If contentId is unique, add it to the array
+        if (item.id !== arr[0].id) {
+          arr.push(item);
         }
       }
 
       // Increment idx after each loop
       idx++;
-    } while (arr.length < 2 && idx < items.length);
+    } while (arr.length < 2 && idx < content.length);
 
     return arr;
   };
 
-  useEffect(() => {
-    // Convert documents into data and set in local state
-    if (hasContent) {
-      // If recently played on homepage, remove duplicates
-      if (recentlyPlayed && homepage) {
-        setContentArr(getTwoUnique());
-        // If other 2x content loop on homepage, just splice
-      } else if (homepage) {
-        setContentArr(items.slice(0, 2).map(item => item.data()));
-        // Else just map all of them
-      } else {
-        setContentArr(items.map(item => item.data()));
-      }
+  // Convert documents into data and set in local state
+  if (hasContent) {
+    // If recently played on homepage, remove duplicates
+    if (type === 'history' && homepage) {
+      filtered = getTwoUnique();
+      // If other 2x content loop on homepage, just splice
+    } else if (homepage) {
+      filtered = content.slice(0, 2);
     }
-  }, [content, items]);
+  }
 
   return (
-    <Loading loading={loading || !content}>
+    <>
       <List style={{ paddingTop: 0 }}>
         {hasContent ? (
-          contentArr.map((item, idx: number) => {
-            const contentMatch = matchContent(item);
-
-            return contentMatch ? (
+          filtered.map((item: Content, idx: number) => {
+            return (
               <ContentCard
                 small
                 key={idx}
-                content={contentMatch}
+                content={item}
                 recentDate={
-                  !recentlyPlayed
-                    ? undefined
-                    : convertTimestamp(item.createdAt).format('MMM D, YYYY')
+                  type === 'history' && item.created_at
+                    ? convertTimestamp(item.created_at).format('MMM D, YYYY')
+                    : undefined
                 }
               />
-            ) : null;
+            );
           })
         ) : (
           <ListEmpty center color={color}>
-            {recentlyPlayed
+            {type === 'history'
               ? 'Your recently played videos will appear here. Get started!'
               : 'Your favorite videos will appear here. Get started!'}
           </ListEmpty>
         )}
 
-        {hasMore && !loadingMore && !homepage && items.length >= 7 && (
-          <Box mt={1}>
-            <Button
-              fullWidth={true}
-              size="small"
-              disabled={loadingMore}
-              text="Load More"
-              onPress={loadMore}
-            />
-          </Box>
+        {actions.hasMore &&
+          !actions.loadingMore &&
+          !homepage &&
+          filtered.length >= 7 && (
+            <Box mt={1}>
+              <Button
+                fullWidth={true}
+                size="small"
+                disabled={actions.loadingMore}
+                text="Load More"
+                onPress={actions.loadMore}
+              />
+            </Box>
+          )}
+
+        {filtered.length > 0 && homepage && (
+          <Button
+            size="small"
+            fullWidth={true}
+            text="See all"
+            disableElevation={color === 'white'}
+            style={{
+              backgroundColor: 'rgba(0,0,0,0)',
+            }}
+            variant={color === 'white' ? 'contained' : 'text'}
+            onPress={() =>
+              navigation.navigate('Profile', {
+                defaultTab: 'History',
+              })
+            }
+          />
         )}
       </List>
-    </Loading>
+    </>
   );
 };
 

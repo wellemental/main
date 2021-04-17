@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import { Spinner } from '../primitives';
 import { TeacherService, ContentService } from '../services';
-import { StateType } from '../hooks/useLoadMore';
+import { LoadMoreStateType } from '../hooks/useLoadMore';
 import {
   AllTeachers,
   Categories,

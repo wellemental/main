@@ -54,6 +54,9 @@ class ContentService extends BaseService implements ContentServiceType {
         language: data.language,
         priority: data.priority,
         status: data.status,
+        totalPlays: data.totalPlays,
+        totalCompleted: data.totalCompleted,
+        totalFavorites: data.totalFavorites,
         updated_at: data.updated_at,
         created_at: data.created_at,
       };

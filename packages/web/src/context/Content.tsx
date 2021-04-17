@@ -1,23 +1,21 @@
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useRef, useReducer } from 'react';
 import { Spinner } from '../primitives';
 import {
   ContentObj,
   Content as ContentType,
   ContentServiceType,
+  DocumentData,
   Features,
-  FavoritesServiceType,
-  PlaysServiceType,
+  Favorite,
+  PlayEvent,
   Feature,
   RemoteConfigServiceType,
   ObserveContentServiceType,
   Languages,
-  Tags,
-  Categories,
 } from 'common';
 import { useContainer, useCurrentUser, useLoadMore } from '../hooks';
-import { FavoritesService } from '../services';
-
-type BuildContent<T> = T;
+import { LoadMoreStateType, loadMoreInitialState } from '../hooks/useLoadMore';
+import { ObserveContentService } from '../services';
 
 export type StateType = {
   loading: boolean;
@@ -25,6 +23,10 @@ export type StateType = {
   allContent: ContentObj;
   features: Feature[];
   content: ContentType[];
+  favorites: ContentType[];
+  favsMore: LoadMoreStateType;
+  history: ContentType[];
+  historyMore: LoadMoreStateType;
 };
 
 export interface ContentContext {
@@ -38,6 +40,10 @@ const initialState = {
   allContent: {},
   features: [],
   content: [],
+  favorites: [],
+  favsMore: loadMoreInitialState,
+  history: [],
+  historyMore: loadMoreInitialState,
 };
 
 export const Content = React.createContext<ContentContext>({
@@ -62,9 +68,18 @@ export type ActionType =
         value: Feature[];
       }
     >
-  // | Action<'FILTER_LANGUAGE', { language: Languages }>
-  // | Action<'REMOVE_FILTER_LANGUAGE'>
-  | Action<'GET_FEATURED', { category: Categories; limit?: number }>;
+  | Action<
+      'UPDATE_HISTORY',
+      {
+        value: LoadMoreStateType;
+      }
+    >
+  | Action<
+      'UPDATE_FAVS',
+      {
+        value: LoadMoreStateType;
+      }
+    >;
 
 const contentReducer = (state: StateType, action: ActionType): StateType => {
   const contentArr = Object.values(state.allContent);
@@ -84,25 +99,47 @@ const contentReducer = (state: StateType, action: ActionType): StateType => {
     case 'LOADED_FEATURES': {
       return { ...state, features: action.value };
     }
+    case 'UPDATE_HISTORY': {
+      const history = matchContent(action.value.items, state.allContent, true);
+
+      return { ...state, history, historyMore: action.value };
+    }
+    case 'UPDATE_FAVS': {
+      const favorites = matchContent(action.value.items, state.allContent);
+      return { ...state, favorites, favsMore: action.value };
+    }
     // case 'FILTER_LANGUAGE': {
     //   return { ...state, content: filterLanguage(contentArr, action.language) };
     // }
     // case 'REMOVE_FILTER_LANGUAGE': {
     //   return { ...state, content: filterLanguage(contentArr) };
     // }
-    case 'GET_FEATURED': {
-      const limit = action.limit ? action.limit : 2;
-
-      const features = contentArr
-        .filter(
-          item =>
-            item.type === action.category && item.tags.includes(Tags.Featured),
-        )
-        .slice(0, limit);
-
-      return { ...state, content: features };
-    }
   }
+};
+
+const matchContent = (
+  items: DocumentData[],
+  content: ContentObj,
+  history?: boolean,
+): ContentType[] => {
+  const arr: ContentType[] = [];
+
+  // Match the contentId of the doc with existing content
+  items.forEach((theItem: DocumentData) => {
+    const data = theItem.data() as Favorite | PlayEvent;
+    const match = content[data.contentId];
+
+    if (!!match) {
+      // If history, change createdAt to be when it was played by the user so we can display it on the front-end
+      if (history) {
+        match.created_at = data.createdAt;
+      }
+
+      arr.push(match);
+    }
+  });
+
+  return arr;
 };
 
 // const filterLanguage = (items: ContentType[], language?: Languages) => {
@@ -113,73 +150,59 @@ const contentReducer = (state: StateType, action: ActionType): StateType => {
 // };
 
 export const ContentProvider: React.FC = ({ children }): JSX.Element => {
-  // Load all content
-  // Subscribe to favorites and rebuild with content on each change
-  // Subscribe to history and rebuild with content on each change
   // const [error, setError] = useState('');
+  const container = useContainer();
   const { user, language } = useCurrentUser();
   const [state, dispatch] = useReducer(contentReducer, initialState);
 
-  const container = useContainer();
+  if (!user) {
+    return <>{children}</>;
+  }
 
+  const service = container.getInstance<ContentServiceType>('contentService');
   const remoteConfig = container.getInstance<RemoteConfigServiceType>(
     'remoteConfig',
   );
-
-  // const favsService = container.getInstance<FavoritesServiceType>(
-  //   'favoritesService',
+  const observeContent = container.getInstance<ObserveContentServiceType>(
+    'observeContent',
+  );
+  // const observeContent: React.MutableRefObject<ObserveContentServiceType> = useRef(
+  //   new ObserveContentService(user.id),
   // );
 
   useEffect(() => {
-    if (user) {
-      const service = container.getInstance<ContentServiceType>(
-        'contentService',
+    // Load all content from db
+    service.getContent().then(items => {
+      dispatch({ type: 'LOADED', value: items, language: language });
+    });
+
+    // Get features from remote config
+    remoteConfig
+      .getValue<Features>('featured')
+      .then(feature =>
+        dispatch({ type: 'LOADED_FEATURES', value: feature.categories }),
       );
-      service
-        .getContent()
-        .then(items => {
-          dispatch({ type: 'LOADED', value: items, language: language });
-        })
-        .then(res => {
-          // Subscribe to plays and favs
-          const observeContent = container.getInstance<ObserveContentServiceType>(
-            'observeContent',
-          );
-          // observeContent.subscribe;
-
-          // Match them with content & set to state
-
-          // Whenever subscriber updates, update state
-        });
-
-      remoteConfig
-        .getValue<Features>('featured')
-        .then(feature =>
-          dispatch({ type: 'LOADED_FEATURES', value: feature.categories }),
-        );
-    }
   }, []);
 
-  // const favs = useLoadMore(favsService.query);
-  // const plays = useLoadMore(service.playsQuery);
+  const playsMore = useLoadMore(observeContent.playsQuery);
+  const favsMore = useLoadMore(observeContent.favsQuery);
 
-  // console.log('FAVS', favs.items.length);
+  useEffect(() => {
+    if (state.allContent) {
+      dispatch({ type: 'UPDATE_HISTORY', value: playsMore });
+    }
+  }, [state.allContent, playsMore.items]);
 
-  // Reset language filter whenever user changes their langauge
-  // useEffect(() => {
-  //   if (user) {
-  //     dispatch({
-  //       type: 'FILTER_LANGUAGE',
-  //       language: language,
-  //     });
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (state.allContent) {
+      dispatch({ type: 'UPDATE_FAVS', value: favsMore });
+    }
+  }, [state.allContent, favsMore.items]);
 
-  console.log('STATE NEW', state);
-
-  // if (state.loading) {
-  //   return <Spinner fullPage />;
-  // }
+  // Showing loading spinner until all content, favs, and history has loaded
+  if (state.loading || state.favsMore.loading || state.historyMore.loading) {
+    return <Spinner fullPage />;
+  }
 
   return (
     <Content.Provider value={{ state, dispatch }}>{children}</Content.Provider>

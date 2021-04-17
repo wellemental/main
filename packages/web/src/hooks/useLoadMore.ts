@@ -2,7 +2,7 @@
 import { useReducer, useEffect } from 'react';
 import firebase from '../base';
 
-export type StateType = {
+export type LoadMoreStateType = {
   hasMore: boolean;
   items: firebase.firestore.DocumentData[];
   after: firebase.firestore.QueryDocumentSnapshot | null;
@@ -32,6 +32,8 @@ const initialState = {
   loadMore: dummyLoadMore,
 };
 
+export const loadMoreInitialState = initialState;
+
 type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V;
 
 export type ActionType =
@@ -44,7 +46,10 @@ export type ActionType =
       }
     >;
 
-function reducer(state: StateType, action: ActionType): StateType {
+function reducer(
+  state: LoadMoreStateType,
+  action: ActionType,
+): LoadMoreStateType {
   switch (action.type) {
     case 'LOADED': {
       const items = [...state.items];
@@ -108,6 +113,7 @@ function deleteItem(
   doc: firebase.firestore.QueryDocumentSnapshot,
   items: firebase.firestore.DocumentData[],
 ) {
+  console.log('DELETING ITEM!!!');
   const i = findIndexOfDocument(doc, items);
   items.splice(i, 1);
 }
@@ -117,7 +123,18 @@ function addItem(
   items: firebase.firestore.DocumentData[],
 ) {
   const i = findIndexOfDocument(doc, items);
-  if (i === -1) {
+  const newDoc = doc.data();
+  const firstDoc = items[0] && items[0].data();
+
+  // If document was added more recently, put at top
+  // Use case is for new favs and plays during a user session
+  if (firstDoc && i === -1 && newDoc.createdAt > firstDoc.createdAt) {
+    console.log('ADDING TO TOP!!!');
+    items.unshift(doc);
+
+    // Else add the doc to the end of the items
+  } else if (i === -1) {
+    console.log('ADDING TO BOTTOM!!!');
     items.push(doc);
   }
 }
@@ -130,18 +147,20 @@ interface PaginationOptions {
 const useLoadMore = (
   query: firebase.firestore.Query<firebase.firestore.DocumentData>,
   { limit = 10 }: PaginationOptions = {},
-): StateType => {
+): LoadMoreStateType => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // when "after" changes, we update our query
   useEffect(() => {
-    const fn = query.limit(state.limit || limit);
+    if (query) {
+      const fn = query.limit(state.limit || limit);
 
-    const unsubscribe = fn.onSnapshot(snap => {
-      dispatch({ type: 'LOADED', value: snap, limit });
-    });
+      const unsubscribe = fn.onSnapshot(snap => {
+        dispatch({ type: 'LOADED', value: snap, limit });
+      });
 
-    return unsubscribe;
+      return unsubscribe;
+    }
   }, [state.after]);
 
   // trigger firebase to load more

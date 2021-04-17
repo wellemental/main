@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import ContentCard from '../cards/ContentCard';
-import { useContent, useCurrentUser, useMediaQuery } from '../../hooks';
+import {
+  useContent,
+  useCurrentUser,
+  useMediaQuery,
+  useNavigation,
+} from '../../hooks';
 import {
   Content,
   Sortings,
@@ -13,6 +18,7 @@ import {
   convertTimestamp,
   getTwoRandomInt,
   getRandomInt,
+  Colors,
 } from 'common';
 import ListEmpty from '../typography/ListEmpty';
 import TextBox from '../utils/TextBox';
@@ -27,10 +33,11 @@ interface Props {
   teacher?: Teachers;
   small?: boolean;
   limit?: number;
-  noLoadMore?: boolean;
+  seeAll?: boolean;
   recentDate?: boolean;
   sort?: Sortings;
   random?: 1 | 2; // Used to get two random items for featured modules
+  color?: Colors;
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -40,11 +47,12 @@ const ContentLoop: React.FC<Props> = ({
   teacher,
   small,
   limit,
-  noLoadMore,
+  seeAll,
   type,
   sort,
   recentDate,
   random,
+  color,
   ...props
 }) => {
   const { language, translation } = useCurrentUser();
@@ -54,6 +62,7 @@ const ContentLoop: React.FC<Props> = ({
   const [sorting, setSort] = useState<Sortings | undefined>(sort);
   const defaultLimit = 8;
   const [theLimit, setLimit] = useState(limit ? limit : defaultLimit);
+  const navigation = useNavigation();
 
   // Calculate if screen size is mobile
   const isSmall = useMediaQuery('(max-width:444px)');
@@ -134,7 +143,23 @@ const ContentLoop: React.FC<Props> = ({
               }
             />
           ))}
-          {!noLoadMore &&
+          {seeAll ? (
+            <Button
+              size="small"
+              fullWidth={true}
+              text="See all"
+              disableElevation={color === 'white'}
+              style={{
+                backgroundColor: 'rgba(0,0,0,0)',
+              }}
+              variant={color === 'white' ? 'contained' : 'text'}
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: { title: 'New', tag: undefined },
+                })
+              }
+            />
+          ) : (
             filteredContent.length >= defaultLimit &&
             filteredContent.length > theLimit && (
               <Button
@@ -143,7 +168,8 @@ const ContentLoop: React.FC<Props> = ({
                 text="Load more"
                 onPress={() => setLimit(theLimit + defaultLimit)}
               />
-            )}
+            )
+          )}
         </>
       ) : favorites ? (
         <ListEmpty>Tap the heart icon to favorite content</ListEmpty>
@@ -152,11 +178,7 @@ const ContentLoop: React.FC<Props> = ({
           <ListEmpty />
           {hasLangFilter && (
             <TextBox>
-              <Link
-                color="secondary"
-                onClick={() => setLangFilter(false)}
-                // onClick={() => dispatch({ type: 'REMOVE_FILTER_LANGUAGE' })}
-              >
+              <Link color="secondary" onClick={() => setLangFilter(false)}>
                 {translation['See all languages']} ›
               </Link>
             </TextBox>

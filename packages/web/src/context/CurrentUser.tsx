@@ -44,9 +44,9 @@ export const CurrentUserProvider = ({ children }: any) => {
     return observeUser.current.unsubscribe;
   }, []);
 
-  // if (loading) {
-  //   return <Spinner fullPage />;
-  // }
+  if (loading) {
+    return <Spinner fullPage />;
+  }
 
   return (
     <CurrentUser.Provider

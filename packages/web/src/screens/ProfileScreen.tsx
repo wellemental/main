@@ -8,7 +8,12 @@ import {
   Tabs,
 } from '../primitives';
 import { FavoritesServiceType, PlaysServiceType } from 'common';
-import { useCurrentUser, useContainer, useLocation } from '../hooks';
+import {
+  useCurrentUser,
+  useContainer,
+  useLocation,
+  useContent,
+} from '../hooks';
 import useLoadMore from '../hooks/useLoadMore';
 
 const ProfileScreen: React.FC = () => {
@@ -26,50 +31,10 @@ const ProfileScreen: React.FC = () => {
     </Card>
   );
 
-  const container = useContainer();
-  const service = container.getInstance<PlaysServiceType>('playsService');
-  const favsService = container.getInstance<FavoritesServiceType>(
-    'favoritesService',
-  );
-
-  const {
-    items,
-    loading,
-    loadMore,
-    loadingMore,
-    hasMore,
-    // @ts-ignore
-  } = useLoadMore(service.query, { limit: 7 });
-
-  const {
-    items: favorites,
-    loading: favsLoading,
-    loadMore: loadMoreFavs,
-    loadingMore: loadingMoreFavs,
-    hasMore: hasMoreFavs,
-  } = useLoadMore(favsService.query, { limit: 7 });
-
   const tabs: { [key: string]: JSX.Element } = {
     [translation.Stats]: Stats,
-    [translation.History]: (
-      <ContentLoopLoadMore
-        recentlyPlayed
-        loading={loading}
-        items={items}
-        hasMore={hasMore}
-        loadingMore={loadingMore}
-        loadMore={loadMore}
-      />
-    ),
-    [translation.Favorites]: (
-      <ContentLoopLoadMore
-        items={favorites}
-        loading={favsLoading}
-        loadingMore={loadingMoreFavs}
-        loadMore={loadMoreFavs}
-        hasMore={hasMoreFavs}
-      />
-    ),
+    [translation.History]: <ContentLoopLoadMore type="history" />,
+    [translation.Favorites]: <ContentLoopLoadMore type="favorites" />,
   };
 
   return (

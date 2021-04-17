@@ -22,72 +22,11 @@ const TabsNB: React.FC<Props> = ({ color }) => {
   const { translation } = useCurrentUser();
   const navigation = useNavigation();
 
-  const container = useContainer();
-  const service = container.getInstance<PlaysServiceType>('playsService');
-
-  const {
-    items,
-    loading,
-    loadMore,
-    loadingMore,
-    hasMore,
-    // @ts-ignore
-  } = useLoadMore(service.query, { limit: 10 });
-
   const tabs: { [key: string]: JSX.Element } = {
     [translation.History]: (
-      <>
-        <ContentLoopLoadMore
-          recentlyPlayed
-          homepage
-          loading={loading}
-          items={items}
-          hasMore={hasMore}
-          loadingMore={loadingMore}
-          loadMore={loadMore}
-          color={color}
-        />
-        {items.length > 0 && (
-          <Box mt={-1}>
-            <Button
-              size="small"
-              fullWidth={true}
-              text={translation['See all']}
-              disableElevation={color === 'white'}
-              style={{
-                backgroundColor: 'rgba(0,0,0,0)',
-              }}
-              variant={color === 'white' ? 'contained' : 'text'}
-              onPress={() =>
-                navigation.navigate('Profile', {
-                  defaultTab: 'History',
-                })
-              }
-            />
-          </Box>
-        )}
-      </>
+      <ContentLoopLoadMore type="history" homepage color={color} />
     ),
-    [translation.New]: (
-      <>
-        <ContentLoop small limit={2} noLoadMore />
-        <Button
-          size="small"
-          fullWidth={true}
-          text={translation['See all']}
-          disableElevation={color === 'white'}
-          style={{
-            backgroundColor: 'rgba(0,0,0,0)',
-          }}
-          variant={color === 'white' ? 'contained' : 'text'}
-          onPress={() =>
-            navigation.navigate('Category', {
-              category: { title: 'New', tag: undefined },
-            })
-          }
-        />
-      </>
-    ),
+    [translation.New]: <ContentLoop small limit={2} seeAll color={color} />,
   };
 
   return (

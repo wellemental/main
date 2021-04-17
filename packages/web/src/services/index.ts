@@ -5,6 +5,7 @@ export { default as TeacherService } from './TeacherService';
 export { default as UpdateUserService } from './UpdateUserService';
 export { default as FavoritesService } from './FavoritesService';
 export { default as RemoteConfig } from './RemoteConfig';
+export { default as ObserveContentService } from './ObserveContentService';
 export { default as RemoteConfigDefaults } from './RemoteConfigDefaults';
 export { default as ForgotPasswordService } from './ForgotPasswordService';
 export * from './DependencyService';
