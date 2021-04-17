@@ -1,4 +1,4 @@
-import { User } from '../types';
+import { User } from 'common';
 // import { buildLogger } from './LoggerService';
 // import { buildTracker } from './TrackerService';
 import UpdateUserService from './UpdateUserService';
@@ -8,11 +8,10 @@ import { buildFirestore } from './FirebaseService';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
 import FavoritesService from './FavoritesService';
-import TeacherService from './TeacherService';
 import ObserveNotifications from './ObserveNotifications';
-// import LocalStateService from './LocalStateService';
-// import AuthService from './AuthService';
-// import UpdateProfileService from './UpdateProfileService';
+import ContentService from './ContentService';
+import TeacherService from './TeacherService';
+import ObserveContentService from './ObserveContentService';
 
 interface DependencyDescriptor {
   dependencies: string[];
@@ -61,14 +60,14 @@ const dependenciesDescriptors = {
     class: ObserveNotifications,
     dependencies: ['currentUser', 'firestore'],
   },
-  // localState: {
-  //   class: LocalStateService,
-  //   dependencies: ['logger'],
-  // },
-  // auth: {
-  //   class: AuthService,
-  //   dependencies: ['logger', 'tracker'],
-  // },
+  contentService: {
+    class: ContentService,
+    dependencies: ['firestore', 'currentUser'],
+  },
+  observeContent: {
+    class: ObserveContentService,
+    dependencies: ['firestore', 'currentUser'],
+  },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;
 type DescriptorMap = { [key in DependencyName]: DependencyDescriptor };

@@ -63,15 +63,6 @@ class ContentService extends BaseService implements ContentServiceType {
     };
   };
 
-  public getFeatures = (
-    category: Categories,
-    contentObj: ContentObj,
-  ): Content[] => {
-    return Object.values(contentObj).filter(
-      item => item.type === category && item.tags.includes(Tags.Featured),
-    );
-  };
-
   public getContent = async (): Promise<ContentObj> => {
     const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection.orderBy(
       'updated_at',

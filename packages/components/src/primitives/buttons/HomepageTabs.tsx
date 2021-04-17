@@ -9,6 +9,7 @@ import {
   useLoadMore,
   useContainer,
   useContent,
+  useCurrentUser,
   useNavigation,
 } from '../../hooks';
 import { PlaysServiceType } from 'services';
@@ -19,23 +20,11 @@ type Props = {
 };
 
 const HomepageTabs: React.FC<Props> = ({ color }) => {
+  const { translation } = useCurrentUser();
   const tabs: Tab[] = [{ label: 'History' }, { label: 'New' }];
   const navigation = useNavigation();
 
   const [tab, setTab] = useState(tabs[0].label);
-
-  const { content } = useContent();
-
-  const container = useContainer();
-  const service = container.getInstance<PlaysServiceType>('playsService');
-
-  const {
-    items,
-    loading,
-    loadMore,
-    loadingMore,
-    hasMore,
-  } = useLoadMore(service.query, { limit: 2 });
 
   return (
     <>
@@ -49,21 +38,11 @@ const HomepageTabs: React.FC<Props> = ({ color }) => {
         />
       </Box>
       {tab === 'History' && (
-        <ContentLoopLoadMore
-          recentlyPlayed
-          homepage
-          loading={loading}
-          content={content}
-          loadingMore={loadingMore}
-          loadMore={loadMore}
-          items={items}
-          hasMore={hasMore}
-          color={color}
-        />
+        <ContentLoopLoadMore type="history" homepage color={color} />
       )}
       {tab === 'New' && (
         <>
-          <ContentLoop small limit={2} noLoadMore />
+          <ContentLoop small limit={2} seeAll color={color} />
           <Button
             small
             full

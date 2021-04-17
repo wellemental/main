@@ -5,7 +5,6 @@ export const useContent = () => {
   const contentContext = useContext(Content);
   if (!contentContext) throw new Error('Current content missing from context');
   return {
-    ...contentContext.state,
-    dispatch: contentContext.dispatch,
+    ...contentContext,
   };
 };

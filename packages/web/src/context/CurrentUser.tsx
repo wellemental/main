@@ -1,32 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {
-  User,
-  isPlanActive,
-  setTranslation,
-  Languages,
-  English,
-  Translation,
-} from 'common';
+import { User, isPlanActive, setTranslation, Languages } from 'common';
 import { Spinner } from '../primitives';
 import ObserveUserService from '../services/ObserveUserService';
-
-// export interface UserContext {
-//   user: User | null;
-//   loading: boolean;
-//   language: Languages;
-//   translation: Translation;
-//   activePlan: boolean;
-//   isAdmin: boolean;
-// }
-
-const initialState = {
-  user: null,
-  loading: true,
-  language: Languages.En,
-  translation: English,
-  activePlan: false,
-  isAdmin: false,
-};
+import { initialState } from './initialStates/userState';
 
 export const CurrentUser = React.createContext<any>(initialState);
 

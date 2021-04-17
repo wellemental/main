@@ -400,6 +400,10 @@ export interface ObserveNotificationsType {
   setNotificationPrompted(): Promise<void>;
 }
 
+export type Action<K, V = void> = V extends void
+  ? { type: K }
+  : { type: K } & V;
+
 export interface ObserveUserServiceType {
   subscribe(): void;
   unsubscribe(): void;
@@ -412,9 +416,7 @@ export interface UserContent {
 
 export type SetUserContent = (userContent: UserContent) => void;
 export interface ObserveContentServiceType {
-  // subscribe(userId: string): void;
-  // unsubscribe(): void;
-  playsQuery: Query;
+  historyQuery: Query;
   favsQuery: Query;
 }
 

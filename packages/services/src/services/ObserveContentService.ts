@@ -1,15 +1,21 @@
 // Combine with another file or just put directly in content context
 // Or build it into a firestore service with a method to get collection
-import { Query, ObserveContentServiceType, DocumentReference } from 'common';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import BaseService, { BaseServiceContructorOptions } from './BaseService';
+
+// Separating from 'common' types bc Typescript throwing error due to diff btw RN Firebase & firebase js
+export interface ObserveContentServiceType {
+  historyQuery: FirebaseFirestoreTypes.Query;
+  favsQuery: FirebaseFirestoreTypes.Query;
+}
 
 class ObserveContentService
   extends BaseService
   implements ObserveContentServiceType {
   private collection = this.firestore.collection('users');
-  private userDoc: DocumentReference;
-  public favsQuery: Query;
-  public historyQuery: Query;
+  private userDoc: FirebaseFirestoreTypes.DocumentReference;
+  public favsQuery: FirebaseFirestoreTypes.Query;
+  public historyQuery: FirebaseFirestoreTypes.Query;
 
   constructor(options: BaseServiceContructorOptions) {
     super(options);

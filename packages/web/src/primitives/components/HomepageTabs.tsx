@@ -20,7 +20,6 @@ type Props = {
 
 const TabsNB: React.FC<Props> = ({ color }) => {
   const { translation } = useCurrentUser();
-  const navigation = useNavigation();
 
   const tabs: { [key: string]: JSX.Element } = {
     [translation.History]: (

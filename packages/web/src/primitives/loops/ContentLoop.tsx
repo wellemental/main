@@ -56,7 +56,7 @@ const ContentLoop: React.FC<Props> = ({
   ...props
 }) => {
   const { language, translation } = useCurrentUser();
-  const { content, error, dispatch } = useContent();
+  const { content, error } = useContent();
   let filteredContent: Content[] = content;
   const [hasLangFilter, setLangFilter] = useState(true);
   const [sorting, setSort] = useState<Sortings | undefined>(sort);
@@ -71,7 +71,6 @@ const ContentLoop: React.FC<Props> = ({
 
   // Filter language
   if (hasLangFilter) {
-    console.log('FILTERING LANGUAGE', language);
     filters.language = language;
   }
 
@@ -96,13 +95,6 @@ const ContentLoop: React.FC<Props> = ({
   }
 
   filteredContent = filterContent(content, filters);
-
-  // Filter by favorites
-  if (favorites && filteredContent) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      favorites.includes(item.id),
-    );
-  }
 
   // Sort - defaults to 'priority' which falls back to most recent
   if (sorting) {

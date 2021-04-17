@@ -1,4 +1,3 @@
-import { QueryDocumentSnapshot } from '../base';
 import {
   AllTeachers,
   Tags,
@@ -6,29 +5,24 @@ import {
   Content,
   ContentObj,
   ContentServiceType,
+  QueryDocumentSnapshot,
   Categories,
-  FavoritesServiceType,
 } from 'common';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
 import TeacherService from './TeacherService';
-import FavoritesService from './FavoritesService';
 import BaseService, { BaseServiceContructorOptions } from './BaseService';
 
 class ContentService extends BaseService implements ContentServiceType {
   private teachers: AllTeachers | undefined;
   private teacherService: TeacherServiceType;
-  private favsService: FavoritesServiceType;
-  private content: ContentObj;
   private COLLECTION = 'content';
   private collection = this.firestore.collection(this.COLLECTION);
 
   constructor(options: BaseServiceContructorOptions) {
     super(options);
     this.teacherService = new TeacherService(options);
-    this.favsService = new FavoritesService(options);
     this.teachers = undefined;
-    this.content = {};
   }
 
   public buildContent = (doc: QueryDocumentSnapshot): Content | null => {
@@ -65,8 +59,6 @@ class ContentService extends BaseService implements ContentServiceType {
   };
 
   public getContent = async (): Promise<ContentObj> => {
-    // console.log('***** GETTING CONTENT');
-    // With no tags passed, get all Content
     const query: any = this.collection.orderBy('updated_at', 'desc');
 
     try {

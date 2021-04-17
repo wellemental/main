@@ -1,9 +1,9 @@
 // Pulled from 'firestore-pagination-hook' - https://github.com/bmcmahen/firestore-pagination-hook/blob/master/src/index.ts
-
 import { useReducer, useEffect } from 'react';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { Action } from 'common';
 
-type StateType = {
+export type LoadMoreStateType = {
   hasMore: boolean;
   items: FirebaseFirestoreTypes.DocumentData[];
   after: FirebaseFirestoreTypes.QueryDocumentSnapshot | null;
@@ -15,8 +15,6 @@ type StateType = {
   loading: boolean;
   loadingError: null | Error;
 };
-
-type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V;
 
 export type ActionType =
   | Action<'LOAD-MORE'>
@@ -41,7 +39,10 @@ const initialState = {
   loadingMoreError: null,
 };
 
-function reducer(state: StateType, action: ActionType): StateType {
+function reducer(
+  state: LoadMoreStateType,
+  action: ActionType,
+): LoadMoreStateType {
   switch (action.type) {
     case 'LOADED': {
       const items = [...state.items];
@@ -114,7 +115,16 @@ function addItem(
   items: FirebaseFirestoreTypes.DocumentData[],
 ) {
   const i = findIndexOfDocument(doc, items);
-  if (i === -1) {
+  const newDoc = doc.data();
+  const firstDoc = items[0] && items[0].data();
+
+  // If document was added more recently, put at top
+  // Use case is for new favs and plays during a user session
+  if (firstDoc && i === -1 && newDoc.createdAt > firstDoc.createdAt) {
+    items.unshift(doc);
+
+    // Else add the doc to the end of the items
+  } else if (i === -1) {
     items.push(doc);
   }
 }
@@ -127,7 +137,7 @@ interface PaginationOptions {
 const useLoadMore = (
   query: FirebaseFirestoreTypes.Query,
   { limit = 10 }: PaginationOptions = {},
-): StateType => {
+): LoadMoreStateType => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // when "after" changes, we update our query
