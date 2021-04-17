@@ -7,15 +7,18 @@ import {
   ContentObj,
   ContentServiceType,
   Categories,
+  FavoritesServiceType,
 } from 'common';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
 import TeacherService from './TeacherService';
+import FavoritesService from './FavoritesService';
 import BaseService, { BaseServiceContructorOptions } from './BaseService';
 
 class ContentService extends BaseService implements ContentServiceType {
   private teachers: AllTeachers | undefined;
   private teacherService: TeacherServiceType;
+  private favsService: FavoritesServiceType;
   private content: ContentObj;
   private COLLECTION = 'content';
   private collection = this.firestore.collection(this.COLLECTION);
@@ -23,6 +26,7 @@ class ContentService extends BaseService implements ContentServiceType {
   constructor(options: BaseServiceContructorOptions) {
     super(options);
     this.teacherService = new TeacherService(options);
+    this.favsService = new FavoritesService(options);
     this.teachers = undefined;
     this.content = {};
   }
@@ -64,8 +68,11 @@ class ContentService extends BaseService implements ContentServiceType {
 
     try {
       const content: ContentObj = {};
+
+      // Get all the teachers
       this.teachers = await this.teacherService.getAll();
 
+      // Add the teachers objects to the content objects
       await query.get().then((snapshot: any) =>
         snapshot.docs.forEach((doc: QueryDocumentSnapshot) => {
           const builtContent = this.buildContent(doc);

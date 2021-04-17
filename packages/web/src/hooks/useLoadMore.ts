@@ -141,7 +141,7 @@ const useLoadMore = (
       dispatch({ type: 'LOADED', value: snap, limit });
     });
 
-    return () => unsubscribe();
+    return unsubscribe;
   }, [state.after]);
 
   // trigger firebase to load more

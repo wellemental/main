@@ -5,13 +5,17 @@ import {
   Content as ContentType,
   ContentServiceType,
   Features,
+  FavoritesServiceType,
+  PlaysServiceType,
   Feature,
   RemoteConfigServiceType,
+  ObserveContentServiceType,
   Languages,
   Tags,
   Categories,
 } from 'common';
-import { useContainer, useCurrentUser, useLocation } from '../hooks';
+import { useContainer, useCurrentUser, useLoadMore } from '../hooks';
+import { FavoritesService } from '../services';
 
 type BuildContent<T> = T;
 
@@ -117,17 +121,36 @@ export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   const [state, dispatch] = useReducer(contentReducer, initialState);
 
   const container = useContainer();
-  const service = container.getInstance<ContentServiceType>('contentService');
+
   const remoteConfig = container.getInstance<RemoteConfigServiceType>(
     'remoteConfig',
   );
 
+  // const favsService = container.getInstance<FavoritesServiceType>(
+  //   'favoritesService',
+  // );
+
   useEffect(() => {
     if (user) {
-      console.log('CONTENT OCNTEXT RUNNING!!!');
-      service.getContent().then(items => {
-        dispatch({ type: 'LOADED', value: items, language: language });
-      });
+      const service = container.getInstance<ContentServiceType>(
+        'contentService',
+      );
+      service
+        .getContent()
+        .then(items => {
+          dispatch({ type: 'LOADED', value: items, language: language });
+        })
+        .then(res => {
+          // Subscribe to plays and favs
+          const observeContent = container.getInstance<ObserveContentServiceType>(
+            'observeContent',
+          );
+          // observeContent.subscribe;
+
+          // Match them with content & set to state
+
+          // Whenever subscriber updates, update state
+        });
 
       remoteConfig
         .getValue<Features>('featured')
@@ -136,6 +159,11 @@ export const ContentProvider: React.FC = ({ children }): JSX.Element => {
         );
     }
   }, []);
+
+  // const favs = useLoadMore(favsService.query);
+  // const plays = useLoadMore(service.playsQuery);
+
+  // console.log('FAVS', favs.items.length);
 
   // Reset language filter whenever user changes their langauge
   // useEffect(() => {
@@ -148,6 +176,10 @@ export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   // }, [user]);
 
   console.log('STATE NEW', state);
+
+  // if (state.loading) {
+  //   return <Spinner fullPage />;
+  // }
 
   return (
     <Content.Provider value={{ state, dispatch }}>{children}</Content.Provider>

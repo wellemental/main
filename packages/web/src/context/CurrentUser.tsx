@@ -32,7 +32,7 @@ export const CurrentUser = React.createContext<any>(initialState);
 
 export const CurrentUserProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const observeUser = useRef(new ObserveUserService(setUser, setLoading));
 
@@ -44,9 +44,9 @@ export const CurrentUserProvider = ({ children }: any) => {
     return observeUser.current.unsubscribe;
   }, []);
 
-  if (loading) {
-    return <Spinner fullPage />;
-  }
+  // if (loading) {
+  //   return <Spinner fullPage />;
+  // }
 
   return (
     <CurrentUser.Provider

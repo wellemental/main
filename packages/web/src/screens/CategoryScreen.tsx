@@ -1,14 +1,7 @@
 import React from 'react';
 import { ContentLoop, PageHeading, Spinner } from '../primitives';
 import { useContent, useRouteMatch, useCurrentUser } from '../hooks';
-import {
-  Category,
-  categories,
-  Tags,
-  Feature,
-  isFeature,
-  Languages,
-} from 'common';
+import { Category, categories, Tags, Feature, Languages } from 'common';
 import { slugify } from '../services/helpers';
 import { ageGroups } from '../constants';
 

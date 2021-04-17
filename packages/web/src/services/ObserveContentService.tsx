@@ -1,54 +1,73 @@
 import firebase, { FbUser } from '../base';
-import { User, Languages, ObserveUserServiceType } from 'common';
-import { convertTimestamp } from '../services/helpers';
+import {
+  User,
+  Languages,
+  ObserveContentServiceType,
+  Unsubscriber,
+  Content,
+  PlayEvent,
+  Favorite,
+} from 'common';
+import { convertTimestamp } from './helpers';
 import moment from 'moment';
-import { setUserProperties } from '../services/TrackerService';
+import { setUserProperties } from './TrackerService';
+import BaseService, { BaseServiceContructorOptions } from './BaseService';
 
-class ObserveUserService implements ObserveUserServiceType {
-  private auth: FbUser | null = null;
-  private authUnsubscriber?: () => void;
-  private user?: User;
-  private userUnsubscriber?: () => void;
+interface ObserveContentProps {
+  options: BaseServiceContructorOptions;
+  content: Content[];
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+class ObserveContentService
+  extends BaseService
+  implements ObserveContentServiceType {
+  private unsubscribers: Unsubscriber[] = [];
+
+  private plays?: PlayEvent[];
+  private playsUnsubscriber?: Unsubscriber;
+  private favs?: Favorite[];
+  private favsUnsubscriber?: Unsubscriber;
   private setUser: React.Dispatch<React.SetStateAction<User | null>>;
   private setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  private userDoc = this.firestore.collection('users').doc(this.currentUser.id);
+  private favsQuery = this.userDoc
+    .collection('plays')
+    .orderBy('createdAt', 'desc');
 
-  constructor(
-    setUser: React.Dispatch<React.SetStateAction<User | null>>,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  ) {
-    this.setUser = setUser;
-    this.setLoading = setLoading;
+  constructor(props: ObserveContentProps) {
+    super(props.options);
+    this.setUser = props.setUser;
+    this.setLoading = props.setLoading;
   }
+
+  // Add listeners for favs and plays (first 10 of each)
+  // Return arrays of each
+  // Within content context,
 
   public subscribe(): void {
     // Stop any existing subscriptions
     this.unsubscribe();
 
-    this.authUnsubscriber = firebase
-      .auth()
-      .onAuthStateChanged((newAuth: FbUser | null) => {
-        // Unsubscribe from previous userDoc listener if exists
-        if (this.userUnsubscriber) {
-          this.userUnsubscriber();
-        }
+    const unsubscriber = this.favsQuery.onSnapshot((snapshot: any) => {
+      // Unsubscribe from previous userDoc listener if exists
+      if (this.favsUnsubscriber) {
+        this.favsUnsubscriber();
+      }
 
-        // If no user, set state to default (pass no parameters)
-        if (!newAuth) {
-          this.setUser(null);
-          this.user = undefined;
-          this.auth = null;
-          this.setLoading(false);
+      const favs: Favorite[] = [];
+      for (const doc of snapshot.docs) {
+        const data = doc.data() as Favorite;
+        if (data) {
+          favs.push({ ...data });
         } else {
-          // Set loading state while user doc is built
-          this.setLoading(true);
-
-          // If auth changed, subscribe to userDoc
-          if (this.authChanged(newAuth)) {
-            this.auth = newAuth;
-            this.subscribeToUserDoc(newAuth);
-          }
+          this.logger.warn(
+            `Failed to add scorecard doc: ${JSON.stringify(doc)}`,
+          );
         }
-      });
+      }
+    });
 
     return;
   }
@@ -137,4 +156,4 @@ class ObserveUserService implements ObserveUserServiceType {
   };
 }
 
-export default ObserveUserService;
+export default ObserveContentService;

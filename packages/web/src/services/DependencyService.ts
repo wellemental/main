@@ -9,6 +9,7 @@ import FavoritesService from './FavoritesService';
 import AnalyticsService from './AnalyticsService';
 import ContentService from './ContentService';
 import TeacherService from './TeacherService';
+import ObserveContentService from './ObserveContentService';
 
 interface DependencyDescriptor {
   dependencies: string[];
@@ -61,11 +62,15 @@ const dependenciesDescriptors = {
   },
   contentService: {
     class: ContentService,
-    dependencies: ['firestore', 'logger'],
+    dependencies: ['firestore', 'logger', 'currentUser'],
   },
   teacherService: {
     class: TeacherService,
     dependencies: ['firestore', 'logger'],
+  },
+  observeContent: {
+    class: ObserveContentService,
+    dependencies: ['firestore', 'logger', 'currentUser'],
   },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;

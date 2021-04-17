@@ -8,6 +8,7 @@ export type Query = firestore.Query;
 export type Timestamp = firestore.Timestamp;
 export type FieldValue = firestore.FieldValue;
 export type QueryDocumentSnapshot = firestore.QueryDocumentSnapshot;
+export type DocumentReference = firestore.DocumentReference;
 export type FirestoreModule = FirebaseFirestoreTypes.FirebaseFirestore;
 export type Moment = moment.Moment;
 
@@ -396,6 +397,16 @@ export interface ObserveNotificationsType {
   setNotificationPrompted(): Promise<void>;
 }
 
+export interface ObserveUserServiceType {
+  subscribe(): void;
+  unsubscribe(): void;
+}
+
+export interface ObserveContentServiceType {
+  subscribe(): void;
+  unsubscribe(): void;
+}
+
 export type Favorite = {
   contentId: string;
   favorited: boolean;
@@ -458,6 +469,8 @@ export interface ContentServiceType {
   getFeatures(category: Categories, contentObj: ContentObj): Content[];
   getContent(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
+  // favsQuery: Query;
+  // playsQuery: Query;
 }
 
 export type PromoCode = {
