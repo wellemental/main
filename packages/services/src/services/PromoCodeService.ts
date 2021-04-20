@@ -1,13 +1,9 @@
-// import { firestore } from '../base';
+// No longer using as Apple doesn't allow outside Promo Codes, keeping as reference in case it's needed later
 import firestore from '@react-native-firebase/firestore';
 import { ApplicationError, InvalidPromoCodeError } from '../models/Errors';
-import { PromoCodeServiceType } from '../types';
-// import logger from './LoggerService';
-// import tracker, { TrackingEvents } from './TrackerService';
+import { PromoCodeServiceType } from 'common';
 import UpdateUserService from './UpdateUserService';
 
-const COLLECTION = 'users';
-const usersColl = firestore().collection(COLLECTION);
 const promoCodeColl = firestore().collection('promo-codes');
 const updateUserService = new UpdateUserService();
 

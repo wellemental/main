@@ -1,3 +1,4 @@
+// Apple doesn't allow third party tracking - keeping just in case we find a work-around
 // import analytics from '@react-native-firebase/analytics';
 // import { TrackingEvents, TrackingService } from '../types';
 

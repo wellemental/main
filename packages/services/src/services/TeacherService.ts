@@ -1,6 +1,4 @@
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Teacher, AllTeachers, TeacherServiceType } from 'common';
 import { ApplicationError } from '../models/Errors';
 import BaseService from './BaseService';

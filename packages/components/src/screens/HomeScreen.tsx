@@ -10,7 +10,7 @@ import {
   HomepageTabs,
   AgeCards,
 } from '../primitives';
-import { VersionConfig } from 'services';
+import { VersionConfig } from 'common';
 import {
   useCurrentUser,
   useContent,
@@ -106,8 +106,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <>
           <HomepageTabs color={timeOfDayColor} />
 
-          {features && features.categories && (
-            <CategoryLoop title="Featured" categories={features.categories} />
+          {features && features && (
+            <CategoryLoop title="Featured" categories={features} />
           )}
           <Subheadline color={timeOfDayColor}>Explore</Subheadline>
 

@@ -14,7 +14,6 @@ export type ContentStateType = {
   favsMore: LoadMoreStateType;
   history: Content[];
   historyMore: LoadMoreStateType;
-  updateAvailable: boolean;
   getDbContent: () => void;
 };
 
@@ -28,6 +27,5 @@ export const initialState = {
   favsMore: loadMoreInitialState,
   history: [],
   historyMore: loadMoreInitialState,
-  updateAvailable: false,
   getDbContent: null,
 };

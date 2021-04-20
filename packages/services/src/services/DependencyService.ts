@@ -34,7 +34,7 @@ const dependenciesDescriptors = {
   // },
   updateUserService: {
     class: UpdateUserService,
-    dependencies: ['currentUser', 'firestore'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   remoteConfig: {
     class: RemoteConfig,
@@ -42,11 +42,11 @@ const dependenciesDescriptors = {
   },
   playsService: {
     class: PlaysService,
-    dependencies: ['firestore', 'currentUser'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   favoritesService: {
     class: FavoritesService,
-    dependencies: ['firestore', 'currentUser'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   teacherService: {
     class: TeacherService,
@@ -54,15 +54,15 @@ const dependenciesDescriptors = {
   },
   observeNotifications: {
     class: ObserveNotifications,
-    dependencies: ['currentUser', 'firestore'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   contentService: {
     class: ContentService,
-    dependencies: ['firestore', 'currentUser'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   observeContent: {
     class: ObserveContentService,
-    dependencies: ['firestore', 'currentUser'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;

@@ -1,4 +1,4 @@
-import { Content, Categories, Filter, Filters, Teachers } from '../types';
+import { Content, Filters } from '../types';
 
 export const filterContent = (
   content: Content[],

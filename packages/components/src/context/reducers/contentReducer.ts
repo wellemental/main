@@ -52,8 +52,6 @@ export const contentReducer = (
   state: StateType,
   action: ActionType,
 ): StateType => {
-  const contentArr = Object.values(state.allContent);
-
   switch (action.type) {
     case 'LOADED': {
       const contentObj = action.value;

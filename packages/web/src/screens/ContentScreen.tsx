@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ContentScreen: React.FC = () => {
   const classes = useStyles();
-  const { translation, user } = useCurrentUser();
+  const { translation, user, isAdmin } = useCurrentUser();
   const history = useHistory();
   const { content: allContent } = useContent();
   const match = useRouteMatch();
@@ -195,13 +195,11 @@ const ContentScreen: React.FC = () => {
             </Box>
           </Box>
 
-          {user &&
-            (user.email === 'test@test.com' ||
-              user.email === 'mike.r.vosters@gmail.com') && (
-              <Box mb={2} mt={-1}>
-                <Paragraph fine>{content.id}</Paragraph>
-              </Box>
-            )}
+          {isAdmin && (
+            <Box mb={2} mt={-1}>
+              <Paragraph fine>{content.id}</Paragraph>
+            </Box>
+          )}
 
           <Paragraph gb={1}>
             {content.type.toUpperCase()} | {content.length}

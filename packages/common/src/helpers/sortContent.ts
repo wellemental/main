@@ -1,11 +1,4 @@
-import {
-  Content,
-  Sortings,
-  Categories,
-  Filter,
-  Filters,
-  Teachers,
-} from '../types';
+import { Content, Sortings } from '../types';
 
 export const sortContent = (content: Content[], sort: Sortings): Content[] => {
   let filteredContent = [...content];

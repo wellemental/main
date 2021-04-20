@@ -194,7 +194,6 @@ export interface LocalUser {
 
 export interface LocalContent {
   content: ContentObj;
-  teachers: AllTeachers;
   updated_at?: Date;
 }
 
@@ -473,6 +472,7 @@ export interface LocalStateServiceType {
   ): Promise<void>;
   getStorage(key: string): Promise<string>;
   getContent(): Promise<LocalContent>;
+  setContent(newContent: ContentObj): Promise<void>;
   getUser(): Promise<LocalUser>;
   removeStorage(key: string): Promise<void>;
 }
@@ -480,7 +480,8 @@ export interface LocalStateServiceType {
 export interface ContentServiceType {
   buildContent(doc: QueryDocumentSnapshot): Content | null;
   getFeatures(category: Categories, contentObj: ContentObj): Content[];
-  getContent(): Promise<ContentObj>;
+  getContentfromDb(): Promise<ContentObj>;
+  getContentContext(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
   // favsQuery: Query;
   // playsQuery: Query;

@@ -7,4 +7,5 @@ export * from './sortContent';
 export * from './matchContent';
 export * from './convertTimestamp';
 export * from './getRandomInt';
+export * from './increment';
 export * from './convertToTimestamp';

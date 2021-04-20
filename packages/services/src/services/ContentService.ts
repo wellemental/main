@@ -1,6 +1,4 @@
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
 import {
@@ -13,27 +11,42 @@ import {
   Categories,
   Tags,
   QueryDocumentSnapshot,
-  LocalContent,
 } from 'common';
 import LocalStateService from './LocalStateService';
 import TeacherService from './TeacherService';
 import BaseService, { BaseServiceContructorOptions } from './BaseService';
 
-class ContentService extends BaseService implements ContentServiceType {
+// Separating from 'common' types bc Typescript throwing error due to diff btw RN Firebase & firebase js
+export interface MobileContentServiceType extends ContentServiceType {
+  historyQuery: FirebaseFirestoreTypes.Query;
+  favsQuery: FirebaseFirestoreTypes.Query;
+}
+
+class ContentService extends BaseService implements MobileContentServiceType {
   private teachers: AllTeachers | undefined;
   private localStorage: LocalStateServiceType;
   private teacherService: TeacherServiceType;
-  private content: ContentObj;
   private COLLECTION = 'content';
   private collection = this.firestore.collection(this.COLLECTION);
+  private userCollection = this.firestore.collection('users');
+  private userDoc: FirebaseFirestoreTypes.DocumentReference;
+  public favsQuery: FirebaseFirestoreTypes.Query;
+  public historyQuery: FirebaseFirestoreTypes.Query;
 
   constructor(args: BaseServiceContructorOptions) {
     super(args);
     this.localStorage = new LocalStateService();
+    // @ts-ignore - Type diff be RNFB & firebase libraries
     this.teacherService = new TeacherService(args);
-
     this.teachers;
-    this.content = {};
+    this.userDoc = this.userCollection.doc(this.currentUser.id);
+    this.historyQuery = this.userDoc
+      .collection('plays')
+      .orderBy('createdAt', 'desc');
+    this.favsQuery = this.userDoc
+      .collection('favorites')
+      .where('favorited', '==', true)
+      .orderBy('createdAt', 'desc');
   }
 
   public buildContent = (doc: QueryDocumentSnapshot): Content => {
@@ -62,35 +75,37 @@ class ContentService extends BaseService implements ContentServiceType {
     };
   };
 
-  public getLocalContent = async (): Promise<LocalContent> => {
+  public getContentContext = async (): Promise<ContentObj> => {
     try {
-      return await this.localStorage.getContent();
+      const localData = await this.localStorage.getContent();
+      const hasLocalContent = localData && localData.content;
+      const newContentAvailable = await this.calcUpdateAvailable(
+        localData && localData.updated_at,
+      );
+
+      // Protection for old users.
+      // Content state was previously an array, now an object. So if their localStarage content is an array, repull from db to make it an object.
+      // Content model used to only store teacher name, now it stores entire teacher object
+      // If user's localStorage has old model, then update it
+      const oldLocalContentModels =
+        localData &&
+        (Array.isArray(localData.content) ||
+          typeof Object.values(localData.content)[0].teacher === 'string');
+
+      if (!hasLocalContent || newContentAvailable || oldLocalContentModels) {
+        // console.log('Pull from db!!!!!!');
+        return await this.getContentfromDb();
+      } else {
+        // console.log('Pull from localStorage!!!!!!');
+        return localData.content;
+      }
     } catch (error) {
-      return Promise.reject(new ApplicationError(error));
+      // console.log('ERROR', error);
+      return Promise.reject(error);
     }
   };
 
-  public getContent = async (): Promise<ContentObj> => {
-    const localData = await this.getLocalContent();
-
-    if (localData) {
-      if (localData.content) {
-        // Protection for old users. Content state was previously an array, now an object.
-        // So if their localStarage content is an array, repull from db to make it an object.
-        if (Array.isArray(localData.content)) {
-          await getDbContent();
-          // We updated content model to already have been built with the full corresponding teacher obj
-          // If user's localStorage has old model, then update it
-        } else if (
-          typeof Object.values(localData.content)[0].teacher === 'string'
-        ) {
-          await getDbContent();
-        } else {
-          setContent(localData.content);
-        }
-      }
-    }
-
+  public getContentfromDb = async (): Promise<ContentObj> => {
     const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = this.collection.orderBy(
       'updated_at',
       'desc',
@@ -114,7 +129,9 @@ class ContentService extends BaseService implements ContentServiceType {
           ),
         );
 
-      this.content = content;
+      // Save updated Content into localStorage for future use
+      await this.localStorage.setContent(content);
+
       return content;
     } catch (err) {
       // logger.error(`Unable to get all content - ${err}`);
@@ -131,6 +148,25 @@ class ContentService extends BaseService implements ContentServiceType {
     );
   };
 
+  private calcUpdateAvailable = async (
+    localUpdatedAt: Date,
+  ): Promise<boolean> => {
+    // Get latest updated_at times from firestore
+    const dbContentLatest = await this.getLatestUpdate();
+
+    // If local state has never been saved, prompt update
+    if (!localUpdatedAt) {
+      return true;
+    }
+
+    // If database content has been updated more recently than the last local save, prompt update
+    if (dbContentLatest > localUpdatedAt) {
+      return true;
+    }
+
+    return false;
+  };
+
   public getLatestUpdate = async (): Promise<Date> => {
     const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = this.collection
       .orderBy('updated_at', 'desc')
@@ -143,7 +179,7 @@ class ContentService extends BaseService implements ContentServiceType {
 
       return content[0].updated_at.toDate();
     } catch (err) {
-      logger.error('Unable to get latest content update');
+      // logger.error('Unable to get latest content update');
       return Promise.reject(new ApplicationError(err));
     }
   };

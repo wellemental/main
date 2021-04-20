@@ -1,5 +1,5 @@
 class ApplicationError extends Error {
-  constructor(message = 'An applicaiton error occurred.') {
+  constructor(message = 'An application error occurred.') {
     super(message);
   }
 }

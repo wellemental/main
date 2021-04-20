@@ -18,5 +18,6 @@ export { default as FavoritesService } from './services/FavoritesService';
 export * from './services/DimensionsService';
 export { firestore, auth } from './base';
 export { ApplicationError, ModelError } from './models/Errors';
-// export * from './types';
+export * from './services/RateApp';
 export * from './services/helpers';
+export * from './types';

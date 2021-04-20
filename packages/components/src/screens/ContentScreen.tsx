@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// Need to add handling for buffering and errors
 const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const { content } = route.params;
   const [video, setVideo] = useState(content.video);
@@ -70,7 +71,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const [isPaused, togglePaused] = useState(true);
   const [showControls, toggleControls] = useState(false);
   const [hasPlayed, toggleHasPlayed] = useState(false);
-  const { user } = useCurrentUser();
+  const { isAdmin } = useCurrentUser();
 
   // Reference for video player to run methods from
   const player = useRef();
@@ -277,18 +278,16 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           {content.teacher.bio}
         </Paragraph>
 
-        {user &&
-          (user.email === 'test@test.com' ||
-            user.email === 'mike.r.vosters@gmail.com') && (
-            <Box mt={2}>
-              <Paragraph>{content.id}</Paragraph>
-              <Paragraph>Current Time: {currentTime}</Paragraph>
-              <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
-              <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
-              <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
-              <Paragraph>Tags: {content.tags.toString()}</Paragraph>
-            </Box>
-          )}
+        {isAdmin && (
+          <Box mt={2}>
+            <Paragraph>{content.id}</Paragraph>
+            <Paragraph>Current Time: {currentTime}</Paragraph>
+            <Paragraph>Show Controls: {showControls.toString()}</Paragraph>
+            <Paragraph>Show Poster: {showPoster.toString()}</Paragraph>
+            <Paragraph>isPaused: {isPaused.toString()}</Paragraph>
+            <Paragraph>Tags: {content.tags.toString()}</Paragraph>
+          </Box>
+        )}
       </ScrollView>
     </>
   );
