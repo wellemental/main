@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
-import { Error, VideoAndroid, Container } from '../primitives';
+import { Error, VideoAndroid } from '../primitives';
 import { VideoScreenNavigationProp, VideoScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { deviceWidth } from 'services';
@@ -28,6 +28,8 @@ const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(content.seconds);
   const [isOver, toggleOver] = useState(false);
+  // Reference for video player to run methods from
+  const player = useRef();
 
   if (!isOver && currentTime >= duration - 1) {
     toggleOver(true);
@@ -35,6 +37,11 @@ const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
 
   useEffect(() => {
     if (isOver) {
+      if (!!player.current) {
+        console.log('DISMISSES FULLSCREEN******');
+        player.current.dismissFullscreenPlayer();
+      }
+
       handleComplete();
     }
   }, [isOver]);
@@ -51,12 +58,14 @@ const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
 
   return Platform.OS === 'android' ? (
     <VideoAndroid
+      ref={ref => (player.current = ref)}
       source={{
         uri: savedVideoPath ? savedVideoPath : content.video,
       }}
       // onProgress={onProgress}
       // onLoad={onLoad}
       // onError={setError}
+      onEnd={handleComplete}
       onBack={navigation.goBack}
       style={{ marginTop: 20 }}
     />

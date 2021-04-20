@@ -31,7 +31,6 @@ export type RootStackParamList = {
   Category: { category: Category };
   Video: {
     content: Content;
-    teacher: Teacher;
     savedVideoPath?: string;
     handleComplete: () => void;
   };

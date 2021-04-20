@@ -51,13 +51,6 @@ export const IAPProvider = ({ children }: any) => {
           });
         }
 
-        // Pretty sure this whole thing is useless, but don't want to risk breaking anything so leaving it for now
-        try {
-          await updateUser({ plan: { status: 'active', planId: productId } });
-        } catch (err) {
-          // logger.error('Error updating user state in local storage');
-        }
-
         setActivePlan(productId);
         setProcessing(false);
       } catch (err) {

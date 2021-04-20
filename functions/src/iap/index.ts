@@ -191,6 +191,7 @@ export const renewOrCancelSubscriptions = async (): Promise<void> => {
   }
 };
 
+// EXAMPLE
 // const iap = {
 //   notification_type: 'DID_CHANGE_RENEWAL_STATUS',
 //   password: '3c5b954ea91947dfb188f213972617a2',

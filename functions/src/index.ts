@@ -165,9 +165,11 @@ const onFavUpdate = functions.firestore
     return Promise.resolve();
   });
 
-const EVERY_HOUR_CRON = '0 * * * *';
+// const EVERY_HOUR_CRON = '0 * * * *';
+// Every day at 1am
+const EVERY_DAY_CHRON = '0 1 * * *';
 const runRenewOrCancelSubs = functions.pubsub
-  .schedule(EVERY_HOUR_CRON)
+  .schedule(EVERY_DAY_CHRON)
   .onRun(renewOrCancelSubscriptions);
 
 export {
