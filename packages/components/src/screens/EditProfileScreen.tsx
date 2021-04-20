@@ -1,15 +1,17 @@
 import { Form, Toast, Text, Button as NBButton, Segment } from 'native-base';
 import React, { useState } from 'react';
+import { UpdateUserService } from 'services';
 import { Container, Error, Box, PageHeading, Button } from '../primitives';
 import { useCurrentUser, useMutation } from '../hooks';
-import { UserProfile, UpdateUserService, Languages } from 'services';
+import { UserProfile, Languages } from 'common';
 
 import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width - 30;
+const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
 
 const EditProfileScreen: React.FC = () => {
-  const { auth, user, translation } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
 
   const [language, setLanguage] = useState(user.language);
 
@@ -20,10 +22,8 @@ const EditProfileScreen: React.FC = () => {
     newProfile.language = language;
   }
 
-  const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
-
   const { loading, error: mutateError, mutate } = useMutation(() =>
-    service.updateProfile(auth.uid, newProfile),
+    service.updateProfile(user.id, newProfile),
   );
 
   const handleUpdate = async () => {

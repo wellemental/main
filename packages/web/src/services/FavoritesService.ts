@@ -44,7 +44,7 @@ class FavoritesService extends BaseService implements FavoritesServiceType {
         });
       }
     } catch (err) {
-      console.log('Error favoriting', err);
+      this.logger.error(`Error favoriting - ${err}`);
       throw new ApplicationError('Error favoriting item');
     }
   };

@@ -3,7 +3,6 @@ import { StyleSheet, View, Platform } from 'react-native';
 import { Error, VideoAndroid, Container } from '../primitives';
 import { VideoScreenNavigationProp, VideoScreenRouteProp } from '../types';
 import Video from 'react-native-video';
-import { useNavigation } from '../hooks';
 import { deviceWidth } from 'services';
 
 type Props = {
@@ -40,13 +39,13 @@ const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
     }
   }, [isOver]);
 
-  const onProgress = (data) => {
+  const onProgress = data => {
     if (!isOver) {
       setCurrentTime(data.currentTime);
     }
   };
 
-  const onLoad = (data) => {
+  const onLoad = data => {
     setDuration(data.duration);
   };
 

@@ -7,14 +7,7 @@ import {
   ContentLoopLoadMore,
   Tabs,
 } from '../primitives';
-import { FavoritesServiceType, PlaysServiceType } from 'common';
-import {
-  useCurrentUser,
-  useContainer,
-  useLocation,
-  useContent,
-} from '../hooks';
-import useLoadMore from '../hooks/useLoadMore';
+import { useCurrentUser, useLocation } from '../hooks';
 
 const ProfileScreen: React.FC = () => {
   const { translation } = useCurrentUser();

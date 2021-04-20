@@ -107,6 +107,10 @@ class ObserveUserService implements ObserveUserServiceType {
             userData && userData.lastPlay
               ? convertTimestamp(userData.lastPlay).toDate()
               : undefined,
+          promptedNotification:
+            userData && userData.promptedNotification
+              ? userData.promptedNotification
+              : false,
         };
 
         // Set GA Firebase User Properties

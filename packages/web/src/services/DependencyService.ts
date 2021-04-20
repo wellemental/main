@@ -54,7 +54,7 @@ const dependenciesDescriptors = {
   },
   favoritesService: {
     class: FavoritesService,
-    dependencies: ['firestore', 'currentUser'],
+    dependencies: ['firestore', 'currentUser', 'logger'],
   },
   analyticsService: {
     class: AnalyticsService,

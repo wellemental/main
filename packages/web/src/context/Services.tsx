@@ -3,7 +3,6 @@ import {
   buildDependencies,
   dependenciesInstances,
 } from '../services/DependencyService';
-import { User } from 'common';
 import { Spinner } from '../primitives';
 import { useCurrentUser } from '../hooks';
 
@@ -12,7 +11,6 @@ export const ServicesContext = createContext(initialContainer);
 
 export const ServicesProvider: React.FC = ({ children }) => {
   const [container, setContainer] = useState(initialContainer);
-  const [loading, setLoading] = useState(true);
   const { user } = useCurrentUser();
 
   useEffect(() => {
@@ -21,7 +19,6 @@ export const ServicesProvider: React.FC = ({ children }) => {
         currentUser: user ? user : undefined,
       }),
     );
-    setLoading(false);
   }, [user]);
 
   if (user && !dependenciesInstances.currentUser) {

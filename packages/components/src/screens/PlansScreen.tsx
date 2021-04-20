@@ -52,7 +52,7 @@ export enum PlanId {
 }
 
 const PlansScreen: React.FC = () => {
-  const { auth, user, translation } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
   const [error, setError] = useState('');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -131,7 +131,7 @@ const PlansScreen: React.FC = () => {
   const handlePromoCode = async () => {
     const service = new PromoCodeService();
     try {
-      await service.validateAndUpgrade(auth.uid, promoCode);
+      await service.validateAndUpgrade(user.id, promoCode);
       setUpgrading(true);
     } catch (err) {
       setError(err);

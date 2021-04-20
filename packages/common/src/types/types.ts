@@ -344,7 +344,7 @@ export interface AllTeachers {
 
 export interface UserProfile {
   language?: Languages;
-  promptedNotification: boolean;
+  promptedNotification?: boolean;
   updated_at?: Timestamp;
 }
 

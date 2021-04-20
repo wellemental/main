@@ -13,7 +13,6 @@ interface Props {
 
 const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
   const [isFav, toggleFav] = useState(false);
-  const [error, setError] = useState<string | undefined>();
 
   const container = useContainer();
   const service = container.getInstance<FavoritesServiceType>(

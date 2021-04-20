@@ -70,7 +70,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   const [isPaused, togglePaused] = useState(true);
   const [showControls, toggleControls] = useState(false);
   const [hasPlayed, toggleHasPlayed] = useState(false);
-  const { auth } = useCurrentUser();
+  const { user } = useCurrentUser();
 
   // Reference for video player to run methods from
   const player = useRef();
@@ -277,9 +277,9 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           {content.teacher.bio}
         </Paragraph>
 
-        {auth &&
-          (auth.email === 'test@test.com' ||
-            auth.email === 'mike.r.vosters@gmail.com') && (
+        {user &&
+          (user.email === 'test@test.com' ||
+            user.email === 'mike.r.vosters@gmail.com') && (
             <Box mt={2}>
               <Paragraph>{content.id}</Paragraph>
               <Paragraph>Current Time: {currentTime}</Paragraph>

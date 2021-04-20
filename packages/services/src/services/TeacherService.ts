@@ -3,11 +3,13 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import { Teacher, AllTeachers, TeacherServiceType } from 'common';
 import { ApplicationError } from '../models/Errors';
+import BaseService from './BaseService';
 
-const COLLECTION = 'teachers';
-const teachersCollection = firestore().collection(COLLECTION);
+class TeacherService extends BaseService implements TeacherServiceType {
+  private COLLECTION = 'teachers';
+  private teachersCollection = this.firestore.collection(this.COLLECTION);
 
-class TeacherService implements TeacherServiceType {
+  // @ts-ignore - Diff btw RNFB & firebase QueryDoc type
   public buildTeacher = (
     doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
   ): Teacher => {
@@ -24,11 +26,11 @@ class TeacherService implements TeacherServiceType {
   };
 
   public findTeacherByName = async (name: string): Promise<Teacher | void> => {
-    const query = teachersCollection.where('name', '==', name);
+    const query = this.teachersCollection.where('name', '==', name);
 
     try {
-      return await query.get().then((snapshots) => {
-        snapshots.docs.map((doc) => {
+      return await query.get().then(snapshots => {
+        snapshots.docs.map(doc => {
           if (doc) {
             return this.buildTeacher(doc);
           } else {
@@ -42,15 +44,15 @@ class TeacherService implements TeacherServiceType {
   };
 
   public getAll = async (): Promise<AllTeachers> => {
-    const query = teachersCollection;
+    const query = this.teachersCollection;
     const teachers = {};
 
     try {
       await query
         .get()
-        .then((snapshot) =>
+        .then(snapshot =>
           snapshot.docs.forEach(
-            (doc) => (teachers[doc.data().name] = this.buildTeacher(doc)),
+            doc => (teachers[doc.data().name] = this.buildTeacher(doc)),
           ),
         );
     } catch (err) {
@@ -62,14 +64,14 @@ class TeacherService implements TeacherServiceType {
   };
 
   public getLatestUpdate = async (): Promise<Date> => {
-    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = teachersCollection
+    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = this.teachersCollection
       .orderBy('updated_at', 'desc')
       .limit(1);
 
     try {
       const teachers = await query
         .get()
-        .then((snapshot) => snapshot.docs.map((doc) => this.buildTeacher(doc)));
+        .then(snapshot => snapshot.docs.map(doc => this.buildTeacher(doc)));
 
       return teachers[0].updated_at.toDate();
     } catch (err) {

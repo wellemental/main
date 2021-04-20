@@ -1,7 +1,7 @@
 import React from 'react';
 import { Colors, Content } from 'common';
 import { convertTimestamp } from 'services';
-import { Button, ListEmpty, ContentCardSmall, Box } from '..';
+import { Button, ListEmpty, ContentCard, Box } from '..';
 import { List } from 'native-base';
 import { useNavigation, useContent } from '../../hooks';
 
@@ -64,13 +64,14 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
         {hasContent ? (
           filtered.map((item, idx: number) => {
             return (
-              <ContentCardSmall
+              <ContentCard
+                small
                 key={idx}
-                content={contentMatch}
+                content={item}
                 recentDate={
-                  !type === 'history'
-                    ? undefined
-                    : convertTimestamp(item.createdAt).format('MMM D, YYYY')
+                  type === 'history' && item.created_at
+                    ? convertTimestamp(item.created_at).format('MMM D, YYYY')
+                    : undefined
                 }
               />
             );
@@ -84,7 +85,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
         )}
 
         {homepage && type === 'history' && (
-          <Box mt={1}>
+          <Box mt={0.5}>
             <Button
               small
               text={'See all'}

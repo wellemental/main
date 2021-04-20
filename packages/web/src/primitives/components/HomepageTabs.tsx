@@ -1,18 +1,9 @@
-// Tabs on Homepage
-import React, { useState } from 'react';
-// import NewContentLoop from '../loops/NewContentLoop';
+import React from 'react';
 import Box from '../utils/Box';
-import Button from '../buttons/Button';
 import Tabs from '../buttons/Tabs';
 import ContentLoopLoadMore from '../loops/ContentLoopLoadMore';
 import ContentLoop from '../loops/ContentLoop';
-import {
-  useLoadMore,
-  useContainer,
-  useNavigation,
-  useCurrentUser,
-} from '../../hooks';
-import { PlaysServiceType } from 'common';
+import { useCurrentUser } from '../../hooks';
 
 type Props = {
   color?: 'white' | undefined;

@@ -1,4 +1,5 @@
-import { Content, Languages, ContentStatus, Categories } from 'services';
+// Dummy content used early on, could delete
+import { Content, Languages, ContentStatus, Categories } from 'common';
 import moment from 'moment';
 
 export const defaultContent: Content[] = [

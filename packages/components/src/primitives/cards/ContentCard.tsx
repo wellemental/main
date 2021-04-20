@@ -20,7 +20,7 @@ const ContentCard: React.FC<Props> = ({ content, small, recentDate }) => {
   const teacher = content.teacher;
 
   return (
-    <Card>
+    <Card style={{ marginBottom: 5 }}>
       <CardItem
         cardBody
         button

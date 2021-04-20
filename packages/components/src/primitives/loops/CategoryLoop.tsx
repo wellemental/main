@@ -1,7 +1,6 @@
 import React from 'react';
 import { Subheadline, CategoryButton } from '..';
-import { useCurrentUser } from '../../hooks';
-import { Category, Redirect } from 'common';
+import { Category, Redirect, Colors } from 'common';
 
 const categoryColors = ['yellow', 'blurple', 'orange', 'teal'] as const;
 export type CategoryColors = typeof categoryColors[number];
@@ -12,6 +11,7 @@ type Props = {
   hideTitle?: boolean;
   redirects?: Redirect[];
   colors?: CategoryColors[];
+  color?: Colors | 'white';
 };
 
 const CategoryLoop: React.FC<Props> = ({
@@ -20,19 +20,14 @@ const CategoryLoop: React.FC<Props> = ({
   hideTitle,
   redirects,
   colors,
+  color,
 }) => {
-  const { translation } = useCurrentUser();
-
   const theColors = colors ? colors : categoryColors;
 
   return (
     <>
       {!hideTitle && (
-        <Subheadline>
-          {title && translation[title]
-            ? translation[title]
-            : translation.Categories}
-        </Subheadline>
+        <Subheadline color={color}>{title ? title : 'Categories'}</Subheadline>
       )}
 
       {categories &&

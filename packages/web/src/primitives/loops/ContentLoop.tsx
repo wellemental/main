@@ -114,6 +114,9 @@ const ContentLoop: React.FC<Props> = ({
     }
   }
 
+  // Limit content length
+  filteredContent = filteredContent.slice(0, theLimit);
+
   // Check to see if there's any content
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
@@ -123,7 +126,7 @@ const ContentLoop: React.FC<Props> = ({
 
       {content && hasFilteredContent && filteredContent ? (
         <>
-          {filteredContent.slice(0, theLimit).map((item, idx) => (
+          {filteredContent.map((item, idx) => (
             <ContentCard
               small={small || isSmall}
               key={idx}

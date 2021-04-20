@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AuthService, Languages } from 'services';
+import { AuthService } from 'services';
 import {
   Container,
   PageHeading,
@@ -9,18 +9,21 @@ import {
   Box,
   LegalLinks,
 } from '../primitives';
-import { AuthScreenRouteProp, Translation } from '../types';
-import { English, Español } from 'common';
+import { AuthScreenRouteProp } from '../types';
+import { English, Español, Translation, Languages } from 'common';
 import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   route: AuthScreenRouteProp;
 };
 
+const service = new AuthService();
+
 const AuthScreen: React.FC<Props> = ({ route }) => {
-  // Import and save language selection to AsyncStorage
+  // Get langauge from navigation params
   const navigation = useNavigation();
   const { language } = route.params;
+
   const translation: Translation =
     language === Languages.Es ? Español : English;
 
@@ -30,8 +33,6 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
-
-  const service = new AuthService();
 
   const handleCheckEmail = async () => {
     setLoading(true);

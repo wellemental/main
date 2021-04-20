@@ -1,5 +1,4 @@
 import React from 'react';
-import { useCurrentUser } from '../hooks';
 import {
   Container,
   ContentLoop,
@@ -16,8 +15,9 @@ const TeacherScreen: React.FC<Props> = ({ route }) => {
   const { teacher } = route.params;
 
   return (
-    <Container>
+    <Container noPadding="vertical">
       <ContentLoop
+        scrollEnabled
         teacher={teacher.name}
         header={
           <PageHeading

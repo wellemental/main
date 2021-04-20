@@ -2,7 +2,7 @@ import React from 'react';
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
-import firestore from '@react-native-firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { Alert } from 'react-native';
 import {
@@ -51,11 +51,11 @@ class ObserveNotifications
   public saveTokenToDatabase = async (token: string): Promise<void> => {
     if (auth().currentUser) {
       // Add the token to the users datastore
-      await firestore()
+      await this.firestore
         .collection('users')
         .doc(auth().currentUser.uid)
         .update({
-          fcmTokens: firestore.FieldValue.arrayUnion(token),
+          fcmTokens: FirebaseFirestoreTypes.FieldValue.arrayUnion(token),
         });
     }
   };

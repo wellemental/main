@@ -1,16 +1,9 @@
 import React from 'react';
 import { Card, CardItem, Right, Body, Icon } from 'native-base';
-import { useNavigation, useCurrentUser } from '../../hooks';
+import { useNavigation } from '../../hooks';
 import Paragraph from '../typography/Paragraph';
 import Headline from '../typography/Headline';
-import {
-  Category,
-  Feature,
-  Languages,
-  isFeature,
-  ColorPairings,
-  colorPairings,
-} from 'common';
+import { Category, Feature, ColorPairings, colorPairings } from 'common';
 import variables from '../../assets/native-base-theme/variables/wellemental';
 
 type Props = {
@@ -20,31 +13,9 @@ type Props = {
 
 const CategoryCard: React.FC<Props> = ({ category, color }) => {
   const navigation = useNavigation();
-  const { translation, user } = useCurrentUser();
 
-  // If it's a feature, get the translation from the features object
-  // Then if translation is possible - age groups have them, features don't currently
-  console.log(
-    'IS FEATURE',
-    isFeature(category),
-    'TRANSLATION',
-    translation[category.title],
-  );
-  const title: string =
-    isFeature(category) && user.language === Languages.Es
-      ? category['title-es']
-      : translation[category.title]
-      ? translation[category.title]
-      : category.title;
-
-  const description: string =
-    isFeature(category) &&
-    user.language === Languages.Es &&
-    category['description-es']
-      ? category['description-es']
-      : category.description && translation[category.description]
-      ? translation[category.description]
-      : category.description;
+  const title: string = category.title;
+  const description: string | undefined = category.description;
 
   return (
     <Card>

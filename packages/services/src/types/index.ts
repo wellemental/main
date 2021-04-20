@@ -1,3 +1,4 @@
+// TO DELETE - Transferred all to 'common' package, leaving here commented out just in case I need a reference during transition
 // import defaultValues from '../services/RemoteConfigDefaults';
 // import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 // import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';

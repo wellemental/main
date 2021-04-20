@@ -3,7 +3,6 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
-import logger from './LoggerService';
 import {
   LocalStateServiceType,
   AllTeachers,
@@ -14,24 +13,24 @@ import {
   Categories,
   Tags,
   QueryDocumentSnapshot,
+  LocalContent,
 } from 'common';
 import LocalStateService from './LocalStateService';
 import TeacherService from './TeacherService';
 import BaseService, { BaseServiceContructorOptions } from './BaseService';
-
-const COLLECTION = 'content';
-const collection = firestore().collection(COLLECTION);
 
 class ContentService extends BaseService implements ContentServiceType {
   private teachers: AllTeachers | undefined;
   private localStorage: LocalStateServiceType;
   private teacherService: TeacherServiceType;
   private content: ContentObj;
+  private COLLECTION = 'content';
+  private collection = this.firestore.collection(this.COLLECTION);
 
   constructor(args: BaseServiceContructorOptions) {
     super(args);
     this.localStorage = new LocalStateService();
-    this.teacherService = new TeacherService();
+    this.teacherService = new TeacherService(args);
 
     this.teachers;
     this.content = {};
@@ -63,8 +62,36 @@ class ContentService extends BaseService implements ContentServiceType {
     };
   };
 
+  public getLocalContent = async (): Promise<LocalContent> => {
+    try {
+      return await this.localStorage.getContent();
+    } catch (error) {
+      return Promise.reject(new ApplicationError(error));
+    }
+  };
+
   public getContent = async (): Promise<ContentObj> => {
-    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection.orderBy(
+    const localData = await this.getLocalContent();
+
+    if (localData) {
+      if (localData.content) {
+        // Protection for old users. Content state was previously an array, now an object.
+        // So if their localStarage content is an array, repull from db to make it an object.
+        if (Array.isArray(localData.content)) {
+          await getDbContent();
+          // We updated content model to already have been built with the full corresponding teacher obj
+          // If user's localStorage has old model, then update it
+        } else if (
+          typeof Object.values(localData.content)[0].teacher === 'string'
+        ) {
+          await getDbContent();
+        } else {
+          setContent(localData.content);
+        }
+      }
+    }
+
+    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = this.collection.orderBy(
       'updated_at',
       'desc',
     );
@@ -90,13 +117,22 @@ class ContentService extends BaseService implements ContentServiceType {
       this.content = content;
       return content;
     } catch (err) {
-      logger.error(`Unable to get all content - ${err}`);
+      // logger.error(`Unable to get all content - ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
   };
 
+  public getFeatures = (
+    category: Categories,
+    contentObj: ContentObj,
+  ): Content[] => {
+    return Object.values(contentObj).filter(
+      item => item.type === category && item.tags.includes(Tags.Featured),
+    );
+  };
+
   public getLatestUpdate = async (): Promise<Date> => {
-    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = collection
+    const query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> = this.collection
       .orderBy('updated_at', 'desc')
       .limit(1);
 

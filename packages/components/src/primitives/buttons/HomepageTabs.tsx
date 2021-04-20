@@ -5,14 +5,7 @@ import Button from './Button';
 import Box from '../utils/Box';
 import TabsButtons from './TabsButtons';
 import ContentLoopLoadMore from '../loops/ContentLoopLoadMore';
-import {
-  useLoadMore,
-  useContainer,
-  useContent,
-  useCurrentUser,
-  useNavigation,
-} from '../../hooks';
-import { PlaysServiceType } from 'services';
+import { useCurrentUser, useNavigation } from '../../hooks';
 import { Colors, Tab } from 'common';
 
 type Props = {
@@ -20,7 +13,6 @@ type Props = {
 };
 
 const HomepageTabs: React.FC<Props> = ({ color }) => {
-  const { translation } = useCurrentUser();
   const tabs: Tab[] = [{ label: 'History' }, { label: 'New' }];
   const navigation = useNavigation();
 
@@ -40,25 +32,7 @@ const HomepageTabs: React.FC<Props> = ({ color }) => {
       {tab === 'History' && (
         <ContentLoopLoadMore type="history" homepage color={color} />
       )}
-      {tab === 'New' && (
-        <>
-          <ContentLoop small limit={2} seeAll color={color} />
-          <Button
-            small
-            full
-            text="See all"
-            style={{
-              backgroundColor: 'rgba(0,0,0,0)',
-            }}
-            transparent={color !== 'white'}
-            onPress={() =>
-              navigation.navigate('Category', {
-                category: { title: 'New', tag: undefined },
-              })
-            }
-          />
-        </>
-      )}
+      {tab === 'New' && <ContentLoop small limit={2} seeAll color={color} />}
     </>
   );
 };

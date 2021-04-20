@@ -30,12 +30,13 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const { user, language } = useCurrentUser();
   const [loading, setLoading] = useState(!content ? true : false);
-  const localUpdatedAt = useRef<Date | undefined>();
   const [state, dispatch] = useReducer(contentReducer, initialState);
 
   if (!user) {
     return <>{children}</>;
   }
+
+  const localUpdatedAt = useRef<Date | undefined>();
 
   const contentService = container.getInstance<ContentServiceType>(
     'contentService',
@@ -83,38 +84,32 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
     return <Loading fullPage loading={true} />;
   }
 
-  console.log('******CONTENT STATE!!!!', state);
+  const getDbContent = async (): Promise<void> => {
+    const setLocalContent = async (newContent: ContentObj): Promise<void> => {
+      await localStateService.setStorage<{ [key: string]: ContentObj }>(
+        'wmContent',
+        {
+          content: newContent,
+        },
+      );
+    };
+    // Get teachers and content from firestore
+    try {
+      const dbContent = await contentService.getContent();
 
-  // const getDbContent = async (): Promise<void> => {
-  //   const setLocalContent = async (newContent: ContentObj): Promise<void> => {
-  //     await localStateService.setStorage<{ [key: string]: ContentObj }>(
-  //       'wmContent',
-  //       {
-  //         content: newContent,
-  //       },
-  //     );
-  //   };
-  //   // Get teachers and content from firestore
-  //   try {
-  //     const dbContent = await contentService.getContent();
+      // Update AsyncStorage with firestore data
+      if (dbContent) {
+        await setLocalContent(dbContent);
+      }
 
-  //     // Update AsyncStorage with firestore data
-  //     if (dbContent) {
-  //       await setLocalContent(dbContent);
-  //     } else {
-  //       // logger.info(
-  //       //   `No results from fb for teachers or content. Not setting locally.`,
-  //       // );
-  //     }
-
-  //     // Update state with firestore data
-  //     setContent(dbContent);
-  //   } catch (err) {
-  //     setError(`Error fetching content from database - ${err}`);
-  //     // logger.error('Error getting firestore content data');
-  //   }
-  //   setLoading(false);
-  // };
+      // Update state with firestore data
+      setContent(dbContent);
+    } catch (err) {
+      setError(`Error fetching content from database - ${err}`);
+      // logger.error('Error getting firestore content data');
+    }
+    setLoading(false);
+  };
 
   // useEffect(() => {
   //   if (user) {
@@ -170,7 +165,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   //       fetchContent();
   //     }
   //   }
-  // }, [content, user]);
+  // }, [state.allCcontent, user]);
 
   // // If updateAvailable, refetch content from database automatically
   // useEffect(() => {

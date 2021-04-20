@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Languages } from 'services';
-import { Container, Button, Error, Box, Paragraph } from '../primitives';
+import { Languages } from 'common';
+import { Container, Button, Error, Box } from '../primitives';
 import { Image, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { deviceWidth } from 'services';
@@ -10,11 +10,6 @@ const imageHeight = imageWidth * 0.4;
 
 const LandingScreen: React.FC = () => {
   const navigation = useNavigation();
-  const [auths, setAuths] = useState<null | string[]>();
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState('');
 
   return (
     <Container center>
@@ -33,8 +28,8 @@ const LandingScreen: React.FC = () => {
         <Box my={1}>
           <Button
             text="English"
-            loading={loading}
             onPress={() =>
+              // Pass language in with the navigation
               navigation.navigate('Auth', { language: Languages.En })
             }
           />
@@ -42,12 +37,11 @@ const LandingScreen: React.FC = () => {
         <Button
           warning
           text="Español"
-          loading={loading}
           onPress={() =>
+            // Pass language in with the navigation
             navigation.navigate('Auth', { language: Languages.Es })
           }
         />
-        <Error error={error} />
       </View>
     </Container>
   );

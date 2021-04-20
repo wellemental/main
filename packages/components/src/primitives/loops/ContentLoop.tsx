@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, FlatList } from 'react-native';
 import ContentCard from '../cards/ContentCard';
-import Link from '../typography/Link';
+import Box from '../utils/Box';
 import { useContent, useCurrentUser, useNavigation } from '../../hooks';
 import {
   Content,
@@ -12,7 +12,6 @@ import {
   Teachers,
   filterContent,
   sortContent,
-  convertTimestamp,
   getTwoRandomInt,
   getRandomInt,
   Colors,
@@ -61,6 +60,7 @@ const ContentLoop: React.FC<Props> = ({
   const { content, error } = useContent();
   let filteredContent: Content[] = content;
   const [hasLangFilter, setLangFilter] = useState(true);
+  // For future user when we add sorting options to the UI
   const [sorting, setSort] = useState<Sortings | undefined>(sort);
   const defaultLimit = 8;
   const [theLimit, setLimit] = useState(limit ? limit : defaultLimit);
@@ -93,6 +93,7 @@ const ContentLoop: React.FC<Props> = ({
     filters.search = search;
   }
 
+  // Run it through filtering helper
   filteredContent = filterContent(content, filters);
 
   // Sort - defaults to 'priority' which falls back to most recent
@@ -112,6 +113,9 @@ const ContentLoop: React.FC<Props> = ({
       filteredContent = [filteredContent[getRandomInt(filteredContent.length)]];
     }
   }
+
+  // Limit content length
+  filteredContent = filteredContent.slice(0, theLimit);
 
   // Check to see if there's any content
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
@@ -146,12 +150,45 @@ const ContentLoop: React.FC<Props> = ({
         <>
           <ListEmpty />
           {hasLangFilter && (
-            <Button transparent onPress={() => setLangFilter(false)}>
-              {translation['See all languages']} ›
-            </Button>
+            <Button
+              transparent
+              onPress={() => setLangFilter(false)}
+              text={`${translation['See all languages']} ›`}
+            />
           )}
         </>
       )}
+      {content &&
+        hasFilteredContent &&
+        filteredContent &&
+        (seeAll ? (
+          <Box mt={0.5}>
+            <Button
+              small
+              full
+              text="See all"
+              style={{
+                backgroundColor: 'rgba(0,0,0,0)',
+              }}
+              transparent={color !== 'white'}
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: { title: 'New', tag: undefined },
+                })
+              }
+            />
+          </Box>
+        ) : (
+          filteredContent.length >= defaultLimit &&
+          filteredContent.length > theLimit && (
+            <Button
+              full
+              transparent
+              text="Load more"
+              onPress={() => setLimit(theLimit + defaultLimit)}
+            />
+          )
+        ))}
     </View>
   );
 };

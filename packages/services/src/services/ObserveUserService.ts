@@ -35,18 +35,19 @@ class ObserveUserService implements ObserveUserServiceType {
         // If no user, set state to default (pass no parameters)
         if (!newAuth) {
           this.setUser(null);
+          this.setLoading(false);
           this.user = undefined;
           this.auth = null;
-          this.setLoading(false);
         } else {
           // Set loading state while user doc is built
           this.setLoading(true);
 
           // If auth changed, subscribe to userDoc
-          if (this.authChanged(newAuth)) {
-            this.auth = newAuth;
-            this.subscribeToUserDoc(newAuth);
-          }
+          // Removing conditional bc it was blocking setUser - was from legacy code and don't think it's necessary
+          // if (this.authChanged(newAuth)) {
+          this.auth = newAuth;
+          this.subscribeToUserDoc(newAuth);
+          // }
         }
       },
     );
@@ -107,6 +108,10 @@ class ObserveUserService implements ObserveUserServiceType {
             userData && userData.lastPlay
               ? convertTimestamp(userData.lastPlay).toDate()
               : undefined,
+          promptedNotification:
+            userData && userData.promptedNotification
+              ? userData.promptedNotification
+              : false,
         };
 
         this.setUser(this.user);
@@ -114,7 +119,7 @@ class ObserveUserService implements ObserveUserServiceType {
       });
   };
 
-  // This seems unnecessary, but keeping for time's sake
+  // Deprecated, keeping in case there's a use case
   private authChanged = (newAuth: FbUser): boolean => {
     if (!this.auth) return true;
 

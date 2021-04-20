@@ -1,10 +1,6 @@
 import { User } from 'common';
-// import { buildLogger } from './LoggerService';
-// import { buildTracker } from './TrackerService';
 import UpdateUserService from './UpdateUserService';
 import { buildFirestore } from './FirebaseService';
-// import { buildNavigationService } from './navigationService';
-// import { Navigator } from './interfaces';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
 import FavoritesService from './FavoritesService';
@@ -19,7 +15,7 @@ interface DependencyDescriptor {
   class?: new (...args: any) => any;
 }
 
-let dependenciesInstances: { [key: string]: any } = {};
+export let dependenciesInstances: { [key: string]: any } = {};
 
 const BASE_SERVICE_DEPENDENCIES = ['currentUser', 'firestore'];
 
@@ -50,11 +46,11 @@ const dependenciesDescriptors = {
   },
   favoritesService: {
     class: FavoritesService,
-    dependencies: BASE_SERVICE_DEPENDENCIES,
+    dependencies: ['firestore', 'currentUser'],
   },
   teacherService: {
     class: TeacherService,
-    dependencies: BASE_SERVICE_DEPENDENCIES,
+    dependencies: ['firestore'],
   },
   observeNotifications: {
     class: ObserveNotifications,

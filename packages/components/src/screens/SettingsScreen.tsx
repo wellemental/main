@@ -31,11 +31,12 @@ type SettingsLink = {
 };
 
 const SettingsScreen: React.FC = () => {
-  const { auth, translation } = useCurrentUser();
+  const { translation } = useCurrentUser();
   const { getDbContent, features } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
   const version = getReadableVersion();
+  const { user } = useCurrentUser();
 
   // const container = useContainer();
   // const authService = container.getInstance<AuthServiceType>('auth');
@@ -87,6 +88,7 @@ const SettingsScreen: React.FC = () => {
   // Link to event link from remote config if available
   // If not, go to default web link
   const linkExternally = (label: 'event' | 'help'): void => {
+    // Not using yet - was going to be building a live event architecture
     const liveLink =
       features && features.event && features.event.url
         ? features.event.url
@@ -99,12 +101,6 @@ const SettingsScreen: React.FC = () => {
   };
 
   const list: SettingsLink[] = [
-    // {
-    //   label: translation['Select language'],
-    //   onPress: () => handleNavigate('Edit Profile'),
-    //   iconName: 'ios-person',
-    //   color: 'dark',
-    // },
     {
       label: translation['Need help?'],
       onPress: () => linkExternally('help'),
@@ -194,18 +190,17 @@ const SettingsScreen: React.FC = () => {
         </Body>
       </Box>
       <Body>
-        {auth && (
+        {user && (
           <Paragraph center fine>
-            {auth.email}
+            {user.email}
           </Paragraph>
         )}
       </Body>
 
-      {auth && auth.email === 'mike.r.vosters@gmail.com' && (
-        <Body>
-          <Paragraph fine>{auth.uid}</Paragraph>
-        </Body>
-      )}
+      <Body>
+        <Paragraph fine>{user.id}</Paragraph>
+      </Body>
+
       {/* </View> */}
     </Container>
   );
