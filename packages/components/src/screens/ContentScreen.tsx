@@ -25,6 +25,7 @@ import { PlaysServiceType } from 'common';
 import FadeIn from 'react-native-fade-in-image';
 import { useContainer, useMutation, useCurrentUser } from '../hooks';
 import { DownloadVideoService, deviceWidth, deviceHeight } from 'services';
+import Orientation from 'react-native-orientation-locker';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -109,22 +110,15 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const handleComplete = (): void => {
     // Dismiss fullscreen so the CelebrationScreen is shown
-    console.log('STILL COMPLETED!!!!');
+    // console.log('STILL COMPLETED!!!!');
     if (!!player.current) {
-      console.log('DISMISSES FULLSCREEN******');
+      // console.log('DISMISSES FULLSCREEN******');
       player.current.dismissFullscreenPlayer();
     }
 
     markComplete();
     navigation.navigate('Celebration');
   };
-
-  // Trigger handleComplete function once isOver state updates to true
-  // useEffect(() => {
-  //   if (isOver) {
-  //     handleComplete();
-  //   }
-  // }, [isOver]);
 
   // Add to user's recently played when they tap the play button
   const { mutate: addPlayCount } = useMutation(() =>
@@ -150,10 +144,11 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
       });
     } else {
       togglePaused(!isPaused);
+      // Go to fullscreen automatically when playing
       if (!!player.current) {
-        console.log('PRESETN FULLSCREEN******');
         player.current.presentFullscreenPlayer();
       } else {
+        // Sanity check in case the player ref doesn't work for some reason
         toggleControls(true);
       }
     }
@@ -241,11 +236,17 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
             onEnd={() => {
               handleComplete();
             }}
+            onFullScreenEnter={
+              content.video_orientation === 'landscape'
+                ? () => Orientation.unlockAllOrientations()
+                : undefined
+            }
+            onFullScreenExit={() => Orientation.lockToPortrait()}
             onFullscreenPlayerDidDismiss={() => {
               togglePaused(true);
             }}
             onFullscreenPlayerDidPresent={() => {
-              console.log('onFullscreenPlayerDidPresent');
+              // console.log('onFullscreenPlayerDidPresent');
             }}
           />
           {/* {showPoster && (

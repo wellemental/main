@@ -6,7 +6,7 @@ import {
 
 export type ContentStateType = {
   loading: boolean;
-  error: string | null;
+  error: Error | string | null;
   allContent: ContentObj;
   features: Feature[];
   content: Content[];

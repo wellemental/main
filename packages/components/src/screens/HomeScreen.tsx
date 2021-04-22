@@ -7,6 +7,7 @@ import {
   CategoryLoop,
   Subheadline,
   Paragraph,
+  Error,
   HomepageTabs,
   AgeCards,
 } from '../primitives';
@@ -36,7 +37,7 @@ type Props = {
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { activePlan, user } = useCurrentUser();
-  const { features } = useContent();
+  const { features, error } = useContent();
 
   // Prompt to activate notifications if they haven't already been asked
   const container = useContainer();
@@ -44,9 +45,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     'observeNotifications',
   );
 
-  const { data: notifPermission } = useQuery<AuthorizationStatus>(
-    service.checkPermissions,
-  );
+  const {
+    data: notifPermission,
+    error: notifError,
+  } = useQuery<AuthorizationStatus>(service.checkPermissions);
 
   if (
     !user.promptedNotification &&
@@ -84,6 +86,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <Container scrollEnabled bg={timeOfDay.name}>
+      <Error error={error || notifError} />
       {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}

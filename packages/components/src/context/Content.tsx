@@ -1,10 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import {
-  ContentObj,
-  Features,
-  ContentServiceType,
-  ObserveContentServiceType,
-} from 'common';
+import { ContentObj, Features, ContentServiceType } from 'common';
 import Loading from '../primitives/loaders/Loading';
 import {
   useConfig,
@@ -20,7 +15,7 @@ export const Content = React.createContext<ContentStateType>(initialState);
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
   const container = useContainer();
-  const [error, setError] = useState('');
+  const [error, setError] = useState<Error | string>('');
   const { user, language } = useCurrentUser();
   const [state, dispatch] = useReducer(contentReducer, initialState);
 
@@ -39,9 +34,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
   } = useQuery<ContentObj>(contentService.getContentContext);
 
   // Get Featured Content from Remote Config
-  const { loading: featuresLoading, data: features } = useConfig<Features>(
-    'featured',
-  );
+  const { data: features } = useConfig<Features>('featured');
 
   // Update state with fetched content
   useEffect(() => {
@@ -77,9 +70,28 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
     }
   }, [state.allContent, favsMore.items]);
 
+  // Error handling
+  useEffect(() => {
+    if (fetchedContentError) {
+      setError(fetchedContentError);
+    }
+    if (favsMore.loadingError) {
+      setError(favsMore.loadingError);
+    }
+    if (historyMore.loadingError) {
+      setError(historyMore.loadingError);
+    }
+  }, [fetchedContentError, favsMore.loadingError, historyMore.loadingError]);
+
   // Showing loading spinner until all content, favs, and history has loaded
   if (state.loading || state.favsMore.loading || state.historyMore.loading) {
-    return <Loading fullPage loading={true} />;
+    return (
+      <Loading
+        fullPage
+        loading={true}
+        // text={`Loading content - ${state.loading.toString()} || ${!!state.favsMore.loading.toString()} ${!!state.historyMore.loading.toString()} - ${error.toString()}`}
+      />
+    );
   }
 
   return (
@@ -87,6 +99,7 @@ export const ContentProvider = ({ children }: { children }): JSX.Element => {
       value={{
         ...state,
         getDbContent: contentService.getContentfromDb,
+        error,
       }}>
       {children}
     </Content.Provider>

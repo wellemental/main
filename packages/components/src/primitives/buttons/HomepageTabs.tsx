@@ -1,11 +1,9 @@
 // Tabs on Homepage
 import React, { useState } from 'react';
 import ContentLoop from '../loops/ContentLoop';
-import Button from './Button';
 import Box from '../utils/Box';
 import TabsButtons from './TabsButtons';
 import ContentLoopLoadMore from '../loops/ContentLoopLoadMore';
-import { useCurrentUser, useNavigation } from '../../hooks';
 import { Colors, Tab } from 'common';
 
 type Props = {
@@ -14,7 +12,6 @@ type Props = {
 
 const HomepageTabs: React.FC<Props> = ({ color }) => {
   const tabs: Tab[] = [{ label: 'History' }, { label: 'New' }];
-  const navigation = useNavigation();
 
   const [tab, setTab] = useState(tabs[0].label);
 

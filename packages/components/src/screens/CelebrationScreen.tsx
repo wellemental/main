@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions, Image } from 'react-native';
-import { Button, Box, Container, Headline } from '../primitives';
+import { StyleSheet, View, Image } from 'react-native';
+import { Button, Box, Headline } from '../primitives';
 import { ContentScreenNavigationProp, ContentScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { useNavigation, useCurrentUser } from '../hooks';
 import { colors } from 'common';
 import { deviceWidth, rateApp } from 'services';
+import Orientation from 'react-native-orientation-locker';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -44,6 +45,11 @@ const CelebrationScreen: React.FC<Props> = () => {
   const onLoad = data => {
     togglePoster(false);
   };
+
+  useEffect(() => {
+    // Safeguard to lock to portrait after fullscreen flexibility
+    Orientation.lockToPortrait();
+  }, []);
 
   useEffect(() => {
     if (

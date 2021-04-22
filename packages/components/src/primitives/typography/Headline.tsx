@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, TextStyle, TextProps } from 'react-native';
 import { H1, H3 } from 'native-base';
-import { Colors } from 'common';
+import { Colors, getTranslation } from 'common';
+import { useCurrentUser } from '../../hooks';
 import variables from '../../assets/native-base-theme/variables/wellemental';
-import TextTranslate from './TextTranslate';
 
 export interface HeadlineProps extends TextProps {
   style?: TextStyle;
@@ -20,6 +20,7 @@ const Headline: React.FC<HeadlineProps> = ({
   children,
   ...props
 }) => {
+  const { translation } = useCurrentUser();
   const Head = small ? H3 : H1;
 
   return (
@@ -33,7 +34,9 @@ const Headline: React.FC<HeadlineProps> = ({
         style,
       ])}
       {...props}>
-      <TextTranslate>{children}</TextTranslate>
+      {typeof children === 'string'
+        ? getTranslation(children, translation)
+        : children}
     </Head>
   );
 };

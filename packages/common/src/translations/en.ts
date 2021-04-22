@@ -248,4 +248,6 @@ export const English = {
   'Account upgraded! Close this page and wait a few seconds for the app to update.':
     'Account upgraded! Close this page and wait a few seconds for the app to update.',
   "Don't ask again": "Don't ask again",
+  'Promo code applied. 30 day free trial added.':
+    'Promo code applied. 30 day free trial added.',
 };

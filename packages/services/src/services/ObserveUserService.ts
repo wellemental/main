@@ -69,6 +69,8 @@ class ObserveUserService implements ObserveUserServiceType {
 
         // If user isn't logged in or doc doesn't exist
         if (!auth.email || !userData || !snapshot) {
+          this.setUser(null);
+          this.setLoading(false);
           return Promise.resolve();
         }
 

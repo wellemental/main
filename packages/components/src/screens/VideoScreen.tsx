@@ -4,6 +4,7 @@ import { Error, VideoAndroid } from '../primitives';
 import { VideoScreenNavigationProp, VideoScreenRouteProp } from '../types';
 import Video from 'react-native-video';
 import { deviceWidth } from 'services';
+import Orientation from 'react-native-orientation-locker';
 
 type Props = {
   route: VideoScreenRouteProp;
@@ -65,7 +66,7 @@ const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
       // onProgress={onProgress}
       // onLoad={onLoad}
       // onError={setError}
-      onEnd={handleComplete}
+      // onEnd={handleComplete}
       onBack={navigation.goBack}
       style={{ marginTop: 20 }}
     />
@@ -87,6 +88,8 @@ const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
           onLoad={onLoad}
           onError={setError}
           style={styles.backgroundVideo}
+          onFullScreenEnter={() => Orientation.unlockAllOrientations()}
+          onFullScreenExit={() => Orientation.lockToPortrait()}
         />
       </View>
       <Error error={error} />

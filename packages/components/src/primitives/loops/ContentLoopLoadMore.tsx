@@ -85,7 +85,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
         )}
 
         {homepage && type === 'history' && (
-          <Box mt={0.5}>
+          <Box mt={1}>
             <Button
               small
               text={'See all'}

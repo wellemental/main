@@ -162,7 +162,7 @@ const ContentLoop: React.FC<Props> = ({
         hasFilteredContent &&
         filteredContent &&
         (seeAll ? (
-          <Box mt={0.5}>
+          <Box mt={1}>
             <Button
               small
               full

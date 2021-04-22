@@ -1,13 +1,21 @@
 import React from 'react';
 import { Subheadline } from '../typography';
 import CategoryButton from '../cards/CategoryButton';
-import { Category, MuiTypeColors, Redirect } from 'common';
+import {
+  Category,
+  MuiTypeColors,
+  Redirect,
+  Languages,
+  Feature,
+  isFeature,
+} from 'common';
+import { useCurrentUser } from '../../hooks';
 
 const categoryColors = ['yellow', 'blurple', 'orange', 'teal'] as const;
 export type CategoryColors = typeof categoryColors[number];
 
 type Props = {
-  categories?: Category[];
+  categories?: Category[] | Feature[];
   title?: string;
   hideTitle?: boolean;
   redirects?: Redirect[];
@@ -24,6 +32,10 @@ const CategoryLoop: React.FC<Props> = ({
   color,
 }) => {
   const theColors = colors ? colors : categoryColors;
+  const { language } = useCurrentUser();
+  const isSpanish = language === Languages.Es;
+
+  const isAFeature = categories ? isFeature(categories[0]) : false;
 
   return (
     <>
@@ -32,10 +44,17 @@ const CategoryLoop: React.FC<Props> = ({
       )}
 
       {categories &&
-        categories.map((category, idx) => (
+        categories.map((category: Category | Feature, idx: number) => (
           <CategoryButton
             key={category.title}
-            title={category.title}
+            title={
+              // Covers for homepage remote config feature buttons
+              // @ts-ignore - Need to improve Typescript/Props to differentiate between features and categories
+              category['title-es'] && isSpanish
+                ? // @ts-ignore
+                  category['title-es']
+                : category.title
+            }
             color={theColors[idx]}
             category={category}
             icon={category.tag}
@@ -51,7 +70,12 @@ const CategoryLoop: React.FC<Props> = ({
         redirects.map((redirect, idx) => (
           <CategoryButton
             key={redirect.title}
-            title={redirect.title}
+            title={
+              // Covers for homepage remote config feature buttons
+              redirect['title-es'] && isSpanish
+                ? redirect['title-es']
+                : redirect.title
+            }
             color={theColors[idx]}
             redirect={redirect.slug}
             icon={redirect.icon}

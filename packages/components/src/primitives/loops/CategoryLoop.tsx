@@ -1,12 +1,13 @@
 import React from 'react';
 import { Subheadline, CategoryButton } from '..';
-import { Category, Redirect, Colors } from 'common';
+import { Category, Redirect, Colors, Languages, Feature } from 'common';
+import { useCurrentUser } from '../../hooks';
 
 const categoryColors = ['yellow', 'blurple', 'orange', 'teal'] as const;
 export type CategoryColors = typeof categoryColors[number];
 
 type Props = {
-  categories?: Category[];
+  categories?: Category[] | Feature[];
   title?: string;
   hideTitle?: boolean;
   redirects?: Redirect[];
@@ -23,6 +24,8 @@ const CategoryLoop: React.FC<Props> = ({
   color,
 }) => {
   const theColors = colors ? colors : categoryColors;
+  const { language } = useCurrentUser();
+  const isSpanish = language === Languages.Es;
 
   return (
     <>
@@ -31,10 +34,15 @@ const CategoryLoop: React.FC<Props> = ({
       )}
 
       {categories &&
-        categories.map((category, idx) => (
+        categories.map((category: Category | Feature, idx: number) => (
           <CategoryButton
             key={category.title}
-            title={category.title}
+            title={
+              // Covers for homepage remote config feature buttons
+              category['title-es'] && isSpanish
+                ? category['title-es']
+                : category.title
+            }
             color={theColors[idx]}
             category={category}
             icon={category.icon}
@@ -50,7 +58,12 @@ const CategoryLoop: React.FC<Props> = ({
         redirects.map((redirect, idx) => (
           <CategoryButton
             key={redirect.title}
-            title={redirect.title}
+            title={
+              // Covers for homepage remote config feature buttons
+              redirect['title-es'] && isSpanish
+                ? redirect['title-es']
+                : redirect.title
+            }
             color={theColors[idx]}
             redirect={redirect.page}
             icon={redirect.icon}

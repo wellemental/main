@@ -135,7 +135,7 @@ class ContentService extends BaseService implements MobileContentServiceType {
       return content;
     } catch (err) {
       // logger.error(`Unable to get all content - ${err}`);
-      return Promise.reject(new ApplicationError(err));
+      return Promise.reject(`Unable to get content from database - ${err}`);
     }
   };
 
@@ -151,20 +151,23 @@ class ContentService extends BaseService implements MobileContentServiceType {
   private calcUpdateAvailable = async (
     localUpdatedAt: Date,
   ): Promise<boolean> => {
-    // Get latest updated_at times from firestore
-    const dbContentLatest = await this.getLatestUpdate();
+    try {
+      // Get latest updated_at times from firestore
+      const dbContentLatest = await this.getLatestUpdate();
 
-    // If local state has never been saved, prompt update
-    if (!localUpdatedAt) {
-      return true;
+      // If local state has never been saved, prompt update
+      if (!localUpdatedAt) {
+        return true;
+      }
+
+      // If database content has been updated more recently than the last local save, prompt update
+      if (dbContentLatest > localUpdatedAt) {
+        return true;
+      }
+      return false;
+    } catch (err) {
+      return Promise.reject(err);
     }
-
-    // If database content has been updated more recently than the last local save, prompt update
-    if (dbContentLatest > localUpdatedAt) {
-      return true;
-    }
-
-    return false;
   };
 
   public getLatestUpdate = async (): Promise<Date> => {
@@ -180,7 +183,7 @@ class ContentService extends BaseService implements MobileContentServiceType {
       return content[0].updated_at.toDate();
     } catch (err) {
       // logger.error('Unable to get latest content update');
-      return Promise.reject(new ApplicationError(err));
+      return Promise.reject('Unable to get latest content update');
     }
   };
 }
