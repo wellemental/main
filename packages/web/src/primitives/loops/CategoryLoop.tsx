@@ -44,6 +44,7 @@ const CategoryLoop: React.FC<Props> = ({
       )}
 
       {categories &&
+        // @ts-ignore
         categories.map((category: Category | Feature, idx: number) => (
           <CategoryButton
             key={category.title}
@@ -70,12 +71,7 @@ const CategoryLoop: React.FC<Props> = ({
         redirects.map((redirect, idx) => (
           <CategoryButton
             key={redirect.title}
-            title={
-              // Covers for homepage remote config feature buttons
-              redirect['title-es'] && isSpanish
-                ? redirect['title-es']
-                : redirect.title
-            }
+            title={redirect.title}
             color={theColors[idx]}
             redirect={redirect.slug}
             icon={redirect.icon}

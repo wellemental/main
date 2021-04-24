@@ -10,7 +10,7 @@ import {
   Paragraph,
   Error,
 } from '../primitives';
-import { scrollToTop } from '../services/helpers';
+import { scrollToTop } from 'common';
 import { useCurrentUser, useHistory, useLead } from '../hooks';
 import app from '../base';
 import logger from '../services/LoggerService';

@@ -237,6 +237,7 @@ type Product = {
   expirationDate: number;
   originalTransactionId: string;
   productId: PlanId;
+  purchaseDate: number;
   quantity: number;
   transactionId: string;
 };
@@ -483,8 +484,6 @@ export interface ContentServiceType {
   getContentfromDb(): Promise<ContentObj>;
   getContentContext(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
-  // favsQuery: Query;
-  // playsQuery: Query;
 }
 
 export type PromoCode = {
@@ -565,6 +564,7 @@ export type Features = {
 
 export type VersionConfig = {
   version: string;
+  versionAndroid: string;
   build: number;
   forceUpgrade: boolean;
   iosUrl: string;

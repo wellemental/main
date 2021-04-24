@@ -24,6 +24,8 @@
     "copyContent:staging": "yarn run build && FIREBASE=dev node lib/scripts/copyContent.js",
     "getAnalytics:staging": "yarn run build && FIREBASE=dev node lib/scripts/getAnalytics.js",
     "getAnalytics:production": "yarn run build && FIREBASE=prod node lib/scripts/getAnalytics.js",
+    "runSubsRenew:staging": "yarn run build && FIREBASE=dev node lib/scripts/runSubsRenew.js",
+    "runSubsRenew:production": "yarn run build && FIREBASE=prod node lib/scripts/runSubsRenew.js",
     "migrateKlaviyo:staging": "yarn run build && FIREBASE=dev node lib/scripts/migrateExistingUsersToKlaviyo.js",
     "migrateKlaviyo:production": "yarn run build && FIREBASE=prod node lib/scripts/migrateExistingUsersToKlaviyo.js",
     "getTeachers:production": "yarn run build && FIREBASE=prod node lib/scripts/getTeachers.js",

@@ -23,15 +23,7 @@ export const CurrentUserProvider = ({ children }: any) => {
 
   // If observe user is still loading and there isn't a users (failsafe in case loading doesn't get set)
   if (loading && !user) {
-    return (
-      <Loading
-        fullPage
-        loading={true}
-        // text={`Loading user... ${
-        //   user ? !!user.toString : 'null'
-        // } - ${loading.toString()}`}
-      />
-    );
+    return <Loading fullPage loading={true} />;
   }
 
   return (

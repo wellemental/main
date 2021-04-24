@@ -34,7 +34,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const VideoAndroid: React.FC = (props) => {
+type Props = {
+  videoOrientation: 'landscape' | 'portrait';
+};
+
+const VideoAndroid: React.FC<Props & VideoPlayer> = props => {
   const [isFullscreen, toggleFullscreen] = useState(false);
 
   const handleOrientation = (orientation: string) => {
@@ -48,13 +52,15 @@ const VideoAndroid: React.FC = (props) => {
   };
 
   useEffect(() => {
-    // This would be inside componentDidMount()
-    Orientation.addOrientationListener(handleOrientation);
-    Orientation.unlockAllOrientations();
-    return () => {
-      // This would be inside componentWillUnmount()
-      Orientation.removeOrientationListener(handleOrientation);
-    };
+    if (props.videoOrientation === 'landscape') {
+      // This would be inside componentDidMount()
+      Orientation.addOrientationListener(handleOrientation);
+      Orientation.unlockAllOrientations();
+      return () => {
+        // This would be inside componentWillUnmount()
+        Orientation.removeOrientationListener(handleOrientation);
+      };
+    }
   }, []);
 
   const videoStyles = isFullscreen
@@ -79,7 +85,7 @@ const VideoAndroid: React.FC = (props) => {
         // onExitFullscreen={exitFullscreen}
         disableVolume={true}
         // disableBack={true}
-        disableFullscreen={true}
+        // disableFullscreen={true}
         {...props}
       />
     </SafeAreaView>

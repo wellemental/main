@@ -108,12 +108,18 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     playsService.complete(content.id, duration),
   );
 
+  const android = Platform.OS === 'android';
+
   const handleComplete = (): void => {
     // Dismiss fullscreen so the CelebrationScreen is shown
     // console.log('STILL COMPLETED!!!!');
     if (!!player.current) {
       // console.log('DISMISSES FULLSCREEN******');
       player.current.dismissFullscreenPlayer();
+    }
+
+    if (android) {
+      navigation.goBack();
     }
 
     markComplete();
@@ -125,9 +131,6 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     playsService.add(content.id),
   );
 
-  const androidOrPortrait = Platform.OS === 'android';
-  //content.video_orientation === 'portrait' || Platform.OS === 'android';
-
   const handlePlay = (): void => {
     // Only count if it hasn't been logged already
     if (!hasPlayed) {
@@ -136,7 +139,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
     }
 
     // If vertical video, trigger to VideoScreen, if not just play the video
-    if (androidOrPortrait) {
+    if (android) {
       navigation.navigate('Video', {
         content,
         savedVideoPath: video,
@@ -190,7 +193,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <>
-      {androidOrPortrait ? (
+      {android ? (
         <View style={{ width: deviceWidth, height: videoHeight }}>
           <ImageBackground
             source={{ uri: content.thumbnail }}

@@ -1,8 +1,14 @@
 import React from 'react';
 import { ContentLoop, PageHeading, Spinner } from '../primitives';
 import { useContent, useRouteMatch, useCurrentUser } from '../hooks';
-import { Category, categories, Tags, Feature, Languages } from 'common';
-import { slugify } from '../services/helpers';
+import {
+  Category,
+  categories,
+  Tags,
+  Feature,
+  Languages,
+  slugify,
+} from 'common';
 import { ageGroups } from '../constants';
 
 // This filter and matching is horrible and needs to be cleaned up eventually.
@@ -59,6 +65,8 @@ const CategoryScreen: React.FC = () => {
     })[0];
   }
 
+  console.log('FEATURES', feature, 'CATE', category, 'IS AGE', isAgeGroup);
+
   return !category && !feature ? (
     <Spinner />
   ) : (
@@ -67,6 +75,8 @@ const CategoryScreen: React.FC = () => {
         title={
           feature && isSpanish // Remote config features won't have built-in translation since they're set by admins
             ? feature['title-es']
+            : !!feature
+            ? feature.title
             : isAgeGroup
             ? `${category.title} ${translation.years}`
             : category.title
@@ -74,6 +84,8 @@ const CategoryScreen: React.FC = () => {
         subtitle={
           feature && isSpanish
             ? feature['description-es']
+            : !!feature
+            ? feature.description
             : category.description
         }
       />

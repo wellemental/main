@@ -14,15 +14,14 @@ import { ContentStateType, initialState } from './initialStates/contentState';
 export const Content = React.createContext<ContentStateType>(initialState);
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
-  const container = useContainer();
   const [error, setError] = useState<Error | string>('');
   const { user, language } = useCurrentUser();
   const [state, dispatch] = useReducer(contentReducer, initialState);
-
   if (!user) {
     return <>{children}</>;
   }
 
+  const container = useContainer();
   const contentService = container.getInstance<ContentServiceType>(
     'contentService',
   );

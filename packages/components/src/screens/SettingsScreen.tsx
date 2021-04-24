@@ -31,7 +31,7 @@ type SettingsLink = {
 };
 
 const SettingsScreen: React.FC = () => {
-  const { translation } = useCurrentUser();
+  const { translation, isAdmin } = useCurrentUser();
   const { getDbContent, features } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
@@ -135,7 +135,6 @@ const SettingsScreen: React.FC = () => {
   ];
 
   return (
-    // <View style={{ marginTop: -10 }}>
     <Container scrollEnabled>
       <PageHeading title={translation.Settings} />
       <Error error={error} />
@@ -162,28 +161,6 @@ const SettingsScreen: React.FC = () => {
         );
       })}
 
-      {/* <List style={{ marginTop: -15 }}>
-        {list.map((item: SettingsLink, idx: number) => {
-          return (
-            <ListItem
-              style={{ marginLeft: 0, paddingLeft: 0 }}
-              key={idx}
-              icon
-              button
-              onPress={item.onPress}>
-              <Left>
-                <Icon name={item.iconName} size={24} />
-              </Left>
-              <Body>
-                <Text>{item.label}</Text>
-              </Body>
-              <Right>
-                <Icon name="ios-arrow-forward" size={24} />
-              </Right>
-            </ListItem>
-          );
-        })}
-      </List> */}
       <Box mt={2}>
         <Body>
           <Paragraph fine>{version}</Paragraph>
@@ -197,11 +174,11 @@ const SettingsScreen: React.FC = () => {
         )}
       </Body>
 
-      <Body>
-        <Paragraph fine>{user.id}</Paragraph>
-      </Body>
-
-      {/* </View> */}
+      {isAdmin && (
+        <Body>
+          <Paragraph fine>{user.id}</Paragraph>
+        </Body>
+      )}
     </Container>
   );
 };

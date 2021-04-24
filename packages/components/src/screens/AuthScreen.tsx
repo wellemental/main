@@ -127,7 +127,9 @@ const AuthScreen: React.FC<Props> = ({ route }) => {
         onPress={handleStep}
       />
       <Box mt={3}>
-        {auths && auths.length === 0 && <LegalLinks />}
+        {auths && auths.length === 0 && (
+          <LegalLinks translation={translation} />
+        )}
         <Button
           small
           transparent

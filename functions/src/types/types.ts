@@ -45,17 +45,23 @@ export enum PlanId {
 
 export type PlanTypes = 'iosIap' | 'promoCode' | 'android' | 'stripe';
 
+// This type should be separate by type w/ better union type
 type UserPlanBase = {
   type: PlanTypes;
   auto_renew_status: boolean;
-  nextRenewalDate: string; // Just storing so humans can easily read it in database
+  nextRenewalDate: string | null; // Just storing so humans can easily read it in database - null could be removed, didn't have time to test if IAP always delivered a expirateUnix
   nextRenewalUnix: number; // unix timestamp
+  startDate: string | null; // Just storing so humans can easily read it in database - null could be removed, didn't have time to test if IAP always delivered a startUnix
+  startUnix: number; // unix timestamp
+  lastVerified: string; // Last time a function validated it's active state
   canceledAtUnix?: number;
-  planId: string;
+  planId: string; // Sku or product id
   status: 'canceled' | 'active' | 'trialing' | 'pending';
   stripeEvents?: string[];
   orderId?: string;
   code?: string;
+  purchaseToken?: string; // For Android validation
+  packageName?: string; // For Android validation
 };
 
 // For use when saving to Firebase
@@ -69,6 +75,7 @@ export interface FbUserPlan extends UserPlanBase {
 }
 
 export interface User {
+  id: string;
   email: string;
   plan: UserPlan | FbUserPlan;
   created_at: Timestamp;
@@ -83,11 +90,27 @@ export interface User {
   isAdmin?: boolean;
 }
 
+export type IapPurchase = {
+  bundleId: string;
+  transactionId: string;
+  productId: string;
+  purchaseDate: number;
+  quantity: number;
+  expirationDate: number;
+  isTrialPeriod?: boolean; // only for subscriptions and if extented = true
+  isInIntroOfferPeriod?: boolean; // only for subscriptions and if extented = true, since v1.5.1
+  environment?: string; // only if extented = true
+  originalPurchaseDate?: number; // only if extented = true
+  applicationVersion?: string; // only if extented = true
+  originalApplicationVersion?: string; // only if extented = true
+};
+
 export type Product = {
   bundleId: string;
   expirationDate: FirebaseFirestore.Timestamp;
   originalTransactionId: string;
   productId: PlanId;
+  purchaseDate: number;
   quantity: number;
   transactionId: string;
 };
@@ -96,7 +119,7 @@ export type ReceiptIap = {
   userId: string;
   receipt: string;
   verified: boolean;
-  products: Product[];
+  products: Product[] | IapPurchase[];
   timestamp: number;
   timestampDate: Date;
   environment: 'sandbox' | 'production';

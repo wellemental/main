@@ -1,8 +1,13 @@
 import React from 'react';
 import { ContentLoop, PageHeading, Spinner } from '../primitives';
-import { useContent, useRouteMatch, useQuery, useContainer } from '../hooks';
-import { capitalize } from '../services/helpers';
-import { Teacher, AllTeachers, Teachers, TeacherServiceType } from 'common';
+import { useRouteMatch, useQuery, useContainer } from '../hooks';
+import {
+  Teacher,
+  AllTeachers,
+  Teachers,
+  TeacherServiceType,
+  capitalize,
+} from 'common';
 
 const TeacherScreen: React.FC = () => {
   const match: Teachers = useRouteMatch() as Teachers;
@@ -16,7 +21,7 @@ const TeacherScreen: React.FC = () => {
   }
 
   return !teacher ? (
-    <Spinner />
+    <Spinner fullPage />
   ) : (
     <>
       <PageHeading

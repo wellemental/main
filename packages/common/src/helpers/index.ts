@@ -9,3 +9,5 @@ export * from './convertTimestamp';
 export * from './getRandomInt';
 export * from './increment';
 export * from './convertToTimestamp';
+export * from './convertMillisToUnix';
+export * from './convertUnixToDateString';

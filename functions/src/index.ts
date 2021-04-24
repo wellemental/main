@@ -7,8 +7,11 @@ import {
   getBillingPortal,
 } from './stripe';
 import { updateUserPlan } from './user';
-import { validateIap, renewOrCancelSubscriptions } from './iap';
-import { validateAndroidSubscription } from './android';
+import {
+  validateIap,
+  renewOrCancelSubscriptions,
+  validateAndroidSubscription,
+} from './subscriptions';
 import { addToList, updateKlaviyoPlan } from './klaviyo';
 import { StripeEvent, PlayEvent, FieldValue, Favorite, User } from './types';
 
@@ -78,9 +81,18 @@ const onValidateIap = functions.https.onCall(async (data, context) => {
   }
 });
 
+// Communicates validation status back to IAP context for validation and purchase acknowledgement
 const onValidateAndroid = functions.https.onCall(async (data, context) => {
   try {
-    await validateAndroidSubscription(data, context);
+    if (!context.auth) {
+      return {
+        status: 500,
+        message: 'Error validating android. No provided context.',
+      };
+    }
+
+    await validateAndroidSubscription(data, context.auth.uid);
+
     return {
       status: 200,
       message: 'Purchase Complete!',

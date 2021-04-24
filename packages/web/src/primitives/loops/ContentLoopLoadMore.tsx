@@ -76,11 +76,13 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
             );
           })
         ) : (
-          <ListEmpty center color={color}>
-            {type === 'history'
-              ? 'Your recently played videos will appear here. Get started!'
-              : 'Your favorite videos will appear here. Get started!'}
-          </ListEmpty>
+          <Box pt={homepage ? 0.5 : 0}>
+            <ListEmpty center color={color}>
+              {type === 'history'
+                ? 'Your recently played videos will appear here. Get started!'
+                : 'Your favorite videos will appear here. Get started!'}
+            </ListEmpty>
+          </Box>
         )}
 
         {actions.hasMore &&
@@ -90,7 +92,8 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
             <Box mt={1}>
               <Button
                 fullWidth={true}
-                size="small"
+                // size="small"
+                color="warning"
                 disabled={actions.loadingMore}
                 text="Load More"
                 onPress={actions.loadMore}

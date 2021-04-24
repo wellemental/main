@@ -10,8 +10,13 @@ const initialContainer = buildDependencies({});
 export const ServicesContext = createContext(initialContainer);
 
 export const ServicesProvider: React.FC = ({ children }) => {
-  const [container, setContainer] = useState(initialContainer);
   const { user } = useCurrentUser();
+
+  if (!user) {
+    return <>{children}</>;
+  }
+
+  const [container, setContainer] = useState(initialContainer);
 
   useEffect(() => {
     setContainer(

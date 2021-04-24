@@ -1,6 +1,10 @@
 import firebase, { FbUser } from '../base';
-import { User, Languages, ObserveUserServiceType } from 'common';
-import { convertTimestamp } from '../services/helpers';
+import {
+  User,
+  Languages,
+  ObserveUserServiceType,
+  convertTimestamp,
+} from 'common';
 import moment from 'moment';
 import { setUserProperties } from '../services/TrackerService';
 

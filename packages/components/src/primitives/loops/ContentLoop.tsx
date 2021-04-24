@@ -115,13 +115,13 @@ const ContentLoop: React.FC<Props> = ({
   }
 
   // Limit content length
-  filteredContent = filteredContent.slice(0, theLimit);
+  const limitedContent = filteredContent.slice(0, theLimit);
 
   // Check to see if there's any content
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (
-    <View style={{ marginHorizontal: hasPadding ? 15 : 0 }}>
+    <View style={{ marginHorizontal: hasPadding ? 15 : 0, marginBottom: 10 }}>
       <Error error={error} />
 
       {content && scrollEnabled ? (
@@ -132,10 +132,24 @@ const ContentLoop: React.FC<Props> = ({
         //   ))}
         // </ScrollView>
         <FlatList
-          data={filteredContent}
+          data={limitedContent}
           initialNumToRender={10}
           ListHeaderComponent={header}
           showsVerticalScrollIndicator={false}
+          ListFooterComponent={
+            filteredContent.length >= defaultLimit &&
+            filteredContent.length > theLimit && (
+              <Box my={1.5}>
+                <Button
+                  // transparent
+                  small
+                  warning
+                  text="Load more"
+                  onPress={() => setLimit(theLimit + defaultLimit)}
+                />
+              </Box>
+            )
+          }
           renderItem={({ item }) => (
             <ContentCard small={small} content={item} />
           )}
@@ -143,9 +157,46 @@ const ContentLoop: React.FC<Props> = ({
           {...props}
         />
       ) : content && hasFilteredContent && filteredContent ? (
-        filteredContent.map((item, idx: number) => (
-          <ContentCard small={small} key={idx} content={item} />
-        ))
+        <>
+          {limitedContent.map((item, idx: number) => (
+            <ContentCard small={small} key={idx} content={item} />
+          ))}
+          {content &&
+            hasFilteredContent &&
+            filteredContent &&
+            (seeAll ? (
+              <Box mt={1}>
+                <Button
+                  small
+                  text="See all"
+                  style={{
+                    backgroundColor: 'rgba(0,0,0,0)',
+                  }}
+                  transparent={color !== 'white'}
+                  onPress={() =>
+                    navigation.navigate('Category', {
+                      category: { title: 'New', tag: undefined },
+                    })
+                  }
+                />
+              </Box>
+            ) : (
+              // Show load more if there's more content than the set slice limit
+              // Limit is set to improve image and screen loading
+              !scrollEnabled &&
+              filteredContent.length >= defaultLimit &&
+              filteredContent.length > theLimit && (
+                <Box my={1}>
+                  <Button
+                    small
+                    transparent
+                    text="Load more"
+                    onPress={() => setLimit(theLimit + defaultLimit)}
+                  />
+                </Box>
+              )
+            ))}
+        </>
       ) : (
         <>
           <ListEmpty />
@@ -158,37 +209,6 @@ const ContentLoop: React.FC<Props> = ({
           )}
         </>
       )}
-      {content &&
-        hasFilteredContent &&
-        filteredContent &&
-        (seeAll ? (
-          <Box mt={1}>
-            <Button
-              small
-              full
-              text="See all"
-              style={{
-                backgroundColor: 'rgba(0,0,0,0)',
-              }}
-              transparent={color !== 'white'}
-              onPress={() =>
-                navigation.navigate('Category', {
-                  category: { title: 'New', tag: undefined },
-                })
-              }
-            />
-          </Box>
-        ) : (
-          filteredContent.length >= defaultLimit &&
-          filteredContent.length > theLimit && (
-            <Button
-              full
-              transparent
-              text="Load more"
-              onPress={() => setLimit(theLimit + defaultLimit)}
-            />
-          )
-        ))}
     </View>
   );
 };

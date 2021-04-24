@@ -12,13 +12,6 @@ import { initialState } from './initialStates/contentState';
 
 export const Content = React.createContext<StateType>(initialState);
 
-// const filterLanguage = (items: ContentType[], language?: Languages) => {
-//   return items.filter((item: ContentType) =>
-//     // If no language param, then just return everything
-//     language ? item.language === language : item,
-//   );
-// };
-
 export const ContentProvider: React.FC = ({ children }): JSX.Element => {
   const container = useContainer();
   const { user, language } = useCurrentUser();
@@ -40,7 +33,7 @@ export const ContentProvider: React.FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     // Load all content from db
-    contentService.getContent().then(items => {
+    contentService.getContentfromDb().then(items => {
       dispatch({ type: 'LOADED', value: items, language: language });
     });
 
@@ -69,8 +62,9 @@ export const ContentProvider: React.FC = ({ children }): JSX.Element => {
     }
   }, [state.allContent, favsMore.items]);
 
-  // Showing loading spinner until all content, favs, and history has loaded
-  if (state.loading || state.favsMore.loading || state.historyMore.loading) {
+  // Showing loading spinner until all content has loaded
+  // Not waiting for history or favs bc it was causing error upon new user signup
+  if (state.loading) {
     return <Spinner fullPage />;
   }
 

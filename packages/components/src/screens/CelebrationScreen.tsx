@@ -99,7 +99,8 @@ const CelebrationScreen: React.FC<Props> = () => {
 
         <Button
           text={translation['Keep going']}
-          onPress={() => navigation.navigate('Home')}
+          // onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.goBack()}
         />
       </Box>
     </View>

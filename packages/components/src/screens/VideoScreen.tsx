@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { Error, VideoAndroid } from '../primitives';
 import { VideoScreenNavigationProp, VideoScreenRouteProp } from '../types';
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// Should combine this with VideoAndroid since iOS is no longer using this screen
 const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
   const { content, savedVideoPath, handleComplete } = route.params;
   const [error, setError] = useState();
@@ -35,17 +36,6 @@ const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
   if (!isOver && currentTime >= duration - 1) {
     toggleOver(true);
   }
-
-  useEffect(() => {
-    if (isOver) {
-      if (!!player.current) {
-        console.log('DISMISSES FULLSCREEN******');
-        player.current.dismissFullscreenPlayer();
-      }
-
-      handleComplete();
-    }
-  }, [isOver]);
 
   const onProgress = data => {
     if (!isOver) {
@@ -66,11 +56,13 @@ const VideoScreen: React.FC<Props> = ({ route, navigation }) => {
       // onProgress={onProgress}
       // onLoad={onLoad}
       // onError={setError}
-      // onEnd={handleComplete}
+      onEnd={handleComplete}
       onBack={navigation.goBack}
       style={{ marginTop: 20 }}
+      videoOrientation={content.video_orientation}
     />
   ) : (
+    // No longer using this. Portait iOS videos just go to fullscreen.
     <View style={{ backgroundColor: '#000' }}>
       <View style={{ height: deviceHeight, width: deviceWidth }}>
         <Video

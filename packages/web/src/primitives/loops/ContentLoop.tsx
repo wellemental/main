@@ -115,7 +115,7 @@ const ContentLoop: React.FC<Props> = ({
   }
 
   // Limit content length
-  filteredContent = filteredContent.slice(0, theLimit);
+  const limitedContent = filteredContent.slice(0, theLimit);
 
   // Check to see if there's any content
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
@@ -126,7 +126,7 @@ const ContentLoop: React.FC<Props> = ({
 
       {content && hasFilteredContent && filteredContent ? (
         <>
-          {filteredContent.map((item, idx) => (
+          {limitedContent.map((item, idx) => (
             <ContentCard
               small={small || isSmall}
               key={idx}
@@ -159,7 +159,7 @@ const ContentLoop: React.FC<Props> = ({
             filteredContent.length > theLimit && (
               <Button
                 fullWidth={true}
-                variant="text"
+                color="warning"
                 text="Load more"
                 onPress={() => setLimit(theLimit + defaultLimit)}
               />

@@ -20,16 +20,18 @@ export const loadMoreReducer = (
       const items = [...state.items];
       let isAdding = false;
 
-      action.value.docChanges().forEach(change => {
-        if (change.type === 'added') {
-          isAdding = true;
-          addItem(change.doc, items);
-        } else if (change.type === 'modified') {
-          updateItem(change.doc, items);
-        } else if (change.type === 'removed') {
-          deleteItem(change.doc, items);
-        }
-      });
+      // Added conditional due to error upon signup
+      !!action.value &&
+        action.value.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            isAdding = true;
+            addItem(change.doc, items);
+          } else if (change.type === 'modified') {
+            updateItem(change.doc, items);
+          } else if (change.type === 'removed') {
+            deleteItem(change.doc, items);
+          }
+        });
 
       const nextLimit = items.length + action.limit;
 
@@ -41,7 +43,9 @@ export const loadMoreReducer = (
         limit: nextLimit,
         loading: false,
         loadingError: null,
-        lastLoaded: action.value.docs[action.value.docs.length - 1],
+        lastLoaded: !action.value // Added conditional due to error upon signup
+          ? null
+          : action.value.docs[action.value.docs.length - 1],
         loadingMore: false,
         items,
       };

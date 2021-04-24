@@ -53,7 +53,7 @@ const AnalyticsScreen: React.FC = () => {
     ? moment(data[0].endDate).add(7, 'days')
     : undefined;
 
-  let hasAnotherWeek = false;
+  let hasAnotherWeek = moment().isAfter(nextEndMoment, 'day');
 
   // Handle Totals Update
   const handleUpdate = () => {
@@ -109,19 +109,24 @@ const AnalyticsScreen: React.FC = () => {
 
       <Box row justifyContent="space-between">
         <Subheadline>Weekly</Subheadline>
-        {hasAnotherWeek && (
-          <Button
-            text="add week (refresh after)"
-            size="small"
-            variant="text"
-            onPress={() => {
-              if (nextEndMoment) {
-                service.addWeek(nextEndMoment.format('YYYY-MM-DD'));
-              }
-            }}
-            disabled={!hasAnotherWeek}
-          />
-        )}
+
+        <Button
+          text={
+            hasAnotherWeek
+              ? 'add week (refresh after)'
+              : `Can't add week until ${nextEndMoment
+                  ?.add(1, 'day')
+                  .format('YYYY-MM-DD')}`
+          }
+          size="small"
+          variant="text"
+          onPress={() => {
+            if (nextEndMoment) {
+              service.addWeek(nextEndMoment.format('YYYY-MM-DD'));
+            }
+          }}
+          disabled={!hasAnotherWeek}
+        />
       </Box>
 
       <TableContainer component={Paper}>

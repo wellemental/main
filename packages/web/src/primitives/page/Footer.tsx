@@ -5,7 +5,7 @@ import Paragraph from '../typography/Paragraph';
 import { useCurrentUser } from '../../hooks';
 
 const Footer = () => {
-  const { user, translation } = useCurrentUser();
+  const { user, isAdmin, translation } = useCurrentUser();
   return (
     <Box mx={2} mt={4} mb={2}>
       <Paragraph fine center color="textSecondary">
@@ -14,7 +14,7 @@ const Footer = () => {
           {translation['Need help?']}
         </Link>
       </Paragraph>
-      {user && user.isAdmin && (
+      {isAdmin && (
         <Paragraph fine center color="textSecondary">
           {user.email} - {user.id}
         </Paragraph>

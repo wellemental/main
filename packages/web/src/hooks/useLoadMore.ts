@@ -22,15 +22,13 @@ const useLoadMore = (
 
   // when "after" changes, we update our query
   useEffect(() => {
-    if (query) {
-      const fn = query.limit(state.limit || limit);
+    const fn = query.limit(state.limit || limit);
 
-      const unsubscribe = fn.onSnapshot(snap => {
-        dispatch({ type: 'LOADED', value: snap, limit });
-      });
+    const unsubscribe = fn.onSnapshot(snap => {
+      dispatch({ type: 'LOADED', value: snap, limit });
+    });
 
-      return unsubscribe;
-    }
+    return unsubscribe;
   }, [state.after]);
 
   // trigger firebase to load more

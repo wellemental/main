@@ -4,7 +4,6 @@ import {
   TeacherServiceType,
   Content,
   ContentObj,
-  ContentServiceType,
   QueryDocumentSnapshot,
   Categories,
 } from 'common';
@@ -12,6 +11,13 @@ import moment from 'moment';
 import { ApplicationError } from '../models/Errors';
 import TeacherService from './TeacherService';
 import BaseService, { BaseServiceContructorOptions } from './BaseService';
+
+export interface ContentServiceType {
+  buildContent(doc: QueryDocumentSnapshot): Content | null;
+  getFeatures(category: Categories, contentObj: ContentObj): Content[];
+  getContentfromDb(): Promise<ContentObj>;
+  getLatestUpdate(): Promise<Date>;
+}
 
 class ContentService extends BaseService implements ContentServiceType {
   private teachers: AllTeachers | undefined;
@@ -58,7 +64,7 @@ class ContentService extends BaseService implements ContentServiceType {
     return null;
   };
 
-  public getContent = async (): Promise<ContentObj> => {
+  public getContentfromDb = async (): Promise<ContentObj> => {
     const query: any = this.collection.orderBy('updated_at', 'desc');
 
     try {

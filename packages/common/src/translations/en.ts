@@ -66,7 +66,7 @@ export const English = {
   'Reset Password': 'Reset Password',
   'Upgrade App': 'Upgrade App',
   'Tap to download the latest Wellemental update.':
-    'Tap to download the latest Wellemental update',
+    'Tap to download the latest Wellemental update.',
   Download: 'Download',
   'App Upgrade Required!': 'App Upgrade Required!',
   'A critical update is required. Tap below to download the latest Wellemental update.':

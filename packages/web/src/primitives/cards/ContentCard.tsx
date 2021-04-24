@@ -41,7 +41,7 @@ const ContentCard: React.FC<Props> = ({ content, small, recentDate }) => {
               }}>
               <CardTitle text={content.title} />
               <Paragraph size={14} style={{ textAlign: 'left' }}>
-                {recentDate ? recentDate : content.length} - {content.language}
+                {recentDate ? recentDate : content.length}
               </Paragraph>
 
               {!small && (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Colors, Content } from 'common';
+import { colors, Colors, Content } from 'common';
 import { convertTimestamp } from 'services';
 import { Button, ListEmpty, ContentCard, Box } from '..';
 import { List } from 'native-base';
@@ -14,6 +14,8 @@ type Props = {
 const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
   const { favsMore, favorites, history, historyMore } = useContent();
   const navigation = useNavigation();
+
+  console.log('COLRO!!!!', color, colors.base);
 
   // Change which content arr we're using
   const actions = type === 'history' ? historyMore : favsMore;
@@ -77,7 +79,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
             );
           })
         ) : (
-          <ListEmpty center>
+          <ListEmpty center color={color === 'white' ? 'white' : undefined}>
             {type === 'history'
               ? 'Your recently played videos will appear here. Get started!'
               : 'Your favorite videos will appear here. Get started!'}

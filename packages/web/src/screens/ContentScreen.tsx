@@ -11,7 +11,7 @@ import {
 } from '../primitives';
 import IconButton from '@material-ui/core/IconButton';
 import ReactPlayer from 'react-player/lazy';
-import { Teacher, Content, PlaysServiceType } from 'common';
+import { Teacher, Content, PlaysServiceType, slugify } from 'common';
 import {
   useHistory,
   useContent,
@@ -22,7 +22,6 @@ import {
 } from '../hooks';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { PlayArrow as PlayIcon } from '@material-ui/icons';
-import { slugify } from '../services/helpers';
 import { Card, CardContent } from '@material-ui/core';
 
 const Video = ReactPlayer;
