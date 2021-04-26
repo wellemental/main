@@ -1,181 +1,104 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { ContentService, LocalStateService } from 'services';
-import {
-  ContentObj,
-  Features,
-  Categories,
-  Content as ContentType,
-} from 'common';
+import React, { useEffect, useReducer, useState } from 'react';
+import { ContentObj, Features, ContentServiceType } from 'common';
 import Loading from '../primitives/loaders/Loading';
-import { useConfig, useCurrentUser } from '../hooks';
+import {
+  useConfig,
+  useQuery,
+  useCurrentUser,
+  useContainer,
+  useLoadMore,
+} from '../hooks';
+import { contentReducer } from './reducers/contentReducer';
+import { ContentStateType, initialState } from './initialStates/contentState';
 
-interface ContentContext {
-  content: ContentObj;
-  error: Error | string;
-  loading: boolean;
-  rcLoading: boolean;
-  features: Features;
-  updateAvailable: boolean;
-  status: string[];
-  getDbContent: () => void;
-  getFeatures: (category: Categories) => ContentType[];
-}
-
-// Check localStorage for Content
-// If no localStorage, pull from Database
-// Get content and teachers and match them together
-// Return both content and teachers
-
-const contentService = new ContentService();
-const localStateService = new LocalStateService();
-
-export const Content = React.createContext<ContentContext>({
-  content: null,
-  error: null,
-  loading: false,
-  rcLoading: false,
-  features: undefined,
-  updateAvailable: false,
-  status: [],
-  getDbContent: null,
-  getFeatures: null,
-});
+export const Content = React.createContext<ContentStateType>(initialState);
 
 export const ContentProvider = ({ children }: { children }): JSX.Element => {
-  const [content, setContent] = useState<ContentObj | null>(null);
-  const [error, setError] = useState('');
-  const [statuses, setStatus] = useState([]);
-  const [updateAvailable, setUpdateAvailable] = useState(false);
-  const { user } = useCurrentUser();
-  const [loading, setLoading] = useState(!content ? true : false);
+  const [error, setError] = useState<Error | string>('');
+  const { user, language } = useCurrentUser();
+  const [state, dispatch] = useReducer(contentReducer, initialState);
+  if (!user) {
+    return <>{children}</>;
+  }
 
-  const localUpdatedAt = useRef<Date | undefined>();
+  const container = useContainer();
+  const contentService = container.getInstance<ContentServiceType>(
+    'contentService',
+  );
 
-  const getFeatures = (category: Categories): ContentType[] => {
-    return contentService.getFeatures(category, content);
-  };
-
-  const getDbContent = async (): Promise<void> => {
-    const setLocalContent = async (newContent: ContentObj): Promise<void> => {
-      await localStateService.setStorage<{ [key: string]: ContentObj }>(
-        'wmContent',
-        {
-          content: newContent,
-        },
-      );
-    };
-    // Get teachers and content from firestore
-    try {
-      const dbContent = await contentService.getContent();
-
-      // Update AsyncStorage with firestore data
-      if (dbContent) {
-        await setLocalContent(dbContent);
-      } else {
-        // logger.info(
-        //   `No results from fb for teachers or content. Not setting locally.`,
-        // );
-      }
-
-      // Update state with firestore data
-      setContent(dbContent);
-    } catch (err) {
-      setError(`Error fetching content from database - ${err}`);
-      // logger.error('Error getting firestore content data');
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (user) {
-      const calcUpdateAvailable = async () => {
-        // Get latest updated_at times from firestore
-        const dbContentLatest = await contentService.getLatestUpdate();
-
-        // Set updateAvailable to true if either database updated_at is more recent
-        if (dbContentLatest) {
-          setUpdateAvailable(dbContentLatest > localUpdatedAt.current);
-        } else {
-          setStatus(status => [...status, 'Failed to get latest from db']);
-        }
-      };
-
-      const fetchContent = async (): Promise<void> => {
-        // First, try to fetch from AsyncStorage
-        try {
-          setStatus(status => [...status, 'Fetching local data']);
-
-          const localData = await localStateService.getContent();
-
-          if (localData) {
-            if (localData.content) {
-              // Protection for old users. Content state was previously an array, now an object.
-              // So if their localStarage content is an array, repull from db to make it an object.
-              if (Array.isArray(localData.content)) {
-                await getDbContent();
-                // We updated content model to already have been built with the full corresponding teacher obj
-                // If user's localStorage has old model, then update it
-              } else if (
-                typeof Object.values(localData.content)[0].teacher === 'string'
-              ) {
-                await getDbContent();
-              } else {
-                setContent(localData.content);
-              }
-            }
-            if (localData.updated_at) {
-              localUpdatedAt.current = localData.updated_at;
-            }
-            setLoading(false);
-          } else {
-            // If nothing in AsyncStorage, pull from Database
-            await getDbContent();
-          }
-          await calcUpdateAvailable();
-        } catch (err) {
-          // logger.error('Error getting local content data');
-
-          // In case there's an error getting localStorage, then pull from database as backup
-          await getDbContent();
-        }
-      };
-
-      if (!content) {
-        fetchContent();
-      }
-    }
-  }, [content, user]);
-
-  // If updateAvailable, refetch content from database automatically
-  useEffect(() => {
-    if (updateAvailable) {
-      const autoFetchDb = async (): Promise<void> => {
-        await getDbContent();
-      };
-
-      autoFetchDb();
-    }
-  }, [updateAvailable]);
+  // Get content from database or localStorage
+  const {
+    data: fetchedContent,
+    error: fetchedContentError,
+  } = useQuery<ContentObj>(contentService.getContentContext);
 
   // Get Featured Content from Remote Config
-  const { loading: rcLoading, data: rcData } = useConfig<Features>('featured');
+  const { data: features } = useConfig<Features>('featured');
 
-  if (!content && user) {
-    return <Loading fullPage loading={!content} />;
+  // Update state with fetched content
+  useEffect(() => {
+    if (fetchedContent) {
+      dispatch({ type: 'LOADED', value: fetchedContent, language: language });
+    }
+    if (fetchedContentError) {
+      // Need to add error handling allowing users to retrigger content fetch from front-end if it doesn't load
+    }
+  }, [fetchedContent]);
+
+  // Update state with fetched featured categories
+  useEffect(() => {
+    if (features) {
+      dispatch({ type: 'LOADED_FEATURES', value: features.categories });
+    }
+  }, [fetchedContent]);
+
+  // Get favs and history
+  const historyMore = useLoadMore(contentService.historyQuery);
+  const favsMore = useLoadMore(contentService.favsQuery);
+
+  // Update content state when favs and history items are updated
+  useEffect(() => {
+    if (state.allContent) {
+      dispatch({ type: 'UPDATE_HISTORY', value: historyMore });
+    }
+  }, [state.allContent, historyMore.items]);
+
+  useEffect(() => {
+    if (state.allContent) {
+      dispatch({ type: 'UPDATE_FAVS', value: favsMore });
+    }
+  }, [state.allContent, favsMore.items]);
+
+  // Error handling
+  useEffect(() => {
+    if (fetchedContentError) {
+      setError(fetchedContentError);
+    }
+    if (favsMore.loadingError) {
+      setError(favsMore.loadingError);
+    }
+    if (historyMore.loadingError) {
+      setError(historyMore.loadingError);
+    }
+  }, [fetchedContentError, favsMore.loadingError, historyMore.loadingError]);
+
+  // Showing loading spinner until all content, favs, and history has loaded
+  if (state.loading || state.favsMore.loading || state.historyMore.loading) {
+    return (
+      <Loading
+        fullPage
+        loading={true}
+        // text={`Loading content - ${state.loading.toString()} || ${!!state.favsMore.loading.toString()} ${!!state.historyMore.loading.toString()} - ${error.toString()}`}
+      />
+    );
   }
 
   return (
     <Content.Provider
       value={{
-        content,
-        features: rcData,
-        loading: loading,
-        rcLoading: rcLoading,
-        updateAvailable,
+        ...state,
+        getDbContent: contentService.getContentfromDb,
         error,
-        status: statuses,
-        getDbContent,
-        getFeatures,
       }}>
       {children}
     </Content.Provider>

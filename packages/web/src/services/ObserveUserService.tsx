@@ -1,15 +1,12 @@
 import firebase, { FbUser } from '../base';
-import { User, Languages } from 'common';
-import { convertTimestamp } from '../services/helpers';
+import {
+  User,
+  Languages,
+  ObserveUserServiceType,
+  convertTimestamp,
+} from 'common';
 import moment from 'moment';
 import { setUserProperties } from '../services/TrackerService';
-
-export interface ObserveUserServiceType {
-  subscribe(): void;
-  unsubscribe(): void;
-}
-
-// NOT CURRENTLY USING, KEPT IT ALL IN CURRENT USER CONTEXT
 
 class ObserveUserService implements ObserveUserServiceType {
   private auth: FbUser | null = null;
@@ -114,6 +111,10 @@ class ObserveUserService implements ObserveUserServiceType {
             userData && userData.lastPlay
               ? convertTimestamp(userData.lastPlay).toDate()
               : undefined,
+          promptedNotification:
+            userData && userData.promptedNotification
+              ? userData.promptedNotification
+              : false,
         };
 
         // Set GA Firebase User Properties

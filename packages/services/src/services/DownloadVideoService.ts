@@ -1,4 +1,4 @@
-import { DownloadVideoServiceType } from '../types';
+import { DownloadVideoServiceType } from 'common';
 import RNFS, { DownloadResult } from 'react-native-fs';
 
 export type DownloadProgressCallbackResult = RNFS.DownloadProgressCallbackResult;
@@ -88,7 +88,6 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
     try {
       await RNFS.unlink(path_name);
-      console.log('deleting', res);
       return Promise.resolve();
     } catch (err) {
       return Promise.reject(err.message);

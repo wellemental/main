@@ -1,4 +1,4 @@
-import { ConfigDefaults } from '../types';
+import { ConfigDefaults, Tags } from 'common';
 
 const defaults: ConfigDefaults = {
   featured: {
@@ -11,7 +11,7 @@ const defaults: ConfigDefaults = {
         description: 'Short mindful practices to rest during remote learning.',
         'description-es':
           'ES Short mindful practices to rest during remote learning.',
-        tag: 'study',
+        tag: Tags.Study,
         image:
           'https://firebasestorage.googleapis.com/v0/b/prod-wellemental.appspot.com/o/featured%2Fstudyhall_category.png?alt=media&token=e7806438-329f-447e-9342-ea79bbf005fe',
       },
@@ -22,7 +22,7 @@ const defaults: ConfigDefaults = {
           'Practices led by Black instructors for honoring and respecting our roots.',
         'description-es':
           'ES Practices led by Black instructors for honoring and respecting our roots.',
-        tag: 'black',
+        tag: Tags.Black,
         image:
           'https://firebasestorage.googleapis.com/v0/b/prod-wellemental.appspot.com/o/featured%2Fblm_category.png?alt=media&token=56bf2425-d2eb-4979-a15f-aeac5beade96',
       },

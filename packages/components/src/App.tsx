@@ -13,6 +13,7 @@ import {
 import Navigator from './navigation/Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Orientation from 'react-native-orientation-locker';
 
 if (
   Platform.OS === 'android' &&
@@ -24,6 +25,7 @@ if (
 const App: React.FC = () => {
   useEffect(() => {
     SplashScreen.hide();
+    Orientation.lockToPortrait();
   }, []);
 
   return (

@@ -4,7 +4,7 @@ import { AuthenticationError } from '../models/Errors';
 import { NewAccount, AuthServiceType, Platforms } from 'common';
 import LocalStateService from './LocalStateService';
 import UpdateUserService from './UpdateUserService';
-import { FirebaseError } from 'firebase';
+import { FirebaseError } from '../types';
 
 const profileService = new UpdateUserService();
 const localStateService = new LocalStateService();

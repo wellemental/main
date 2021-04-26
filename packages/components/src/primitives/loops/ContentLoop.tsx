@@ -1,82 +1,127 @@
 import React, { useState } from 'react';
 import { View, FlatList } from 'react-native';
 import ContentCard from '../cards/ContentCard';
-import { useContent } from '../../hooks';
-import { Content, Tags, Teachers, TimeOfDay, Categories } from 'common';
+import Box from '../utils/Box';
+import { useContent, useCurrentUser, useNavigation } from '../../hooks';
+import {
+  Content,
+  Sortings,
+  Categories,
+  Filter,
+  Filters,
+  Teachers,
+  filterContent,
+  sortContent,
+  getTwoRandomInt,
+  getRandomInt,
+  Colors,
+} from 'common';
 import ListEmpty from '../typography/ListEmpty';
 import Error from '../typography/Error';
-import { useCurrentUser } from '../../hooks/useCurrentUser';
+import Button from '../buttons/Button';
 
 interface Props {
-  filter?: Tags | Categories | TimeOfDay;
+  filter?: Filter;
+  type?: Categories;
+  favorites?: string[];
   search?: string;
   teacher?: Teachers;
-  scrollEnabled?: boolean;
-  header?: React.ReactElement;
-  hasPadding?: boolean; // Apply horizontal margin for Library screen bc of tabs full width requirement
   small?: boolean;
   limit?: number;
-  noLoadMore?: boolean;
+  seeAll?: boolean;
+  recentDate?: boolean;
+  sort?: Sortings;
+  random?: 1 | 2; // Used to get two random items for featured modules
+  color?: Colors;
+  hasPadding?: boolean;
+  header?: React.ReactElement;
+  scrollEnabled?: boolean;
 }
 
 const ContentLoop: React.FC<Props> = ({
   filter,
+  favorites,
   search,
   teacher,
-  header,
-  scrollEnabled,
-  hasPadding,
   small,
   limit,
-  noLoadMore,
+  seeAll,
+  type,
+  sort,
+  recentDate,
+  random,
+  color,
+  hasPadding,
+  header,
+  scrollEnabled,
   ...props
 }) => {
-  const { user } = useCurrentUser();
+  const { language, translation } = useCurrentUser();
   const { content, error } = useContent();
+  let filteredContent: Content[] = content;
+  const [hasLangFilter, setLangFilter] = useState(true);
+  // For future user when we add sorting options to the UI
+  const [sorting, setSort] = useState<Sortings | undefined>(sort);
   const defaultLimit = 8;
   const [theLimit, setLimit] = useState(limit ? limit : defaultLimit);
+  const navigation = useNavigation();
 
-  let filteredContent: Content[] = content ? Object.values(content) : [];
+  const filters: Filters = {};
 
-  // Filter by language
-  if (user && user.language && filteredContent && teacher === undefined) {
-    filteredContent = filteredContent.filter(
-      (item: Content) => item.language === user.language,
-    );
+  // Filter language
+  if (hasLangFilter) {
+    filters.language = language;
+  }
+
+  // Filter types
+  if (type) {
+    filters.type = type;
   }
 
   // Filter by tag or category
-  if (filter && filteredContent) {
-    filteredContent = filteredContent.filter(
-      (item: Content) =>
-        item && item.tags && item.tags.includes(filter.toLowerCase()),
-    );
+  if (filter) {
+    filters.tags = [filter];
   }
 
-  // Filter by teacher
-  if (teacher && filteredContent) {
-    filteredContent = filteredContent.filter(
-      (item: Content) => item.teacher && item.teacher.name === teacher,
-    );
+  // Filter by teacher name
+  if (teacher) {
+    filters.teacher = teacher;
   }
 
   // Filter by search term
-  if (search && filteredContent) {
-    filteredContent = filteredContent.filter((item: Content) =>
-      item.title.includes(search),
-    );
+  if (search) {
+    filters.search = search;
   }
 
-  // Sort by priority
-  // Items with priority field set go above those with no priority
-  filteredContent = filteredContent.sort((a, b) =>
-    !a.priority ? 1 : !b.priority ? -1 : a.priority > b.priority ? 1 : -1,
-  );
+  // Run it through filtering helper
+  filteredContent = filterContent(content, filters);
 
-  filteredContent = filteredContent.slice(0, theLimit);
+  // Sort - defaults to 'priority' which falls back to most recent
+  if (sorting) {
+    filteredContent = sortContent(filteredContent, sorting);
+  }
+
+  // Get 1 or 2 random items from the contentArr
+  // Used for featured loops
+  if (random && filteredContent.length > random) {
+    // Use diff function for getting 1 or 2 random items
+    if (random === 2) {
+      filteredContent = getTwoRandomInt(filteredContent.length).map(
+        (idx: number) => filteredContent[idx],
+      );
+    } else {
+      filteredContent = [filteredContent[getRandomInt(filteredContent.length)]];
+    }
+  }
+
+  // Limit content length
+  const limitedContent = filteredContent.slice(0, theLimit);
+
+  // Check to see if there's any content
+  const hasFilteredContent = filteredContent && filteredContent.length > 0;
 
   return (
-    <View style={{ marginHorizontal: hasPadding ? 15 : 0 }}>
+    <View style={{ marginHorizontal: hasPadding ? 15 : 0, marginBottom: 10 }}>
       <Error error={error} />
 
       {content && scrollEnabled ? (
@@ -87,21 +132,82 @@ const ContentLoop: React.FC<Props> = ({
         //   ))}
         // </ScrollView>
         <FlatList
-          data={filteredContent}
+          data={limitedContent}
           initialNumToRender={10}
           ListHeaderComponent={header}
           showsVerticalScrollIndicator={false}
+          ListFooterComponent={
+            filteredContent.length >= defaultLimit &&
+            filteredContent.length > theLimit && (
+              <Box my={1.5}>
+                <Button
+                  // transparent
+                  small
+                  warning
+                  text="Load more"
+                  onPress={() => setLimit(theLimit + defaultLimit)}
+                />
+              </Box>
+            )
+          }
           renderItem={({ item }) => (
             <ContentCard small={small} content={item} />
           )}
           ListEmptyComponent={<ListEmpty />}
           {...props}
         />
+      ) : content && hasFilteredContent && filteredContent ? (
+        <>
+          {limitedContent.map((item, idx: number) => (
+            <ContentCard small={small} key={idx} content={item} />
+          ))}
+          {content &&
+            hasFilteredContent &&
+            filteredContent &&
+            (seeAll ? (
+              <Box mt={1}>
+                <Button
+                  small
+                  text="See all"
+                  style={{
+                    backgroundColor: 'rgba(0,0,0,0)',
+                  }}
+                  transparent={color !== 'white'}
+                  onPress={() =>
+                    navigation.navigate('Category', {
+                      category: { title: 'New', tag: undefined },
+                    })
+                  }
+                />
+              </Box>
+            ) : (
+              // Show load more if there's more content than the set slice limit
+              // Limit is set to improve image and screen loading
+              !scrollEnabled &&
+              filteredContent.length >= defaultLimit &&
+              filteredContent.length > theLimit && (
+                <Box my={1}>
+                  <Button
+                    small
+                    transparent
+                    text="Load more"
+                    onPress={() => setLimit(theLimit + defaultLimit)}
+                  />
+                </Box>
+              )
+            ))}
+        </>
       ) : (
-        content &&
-        filteredContent.map((item, idx: number) => (
-          <ContentCard small={small} key={idx} content={item} />
-        ))
+        <>
+          <ListEmpty />
+          {hasLangFilter && (
+            <Button
+              transparent
+              onPress={() => setLangFilter(false)}
+              text={`${translation['See all languages']} ›`}
+            />
+          )}
+        </>
       )}
     </View>
   );

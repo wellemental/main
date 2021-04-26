@@ -10,8 +10,9 @@ const ListEmpty: React.FC<ParagraphProps & NativeBase.Text> = ({
 }) => (
   <Box mt={1} mx={0.5}>
     <Paragraph
-      {...props}
-      style={{ color: colors.lightText, paddingHorizontal: 5 }}>
+      style={{ paddingHorizontal: 5 }}
+      color={props.color ? props.color : 'lightText'}
+      {...props}>
       {children ? children : 'No results'}
     </Paragraph>
   </Box>

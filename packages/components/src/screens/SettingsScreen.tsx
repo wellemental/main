@@ -31,11 +31,12 @@ type SettingsLink = {
 };
 
 const SettingsScreen: React.FC = () => {
-  const { auth, translation } = useCurrentUser();
+  const { translation, isAdmin } = useCurrentUser();
   const { getDbContent, features } = useContent();
   const [error, setError] = useState();
   const navigation = useNavigation();
   const version = getReadableVersion();
+  const { user } = useCurrentUser();
 
   // const container = useContainer();
   // const authService = container.getInstance<AuthServiceType>('auth');
@@ -87,6 +88,7 @@ const SettingsScreen: React.FC = () => {
   // Link to event link from remote config if available
   // If not, go to default web link
   const linkExternally = (label: 'event' | 'help'): void => {
+    // Not using yet - was going to be building a live event architecture
     const liveLink =
       features && features.event && features.event.url
         ? features.event.url
@@ -99,12 +101,6 @@ const SettingsScreen: React.FC = () => {
   };
 
   const list: SettingsLink[] = [
-    // {
-    //   label: translation['Select language'],
-    //   onPress: () => handleNavigate('Edit Profile'),
-    //   iconName: 'ios-person',
-    //   color: 'dark',
-    // },
     {
       label: translation['Need help?'],
       onPress: () => linkExternally('help'),
@@ -139,7 +135,6 @@ const SettingsScreen: React.FC = () => {
   ];
 
   return (
-    // <View style={{ marginTop: -10 }}>
     <Container scrollEnabled>
       <PageHeading title={translation.Settings} />
       <Error error={error} />
@@ -166,47 +161,24 @@ const SettingsScreen: React.FC = () => {
         );
       })}
 
-      {/* <List style={{ marginTop: -15 }}>
-        {list.map((item: SettingsLink, idx: number) => {
-          return (
-            <ListItem
-              style={{ marginLeft: 0, paddingLeft: 0 }}
-              key={idx}
-              icon
-              button
-              onPress={item.onPress}>
-              <Left>
-                <Icon name={item.iconName} size={24} />
-              </Left>
-              <Body>
-                <Text>{item.label}</Text>
-              </Body>
-              <Right>
-                <Icon name="ios-arrow-forward" size={24} />
-              </Right>
-            </ListItem>
-          );
-        })}
-      </List> */}
       <Box mt={2}>
         <Body>
           <Paragraph fine>{version}</Paragraph>
         </Body>
       </Box>
       <Body>
-        {auth && (
+        {user && (
           <Paragraph center fine>
-            {auth.email}
+            {user.email}
           </Paragraph>
         )}
       </Body>
 
-      {auth && auth.email === 'mike.r.vosters@gmail.com' && (
+      {isAdmin && (
         <Body>
-          <Paragraph fine>{auth.uid}</Paragraph>
+          <Paragraph fine>{user.id}</Paragraph>
         </Body>
       )}
-      {/* </View> */}
     </Container>
   );
 };

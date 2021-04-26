@@ -1,18 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 import { ApplicationError } from '../models/Errors';
 import {
   LocalUser,
   LocalContent,
-  UserProfile,
   LocalStateServiceType,
+  ContentObj,
 } from 'common';
-import firestore from '@react-native-firebase/firestore';
-// import logger from './LoggerService';
 
+const contentStorageKey = 'wmContent';
+const userStorageKey = 'wmUser';
 class LocalStateService implements LocalStateServiceType {
   public async resetStorage(): Promise<void> {
     try {
-      await AsyncStorage.multiRemove(['wmUser', 'wmContent']);
+      await AsyncStorage.multiRemove([userStorageKey, contentStorageKey]);
     } catch (error) {
       // logger.error(`Failed to reset local state: ${error}`);
       return Promise.reject(
@@ -50,11 +51,11 @@ class LocalStateService implements LocalStateServiceType {
 
   public async getContent(): Promise<LocalContent> {
     try {
-      const json = await this.getStorage('wmContent');
+      const json = await this.getStorage(contentStorageKey);
       const obj = JSON.parse(json);
 
       // Create Firestore Timestamp from object
-      if (obj && obj.updated_at) {
+      if (!!obj && obj.updated_at) {
         obj.updated_at = new firestore.Timestamp(
           obj.updated_at.seconds,
           obj.updated_at.nanoseconds,
@@ -69,9 +70,23 @@ class LocalStateService implements LocalStateServiceType {
     }
   }
 
+  public setContent = async (newContent: ContentObj): Promise<void> => {
+    try {
+      await this.setStorage<
+        Pick<{ content: ContentObj; updated_at: Date }, 'content'>
+      >(contentStorageKey, {
+        content: newContent,
+      });
+    } catch (error) {
+      return Promise.reject(
+        new ApplicationError('Error setting content local storage'),
+      );
+    }
+  };
+
   public async getUser(): Promise<LocalUser> {
     try {
-      const json = await this.getStorage('wmUser');
+      const json = await this.getStorage(userStorageKey);
       const obj = JSON.parse(json);
 
       // Create Firestore Timestamp from object

@@ -13,7 +13,7 @@ type Props = {
 };
 
 const TeacherLoop: React.FC<Props> = ({ header, scrollEnabled }) => {
-  const { user } = useCurrentUser();
+  const { language } = useCurrentUser();
 
   const container = useContainer();
   const service = container.getInstance<TeacherServiceType>('teacherService');
@@ -25,7 +25,7 @@ const TeacherLoop: React.FC<Props> = ({ header, scrollEnabled }) => {
 
     if (teachers) {
       arr = Object.values(teachers);
-      arr = arr.filter((item: Teacher) => item.language === user.language);
+      arr = arr.filter((item: Teacher) => item.language === language);
     }
 
     return arr;

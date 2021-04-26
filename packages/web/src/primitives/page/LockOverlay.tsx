@@ -50,7 +50,7 @@ const LockOverlay: React.FC<Props> = ({ pb }) => {
           </Paragraph>
           <Button
             // warning
-            color="secondary"
+            color="warning"
             text={'Learn More'}
             onPress={() => navigation.navigate('/plans')}
           />

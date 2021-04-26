@@ -3,7 +3,14 @@ import PageHeading from './PageHeading';
 import Box from '../utils/Box';
 import { LayoutAnimation } from 'react-native';
 import Button from '../buttons/Button';
-import { TimeOfDayObj, Content, getRandomInt, Colors, TimeOfDay } from 'common';
+import {
+  TimeOfDayObj,
+  Content,
+  getRandomInt,
+  Colors,
+  TimeOfDay,
+  Filter,
+} from 'common';
 import { useContent, useCurrentUser, useNavigation } from '../../hooks';
 
 type Props = {
@@ -14,16 +21,17 @@ type Props = {
 const PageHeadingHome: React.FC<Props> = ({ timeOfDay, color }) => {
   const { content, loading } = useContent();
   const { user } = useCurrentUser();
+  const [show, toggleShow] = useState(false);
   const navigation = useNavigation();
   let filteredContent: Content[] = content ? Object.values(content) : [];
-  const filter = timeOfDay.name;
+  const filter: TimeOfDay = timeOfDay.name;
 
   if (filter && filteredContent) {
     filteredContent = filteredContent.filter(
       (item: Content) =>
         item &&
         item.tags &&
-        item.tags.includes(filter.toLowerCase()) &&
+        item.tags.includes(filter.toLowerCase() as Filter) &&
         item.language === user.language,
     );
   }
@@ -37,8 +45,6 @@ const PageHeadingHome: React.FC<Props> = ({ timeOfDay, color }) => {
   };
 
   const selectedContent = selectContent();
-
-  const [show, toggleShow] = useState(false);
 
   useEffect(() => {
     if (selectedContent) {

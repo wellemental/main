@@ -1,12 +1,16 @@
-import firebase, { QueryDocumentSnapshot } from '../base';
-import { Teacher, AllTeachers, TeacherServiceType } from 'common';
+import {
+  Teacher,
+  AllTeachers,
+  TeacherServiceType,
+  QueryDocumentSnapshot,
+} from 'common';
 import { ApplicationError } from '../models/Errors';
-import logger from './LoggerService';
+import BaseService from './BaseService';
 
-const COLLECTION = 'teachers';
-const teachersCollection = firebase.firestore().collection(COLLECTION);
+class TeacherService extends BaseService implements TeacherServiceType {
+  private COLLECTION = 'teachers';
+  private teachersCollection = this.firestore.collection(this.COLLECTION);
 
-class TeacherService implements TeacherServiceType {
   public buildTeacher = (doc: QueryDocumentSnapshot): Teacher => {
     const data = doc.data();
 
@@ -21,11 +25,11 @@ class TeacherService implements TeacherServiceType {
   };
 
   public findTeacherByName = async (name: string): Promise<Teacher | void> => {
-    const query = teachersCollection.where('name', '==', name);
+    const query = this.teachersCollection.where('name', '==', name);
 
     try {
-      return await query.get().then((snapshots) => {
-        snapshots.docs.map((doc) => {
+      return await query.get().then(snapshots => {
+        snapshots.docs.map(doc => {
           if (doc) {
             return this.buildTeacher(doc);
           } else {
@@ -39,20 +43,20 @@ class TeacherService implements TeacherServiceType {
   };
 
   public getAll = async (): Promise<AllTeachers> => {
-    const query = teachersCollection;
+    const query = this.teachersCollection;
     const teachers: { [key: string]: Teacher } = {};
 
     try {
       await query
         .get()
-        .then((snapshot) =>
+        .then(snapshot =>
           snapshot.docs.forEach(
             (doc: QueryDocumentSnapshot) =>
               (teachers[doc.data().name] = this.buildTeacher(doc)),
           ),
         );
     } catch (err) {
-      logger.error(`Unable to get all teachers - ${err}`);
+      this.logger.error(`Unable to get all teachers - ${err}`);
       return Promise.reject(new ApplicationError(err));
     }
 
@@ -60,7 +64,7 @@ class TeacherService implements TeacherServiceType {
   };
 
   public getLatestUpdate = async (): Promise<Date> => {
-    const query: any = teachersCollection
+    const query: any = this.teachersCollection
       .orderBy('updated_at', 'desc')
       .limit(1);
 
@@ -75,7 +79,7 @@ class TeacherService implements TeacherServiceType {
 
       return teachers[0].updated_at.toDate();
     } catch (err) {
-      logger.error('Unable to get latest teacher update');
+      this.logger.error('Unable to get latest teacher update');
       return Promise.reject(new ApplicationError(err));
     }
   };

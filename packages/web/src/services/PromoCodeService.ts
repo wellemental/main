@@ -55,7 +55,6 @@ class PromoCodeService implements PromoCodeServiceType {
       }
     } catch (err) {
       logger.error('Unable to query promo codes');
-      console.log('Unable to query promo codes', err);
       return Promise.reject(
         new ApplicationError('Error validating promo code'),
       );

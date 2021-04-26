@@ -13,7 +13,6 @@ import {
   Platforms,
   UserPlan,
   isPlanActive,
-  StatObj,
   TotalStats,
   convertToTimestamp,
   convertTimestamp,
@@ -137,7 +136,7 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
       );
       return signups;
     } catch (error) {
-      console.log('Error getting weekly signup analytics', error);
+      this.logger.error(`Error getting weekly signup analytics - ${error}`);
       return Promise.reject();
     }
   };
@@ -190,7 +189,7 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
         }),
       );
     } catch (error) {
-      console.log('Error getting weekly signup analytics', error);
+      this.logger.error(`Error getting weekly signup analytics - ${error}`);
       return Promise.reject();
     }
 
@@ -418,7 +417,7 @@ class AnalyticsService extends BaseService implements AnalyticsServiceType {
 
       return weeks;
     } catch (error) {
-      console.log(error);
+      this.logger.error(error);
       throw new ApplicationError('Error getting weekly analytics');
     }
   };

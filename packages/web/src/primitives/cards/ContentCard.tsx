@@ -9,7 +9,7 @@ import CardItem from './CardItem';
 import Card from './Card';
 import CardBody from './CardBody';
 import Box from '../utils/Box';
-import { slugify, theme } from 'common';
+import { theme } from 'common';
 
 interface Props {
   content: Content;

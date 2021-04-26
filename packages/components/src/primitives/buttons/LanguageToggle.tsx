@@ -2,14 +2,15 @@ import React from 'react';
 import { Form, Toast, Text, Button as NBButton, Segment } from 'native-base';
 import Error from '../typography/Error';
 import { useCurrentUser, useMutation } from '../../hooks';
-import { UserProfile, UpdateUserService, Languages } from 'services';
+import { UpdateUserService } from 'services';
+import { UserProfile, Languages } from 'common';
 import { Dimensions } from 'react-native';
 import { colors } from 'common';
 
 const deviceWidth = Dimensions.get('window').width - 30;
 
 const LanguageToggle: React.FC = () => {
-  const { auth, user, translation } = useCurrentUser();
+  const { user, translation } = useCurrentUser();
 
   // Only submit what's changed upon saving
   const newProfile: UserProfile = {};
@@ -17,7 +18,7 @@ const LanguageToggle: React.FC = () => {
   const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
 
   const { loading, error: mutateError, mutate } = useMutation(() =>
-    service.updateProfile(auth.uid, newProfile),
+    service.updateProfile(user.id, newProfile),
   );
 
   const handleUpdate = async (newLanguage: Languages) => {

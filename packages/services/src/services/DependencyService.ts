@@ -1,18 +1,13 @@
-import { User } from '../types';
-// import { buildLogger } from './LoggerService';
-// import { buildTracker } from './TrackerService';
+import { User } from 'common';
 import UpdateUserService from './UpdateUserService';
 import { buildFirestore } from './FirebaseService';
-// import { buildNavigationService } from './navigationService';
-// import { Navigator } from './interfaces';
 import RemoteConfig from './RemoteConfig';
 import PlaysService from './PlaysService';
 import FavoritesService from './FavoritesService';
-import TeacherService from './TeacherService';
 import ObserveNotifications from './ObserveNotifications';
-// import LocalStateService from './LocalStateService';
-// import AuthService from './AuthService';
-// import UpdateProfileService from './UpdateProfileService';
+import ContentService from './ContentService';
+import TeacherService from './TeacherService';
+import ObserveContentService from './ObserveContentService';
 
 interface DependencyDescriptor {
   dependencies: string[];
@@ -20,7 +15,7 @@ interface DependencyDescriptor {
   class?: new (...args: any) => any;
 }
 
-let dependenciesInstances: { [key: string]: any } = {};
+export let dependenciesInstances: { [key: string]: any } = {};
 
 const BASE_SERVICE_DEPENDENCIES = ['currentUser', 'firestore'];
 
@@ -39,7 +34,7 @@ const dependenciesDescriptors = {
   // },
   updateUserService: {
     class: UpdateUserService,
-    dependencies: ['currentUser', 'firestore'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   remoteConfig: {
     class: RemoteConfig,
@@ -47,7 +42,7 @@ const dependenciesDescriptors = {
   },
   playsService: {
     class: PlaysService,
-    dependencies: ['firestore', 'currentUser'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
   favoritesService: {
     class: FavoritesService,
@@ -55,20 +50,20 @@ const dependenciesDescriptors = {
   },
   teacherService: {
     class: TeacherService,
-    dependencies: BASE_SERVICE_DEPENDENCIES,
+    dependencies: ['firestore'],
   },
   observeNotifications: {
     class: ObserveNotifications,
-    dependencies: ['currentUser', 'firestore'],
+    dependencies: BASE_SERVICE_DEPENDENCIES,
   },
-  // localState: {
-  //   class: LocalStateService,
-  //   dependencies: ['logger'],
-  // },
-  // auth: {
-  //   class: AuthService,
-  //   dependencies: ['logger', 'tracker'],
-  // },
+  contentService: {
+    class: ContentService,
+    dependencies: BASE_SERVICE_DEPENDENCIES,
+  },
+  observeContent: {
+    class: ObserveContentService,
+    dependencies: BASE_SERVICE_DEPENDENCIES,
+  },
 };
 export type DependencyName = keyof typeof dependenciesDescriptors;
 type DescriptorMap = { [key in DependencyName]: DependencyDescriptor };

@@ -83,9 +83,11 @@ export const Español = {
   Purchase: 'Compra',
   Subscription: 'Subscripcion',
   'Promo code': 'Código promocional',
+  'Promo Code': 'Código promocional',
   'Promo code?': '¿Código promocional?',
   'Access code?': '¿Código de accesso?',
   'Access code': 'Código de accesso',
+  'Access Code': 'Código de accesso',
   'No results': 'No hay resultados',
   'New account?': '¿Nueva cuenta?',
   New: 'Nuevo',
@@ -95,7 +97,7 @@ export const Español = {
   'Or enter your access code': 'O entra tu código de accesso',
   '100+ meditation and yoga videos': '100+ videos de meditación y yoga',
   'Explore 100+ mindful practices from diverse teachers in english and spanish!':
-    '¡Explore más de 100 prácticas conscientes de diversos profesores en Inglés y Español!',
+    '¡Explore más de 100 prácticas conscientes con diversos profesores en inglés y español!',
   '100+ meditation and yoga videos and more':
     '100+ videos de meditación, yoga y más!',
   'Available in English and Spanish': 'Disponible en Ingles y Español',
@@ -187,17 +189,17 @@ export const Español = {
   'Manage Subscription': 'Administrar suscripción',
   ' to learn how to cancel your subscription on Android.':
     ' para saber cómo cancelar su suscripción en Android.',
-  Status: 'Estado',
+  Status: 'Estatus',
   'You subscribed for free using an friends and family access code. Enjoy!':
-    'Te suscribiste gratis con un código de acceso para amigos y familiares. ¡Disfrutar!',
+    'Te subscribiste con un código de acceso para amigos y familiares ¡Disfruta!',
   'To manage your subscription, login to the Wellemental website and navigate to your subscription page.':
     'Para administrar su suscripción, inicie sesión en el sitio web de Wellemental y navegue hasta su página de suscripción.',
   'Subscription type unknown. Please contact us at hello@wellemental.co with any questions.':
-    'Tipo de suscripción desconocido. Por favor contáctenos en hello@wellemental.co con cualquier pregunta',
+    'Tipo de suscripción desconocido. Por favor contáctenos en hello@wellemental.co con cualquier pregunta.',
   days: 'dias',
   'Total Time': 'Tiempo Total',
   'Your recently played videos will appear here. Get started!':
-    'Tus videos reproducidos recientemente aparecerán aquí. ¡Empezar!',
+    'Tus vídeos reproducidos recientemente aparecerán aquí. ¡Empiece!',
   'Your favorite videos will appear here. Get started!':
     'Tus videos favoritos aparecerán aquí. ¡Empezar!',
   'If payment succeeded, please wait one minute for your account to be upgraded.':
@@ -231,9 +233,10 @@ export const Español = {
   'Invalid promo code': 'Código de promoción no válido',
   'Questions?': '¿Preguntas?',
   "You're In!": '¡Bienvenidos!',
-  'applied. 30 day free trial added.': 'applied. 30 day free trial added.',
-  ' to learn how to cancel your subscription on.':
-    ' para saber cómo cancelar su suscripción en.',
+  'applied. 30 day free trial added.':
+    'aplicado. 30 días de prueba gratuita agregada.',
+  ' to learn how to cancel your subscription on':
+    ' para saber cómo cancelar su suscripción en',
   'To cancel your Android subscription':
     'Para cancelar su suscripción de Android',
   'Click here': 'Haga clic aquî',
@@ -246,11 +249,13 @@ export const Español = {
   'Anxiety & Stress': 'Ansiedad',
   Focus: 'Concentrarse',
   Rest: 'Calmese',
-  'Yoga Philosophy': 'Filosofía del Yoga',
-  'History of Yoga': 'Historia del Yoga',
+  'Yoga Philosophy': 'Filosofía de Yoga',
+  'History of Yoga': 'Historia de Yoga',
   'Yoga Breaks': 'Descanso de Yoga',
   'Full-Length Yoga Classes': 'Clase Entera de Yoga ',
   'Account upgraded! Close this page and wait a few seconds for the app to update.':
     '¡Cuenta actualizada! Cierre esta página y espere unos segundos a que se actualice la aplicación. ',
-  "Don't ask again": 'No vuelvas a preguntar',
+  "Don't ask again": 'No volver a preguntar',
+  'Promo code applied. 30 day free trial added.':
+    'Código de promoción aplicado. 30 días de prueba gratuita agregada.',
 };

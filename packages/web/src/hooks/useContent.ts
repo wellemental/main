@@ -5,10 +5,6 @@ export const useContent = () => {
   const contentContext = useContext(Content);
   if (!contentContext) throw new Error('Current content missing from context');
   return {
-    content: contentContext.content,
-    loading: contentContext.loading,
-    rcLoading: contentContext.rcLoading,
-    features: contentContext.features,
-    error: contentContext.error,
+    ...contentContext,
   };
 };

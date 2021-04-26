@@ -7,9 +7,8 @@ import {
   TeacherLoop,
 } from '../primitives';
 import { PlansScreen } from '../screens';
-import { Tags } from 'services';
 import { useCurrentUser } from '../hooks';
-import { MenuItem } from 'common';
+import { MenuItem, Tags } from 'common';
 
 const LibraryScreen: React.FC = () => {
   const { translation, activePlan } = useCurrentUser();

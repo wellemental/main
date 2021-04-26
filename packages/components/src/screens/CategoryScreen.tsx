@@ -11,10 +11,10 @@ type Props = {
 
 const CategoryScreen: React.FC<Props> = ({ route }) => {
   const { category } = route.params;
-  const { translation, user } = useCurrentUser();
+  const { translation, language } = useCurrentUser();
 
+  const isSpanish = language === Languages.Es;
   const isAgeGroup = defaultAgeGroups.includes(category);
-  const isSpanish = user.language === Languages.Es;
 
   return (
     <Container noPadding="vertical">
@@ -24,7 +24,8 @@ const CategoryScreen: React.FC<Props> = ({ route }) => {
         header={
           <PageHeading
             title={
-              category['title-es'] && isSpanish // Remote config features won't have built-in translation since they're set by admins
+              // Remote config features won't have built-in translation since they're set by admins
+              category['title-es'] && isSpanish
                 ? category['title-es']
                 : isAgeGroup
                 ? `${category.title} ${translation.years}`

@@ -7,9 +7,8 @@ import {
 } from 'common';
 import { ApplicationError } from '../models/Errors';
 import BaseService from './BaseService';
-import { increment } from './helpers';
 import moment from 'moment';
-import { Platforms } from 'common';
+import { Platforms, increment } from 'common';
 
 class PlaysService extends BaseService implements PlaysServiceType {
   userDoc = this.firestore.collection('users').doc(this.currentUser.id);

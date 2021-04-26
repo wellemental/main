@@ -10,8 +10,6 @@ import RNIap, {
   purchaseUpdatedListener,
 } from 'react-native-iap';
 import functions from '@react-native-firebase/functions';
-import { LocalStateService } from 'services';
-import { useCurrentUser } from '../hooks';
 
 export const IAPContext: React.Context<any> = React.createContext({
   processing: false,
@@ -53,20 +51,13 @@ export const IAPProvider = ({ children }: any) => {
           });
         }
 
-        // Pretty sure this whole thing is useless, but don't want to risk breaking anything so leaving it for now
-        try {
-          await updateUser({ plan: { status: 'active', planId: productId } });
-        } catch (err) {
-          // logger.error('Error updating user state in local storage');
-        }
-
         setActivePlan(productId);
         setProcessing(false);
       } catch (err) {
         setProcessing(false);
       }
     } else {
-      setStatus((status) => [...status, `ERROR - NO TRANSACTION RECEIPT`]);
+      setStatus(status => [...status, `ERROR - NO TRANSACTION RECEIPT`]);
       setProcessing(false);
     }
   };

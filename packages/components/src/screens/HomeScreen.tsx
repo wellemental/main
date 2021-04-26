@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Linking } from 'react-native';
+import { TouchableOpacity, Linking, Platform } from 'react-native';
 import {
   PageHeadingHome,
   Container,
@@ -7,10 +7,11 @@ import {
   CategoryLoop,
   Subheadline,
   Paragraph,
+  Error,
   HomepageTabs,
   AgeCards,
 } from '../primitives';
-import { VersionConfig } from 'services';
+import { VersionConfig, appStoreUrl } from 'common';
 import {
   useCurrentUser,
   useContent,
@@ -36,7 +37,7 @@ type Props = {
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { activePlan, user } = useCurrentUser();
-  const { features } = useContent();
+  const { features, error } = useContent();
 
   // Prompt to activate notifications if they haven't already been asked
   const container = useContainer();
@@ -44,9 +45,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     'observeNotifications',
   );
 
-  const { data: notifPermission } = useQuery<AuthorizationStatus>(
-    service.checkPermissions,
-  );
+  const {
+    data: notifPermission,
+    error: notifError,
+  } = useQuery<AuthorizationStatus>(service.checkPermissions);
 
   if (
     !user.promptedNotification &&
@@ -59,9 +61,14 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { data } = useConfig<VersionConfig>('version');
   const currVersion = getVersion();
   let canUpgrade = false;
+
   // if there's a newer version available, display upgrade modal
   if (data) {
-    canUpgrade = currVersion < data.version;
+    if (Platform.OS === 'android') {
+      canUpgrade = currVersion < data.versionAndroid;
+    } else {
+      canUpgrade = currVersion < data.version;
+    }
   }
 
   if (canUpgrade && data && data.forceUpgrade) {
@@ -71,7 +78,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   const upgradeOnPress = (): void => {
-    Linking.openURL(data.iosUrl).catch(err =>
+    Linking.openURL(appStoreUrl[Platform.OS]).catch(err =>
       console.error('An error occurred', err),
     );
   };
@@ -84,6 +91,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <Container scrollEnabled bg={timeOfDay.name}>
+      <Error error={error || notifError} />
       {canUpgrade && data && !data.forceUpgrade && (
         <TouchableOpacity
           onPress={upgradeOnPress}
@@ -106,8 +114,12 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <>
           <HomepageTabs color={timeOfDayColor} />
 
-          {features && features.categories && (
-            <CategoryLoop title="Featured" categories={features.categories} />
+          {features && features && (
+            <CategoryLoop
+              title="Featured"
+              categories={features}
+              color={timeOfDayColor}
+            />
           )}
           <Subheadline color={timeOfDayColor}>Explore</Subheadline>
 

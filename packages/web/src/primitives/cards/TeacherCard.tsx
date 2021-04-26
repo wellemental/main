@@ -1,5 +1,5 @@
 import React from 'react';
-import Paragraph from '../typography/Paragraph';
+import CardTitle from '../cards/CardTitle';
 import { Teacher } from 'common';
 import { useHistory } from '../../hooks';
 import Box from '@material-ui/core/Box';
@@ -36,9 +36,7 @@ const TeacherCard: React.FC<Props> = ({ teacher }) => {
             style={{ padding: '0 10px' }}
           />
           <CardContent style={{ flex: 1, padding: '10px 10px 5px' }}>
-            <Paragraph variant="subtitle2" noWrap center>
-              {teacher.name}
-            </Paragraph>
+            <CardTitle center text={teacher.name} />
           </CardContent>
         </Box>
       </CardActionArea>

@@ -38,7 +38,6 @@ class FavoritesService extends BaseService implements FavoritesServiceType {
         });
       }
     } catch (err) {
-      console.log('Error favoriting', err);
       throw new ApplicationError('Error favoriting item');
     }
   };
@@ -50,9 +49,9 @@ class FavoritesService extends BaseService implements FavoritesServiceType {
       const batch = this.firestore.batch();
 
       contentIds.map((contentId, idx) => {
-        const fav = favObjects[idx];
+        const fav = favObjects[idx] as Favorite;
         const ref = this.collection.doc(contentId);
-        const newFav = {
+        const newFav: Favorite = {
           contentId,
           updatedAt: fav.updatedAt,
           favorited: fav.favorited,

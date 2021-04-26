@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PageHeading from './PageHeading';
 import Box from '../utils/Box';
 import Button from '../buttons/Button';
@@ -7,10 +7,10 @@ import {
   Content,
   getRandomInt,
   Colors,
+  filterContent,
   TimeOfDay,
-  Tags,
 } from 'common';
-import { useContent, useCurrentUser, useNavigation } from '../../hooks';
+import { useContent, useNavigation } from '../../hooks';
 
 type Props = {
   timeOfDay: TimeOfDayObj;
@@ -19,20 +19,11 @@ type Props = {
 
 const PageHeadingHome: React.FC<Props> = ({ timeOfDay, color }) => {
   const { content, loading } = useContent();
-  const { user } = useCurrentUser();
   const navigation = useNavigation();
   let filteredContent: Content[] = content ? Object.values(content) : [];
   const filter: TimeOfDay = timeOfDay.name.toLowerCase() as TimeOfDay;
 
-  if (filter && filteredContent) {
-    filteredContent = filteredContent.filter(
-      (item: Content) =>
-        item &&
-        item.tags &&
-        item.tags.includes(filter) &&
-        item.language === user.language,
-    );
-  }
+  filteredContent = filterContent(content, { tags: [filter] });
 
   const selectContent = (): Content => {
     // Get random piece of content to feature on load

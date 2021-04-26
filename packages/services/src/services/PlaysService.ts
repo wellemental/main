@@ -1,4 +1,4 @@
-import { PlayEvent, PlaysObj, User, PlaysServiceType } from '../types';
+import { PlayEvent, PlaysObj, User, PlaysServiceType } from 'common';
 import { ApplicationError } from '../models/Errors';
 import BaseService from './BaseService';
 import { increment } from './helpers';
@@ -8,6 +8,7 @@ import { Platform } from 'react-native';
 class PlaysService extends BaseService implements PlaysServiceType {
   userDoc = this.firestore.collection('users').doc(this.currentUser.id);
   collection = this.userDoc.collection('plays');
+  // @ts-ignore - Diff btw RNFB and firebase js Query type
   public query = this.collection.orderBy('createdAt', 'desc');
 
   public add = async (id: string): Promise<void> => {
@@ -72,7 +73,7 @@ class PlaysService extends BaseService implements PlaysServiceType {
         .limit(1)
         .where('contentId', '==', id)
         .get()
-        .then((snapshots) => {
+        .then(snapshots => {
           const doc = snapshots.docs[0];
           doc.ref.update({ completed: true });
         });
@@ -90,8 +91,8 @@ class PlaysService extends BaseService implements PlaysServiceType {
       await this.query
         .limit(10)
         .get()
-        .then((snapshots) =>
-          snapshots.docs.forEach((doc) => {
+        .then(snapshots =>
+          snapshots.docs.forEach(doc => {
             const data = doc.data() as PlayEvent;
             plays[doc.id] = { ...data };
           }),

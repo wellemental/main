@@ -1,4 +1,4 @@
-// import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions';
 import {
   PlanId,
   PlanTypes,
@@ -16,8 +16,8 @@ import * as moment from 'moment';
 // DOCS: https://www.npmjs.com/package/node-klaviyo
 const Klaviyo = require('node-klaviyo');
 export const klaviyo = new Klaviyo({
-  publicToken: 'Tau2rS', //functions.config().klaviyo.public,
-  privateToken: 'pk_d1309ae143991d63d70a59a3c71604a738', // functions.config().klaviyo.private,
+  publicToken: functions.config().klaviyo.public,
+  privateToken: functions.config().klaviyo.private,
 });
 
 type KlaviyoProperties = {
@@ -76,7 +76,7 @@ export const addToList = async (email: string): Promise<void> => {
     try {
       // Ignores past opt-out status - although there shouldn't be one since they're just joining
       await klaviyo.lists.addMembersToList({
-        listId: 'VtgG55', //'RTd3N2',//functions.config().klaviyo.list,
+        listId: functions.config().klaviyo.list,
         profiles: [{ email }],
       });
       console.log('User successfully added to Klaviyo list');

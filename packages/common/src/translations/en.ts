@@ -66,7 +66,7 @@ export const English = {
   'Reset Password': 'Reset Password',
   'Upgrade App': 'Upgrade App',
   'Tap to download the latest Wellemental update.':
-    'Tap to download the latest Wellemental update',
+    'Tap to download the latest Wellemental update.',
   Download: 'Download',
   'App Upgrade Required!': 'App Upgrade Required!',
   'A critical update is required. Tap below to download the latest Wellemental update.':
@@ -77,10 +77,12 @@ export const English = {
   Plan: 'Plan',
   Purchase: 'Purchase',
   Subscription: 'Subscription',
+  'Promo Code': 'Promo Code',
   'Promo code': 'Promo code',
   'Promo code?': 'Promo code?',
   'Access code?': 'Access code?',
   'Access code': 'Access code',
+  'Access Code': 'Access Code',
   New: 'New',
   'No results': 'No results',
   'New account?': 'New account?',
@@ -246,4 +248,6 @@ export const English = {
   'Account upgraded! Close this page and wait a few seconds for the app to update.':
     'Account upgraded! Close this page and wait a few seconds for the app to update.',
   "Don't ask again": "Don't ask again",
+  'Promo code applied. 30 day free trial added.':
+    'Promo code applied. 30 day free trial added.',
 };

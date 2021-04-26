@@ -9,7 +9,7 @@ export { default as DownloadVideoService } from './services/DownloadVideoService
 export { default as ForgotPasswordService } from './services/ForgotPasswordService';
 export { default as PromoCodeService } from './services/PromoCodeService';
 export { default as ObserveNotifications } from './services/ObserveNotifications';
-export { buildDependencies, Dependency } from './services/DependencyService';
+export * from './services/DependencyService';
 export { default as LocalStateService } from './services/LocalStateService';
 export { default as FavoritesService } from './services/FavoritesService';
 // export { default as tracker } from './services/TrackerService';
@@ -18,5 +18,6 @@ export { default as FavoritesService } from './services/FavoritesService';
 export * from './services/DimensionsService';
 export { firestore, auth } from './base';
 export { ApplicationError, ModelError } from './models/Errors';
-export * from './types';
+export * from './services/RateApp';
 export * from './services/helpers';
+export * from './types';

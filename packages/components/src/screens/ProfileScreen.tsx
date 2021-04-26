@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { PlaysServiceType } from 'services';
 import { Card, CardItem } from 'native-base';
 import {
   Error,
@@ -36,28 +35,6 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
     defaultTab ? defaultTab : tabs[0].label,
   );
 
-  const container = useContainer();
-  const service = container.getInstance<PlaysServiceType>('playsService');
-  const favsService = container.getInstance<FavoritesServiceType>(
-    'favoritesService',
-  );
-
-  const {
-    items,
-    loading,
-    loadMore,
-    loadingMore,
-    hasMore,
-  } = useLoadMore(service.query, { limit: 7 });
-
-  const {
-    items: favorites,
-    loading: favsLoading,
-    loadMore: loadMoreFavs,
-    loadingMore: loadingMoreFavs,
-    hasMore: hasMoreFavs,
-  } = useLoadMore(favsService.query, { limit: 7 });
-
   return (
     <Container scrollEnabled bg="Profile">
       <PageHeading noHeader title={translation.Profile} />
@@ -81,15 +58,8 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
           />
         </CardItem>
       </Card>
-      {tab === 'Favorites' && (
-        <ContentLoopLoadMore
-          items={favorites}
-          loading={favsLoading}
-          loadingMore={loadingMoreFavs}
-          loadMore={loadMoreFavs}
-          hasMore={hasMoreFavs}
-        />
-      )}
+      {tab === 'Favorites' && <ContentLoopLoadMore type="favorites" />}
+      {tab === 'History' && <ContentLoopLoadMore type="history" />}
 
       {tab === 'Stats' && (
         <>
@@ -106,16 +76,6 @@ const ProfileScreen: React.FC<Props> = ({ route }) => {
             />
           </Box>
         </>
-      )}
-      {tab === 'History' && (
-        <ContentLoopLoadMore
-          recentlyPlayed
-          loading={loading}
-          items={items}
-          hasMore={hasMore}
-          loadingMore={loadingMore}
-          loadMore={loadMore}
-        />
       )}
     </Container>
   );

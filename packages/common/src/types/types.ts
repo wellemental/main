@@ -8,6 +8,8 @@ export type Query = firestore.Query;
 export type Timestamp = firestore.Timestamp;
 export type FieldValue = firestore.FieldValue;
 export type QueryDocumentSnapshot = firestore.QueryDocumentSnapshot;
+export type DocumentReference = firestore.DocumentReference;
+export type DocumentData = firestore.DocumentData;
 export type FirestoreModule = FirebaseFirestoreTypes.FirebaseFirestore;
 export type Moment = moment.Moment;
 
@@ -192,7 +194,6 @@ export interface LocalUser {
 
 export interface LocalContent {
   content: ContentObj;
-  teachers: AllTeachers;
   updated_at?: Date;
 }
 
@@ -236,6 +237,7 @@ type Product = {
   expirationDate: number;
   originalTransactionId: string;
   productId: PlanId;
+  purchaseDate: number;
   quantity: number;
   transactionId: string;
 };
@@ -282,6 +284,25 @@ export type EditableUserFields = Partial<Pick<User, 'name' | 'actions'>>;
 
 export type Filter = Tags | TimeOfDay | Categories;
 
+export interface Filters {
+  tags?: Filter[];
+  teacher?: Teachers;
+  language?: Languages;
+  search?: string;
+  type?: Categories;
+}
+
+export type Sortings =
+  | 'oldest'
+  | 'newest'
+  | 'priority'
+  | 'shortest'
+  | 'longest'
+  | 'mostFavorited'
+  | 'popular'
+  | 'alphabetical'
+  | 'alphabeticalReverse';
+
 export interface Content {
   id: string;
   title: string;
@@ -323,7 +344,7 @@ export interface AllTeachers {
 
 export interface UserProfile {
   language?: Languages;
-  promptedNotification: boolean;
+  promptedNotification?: boolean;
   updated_at?: Timestamp;
 }
 
@@ -379,6 +400,26 @@ export interface ObserveNotificationsType {
   setNotificationPrompted(): Promise<void>;
 }
 
+export type Action<K, V = void> = V extends void
+  ? { type: K }
+  : { type: K } & V;
+
+export interface ObserveUserServiceType {
+  subscribe(): void;
+  unsubscribe(): void;
+}
+
+export interface UserContent {
+  favs?: Favorite[];
+  history?: PlayEvent[];
+}
+
+export type SetUserContent = (userContent: UserContent) => void;
+export interface ObserveContentServiceType {
+  historyQuery: Query;
+  favsQuery: Query;
+}
+
 export type Favorite = {
   contentId: string;
   favorited: boolean;
@@ -432,6 +473,7 @@ export interface LocalStateServiceType {
   ): Promise<void>;
   getStorage(key: string): Promise<string>;
   getContent(): Promise<LocalContent>;
+  setContent(newContent: ContentObj): Promise<void>;
   getUser(): Promise<LocalUser>;
   removeStorage(key: string): Promise<void>;
 }
@@ -439,7 +481,8 @@ export interface LocalStateServiceType {
 export interface ContentServiceType {
   buildContent(doc: QueryDocumentSnapshot): Content | null;
   getFeatures(category: Categories, contentObj: ContentObj): Content[];
-  getContent(): Promise<ContentObj>;
+  getContentfromDb(): Promise<ContentObj>;
+  getContentContext(): Promise<ContentObj>;
   getLatestUpdate(): Promise<Date>;
 }
 
@@ -497,7 +540,7 @@ export interface TrackingService {
 }
 
 export type RemoteConfigValues = keyof typeof configDefaults;
-export interface RemoteConfigService {
+export interface RemoteConfigServiceType {
   getValue<T>(valueName: RemoteConfigValues): Promise<T>;
 }
 
@@ -521,6 +564,7 @@ export type Features = {
 
 export type VersionConfig = {
   version: string;
+  versionAndroid: string;
   build: number;
   forceUpgrade: boolean;
   iosUrl: string;

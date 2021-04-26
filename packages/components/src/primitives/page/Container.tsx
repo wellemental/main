@@ -40,7 +40,6 @@ const Container: React.FC<ContainerProps> = ({
   ...props
 }) => {
   const bgColor = 'rgba(0, 0, 0, 0)';
-  const lowOpacity = bg === 'Learn' || bg === 'Move';
 
   const styles = StyleSheet.flatten([
     {

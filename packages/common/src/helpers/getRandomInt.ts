@@ -1,6 +1,6 @@
 // Get random number and rounds down to closest integer
 // Does not include the max number
-export const getRandomInt = (max: number) => {
+export const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max));
 };
 

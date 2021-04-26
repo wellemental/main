@@ -1,25 +1,23 @@
 import React from 'react';
-import { useHistory, useCurrentUser } from '../../hooks';
+import { useNavigation } from '../../hooks';
 import Paragraph from '../typography/Paragraph';
 import { Card, CardItem, CardBody } from './';
 import Box from '../utils/Box';
-import { Category, Languages, Feature } from 'common';
+import { Category, Feature } from 'common';
 import { CardMedia } from '@material-ui/core';
 import CardTitle from './CardTitle';
-import { slugify, isFeature } from 'common';
+import { slugify } from 'common';
 
 type Props = {
   category: Category | Feature;
 };
 
 const CategoryCard: React.FC<Props> = ({ category }) => {
-  const history = useHistory();
-  const { user } = useCurrentUser();
+  const navigation = useNavigation();
 
   // If it's a feature, get the translation from the features object
   // Then if translation is possible - age groups have them, features don't currently
   const title: string = category.title;
-
   const description: string | undefined = category.description;
 
   return (
@@ -31,7 +29,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
       }}>
       <CardItem
         onPress={() =>
-          history.push(
+          navigation.navigate(
             `/category/${
               category.slug ? category.slug : slugify(category.title)
             }`,

@@ -19,7 +19,9 @@ class FavoritesService extends BaseService implements FavoritesServiceType {
 
   userDoc = this.firestore.collection('users').doc(this.currentUser.id);
   collection = this.userDoc.collection('favorites');
-  public query = this.collection.orderBy('createdAt', 'desc');
+  public query = this.collection
+    .where('favorited', '==', true)
+    .orderBy('createdAt', 'desc');
 
   public toggle = async (id: string): Promise<void> => {
     try {
@@ -42,7 +44,7 @@ class FavoritesService extends BaseService implements FavoritesServiceType {
         });
       }
     } catch (err) {
-      console.log('Error favoriting', err);
+      this.logger.error(`Error favoriting - ${err}`);
       throw new ApplicationError('Error favoriting item');
     }
   };

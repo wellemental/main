@@ -1,6 +1,7 @@
 import React from 'react';
 import Paragraph, { ParagraphProps } from './Paragraph';
 import Box from '../utils/Box';
+import TextBox from '../utils/TextBox';
 import { Colors } from 'common';
 
 interface Props extends ParagraphProps {
@@ -9,11 +10,13 @@ interface Props extends ParagraphProps {
 
 const ListEmpty: React.FC<Props> = ({ color, children, ...props }) => {
   return (
-    <Box px={1.5} mt={1}>
-      <Paragraph theColor={color} {...props}>
-        {children ? children : 'No results'}
-      </Paragraph>
-    </Box>
+    <TextBox>
+      <Box mt={1}>
+        <Paragraph theColor={color} {...props}>
+          {children ? children : 'No results'}
+        </Paragraph>
+      </Box>
+    </TextBox>
   );
 };
 

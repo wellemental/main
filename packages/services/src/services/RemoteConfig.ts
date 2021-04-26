@@ -2,12 +2,12 @@ import remoteConfig, {
   FirebaseRemoteConfigTypes,
 } from '@react-native-firebase/remote-config';
 import defaultValues from './RemoteConfigDefaults';
-import { RemoteConfigService } from '../types';
+import { RemoteConfigServiceType } from 'common';
 import { ApplicationError } from '../models/Errors';
 // import logger from '../services/LoggerService';
 import BaseService from './BaseService';
 
-class RemoteConfig extends BaseService implements RemoteConfigService {
+class RemoteConfig extends BaseService implements RemoteConfigServiceType {
   private remoteConfig: FirebaseRemoteConfigTypes.Module;
   private initialization: Promise<void>;
   constructor(args: any) {

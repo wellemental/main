@@ -5,8 +5,7 @@ import Avatar from './Avatar';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import { useHistory } from '../../hooks';
-import { Teacher } from 'common';
-import { slugify } from '../../services/helpers';
+import { Teacher, slugify } from 'common';
 
 type Props = {
   source: string;
@@ -64,12 +63,12 @@ const AvyName: React.FC<Props> = ({
           <Avatar source={source} mb={mb} size={size} />
 
           <Paragraph
-            theColor="primary"
-            variant={onProfile ? 'subtitle2' : 'body1'}
+            theColor={onProfile ? 'primary' : 'text'}
+            variant={onProfile ? 'subtitle2' : undefined}
             style={{
               lineHeight: '40px',
               marginLeft: '10px',
-              fontSize: onProfile ? '19px' : undefined,
+              fontSize: onProfile ? '19px' : '16px',
             }}>
             {name}
           </Paragraph>
