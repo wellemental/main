@@ -6,6 +6,10 @@
 #
 .vscode/
 
+# WebStorm
+#
+.idea/
+
 # node.js
 #
 node_modules/
