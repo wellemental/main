@@ -29,8 +29,15 @@ I'm using the 'firebase' javascript SDK for web and 'react-native-firebase' for 
 
 ## Setup
 
-1. Run 'yarn install' in the root directory
-1. Run 'cd packages/mobile' and then 'yarn pods'
+1. Run `yarn install` in the root directory
+1. Run `cd packages/mobile` and then `yarn pods`
+
+## Run application
+
+1. Start Packager: `yarn workspace mobile start`
+2. Android: `yarn workspace mobile android`
+3. iOS: `yarn workspace mobile ios`
+
 
 ## Tracking & Logging
 

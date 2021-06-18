@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 import com.android.build.OutputFile
 
@@ -162,8 +163,8 @@ android {
         applicationId "com.wellemental.wellemental"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
-        versionName "1.6"
+        versionCode 7
+        versionName "1.0"
         multiDexEnabled true // Added
     }
     splits {
@@ -176,17 +177,17 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file(MYAPP_DEBUG_STORE_FILE)
+            storePassword MYAPP_DEBUG_STORE_PASSWORD
+            keyAlias MYAPP_DEBUG_KEY_ALIAS
+            keyPassword MYAPP_DEBUG_STORE_PASSWORD
         }
         release {
-            if (project.hasProperty('release.keystore')) {
-                storeFile file(release.keystore)
-                storePassword pass
-                keyAlias androidreleasekey
-                keyPassword pass
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
             }
         }
     }
@@ -197,7 +198,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -230,6 +231,7 @@ dependencies {
     implementation "androidx.multidex:multidex:2.0.1" // Added for multidex
     implementation platform('com.google.firebase:firebase-bom:26.2.0') // Added for Firebase
     implementation 'com.google.firebase:firebase-analytics' // Added for Firebase Analytics
+    implementation 'com.google.firebase:firebase-crashlytics' // Added for Firebase Analytics
     implementation platform('com.squareup.okio:okio:1.17.5')
     implementation project(':react-native-splash-screen') // Added for RN Splash Screen
     implementation project(':react-native-iap') // Added for RN IAP
@@ -238,7 +240,7 @@ dependencies {
     implementation ('com.squareup.okio:okio:1.17.5') {
         force = true
     }
-    
+
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
