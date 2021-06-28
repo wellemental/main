@@ -177,6 +177,41 @@ const onFavUpdate = functions.firestore
     return Promise.resolve();
   });
 
+// Send Push Notification when new content is added
+const onNewContentAdd = functions.firestore
+  .document('content/{id}')
+  .onCreate(async doc => {
+    // Find the document in /content by the contentId
+    const userCollection = firebase.firestore().collection('users');
+    const users = await userCollection.get();
+
+    let tokens: string[] = [];
+    users.forEach((snapshot: firebase.firestore.DocumentSnapshot): void => {
+      // getting fcmTokens for user
+      const userTokens = snapshot.data() as Pick<User, 'fcmTokens'>;
+      const fcmTokens: [string] | undefined = userTokens.fcmTokens;
+      if (fcmTokens) {
+        tokens = [...tokens, ...fcmTokens];
+      }
+    });
+
+    const payload = {
+      notification: {
+        title: "New Video Added",
+        body: "Hey, checkout this new video",
+        sound: 'default',
+        badge: '1',
+      },
+    };
+
+    firebase.messaging().sendToDevice(tokens, payload)
+      .then((response) => {
+        console.log(response + ' messages were sent successfully');
+      }).catch((error) => {
+        console.log('Error: ', error);
+      });
+  });
+
 // const EVERY_HOUR_CRON = '0 * * * *';
 // Every day at 1am
 const EVERY_DAY_CHRON = '0 1 * * *';
@@ -198,4 +233,5 @@ export {
   onFavUpdate,
   onUserCreate,
   onUserUpdate,
+  onNewContentAdd,
 };

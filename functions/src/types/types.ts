@@ -88,6 +88,7 @@ export interface User {
   firstPlay?: Date;
   lastPlay?: Date;
   isAdmin?: boolean;
+  fcmTokens?: [string]
 }
 
 export type IapPurchase = {
