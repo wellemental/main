@@ -5,12 +5,16 @@
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start --only functions",
-    "shell": "npm run build && firebase functions:shell",
+    "shell": "npm run-script build && firebase functions:shell",
     "start": "npm run shell",
+    "use:default": "firebase use default",
+    "login": "firebase login --interactive",
+    "logout": "firebase logout",
     "deploy": "firebase deploy --only functions",
     "deploy:staging": "yarn run firebase deploy --only functions -P staging",
     "deploy:production": "yarn run firebase deploy --only functions -P production",
     "logs": "firebase functions:log",
+    "get:config": "firebase functions:config:get",
     "cloneEnv:toStaging": "firebase functions:config:clone --from prod-wellemental",
     "cloneEnv:toProduction": "firebase functions:config:clone --from dev-wellemental",
     "setActive:production": "firebase use production",
@@ -43,6 +47,9 @@
     "node-apple-receipt-verify": "^1.7.4",
     "node-klaviyo": "^1.0.3",
     "stripe": "^8.90.0"
+  },
+  "engines": {
+    "node": "10"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0",

@@ -1,7 +1,7 @@
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { Alert } from 'react-native';
 import {
@@ -48,14 +48,18 @@ class ObserveNotifications
   };
 
   public saveTokenToDatabase = async (token: string): Promise<void> => {
-    if (auth().currentUser) {
-      // Add the token to the users datastore
-      await this.firestore
-        .collection('users')
-        .doc(auth().currentUser.uid)
-        .update({
-          fcmTokens: FirebaseFirestoreTypes.FieldValue.arrayUnion(token),
-        });
+    try {
+      if (auth().currentUser) {
+        // Add the token to the users datastore
+        await this.firestore
+          .collection('users')
+          .doc(auth().currentUser.uid)
+          .update({
+            fcmTokens: firestore.FieldValue.arrayUnion(token),
+          });
+      }
+    } catch (error) {
+      console.log('SAVE TOKEN ERROR', error)
     }
   };
 
@@ -96,22 +100,21 @@ class ObserveNotifications
       // Change to equal remoteMessage.data.notification for it to work in Simulator
       const notif: FirebaseMessagingTypes.Notification | undefined =
         remoteMessage.notification;
-
       if (notif && notif.title) {
-        if (notif.title.toLowerCase().includes('emergency')) {
-          Alert.alert(notif.title, notif.body);
-        }
+        
+        Alert.alert(notif.title, notif.body);
 
-        const newNotification = {
-          id: `remote`,
-          title: notif.title ? notif.title : '',
-          message: notif.body ? notif.body : '',
-          category: 'remoteNotif',
-          ignoreInForeground: false,
-          allowWhileIdle: true,
-          ios: { sound: { critical: true } },
-        };
-        PushNotification.localNotification(newNotification);
+        // const newNotification = {
+        //   id: `remote`,
+        //   title: notif.title ? notif.title : '',
+        //   message: notif.body ? notif.body : '',
+        //   category: 'remoteNotif',
+        //   ignoreInForeground: false,
+        //   allowWhileIdle: true,
+        //   ios: { sound: { critical: true } },
+        // };
+        // PushNotification.localNotification(newNotification);
+        // TODO: check not working on android
       }
     } catch (error) {
       // logger.error(`Failed to handle notification: ${error}`);
