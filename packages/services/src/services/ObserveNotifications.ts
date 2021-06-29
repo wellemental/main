@@ -100,22 +100,21 @@ class ObserveNotifications
       // Change to equal remoteMessage.data.notification for it to work in Simulator
       const notif: FirebaseMessagingTypes.Notification | undefined =
         remoteMessage.notification;
-
       if (notif && notif.title) {
-        if (notif.title.toLowerCase().includes('emergency')) {
-          Alert.alert(notif.title, notif.body);
-        }
+        
+        Alert.alert(notif.title, notif.body);
 
-        const newNotification = {
-          id: `remote`,
-          title: notif.title ? notif.title : '',
-          message: notif.body ? notif.body : '',
-          category: 'remoteNotif',
-          ignoreInForeground: false,
-          allowWhileIdle: true,
-          ios: { sound: { critical: true } },
-        };
-        PushNotification.localNotification(newNotification);
+        // const newNotification = {
+        //   id: `remote`,
+        //   title: notif.title ? notif.title : '',
+        //   message: notif.body ? notif.body : '',
+        //   category: 'remoteNotif',
+        //   ignoreInForeground: false,
+        //   allowWhileIdle: true,
+        //   ios: { sound: { critical: true } },
+        // };
+        // PushNotification.localNotification(newNotification);
+        // TODO: check not working on android
       }
     } catch (error) {
       // logger.error(`Failed to handle notification: ${error}`);
