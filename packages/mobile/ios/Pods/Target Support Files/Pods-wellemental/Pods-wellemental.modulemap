@@ -1,6 +1,0 @@
-module Pods_wellemental {
-  umbrella header "Pods-wellemental-umbrella.h"
-
-  export *
-  module * { export * }
-}

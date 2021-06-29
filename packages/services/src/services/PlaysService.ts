@@ -1,7 +1,7 @@
 import { PlayEvent, PlaysObj, User, PlaysServiceType } from 'common';
 import { ApplicationError } from '../models/Errors';
 import BaseService from './BaseService';
-import { increment } from './helpers';
+import { increment } from './Helpers';
 import moment from 'moment';
 import { Platform } from 'react-native';
 

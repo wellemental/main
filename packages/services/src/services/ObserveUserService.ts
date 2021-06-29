@@ -2,7 +2,7 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { User, Languages, ObserveUserServiceType } from 'common';
 import moment from 'moment';
-import { convertTimestamp } from './helpers';
+import { convertTimestamp } from './Helpers';
 
 type FbUser = FirebaseAuthTypes.User;
 class ObserveUserService implements ObserveUserServiceType {
