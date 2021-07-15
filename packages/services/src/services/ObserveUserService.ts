@@ -114,6 +114,10 @@ class ObserveUserService implements ObserveUserServiceType {
             userData && userData.promptedNotification
               ? userData.promptedNotification
               : false,
+          askedAppReview:
+            userData && userData.askedAppReview
+              ? userData.askedAppReview
+              : false,
         };
 
         this.setUser(this.user);

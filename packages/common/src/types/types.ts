@@ -271,6 +271,7 @@ export interface User {
   updated_at?: Date;
   platform?: Platforms;
   promptedNotification?: boolean;
+  askedAppReview?: boolean;
 }
 
 export interface DefaultState {
@@ -345,6 +346,7 @@ export interface AllTeachers {
 export interface UserProfile {
   language?: Languages;
   promptedNotification?: boolean;
+  askedAppReview?: boolean;
   updated_at?: Timestamp;
 }
 

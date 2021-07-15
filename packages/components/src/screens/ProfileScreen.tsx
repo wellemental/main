@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardItem } from 'native-base';
 import {
   Error,
@@ -10,20 +10,47 @@ import {
   TabsButtons,
   Box,
 } from '../primitives';
-import { FavoritesServiceType, Tab } from 'common';
-import { useCurrentUser, useContainer, useNavigation } from '../hooks';
-import useLoadMore from '../hooks/useLoadMore';
+import { Tab } from 'common';
+import { useCurrentUser, useNavigation, useMutation } from '../hooks';
 import { ProfileScreenRouteProp } from '../types';
+import { LocalStateService, rateApp, UpdateUserService } from 'services';
 
 type Props = {
   route: ProfileScreenRouteProp;
 };
 
+const APP_REVIEW_ASKED = 'APP_REVIEW_ASKED';
+
 const ProfileScreen: React.FC<Props> = ({ route }) => {
-  const { translation } = useCurrentUser();
+  const { translation, user } = useCurrentUser();
   const [error, setError] = useState();
   const navigation = useNavigation();
   const defaultTab = route && route.params && route.params.defaultTab;
+  const service = new UpdateUserService(); //container.getInstance<ProfileService>('profileService');
+
+  const { loading, error: mutateError, mutate } = useMutation(() =>
+    service.updateProfile(user.id, { askedAppReview: true }),
+  );
+
+  useEffect(() => {
+    if (!user.askedAppReview) {
+      const localStateService = new LocalStateService();
+      localStateService.getStorage(APP_REVIEW_ASKED)
+        .then((value) => {
+          let count = Number(value);
+          if (count > 2) {
+            rateApp();
+            mutate();
+          } else {
+            count++;
+            localStateService.setStorage(APP_REVIEW_ASKED, count);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, []);
 
   const tabs: Tab[] = [
     { label: 'Stats', icon: 'stats' },
