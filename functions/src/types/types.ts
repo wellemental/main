@@ -88,7 +88,8 @@ export interface User {
   firstPlay?: Date;
   lastPlay?: Date;
   isAdmin?: boolean;
-  fcmTokens?: [string]
+  fcmTokens?: [string];
+  askedAppReview?: boolean
 }
 
 export type IapPurchase = {

@@ -72,9 +72,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   if (canUpgrade && data && data.forceUpgrade) {
-    navigation.navigate('Upgrade', {
-      version: data,
-    });
+    if (!__DEV__) {
+      navigation.navigate('Upgrade', {
+        version: data,
+      });
+    }
   }
 
   const upgradeOnPress = (): void => {
