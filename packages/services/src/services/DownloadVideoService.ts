@@ -1,5 +1,5 @@
 import { DownloadVideoServiceType } from 'common';
-import RNFS, { DownloadResult } from 'react-native-fs';
+import RNFS, { DownloadBeginCallbackResult, DownloadResult } from 'react-native-fs';
 
 export type DownloadProgressCallbackResult = RNFS.DownloadProgressCallbackResult;
 
@@ -40,6 +40,7 @@ class DownloadVideoService implements DownloadVideoServiceType {
 
   public async downloadVideo(
     videoUrl: string,
+    progress?: (response: DownloadProgressCallbackResult) => void,
   ): Promise<void | { jobId: number; promise: Promise<DownloadResult> }> {
     const filename = this.convertUrlToFileName(videoUrl);
     const path_name = this.createPathname(filename);
@@ -49,20 +50,19 @@ class DownloadVideoService implements DownloadVideoServiceType {
     if (exists) {
       return Promise.resolve();
     }
-    RNFS.downloadFile({
+    return RNFS.downloadFile({
       fromUrl: videoUrl,
       toFile: path_name.replace(/%20/g, '_'),
       discretionary: true,
       cacheable: true,
+      begin: (res: DownloadBeginCallbackResult) => {
+        console.log(" === Response begin ===");
+      },
+      progress,
+      progressInterval: 2,
     })
-      .promise.then(res => {
-        // console.log('Response', res);
-        // return RNFS.readFile(path_name.replace(/%20/g, '_'), 'base64');
-      })
-      .catch(err => {
-        // console.log('Error downloading video', err);
-        return Promise.reject(`Error downloading video - ${err}`);
-      });
+      .promise.then(res => Promise.resolve())
+      .catch(err => Promise.reject(`Error downloading video - ${err}`));
   }
 
   public async getVideo(videoUrl: string): Promise<string> {

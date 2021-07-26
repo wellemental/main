@@ -258,4 +258,6 @@ export const Español = {
   "Don't ask again": 'No volver a preguntar',
   'Promo code applied. 30 day free trial added.':
     'Código de promoción aplicado. 30 días de prueba gratuita agregada.',
+  'Added to Favorites': 'Añadida a favoritos',
+  'Removed from Favorites': 'Eliminada de favoritos'
 };

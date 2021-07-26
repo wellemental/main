@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Icon, Toast } from 'native-base';
-import { DownloadVideoService, DownloadProgressCallbackResult } from 'services';
+import { DownloadVideoService,  } from 'services';
+import { DownloadProgressCallbackResult } from 'react-native-fs';
+import { Circle as ProgressCircle } from 'react-native-progress';
 import { colors } from 'common';
 
 interface Props {
   videoUrl: string;
 }
 
+const defaultProgress = 0.05;
+
 const Download: React.FC<Props> = ({ videoUrl }) => {
   const [isDownloaded, toggleDownload] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const service = new DownloadVideoService();
 
   useEffect(() => {
@@ -22,6 +27,13 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
     };
     checkIfDownloaded();
   }, [videoUrl]);
+
+  const handleDownloadProgress = (res: DownloadProgressCallbackResult) => {
+    const progress = res.bytesWritten / res.contentLength;
+    if (progress > defaultProgress) { // show default progress
+      setProgress(progress);
+    }
+  };
 
   const handleDownload = async () => {
     setLoading(true);
@@ -41,7 +53,8 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
       }
     } else {
       try {
-        await service.downloadVideo(videoUrl);
+        setProgress(defaultProgress);
+        await service.downloadVideo(videoUrl, handleDownloadProgress);
         toggleDownload(true);
         Toast.show({
           text: 'Video saved for offline',
@@ -67,17 +80,32 @@ const Download: React.FC<Props> = ({ videoUrl }) => {
         }}
         transparent
         onPress={handleDownload}>
-        <Icon
-          style={{
-            marginTop: 0,
-            paddingTop: 0,
-            color: colors.light,
-            marginRight: 0,
-            fontSize: 36,
-            lineHeight: 40,
-          }}
-          name={isDownloaded ? 'cloud-download' : 'cloud-download-outline'}
-        />
+        {
+          loading &&
+          <ProgressCircle
+            size={30}
+            progress={progress}
+            unfilledColor={colors.lightText}
+            fill={colors.base}
+            color={colors.light}
+            thickness={3}
+            borderWidth={0}
+            style={{
+              marginTop: -5
+            }}
+          /> ||
+          <Icon
+            style={{
+              marginTop: 0,
+              paddingTop: 0,
+              color: colors.light,
+              marginRight: 0,
+              fontSize: 36,
+              lineHeight: 40,
+            }}
+            name={isDownloaded ? 'cloud-download' : 'cloud-download-outline'}
+          />
+        }
       </Button>
     </>
   );

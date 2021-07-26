@@ -1,6 +1,6 @@
 import Rate, { AndroidMarket } from 'react-native-rate';
 
-export const rateApp = () => {
+export const rateApp = (cb = () => {}) => {
   const options = {
     AppleAppID: '1531397725',
     GooglePackageName: 'com.wellemental.wellemental',
@@ -12,6 +12,7 @@ export const rateApp = () => {
     fallbackPlatformURL: 'http://www.wellemental.co',
   };
   Rate.rate(options, success => {
+    cb();
     if (success) {
       // this technically only tells us if the user successfully went to the Review Page. Whether they actually did anything, we do not know.
       // Do nothing for now

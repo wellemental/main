@@ -8,6 +8,7 @@ import {
   LanguageToggle,
   PageHeading,
   Container,
+  Loading,
 } from '../primitives';
 import { Body, Toast } from 'native-base';
 import { Alert, Linking } from 'react-native';
@@ -34,6 +35,7 @@ const SettingsScreen: React.FC = () => {
   const { translation, isAdmin } = useCurrentUser();
   const { getDbContent, features } = useContent();
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const version = getReadableVersion();
   const { user } = useCurrentUser();
@@ -85,6 +87,11 @@ const SettingsScreen: React.FC = () => {
     }
   };
 
+  const handleRating = () => {
+    setLoading(true);
+    rateApp(() => setLoading(false));
+  };
+
   // Link to event link from remote config if available
   // If not, go to default web link
   const linkExternally = (label: 'event' | 'help'): void => {
@@ -115,7 +122,7 @@ const SettingsScreen: React.FC = () => {
     },
     {
       label: 'Rate App',
-      onPress: rateApp,
+      onPress: handleRating,
       iconName: 'star',
       color: 'primary',
     },
@@ -133,7 +140,9 @@ const SettingsScreen: React.FC = () => {
       color: 'warning',
     },
   ];
-
+  if (loading) {
+    return <Loading fullPage loading={true} text={translation['One moment...']} />
+  }
   return (
     <Container scrollEnabled>
       <PageHeading title={translation.Settings} />

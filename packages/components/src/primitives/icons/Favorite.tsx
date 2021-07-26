@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, Icon } from 'native-base';
+import { Button, Icon, Toast } from 'native-base';
 import { useMutation } from '../../hooks/useMutation';
 import { useContainer } from '../../hooks/useContainer';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useQuery } from '../../hooks/useQuery';
 import { FavoritesServiceType } from 'common';
 import { colors } from 'common';
@@ -13,6 +14,7 @@ interface Props {
 
 const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
   const [isFav, toggleFav] = useState(false);
+  const { translation } = useCurrentUser();
 
   const container = useContainer();
   const service = container.getInstance<FavoritesServiceType>(
@@ -34,7 +36,13 @@ const Favorite: React.FC<Props> = ({ contentId, onProfile }) => {
 
   // Update favorite doc in database
   const handleFavorite = () => {
-    mutate(() => toggleFav(!isFav));
+    mutate(() => {
+      Toast.show({
+        text: translation[!isFav ? 'Added to Favorites' : 'Removed from Favorites'],
+        style: { marginBottom: 20 },
+      });
+      toggleFav(!isFav);
+    });
   };
 
   return (

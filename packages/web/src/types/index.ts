@@ -279,6 +279,7 @@ export interface PromoCodeServiceType {
 export interface DownloadVideoServiceType {
   downloadVideo(
     videoUrl: string,
+    progress?: (response: DownloadProgressCallbackResult) => void,
   ): Promise<void | { jobId: number; promise: Promise<DownloadResult> }>;
   getVideo(videoUrl: string): Promise<string>;
   deleteVideo(videoUrl: string): Promise<void>;

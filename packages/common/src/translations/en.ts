@@ -250,4 +250,6 @@ export const English = {
   "Don't ask again": "Don't ask again",
   'Promo code applied. 30 day free trial added.':
     'Promo code applied. 30 day free trial added.',
+    'Added to Favorites': 'Added to Favorites',
+  'Removed from Favorites': 'Removed from Favorites'
 };
