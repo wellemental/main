@@ -9,14 +9,16 @@ type ContainerProps = {
   center?: boolean;
 };
 
-const ScrollView: React.FC<ContainerProps> = ({
-  style,
-  children,
-  color,
-  center,
-  noPadding,
-  ...props
-}) => {
+const ScrollView: React.FC<ContainerProps> = React.forwardRef((props, ref) => {
+  const {
+    style,
+    children,
+    color,
+    center,
+    noPadding,
+    ...rest
+  } = props;
+
   const styles = StyleSheet.flatten([
     {
       backgroundColor: color ? color : variables.containerBgColor,
@@ -37,8 +39,9 @@ const ScrollView: React.FC<ContainerProps> = ({
 
   return (
     <ScrollViewOg
-      {...props}
+      {...rest}
       showsVerticalScrollIndicator={false}
+      ref={ref}
       contentContainerStyle={styles}
       children={children}
       style={{
@@ -47,6 +50,6 @@ const ScrollView: React.FC<ContainerProps> = ({
       }}
     />
   );
-};
+});
 
 export default ScrollView;

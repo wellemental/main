@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useCurrentUser, useContent } from '../hooks';
 import { getReadableVersion } from 'react-native-device-info';
 import { rateApp } from 'services';
+import Notifications from './../primitives/components/Notifications';
 
 type SettingsLink = {
   label: string;
@@ -115,12 +116,6 @@ const SettingsScreen: React.FC = () => {
       color: 'warning',
     },
     {
-      label: 'Notifications',
-      onPress: () => handleNavigate('Notifications'),
-      iconName: 'notifications',
-      color: 'info',
-    },
-    {
       label: 'Rate App',
       onPress: handleRating,
       iconName: 'star',
@@ -129,6 +124,12 @@ const SettingsScreen: React.FC = () => {
     {
       label: 'Refresh Content',
       onPress: handleRefresh,
+      iconName: 'refresh',
+      color: 'info',
+    },
+    {
+      label: 'Notifications',
+      onPress: () => {},
       iconName: 'refresh',
       color: 'info',
     },
@@ -151,6 +152,9 @@ const SettingsScreen: React.FC = () => {
       <LanguageToggle />
 
       {list.map((item: SettingsLink, idx: number) => {
+        if (item.label === 'Notifications') {
+          return <Notifications />
+        }
         return (
           <Box mt={1.5} key={idx}>
             <Button

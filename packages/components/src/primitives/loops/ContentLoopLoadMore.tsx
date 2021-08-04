@@ -110,6 +110,7 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
               <Button
                 warning
                 small
+                loading={actions.loadingMore}
                 disabled={actions.loadingMore}
                 text={'Load More'}
                 onPress={actions.loadMore}

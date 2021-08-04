@@ -5,6 +5,7 @@ import {
   Platform,
   ImageBackground,
   Image,
+  ScrollView as RNScrollView
 } from 'react-native';
 import { Button as NBButton } from 'native-base';
 import {
@@ -26,6 +27,7 @@ import FadeIn from 'react-native-fade-in-image';
 import { useContainer, useMutation, useCurrentUser } from '../hooks';
 import { DownloadVideoService, deviceWidth, deviceHeight } from 'services';
 import Orientation from 'react-native-orientation-locker';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Props = {
   route: ContentScreenRouteProp;
@@ -82,6 +84,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
 
   // Reference for video player to run methods from
   const player = useRef();
+  const scrollRef = useRef<RNScrollView>();
 
   // Get PlaysService
   const container = useContainer();
@@ -97,6 +100,10 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
   useEffect(() => {
     toggleHasPlayed(false);
   }, [content]);
+
+  useFocusEffect(
+    React.useCallback(() => scrollRef.current?.scrollTo({ y: 0 }), [])
+  );
 
   // Determine when video is over to trigger transition to celebration page
   if (!isOver && currentTime >= duration - 1) {
@@ -277,7 +284,7 @@ const ContentScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         </View>
       )}
-      <ScrollView>
+      <ScrollView ref={scrollRef}>
         <Error error={error} />
         <Box row justifyContent="space-between" mt={2} mb={0.5}>
           <Headline style={{ flex: 4 }}>{content.title}</Headline>
