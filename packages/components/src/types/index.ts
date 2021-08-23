@@ -43,6 +43,7 @@ export type RootStackParamList = {
   Plans: undefined;
   Celebration: undefined;
   Notifications: { prompt: boolean };
+  Usage: undefined;
 };
 
 export type AuthStackParamList = {

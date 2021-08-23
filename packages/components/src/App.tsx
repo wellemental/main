@@ -14,6 +14,7 @@ import Navigator from './navigation/Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Orientation from 'react-native-orientation-locker';
+import AppUsage from './appUsage';
 
 if (
   Platform.OS === 'android' &&
@@ -45,6 +46,7 @@ const App: React.FC = () => {
                         backgroundColor={'transparent'}
                       />
                     )}
+                    <AppUsage />
                     <Navigator />
                   </SafeAreaProvider>
                 </Root>

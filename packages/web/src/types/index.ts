@@ -1,6 +1,7 @@
 import defaultValues from '../services/RemoteConfigDefaults';
 import { firestore } from 'firebase/app';
 import FirebaseFirestoreTypes from '@firebase/firestore-types';
+import { Moment } from 'common';
 
 export type Translation = { [key: string]: string };
 export type Query = firestore.Query;
@@ -289,6 +290,7 @@ export interface DownloadVideoServiceType {
 export interface UpdateUserServiceType {
   favorite(id: string, contentId: string, isFav: boolean): Promise<void>;
   updateProfile(id: string, fields: UserProfile): Promise<void>;
+  updateAppUsageTime(id: string, day: Moment, avg: number): Promise<void>;
   createProfile(account: InitialUserDoc): Promise<void>;
 }
 

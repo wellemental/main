@@ -15,6 +15,7 @@ export { default as CategoryScreen } from './CategoryScreen';
 export { default as LandingScreen } from './LandingScreen';
 export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
 export { default as NotificationsScreen } from './NotificationsScreen';
+export { default as UsageScreen } from './UsageScreen';
 export { default as PlansScreen } from './PlansScreen';
 export { default as CelebrationScreen } from './CelebrationScreen';
 export { default as MeditateScreen } from './MeditateScreen';

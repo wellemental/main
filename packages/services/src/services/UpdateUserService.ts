@@ -1,8 +1,14 @@
+import { LocalStateService } from 'services';
 import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
+import _ from 'lodash';
 import { ApplicationError } from '../models/Errors';
-import { UserProfile, UpdateUserServiceType, InitialUserDoc } from 'common';
+import { UserProfile, UpdateUserServiceType, InitialUserDoc, Moment } from 'common';
+import BaseService from './BaseService';
 // import logger from './LoggerService';
 // import tracker, { TrackingEvents } from './TrackerService';
+const APP_USAGE_TIME = 'APP_USAGE_TIME';
+const DATE_FORMAT = 'MMDDYYYY';
 
 const COLLECTION = 'users';
 const collection = firestore().collection(COLLECTION);
@@ -70,6 +76,39 @@ class UpdateUserService implements UpdateUserServiceType {
     try {
       await doc.update({
         ...fields,
+        updated_at: firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (error) {
+      // logger.error(`Failed to update user '${id}'`);
+      throw new ApplicationError('Unable to update');
+    }
+    return Promise.resolve();
+  }
+
+  public async updateAppUsageTime(id: string): Promise<void> {
+    const doc = collection.doc(id);
+    const userDoc = await doc.get();
+    const { appUsageTime = {} } = userDoc.data();
+    const localStateService = new LocalStateService();
+    let usageDays = {};
+    
+    Array.from({ length: 7 }).map((_, i) => {
+      const dayString = moment().subtract(i, 'd').format(DATE_FORMAT);
+      usageDays[dayString] = appUsageTime[dayString] || [];
+    });
+
+    const response = await localStateService.getStorage(APP_USAGE_TIME)
+    const usage = JSON.parse(response);
+
+    if (usage) {
+      const current = usage['day'];
+      const currentTimings = _.uniqWith([...(appUsageTime[current] || []), ...(usage['timings'] || [])], _.isEqual);
+      usageDays[current] = currentTimings;
+    }
+    
+    try {
+      await doc.update({
+        appUsageTime: usageDays,
         updated_at: firestore.FieldValue.serverTimestamp(),
       });
     } catch (error) {

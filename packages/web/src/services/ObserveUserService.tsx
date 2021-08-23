@@ -119,6 +119,10 @@ class ObserveUserService implements ObserveUserServiceType {
             userData && userData.askedAppReview
               ? userData.askedAppReview
               : false,
+          appUsageTime:
+            userData && userData.appUsageTime
+              ? userData.appUsageTime
+              : {},
         };
 
         // Set GA Firebase User Properties

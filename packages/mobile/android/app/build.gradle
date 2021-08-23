@@ -163,7 +163,7 @@ android {
         applicationId "com.wellemental.wellemental"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
+        versionCode 16
         versionName "1.0"
         multiDexEnabled true // Added
     }

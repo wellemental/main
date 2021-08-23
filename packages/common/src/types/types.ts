@@ -272,6 +272,7 @@ export interface User {
   platform?: Platforms;
   promptedNotification?: boolean;
   askedAppReview?: boolean;
+  appUsageTime?: { [key: string]: any };
 }
 
 export interface DefaultState {
@@ -348,6 +349,7 @@ export interface UserProfile {
   promptedNotification?: boolean;
   askedAppReview?: boolean;
   updated_at?: Timestamp;
+  appUsageTime?: { [key: string]: any };
 }
 
 export interface NewAccount {
@@ -514,6 +516,7 @@ export interface DownloadVideoServiceType {
 export interface UpdateUserServiceType {
   favorite(id: string, contentId: string, isFav: boolean): Promise<void>;
   updateProfile(id: string, fields: UserProfile): Promise<void>;
+  updateAppUsageTime(id: string, day: Moment, avg: number): Promise<void>;
   createProfile(account: InitialUserDoc): Promise<void>;
 }
 

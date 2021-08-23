@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AuthService, LocalStateService } from 'services';
+import { AuthService, LocalStateService, UpdateUserService } from 'services';
 import {
   Error,
   Box,
@@ -55,6 +55,8 @@ const SettingsScreen: React.FC = () => {
     try {
       const authService = new AuthService();
       const localStateService = new LocalStateService();
+      const updateUserService = new UpdateUserService();
+      await updateUserService.updateAppUsageTime(user.id);
       await authService.logout();
       await localStateService.resetStorage();
     } catch (err) {
@@ -125,6 +127,12 @@ const SettingsScreen: React.FC = () => {
       label: 'Refresh Content',
       onPress: handleRefresh,
       iconName: 'refresh',
+      color: 'info',
+    },
+    {
+      label: 'Usage',
+      onPress: () => handleNavigate('Usage'),
+      iconName: 'chart',
       color: 'info',
     },
     {

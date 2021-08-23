@@ -14,6 +14,7 @@ import {
   EditProfileScreen,
   ForgotPasswordScreen,
   NotificationsScreen,
+  UsageScreen,
   UpgradeScreen,
   CelebrationScreen,
   PlansScreen,
@@ -127,6 +128,10 @@ const Navigator: React.FC = () => {
             <Stack.Screen
               name="Notifications"
               component={NotificationsScreen}
+            />
+            <Stack.Screen
+              name="Usage"
+              component={UsageScreen}
             />
           </>
         ) : (
