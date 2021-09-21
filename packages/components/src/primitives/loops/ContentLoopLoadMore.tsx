@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { colors, Colors, Content } from 'common';
 import { convertTimestamp } from 'services';
 import { Button, ListEmpty, ContentCard, Box } from '..';
 import { List } from 'native-base';
-import { useNavigation, useContent } from '../../hooks';
+import { useNavigation, useFocusEffect, useContent } from '../../hooks';
 
 type Props = {
   homepage?: boolean;
@@ -59,6 +59,14 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
       filtered = content.slice(0, 2);
     }
   }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (type === 'favorites') {
+        favsMore.loadMore();
+      }
+    }, [type])
+  );
 
   return (
     <>

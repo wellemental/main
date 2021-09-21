@@ -10,4 +10,4 @@ export * from './useContainer';
 export * from './useContent';
 export { default as useLoadMore } from './useLoadMore';
 export * from './useConfig';
-export { useNavigation } from './useNavigation';
+export * from './useNavigation';
