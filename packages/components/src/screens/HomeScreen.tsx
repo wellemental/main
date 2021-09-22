@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Linking, Platform } from 'react-native';
 import {
   PageHeadingHome,
@@ -21,6 +21,7 @@ import {
 } from '../hooks';
 import { getVersion } from 'react-native-device-info';
 import {
+  LocalStateServiceType,
   getTimeOfDay,
   colors,
   Tags,
@@ -29,6 +30,7 @@ import {
   AuthorizationStatus,
   ObserveNotificationsType,
 } from 'common';
+import { LocalStateService } from 'services';
 import { MainNavigationProp } from '../types';
 
 type Props = {
@@ -38,6 +40,8 @@ type Props = {
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { activePlan, user } = useCurrentUser();
   const { features, error } = useContent();
+  const localState: LocalStateServiceType = new LocalStateService();
+  const [canUpgrade, setCanUpgrade] = useState(false);
 
   // Prompt to activate notifications if they haven't already been asked
   const container = useContainer();
@@ -60,29 +64,23 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   // Upgrade Screen prompt
   const { data } = useConfig<VersionConfig>('version');
   const currVersion = getVersion();
-  let canUpgrade = false;
-
-  // if there's a newer version available, display upgrade modal
-  if (data) {
-    if (Platform.OS === 'android') {
-      canUpgrade = currVersion < data.versionAndroid;
-    } else {
-      canUpgrade = currVersion < data.version;
-    }
-  }
-
-  if (canUpgrade && data && data.forceUpgrade) {
-    if (!__DEV__) {
-      navigation.navigate('Upgrade', {
-        version: data,
-      });
-    }
-  }
 
   const upgradeOnPress = (): void => {
     Linking.openURL(appStoreUrl[Platform.OS]).catch(err =>
       console.error('An error occurred', err),
     );
+  };
+
+  const showUpgradeNotice = async () => {
+    const dateShown = await localState.getUpgradeNoticeTime();
+    if (canUpgrade && data && data.forceUpgrade && dateShown !== new Date().toLocaleDateString()) {
+      if (!__DEV__ || true) {
+        localState.setUpgradeNoticeTime();
+        navigation.navigate('Upgrade', {
+          version: data,
+        });
+      }
+    }
   };
 
   // Calculate time of day to determine bg and featured content
@@ -91,6 +89,22 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const timeOfDayColor =
     timeOfDay.name === TimeOfDay.Evening ? 'white' : undefined;
 
+  useEffect(() => {
+    let canUpgrade = false;
+
+    // if there's a newer version available, display upgrade modal
+    if (data) {
+      if (Platform.OS === 'android') {
+        canUpgrade = currVersion < data.versionAndroid;
+      } else {
+        canUpgrade = currVersion < data.version;
+      }
+    }
+    setCanUpgrade(canUpgrade);
+  }, [data]);
+  useEffect(() => {
+    showUpgradeNotice();
+  }, [canUpgrade]);
   return (
     <Container scrollEnabled bg={timeOfDay.name}>
       <Error error={error || notifError} />

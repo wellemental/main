@@ -10,6 +10,8 @@ import {
 
 const contentStorageKey = 'wmContent';
 const userStorageKey = 'wmUser';
+const upgradeNoticeTime = 'wmUpgradeNoticeTime';
+
 class LocalStateService implements LocalStateServiceType {
   public async resetStorage(): Promise<void> {
     try {
@@ -113,6 +115,25 @@ class LocalStateService implements LocalStateServiceType {
       return Promise.reject(
         new ApplicationError('Unable to remove local state.'),
       );
+    }
+  }
+
+  public async setUpgradeNoticeTime(): Promise<void> {
+    try {
+      const shown_at = new Date().toLocaleDateString();
+      await AsyncStorage.setItem(upgradeNoticeTime, shown_at);
+    } catch (err) {
+      // logger.error(`Failed to set ${key} to async storage - ${err}`);
+      return Promise.reject(new ApplicationError('Unable to set upgrade notice time.'));
+    }
+  }
+
+  public async getUpgradeNoticeTime(): Promise<string> {
+    try {
+      return await AsyncStorage.getItem(upgradeNoticeTime);
+    } catch (err) {
+      // logger.error(`Failed to get ${key} from async storage`);
+      return Promise.reject(new ApplicationError('Unable to get upgrade notice time.'));
     }
   }
 }

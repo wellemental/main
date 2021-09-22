@@ -479,6 +479,8 @@ export interface LocalStateServiceType {
   getContent(): Promise<LocalContent>;
   setContent(newContent: ContentObj): Promise<void>;
   getUser(): Promise<LocalUser>;
+  setUpgradeNoticeTime(): Promise<void>;
+  getUpgradeNoticeTime(): Promise<string>;
   removeStorage(key: string): Promise<void>;
 }
 
