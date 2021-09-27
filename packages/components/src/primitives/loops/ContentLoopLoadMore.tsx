@@ -7,11 +7,12 @@ import { useNavigation, useFocusEffect, useContent } from '../../hooks';
 
 type Props = {
   homepage?: boolean;
+  borderedAll?: boolean;
   type: 'history' | 'favorites';
   color?: Colors;
 };
 
-const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
+const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color, borderedAll = false }) => {
   const { favsMore, favorites, history, historyMore } = useContent();
   const navigation = useNavigation();
 
@@ -101,6 +102,11 @@ const ContentLoopLoadMore: React.FC<Props> = ({ homepage, type, color }) => {
               text={'See all'}
               style={{
                 backgroundColor: 'rgba(0,0,0,0',
+                ...(borderedAll ? {
+                  borderWidth: 1,
+                  borderColor: color === 'white' ? 'white' : '#214f4b',
+                  marginTop: 4,
+                } : {}),
               }}
               transparent={color === 'white' ? false : true}
               onPress={() =>

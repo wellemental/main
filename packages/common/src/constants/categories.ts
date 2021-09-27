@@ -30,6 +30,7 @@ export const categories: CategoryObj = {
     tag: Tags.Philosophy,
     icon: 'book-open',
     iconType: 'Feather',
+    slug: 'philosophy',
   },
   History: {
     title: 'History',

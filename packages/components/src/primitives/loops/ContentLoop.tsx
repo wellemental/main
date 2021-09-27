@@ -36,6 +36,8 @@ interface Props {
   hasPadding?: boolean;
   header?: React.ReactElement;
   scrollEnabled?: boolean;
+  autoLoadMore?: boolean;
+  borderedAll?: boolean;
 }
 
 const ContentLoop: React.FC<Props> = ({
@@ -54,6 +56,8 @@ const ContentLoop: React.FC<Props> = ({
   hasPadding,
   header,
   scrollEnabled,
+  autoLoadMore = false,
+  borderedAll = false,
   ...props
 }) => {
   const { language, translation } = useCurrentUser();
@@ -119,6 +123,7 @@ const ContentLoop: React.FC<Props> = ({
 
   // Check to see if there's any content
   const hasFilteredContent = filteredContent && filteredContent.length > 0;
+  const loadMore = () => setLimit(theLimit + defaultLimit);
 
   return (
     <View style={{ marginHorizontal: hasPadding ? 15 : 0, marginBottom: 10 }}>
@@ -136,7 +141,10 @@ const ContentLoop: React.FC<Props> = ({
           initialNumToRender={10}
           ListHeaderComponent={header}
           showsVerticalScrollIndicator={false}
+          onEndReached={autoLoadMore && loadMore}
+          onEndReachedThreshold={0.5}
           ListFooterComponent={
+            !autoLoadMore &&
             filteredContent.length >= defaultLimit &&
             filteredContent.length > theLimit && (
               <Box my={1.5}>
@@ -145,7 +153,7 @@ const ContentLoop: React.FC<Props> = ({
                   small
                   warning
                   text="Load more"
-                  onPress={() => setLimit(theLimit + defaultLimit)}
+                  onPress={loadMore}
                 />
               </Box>
             )
@@ -171,6 +179,11 @@ const ContentLoop: React.FC<Props> = ({
                   text="See all"
                   style={{
                     backgroundColor: 'rgba(0,0,0,0)',
+                    ...(borderedAll ? {
+                      borderWidth: 1,
+                      borderColor: color === 'white' ? 'white' : '#214f4b',
+                      marginTop: 4,
+                    } : {}),
                   }}
                   transparent={color !== 'white'}
                   onPress={() =>

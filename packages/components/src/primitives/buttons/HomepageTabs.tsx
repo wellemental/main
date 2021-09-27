@@ -27,9 +27,9 @@ const HomepageTabs: React.FC<Props> = ({ color }) => {
         />
       </Box>
       {tab === 'History' && (
-        <ContentLoopLoadMore type="history" homepage color={color} />
+        <ContentLoopLoadMore borderedAll type="history" homepage color={color} />
       )}
-      {tab === 'New' && <ContentLoop small limit={2} seeAll color={color} />}
+      {tab === 'New' && <ContentLoop borderedAll small limit={2} seeAll color={color} />}
     </>
   );
 };

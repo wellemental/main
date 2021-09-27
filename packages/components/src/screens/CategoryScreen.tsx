@@ -20,6 +20,7 @@ const CategoryScreen: React.FC<Props> = ({ route }) => {
     <Container noPadding="vertical">
       <ContentLoop
         scrollEnabled
+        autoLoadMore={category?.slug === 'philosophy'}
         filter={category.tag}
         header={
           <PageHeading
