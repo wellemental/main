@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { useWindowDimensions, ViewStyle } from 'react-native';
 import {
   PageHeading,
   Paragraph,
@@ -12,14 +12,14 @@ import {
 } from 'components/src/types';
 import {
   BarChart,
-} from "react-native-chart-kit";
+} from 'react-native-chart-kit';
 import { colors } from 'common';
 import { useCurrentUser } from '../hooks';
 import moment from 'moment';
 
 const chartConfig = {
-  backgroundGradientFrom: "#fff",
-  backgroundGradientTo: "#fff",
+  backgroundGradientFrom: '#fff',
+  backgroundGradientTo: '#fff',
   barPercentage: 0.8,
   height: 5000,
   fillShadowGradient: colors.primary,
@@ -29,8 +29,8 @@ const chartConfig = {
   labelColor: (opacity = 1) => `rgba(0, 0, 0, 1)`,
   propsForBackgroundLines: {
     strokeWidth: 1,
-    stroke: "#e3e3e3",
-    strokeDasharray: "0",
+    stroke: '#e3e3e3',
+    strokeDasharray: '0',
   },
   propsForLabels: {
     fontSize: 10,
@@ -46,6 +46,8 @@ const UsageScreen: React.FC<Props> = ({ navigation }) => {
   const width = useWindowDimensions().width * 0.9;
   const height = useWindowDimensions().height * 0.5;
   const { user } = useCurrentUser();
+
+  const hasData = !!chartData?.datasets[0]?.data?.length;
 
   useEffect(() => {
     const { appUsageTime } = user;
@@ -69,28 +71,34 @@ const UsageScreen: React.FC<Props> = ({ navigation }) => {
     })
   }, []);
 
+  const noticeStyles = {
+    position: 'absolute',
+    top: height / 2 - (height * 0.12),
+    left: '50%', transform: [
+      { translateX: -(width * 0.16) }
+    ]
+  } as ViewStyle;
+
   return (
     <Container>
       <PageHeading title="Usage" />
-      <Box>
-        {
-          chartData && (
-            <BarChart
-              style={{ marginLeft: -15 }}
-              data={chartData}
-              width={width+20}
-              height={height}
-              showBarTops={false}
-              yAxisInterval={100}
-              yAxisSuffix=" min"
-              withInnerLines={false}
-              chartConfig={chartConfig}
-              fromZero={true} /> ||
-            <Paragraph bold>
-              Keep using the app to grow your chart
-            </Paragraph>
-          )
-        }
+      <Box style={{ position: 'relative' }}>
+        {chartData && (
+          <BarChart
+            style={{ marginLeft: -15 }}
+            data={chartData}
+            width={width+20}
+            height={height}
+            showBarTops={false}
+            yAxisInterval={100}
+            yAxisSuffix=" min"
+            withInnerLines={false}
+            chartConfig={chartConfig}
+            fromZero={true} />
+        )}
+        {!hasData && <Box style={noticeStyles}>
+          <Paragraph bold>No Data Available</Paragraph>
+        </Box>}
         <Box row justifyContent="space-between" mt={2} mb={0.5}>
           <Headline style={{ flex: 4 }}>App usage Time</Headline>
         </Box>
